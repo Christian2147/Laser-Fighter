@@ -1,0 +1,11 @@
+Button_Sound = 1
+Player_Shooting_Sound = 1
+Enemy_Shooting_Sound = 1
+Player_Death_Sound = 1
+Enemy_Death_Sound = 1
+Player_Hit_Sound = 1
+Enemy_Hit_Sound = 1
+
+
+
+
