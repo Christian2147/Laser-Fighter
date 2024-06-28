@@ -2,6 +2,13 @@
 
 This is the main repository for Laser Fighter. (Repository & Game are currently a work in progress, Check back on 7/2/24)
 
+## Releases
+
+Check out the [Releases](https://github.com/Christian2147/Laser-Fighter/releases) section for downloadable binaries and release notes for each version. See below for direct links to major versions:
+
+- [Version 0.0.1a](https://github.com/Christian2147/Laser-Fighter/releases/tag/v0.0.1)
+- [Version 0.2.0a](https://github.com/Christian2147/Laser-Fighter/releases/tag/v0.2.0)
+
 ## License
 
 Copyright (c) [2024] [Christian Marinkovich]
