@@ -8,16 +8,21 @@ This branch contains the source for Laser Fighter v0.2.0a. This version was comp
 
 ## Changelog:
 
+### Additions
 + Added Alien Mode - A completely new and unique mode
 + Added a title screen - with all the features of a title screen
 + Added a settings screen - with the ability to customize sound and controls
 + Added a config backup
+
+### Changes
 * Fixed the black box bug in classic mode
 * Fixed visual lag in class mode
 * Fixed an error that popped up when terminating the program
 * Changed the program icon
 * Changed the name of certain game files
 * Organized the game files
+
+### Removals
 - Removed the ability to toggle sound while in a game
 
 ## License
