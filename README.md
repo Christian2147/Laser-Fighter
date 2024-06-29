@@ -2,13 +2,22 @@
 
 This is the main repository for Laser Fighter. (Repository & Game are currently a work in progress, Check back on 7/2/24)
 
-## Releases
+## Version 0.4.0a:
 
-Check out the [Releases](https://github.com/Christian2147/Laser-Fighter/releases) section for downloadable binaries and release notes for each version. See below for direct links to major versions:
+This branch contains the source code for Laser Fighter v0.4.0a. This version was completed in August of 2023. Due to having a part time job and getting ready for college, this update was fairly small for a summertime update. This update gave me an introduction into how tick speed and random numbers work, both of which I needed to use to correctly impliment power ups into the game. This is the first update that attempted to fix some of the lag that the game had. However, only basic fixes and procedures were implimented. The code is still messy and all in one file. Around this time, the main focus was on adding extra features that would keep a person playing, and not just have bare minimum gameplay where all th ere is is the score. 
 
-- [Version 0.0.1a](https://github.com/Christian2147/Laser-Fighter/releases/tag/v0.0.1)
-- [Version 0.2.0a](https://github.com/Christian2147/Laser-Fighter/releases/tag/v0.2.0)
-- [Version 0.3.0a](https://github.com/Christian2147/Laser-Fighter/releases/tag/v0.3.0)
+## Changelog:
+
+### Additions
++ Added power ups! Power ups will randomly spawn while you are playing either Machine Mode or Alien Mode and will make the gameplay more unique
++ Added new sounds and statistics that come with the power ups
++ Added a controls screen for controls
+
+### Changes
+* Fixed some major preformence issues
+* Fixed a bug that caused the alien space ship to not move properly when killed enough times
+* Changed the layout of the settings screen
+* Renamed Classic Mode to Machine Mode
 
 ## License
 
