@@ -8,6 +8,7 @@ Check out the [Releases](https://github.com/Christian2147/Laser-Fighter/releases
 
 - [Version 0.0.1a](https://github.com/Christian2147/Laser-Fighter/releases/tag/v0.0.1)
 - [Version 0.2.0a](https://github.com/Christian2147/Laser-Fighter/releases/tag/v0.2.0)
+- [Version 0.3.0a](https://github.com/Christian2147/Laser-Fighter/releases/tag/v0.3.0)
 
 ## License
 
