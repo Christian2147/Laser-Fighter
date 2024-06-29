@@ -1,5 +1,4 @@
 ![Splash Text](img/Laser_Fighter_Splash_Text.png)
-<img src="img/Laser_Fighter_Splash_Text.png" alt="Screenshot of the game" style="border-radius: 100px;">
 
 # Laser-Fighter
 
