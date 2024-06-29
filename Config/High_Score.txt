@@ -1,0 +1,2 @@
+High_Score_Machine_War = "0"
+High_Score_Alien_Mode = "0"
