@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="fee8420c-2af9-4c6e-b0e2-4c518cb5ee47" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Laser Fighter.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="132612">
+              <caret line="8208" column="99" selection-start-line="8208" selection-start-column="99" selection-end-line="8208" selection-end-column="99" />
+              <folding>
+                <element signature="e#198#211#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Laser Fighter 0.3.0a.py" />
+        <option value="$PROJECT_DIR$/Laser Fighter.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="464" />
+    <option name="y" value="49" />
+    <option name="width" value="1400" />
+    <option name="height" value="1013" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Laser Fighter" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Laser Fighter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Laser Fighter" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Laser Fighter" type="462c0819:PsiDirectoryNode" />
+              <item name="Config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Laser Fighter" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Laser Fighter" type="462c0819:PsiDirectoryNode" />
+              <item name="Icon" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Laser Fighter" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Laser Fighter" type="462c0819:PsiDirectoryNode" />
+              <item name="Textures" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Laser Fighter" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Laser Fighter" type="462c0819:PsiDirectoryNode" />
+              <item name="Textures" type="462c0819:PsiDirectoryNode" />
+              <item name="Buttons" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Laser Fighter Alpha 0.2.0a/Laser Fighter/Laser_Fighter.py" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Laser Fighter 0.3.0a" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Laser Fighter" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="C:\Users\Christian Marinkovic\PycharmProjects\Laser Fighter\Laser Fighter.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Laser Fighter 0.3.0a" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fee8420c-2af9-4c6e-b0e2-4c518cb5ee47" name="Default Changelist" comment="" />
+      <created>1672680716913</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1672680716913</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.24918744" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../Laser Fighter Alpha 0.2.0a/Laser Fighter/Laser_Fighter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="671">
+          <caret line="7375" column="28" lean-forward="true" selection-start-line="7375" selection-start-column="28" selection-end-line="7375" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Laser Fighter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132612">
+          <caret line="8208" column="99" selection-start-line="8208" selection-start-column="99" selection-end-line="8208" selection-end-column="99" />
+          <folding>
+            <element signature="e#198#211#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

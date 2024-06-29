@@ -1,0 +1,8 @@
+Go_Right = "d"
+Go_Left = "a"
+Shoot = "space"
+Jump = "w"
+
+
+
+
