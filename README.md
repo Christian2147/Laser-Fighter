@@ -34,7 +34,7 @@ Here are the steps for installing Laser Fighter onto your computer:
 ## Specifications
 
 Laser Fighter is currently a windows only application. Linux support is planned in the future but not here yet :(.
-For more specific requirements, visit the [specifications page](./Docs/SPECIFICATIONS.md).
+For more specific requirements and design specifications, visit the [specifications page](./Docs/SPECIFICATIONS.md).
 
 ## What Laser Fighter Offers:
 
