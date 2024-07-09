@@ -32,6 +32,11 @@ To mack a shortcut and change the icon:
 5. Find the icon provided and accept all changes
 There are no other instructions other than to try to get the highest score possible
 
+NOTE: The exe file for this application is unsigned and has an unverified publisher. This means that windows defender and other antiviruses may be suspicious of the file. 
+If this happens, simply select "Run Anyway". Make sure you are downloading Laser Figher from https://github.com/Christian2147/Laser-Fighter and no other external source. 
+If you download Laser Fighter from any other source, I am not responsible for any damage that the executable may cause. 
+Outside of this GitHub page, anyone is allowed to make whatever modifications they want to this software.
+
 Goals for you:
 For Machine Mode, beat the pink bosss at least once.
 For Alien Mode, beat the UFO at least once.
