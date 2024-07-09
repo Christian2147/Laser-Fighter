@@ -1,10 +1,14 @@
+![Splash Text](img/Laser_Fighter_Splash_Text.png)
+
 # Laser-Fighter
 
-This is the main repository for Laser Fighter. (Repository & Game are currently a work in progress, Check back on 7/2/24)
+Laser Fighter is a 2D laser shooting game and is the first game that I have created. The first versions was finished in December of 2021 and it has been growing ever since. About 500 hours of work have so far been put into this game and more is along the way. I created this game not only because it was fun but also because I wanted to learn more about the software development process by actually creating a real piece of software. Considering I am really familiter with gaming and indie games, I felt that a 2D pixel shooting game would be a good place to start.
 
 ## Version 0.2.0a:
 
-This branch contains the source for Laser Fighter v0.2.0a. This version was completed in August of 2022. This was the biggest update that the game has ever recieved, totalling 5000 lines of code and doezens of new textures. Around this time, my knowledge of the turtle library has advanced considerably, and I was able to make advanced graphical elements with it like buttons and different screens. However, I still had a lot to learn and a lot to figure out. I have learn a lot about file organization, but still needed to figure out how to use classes and how to properly split my code. This version has several bugs, however it is far more stable than the first version. This is the earliest version I recommend that you run From my experience, it runs much smoother and windows will not randomly delete this version from your computer. However, windows defender may still scan it every once in a while.
+This branch contains the source for Laser Fighter v0.2.0a. This version was completed in August of 2022. This was the biggest update that the game has ever recieved, totalling 5000 lines of code and dozens of new textures. Around this time, my knowledge of the turtle library has advanced considerably, and I was able to make advanced graphical elements with it like buttons and different screens. However, I still had a lot to learn and a lot to figure out. I have learn a lot about file organization, but still needed to figure out how to use classes and how to properly split my code. This version has several bugs, however it is far more stable than the first version. This is the earliest version I recommend that you run From my experience, it runs much smoother and windows will not randomly delete this version from your computer. 
+
+NOTE: The exe file for this application is unsigned and has an unverified publisher. This means that windows defender and other antiviruses may be suspicious of the file. If this happens, simply select "Run Anyway". Make sure you are downloading Laser Figher from the [Laser Fighter GitHub](https://github.com/Christian2147/Laser-Fighter) and no other external source. If you download Laser Fighter from any other source, I am not responsible for any damage that the executable may cause. Outside of this GitHub page, anyone is allowed to make whatever modifications they want to this software.
 
 ## Changelog:
 
