@@ -4,12 +4,12 @@ Listed here are both the software and hardware specifications for the game and t
 
 ## Hardware specifications:
 
-|  Type | Minimum        |     |        Recommended | Specs       |
-------------------------------     ----------------------------
-| Operating System | Windows 7x |  | Operating System | Windows 11x or 10x |
-| Screen Resolution | 1280 X 720 | | Screen Resolution | 1920 x 1080 |
-| Aspect Ratio | 16/10 |           | Aspect Ratio | 16/9 |
-| CPU | 4 Core |                   | CPU | 8 core |
-| GPU | Optional |                 | GPU | NVIDIA RTX 3060 Ti |
-| Memory | 4 GB |                  | Memory | 16 GB |
+|  Type | Minimum        |   Recommended              |
+-------------------------------------------------------
+| Operating System  | Windows 7x | Windows 11x or 10x |
+| Screen Resolution | 1280 X 720 | 1920 x 1080        |
+| Aspect Ratio      | 16/10      | 16/9               |
+| CPU               | 4 Core     | 8 core             |
+| GPU               | Optional   | NVIDIA RTX 3060 Ti |
+| Memory            | 4 GB       | 16 GB              |
 
