@@ -1,0 +1,502 @@
+# Copyright (C) [2024] [Christian Marinkovich]
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+"""
+    File: yellowMachine.py
+    Author: Christian Marinkovich
+    Date: 2024-07-05
+    Description:
+    This file contains the logic related to the yellow machine, which is the second enemy you will
+    encounter in Machine Mode.
+    The yellow machine fires medium sized yellow lasers at the player. It dies in one hit and has a 1.5 second long
+    death animation.
+    When killed, the yellow machine grants the player 2 points.
+    The yellow machine also moves up and down to simulate floating in outer space. It also moves left to right after
+    it has been killed enough times.
+"""
+
+import turtle
+import random
+import pygame
+import time
+from Class.coin import Coin
+
+
+class YellowMachine:
+    """
+        Represents a yellow machine in Laser Fighter. The second enemy in Machine Mode that is yellow
+            and fires yellow lasers.
+
+        Attributes:
+            yellow_machine (turtle.Turtle()): The yellow machine enemy sprite.
+            yellow_machine_laser (turtle.Turtle()): The laser sprite for each yellow machine enemy.
+            death_count (int): Stores the death count for the enemy since the player has last died.
+            update (float): Value that is incremented during the death animation of the enemy.
+            movement (int): Stores the direction that the enemy is supposed to move on
+                the x-axis (1 = right and -1 = left)
+            float (int): Stores the direction that the enemy is supposed to move on the y-axis (1 = up and -1 == down)
+            float_movement (int): Stores the distance that the enemy has moved on the y-axis during the float from the
+                initial starting point (When this goes over 110, the direction of movement switches)
+            start_time (float): Used as a timestamp for the death animation of the enemy (To make the animation run in
+                a consistent amount of time)
+            laser_start_time (float): Used as a timestamp for the laser movement of the enemy (To make the movement
+                happen in a consistent amount of time)
+            move_start_time (float): Used as a timestamp for the enemies movement (To make the enemies movement
+                happen in a consistent amount of time and not based on code execution speed)
+            float_start_time (float): Used as a timestamp for the enemies floating effect movement (To make the
+                movement happen in a consistent amount of time)
+            laser_has_attacked (int): Determines if the enemy has been hit by the players laser since it was last fired
+                (So that it does not get hit two times in a row)
+            id (int): The id of the current yellow machine (Used for counting how many are on the screen)
+    """
+
+    def __init__(self, id, scale_factor_x, scale_factor_y, fullscreen):
+        """
+            Creates a yellow machine object and spawns it on the screen
+
+            :param id: Ths id of the yellow machine (Determines where it spawns and it keeps track of how many are on
+                the screen)
+            :type id: int
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+
+            :param fullscreen: The variable that determines if fullscreen is on or off
+            :type fullscreen: int
+        """
+
+        self.yellow_machine = turtle.Turtle()
+        if fullscreen == 1:
+            self.yellow_machine.shape("Textures/Enemies/Enemy(6-10)_Scaled.gif")
+        else:
+            self.yellow_machine.shape("Textures/Enemies/Enemy(6-10).gif")
+        # Ensure that the turtle does not draw lines on the screen while moving
+        self.yellow_machine.penup()
+        self.yellow_machine.shapesize(2 * scale_factor_y, 2 * scale_factor_x)
+        # Correct location based on id
+        if id == 1:
+            self.yellow_machine.goto(-300 * scale_factor_x, 220 * scale_factor_y)
+        elif id == 2:
+            self.yellow_machine.goto(-250 * scale_factor_x, 220 * scale_factor_y)
+        elif id == 3:
+            self.yellow_machine.goto(250 * scale_factor_x, 220 * scale_factor_y)
+        elif id == 4:
+            self.yellow_machine.goto(-350 * scale_factor_x, 220 * scale_factor_y)
+        elif id == 5:
+            self.yellow_machine.goto(350 * scale_factor_x, 220 * scale_factor_y)
+        self.yellow_machine.direction = "down"
+
+        self.yellow_machine_laser = turtle.Turtle()
+        if fullscreen == 1:
+            self.yellow_machine_laser.shape("Textures/Lasers/Enemy(6-10)_Laser_Scaled.gif")
+        else:
+            self.yellow_machine_laser.shape("Textures/Lasers/Enemy(6-10)_Laser.gif")
+        # Ensure that the turtle does not draw lines on the screen while moving
+        self.yellow_machine_laser.penup()
+        self.yellow_machine_laser.shapesize(2.25 * scale_factor_y, 0.5 * scale_factor_x)
+        self.yellow_machine_laser.direction = "down"
+        # Correct location based on id
+        if id == 1:
+            self.yellow_machine_laser.goto(-300 * scale_factor_x, 158 * scale_factor_y)
+        elif id == 2:
+            self.yellow_machine_laser.goto(-250 * scale_factor_x, 158 * scale_factor_y)
+        elif id == 3:
+            self.yellow_machine_laser.goto(250 * scale_factor_x, 158 * scale_factor_y)
+        elif id == 4:
+            self.yellow_machine_laser.goto(-350 * scale_factor_x, 158 * scale_factor_y)
+        elif id == 5:
+            self.yellow_machine_laser.goto(350 * scale_factor_x, 158 * scale_factor_y)
+
+        self.death_count = 0
+        self.update = 0
+        self.movement = 1
+        self.float = 1
+        self.float_movement = 0
+        self.start_time = 0
+        self.laser_start_time = 0
+        self.move_start_time = 0
+        self.float_start_time = 0
+        self.laser_has_attacked = 0
+        self.id = id
+
+    def __del__(self):
+        """
+            Cleans up the sprite from memory once the program has terminated
+
+            :return: None
+        """
+
+        self.yellow_machine.hideturtle()
+        self.yellow_machine_laser.hideturtle()
+        self.yellow_machine.clear()
+        self.yellow_machine_laser.clear()
+        del self.yellow_machine
+        del self.yellow_machine_laser
+
+    def reinstate(self, id, scale_factor_x, scale_factor_y, fullscreen):
+        """
+            Reuses the existing sprite to spawn a yellow machine on the screen with the correct id
+
+            :param id: Ths id of the new yellow machine (Determines where it spawns and its keeps track of how many are
+                on the screen)
+            :type id: int
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+
+            :param fullscreen: The variable that determines if fullscreen is on or off
+            :type fullscreen: int
+
+            :return: None
+        """
+
+        if fullscreen == 1:
+            self.yellow_machine.shape("Textures/Enemies/Enemy(6-10)_Scaled.gif")
+        else:
+            self.yellow_machine.shape("Textures/Enemies/Enemy(6-10).gif")
+        # Correct location based on id
+        if id == 1:
+            self.yellow_machine.goto(-300 * scale_factor_x, 220 * scale_factor_y)
+            self.yellow_machine_laser.goto(-300 * scale_factor_x, 158 * scale_factor_y)
+        elif id == 2:
+            self.yellow_machine.goto(-250 * scale_factor_x, 220 * scale_factor_y)
+            self.yellow_machine_laser.goto(-250 * scale_factor_x, 158 * scale_factor_y)
+        elif id == 3:
+            self.yellow_machine.goto(250 * scale_factor_x, 220 * scale_factor_y)
+            self.yellow_machine_laser.goto(250 * scale_factor_x, 158 * scale_factor_y)
+        elif id == 4:
+            self.yellow_machine.goto(-350 * scale_factor_x, 220 * scale_factor_y)
+            self.yellow_machine_laser.goto(-350 * scale_factor_x, 158 * scale_factor_y)
+        elif id == 5:
+            self.yellow_machine.goto(350 * scale_factor_x, 220 * scale_factor_y)
+            self.yellow_machine_laser.goto(350 * scale_factor_x, 158 * scale_factor_y)
+        self.yellow_machine.direction = "down"
+        self.yellow_machine_laser.direction = "down"
+        # Set the id to the new id
+        self.id = id
+        self.yellow_machine.showturtle()
+        self.yellow_machine_laser.showturtle()
+
+    def get_yellow_machine(self):
+        """
+            Returns the yellow_machine sprite so its class attributes can be accessed
+
+            :return: yellow_machine: the yellow machine sprite
+            :type: turtle.Turtle()
+        """
+
+        return self.yellow_machine
+
+    def get_yellow_machine_laser(self):
+        """
+            Returns the yellow_machine_laser sprite so its class attributes can be accessed
+
+            :return: yellow_machine_laser: the yellow machine laser sprite
+            :type: turtle.Turtle()
+        """
+
+        return self.yellow_machine_laser
+
+    def get_update_value(self):
+        """
+            Returns the death animation update value of the yellow machine
+
+            :return: update: the death animation update value of the yellow machine
+            :type: float
+        """
+
+        return self.update
+
+    def set_laser_has_attacked(self, new_value):
+        """
+            Sets the laser_has_attacked of the yellow machine (Used for when the player fires a new laser and this value
+                has to be reset to 0)
+
+            :param new_value: The new laser_has_attacked of the yellow machine.
+            :type new_value: int
+
+            :return: None
+        """
+
+        self.laser_has_attacked = new_value
+
+    def remove(self):
+        """
+            Removes the yellow machine sprite form the screen and resets its attributes.
+
+            :return: None
+        """
+
+        self.yellow_machine.hideturtle()
+        self.yellow_machine_laser.hideturtle()
+        self.death_count = 0
+        self.update = 0
+        self.movement = 1
+        self.start_time = 0
+        self.laser_start_time = 0
+        self.move_start_time = 0
+        self.float_start_time = 0
+        self.laser_has_attacked = 0
+
+    def shoot_laser(self, green_power_up, shooting_sound, scale_factor_y):
+        """
+            Shoots the yellow machine laser (Spawning it right below the sprite) and move it down across the screen)
+
+            :param green_power_up: Variable used to determine if the green power up is active or not. If it is active,
+                the enemy laser will not fire.
+            :type green_power_up: int
+
+            :param shooting_sound: Determines whether the toggle for the enemy lasers shooting sound is on. If it is,
+                the shooting sound will play when the enemy laser is fired.
+            :type shooting_sound: int
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+
+            :return: None
+        """
+
+        if green_power_up == 0:
+            # Remove the laser from the screen once it has hit the player
+            if self.laser_has_attacked == 1:
+                self.yellow_machine_laser.hideturtle()
+            else:
+                self.yellow_machine_laser.showturtle()
+            # If the laser is still visible in the frame of the screen
+            if self.yellow_machine_laser.ycor() > -360 * scale_factor_y:
+                # Keep moving the laser down the screen 8.7 units every 0.01 seconds
+                current_time = time.time()
+                elapsed_time = current_time - self.laser_start_time
+                if elapsed_time >= 0.01:
+                    self.yellow_machine_laser.sety(self.yellow_machine_laser.ycor() - 8.7 * scale_factor_y)
+                    self.laser_start_time = time.time()
+            else:
+                # Otherwise, set the laser to its original state and shoot it again
+                self.yellow_machine_laser.setx(self.yellow_machine.xcor())
+                self.yellow_machine_laser.sety(self.yellow_machine.ycor() - 62 * scale_factor_y)
+                self.laser_has_attacked = 0
+                if shooting_sound == 1:
+                    sound = pygame.mixer.Sound("Sound/Laser_Gun_Enemy.wav")
+                    sound.play()
+                self.laser_start_time = time.time()
+        # If the green power up is active, hide the laser and do not fire
+        else:
+            self.yellow_machine_laser.hideturtle()
+            self.yellow_machine_laser.setx(self.yellow_machine.xcor())
+            self.yellow_machine_laser.sety(self.yellow_machine.ycor() - 62 * scale_factor_y)
+            self.laser_has_attacked = 0
+            self.laser_start_time = time.time()
+
+    def kill_enemy(self, death_sound, coins_on_screen, all_coins, scale_factor_x, scale_factor_y, fullscreen):
+        """
+            Kills the enemy and plays the enemies death animation. After that, it spawns the enemy in a new location.
+
+            :param death_sound: Determines if the death sound for the enemy is toggled on or off
+            :type death_sound: int
+
+            :param coins_on_screen: Array that lists all of the coins currently on the screen
+            :type coins_on_screen: list
+
+            :param all_coins: Array that lists all of the coin sprites generated since the
+                programs execution (for reusing purposes)
+            :type all_coins: list
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+
+            :param fullscreen: The variable that determines if fullscreen is on or off
+            :type fullscreen: int
+
+            :return: None
+        """
+
+        # When the death animation and respawning is finished, the yellow machine appears on the screen again
+        if self.update == 6:
+            self.yellow_machine.showturtle()
+            self.update = 0
+            return
+
+        # Wait 0.05 seconds
+        if 3.5 <= self.update < 6:
+            current_time = time.time()
+            elapsed_time = current_time - self.start_time
+            if elapsed_time >= 0.05:
+                self.update = 6
+                self.start_time = 0
+            return
+
+        if self.update == 3:
+            # Hide the yellow machine and spawn a silver coin where the yellow machine died
+            self.yellow_machine.hideturtle()
+            if len(all_coins) <= len(coins_on_screen):
+                silver_coin = Coin(type="silver", pos_x=self.yellow_machine.xcor(), pos_y=self.yellow_machine.ycor(), fullscreen=fullscreen)
+                coins_on_screen.append(silver_coin)
+                all_coins.append(silver_coin)
+            else:
+                for coin in all_coins:
+                    if coin.get_coin().isvisible():
+                        continue
+                    else:
+                        coin.reinstate_to_silver(pos_x=self.yellow_machine.xcor(), pos_y=self.yellow_machine.ycor(), fullscreen=fullscreen)
+                        coins_on_screen.append(coin)
+                        break
+            # Respawn the yellow machine in a different random location
+            if fullscreen == 1:
+                self.yellow_machine.shape("Textures/Enemies/Enemy(6-10)_Scaled.gif")
+            else:
+                self.yellow_machine.shape("Textures/Enemies/Enemy(6-10).gif")
+            self.yellow_machine.goto(random.randint(-640 * scale_factor_x, 640 * scale_factor_x), random.randint(120 * scale_factor_y, 220 * scale_factor_y))
+            self.update = 3.5
+            self.start_time = time.time()
+            return
+
+        # Wait 0.15 seconds
+        if 1.5 <= self.update < 3:
+            current_time = time.time()
+            elapsed_time = current_time - self.start_time
+            if elapsed_time >= 0.15:
+                self.update = 3
+                self.start_time = 0
+            return
+
+        # Change the texture of the yellow machine to the second frame of the explosion
+        if 1.0 <= self.update <= 1.1:
+            if fullscreen == 1:
+                self.yellow_machine.shape("Textures/Explosions/Explosion2_Scaled.gif")
+            else:
+                self.yellow_machine.shape("Textures/Explosions/Explosion2.gif")
+            self.update = 1.5
+            self.start_time = time.time()
+            self.kill_enemy(death_sound, coins_on_screen, all_coins, scale_factor_x, scale_factor_y, fullscreen)
+            return
+
+        # Wait 0.1 seconds
+        if 0.5 <= self.update < 1:
+            current_time = time.time()
+            elapsed_time = current_time - self.start_time
+            if elapsed_time >= 0.1:
+                self.update = 1
+                self.start_time = 0
+            return
+
+        if self.update == 0:
+            # Increase the death count
+            self.death_count = self.death_count + 1
+            # Play the death sound
+            if death_sound == 1:
+                sound = pygame.mixer.Sound("Sound/Explosion.wav")
+                sound.play()
+            # Change the texture of the yellow machine to the first frame of the death explosion
+            if fullscreen == 1:
+                self.yellow_machine.shape("Textures/Explosions/Explosion1_Scaled.gif")
+            else:
+                self.yellow_machine.shape("Textures/Explosions/Explosion1.gif")
+            self.update = 0.5
+            self.start_time = time.time()
+            return
+
+    def float_effect(self, scale_factor_y):
+        """
+            Moves the yellow machine up and down to create a float effect and make it seem as if the enemy is moving
+                fast through outer space.
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+
+            :return: None
+        """
+
+        if self.float_movement == 110 and self.float == 1:
+            # Move down
+            self.float = -1
+            self.float_movement = 0
+        elif self.float_movement == 110 and self.float == -1:
+            # Move up
+            self.float = 1
+            self.float_movement = 0
+        current_time = time.time()
+        elapsed_time = current_time - self.float_start_time
+        # Make a movement every 0.0075 seconds to reduce the effects of lag
+        if elapsed_time >= 0.0075:
+            if self.float == 1:
+                self.yellow_machine.goto(self.yellow_machine.xcor(), self.yellow_machine.ycor() + 0.3 * scale_factor_y)
+                self.float_movement = self.float_movement + 1
+            elif self.float == -1:
+                self.yellow_machine.goto(self.yellow_machine.xcor(), self.yellow_machine.ycor() - 0.3 * scale_factor_y)
+                self.float_movement = self.float_movement + 1
+            self.float_start_time = time.time()
+
+    def move_enemy(self, death, scale_factor_x):
+        """
+            When the yellow machine has died enough times, this function will cause it to start moving left and
+                right, which will speed up the more times that the yellow machine dies.
+
+            :param death: Determines whether the death animation for the player is active or not.
+            :type death: int
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :return: None
+        """
+
+        if self.death_count >= 4 and death == 0 and self.update == 0:
+            # Move the yellow machine every 0.02 seconds
+            current_time = time.time()
+            elapsed_time = current_time - self.move_start_time
+            if elapsed_time >= 0.02:
+                # Yellow machine reaches the right end of the screen
+                if 600 * scale_factor_x < self.yellow_machine.xcor() < 650 * scale_factor_x:
+                    # Move left
+                    self.movement = -1
+                # Yellow machine reaches the left end of the screen
+                if -600 * scale_factor_x > self.yellow_machine.xcor() > -650 * scale_factor_x:
+                    # Move right
+                    self.movement = 1
+                if self.movement == 1:
+                    # Speeds up based on the death_count variable
+                    if 4 <= self.death_count < 7:
+                        self.yellow_machine.setx(self.yellow_machine.xcor() + 2 * scale_factor_x)
+                    elif 7 <= self.death_count < 10:
+                        self.yellow_machine.setx(self.yellow_machine.xcor() + 4 * scale_factor_x)
+                    elif 10 <= self.death_count < 13:
+                        self.yellow_machine.setx(self.yellow_machine.xcor() + 6 * scale_factor_x)
+                    elif 13 <= self.death_count < 16:
+                        self.yellow_machine.setx(self.yellow_machine.xcor() + 8 * scale_factor_x)
+                    elif 16 <= self.death_count:
+                        self.yellow_machine.setx(self.yellow_machine.xcor() + 10 * scale_factor_x)
+                elif self.movement == -1:
+                    if 4 <= self.death_count < 7:
+                        self.yellow_machine.setx(self.yellow_machine.xcor() - 2 * scale_factor_x)
+                    elif 7 <= self.death_count < 10:
+                        self.yellow_machine.setx(self.yellow_machine.xcor() - 4 * scale_factor_x)
+                    elif 10 <= self.death_count < 13:
+                        self.yellow_machine.setx(self.yellow_machine.xcor() - 6 * scale_factor_x)
+                    elif 13 <= self.death_count < 16:
+                        self.yellow_machine.setx(self.yellow_machine.xcor() - 8 * scale_factor_x)
+                    elif 16 <= self.death_count:
+                        self.yellow_machine.setx(self.yellow_machine.xcor() - 10 * scale_factor_x)
+                self.move_start_time = time.time()
+        else:
+            self.move_start_time = 0

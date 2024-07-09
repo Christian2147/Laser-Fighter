@@ -1,0 +1,522 @@
+# Copyright (C) [2024] [Christian Marinkovich]
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+"""
+    File: blueMachine.py
+    Author: Christian Marinkovich
+    Date: 2024-07-05
+    Description:
+    This file contains the logic related to the blue machine, which is the first enemy you will encounter
+    in Machine Mode.
+    The blue machine fires small blue lasers at the player. It dies in one hit and has a 1.5 second long
+    death animation.
+    When killed, the blue machine grants the player 1 point.
+    The blue machine also moves up and down to simulate floating in outer space. It also moves left to right after
+    it has been killed enough times.
+"""
+
+import turtle
+import random
+import pygame
+import time
+from Class.coin import Coin
+
+
+class BlueMachine:
+    """
+        Represents a blue machine in Laser Fighter. The first enemy in Machine Mode that is blue and fires blue lasers.
+
+        Attributes:
+            blue_machine (turtle.Turtle()): The blue machine enemy sprite.
+            blue_machine_laser (turtle.Turtle()): The laser sprite for each blue machine enemy.
+            death_count (int): Stores the death count for the enemy since the player has last died.
+            update (float): Value that is incremented during the death animation of the enemy.
+            movement (int): Stores the direction that the enemy is supposed to move on
+                the x-axis (1 = right and -1 = left)
+            float (int): Stores the direction that the enemy is supposed to move on the y-axis (1 = up and -1 == down)
+            float_movement (int): Stores the distance that the enemy has moved on the y-axis during the float from the
+                initial starting point (When this goes over 110, the direction of movement switches)
+            start_time (float): Used as a timestamp for the death animation of the enemy (To make the animation run in
+                a consistent amount of time)
+            laser_start_time (float): Used as a timestamp for the laser movement of the enemy (To make the movement
+                happen in a consistent amount of time)
+            move_start_time (float): Used as a timestamp for the enemies movement (To make the enemies movement
+                happen in a consistent amount of time and not based on code execution speed)
+            float_start_time (float): Used as a timestamp for the enemies floating effect movement (To make the
+                movement happen in a consistent amount of time)
+            laser_has_attacked (int): Determines if the enemy has been hit by the players laser since it was last fired
+                (So that it does not get hit two times in a row)
+            id (int): The id of the current blue machine (Used for counting how many are on the screen)
+    """
+
+    def __init__(self, id, scale_factor_x, scale_factor_y, fullscreen):
+        """
+            Creates a blue machine object and spawns it on the screen
+
+            :param id: Ths id of the blue machine (Determines where it spawns and it keeps track of how many are on
+                the screen)
+            :type id: int
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+
+            :param fullscreen: The variable that determines if fullscreen is on or off
+            :type fullscreen: int
+        """
+
+        self.blue_machine = turtle.Turtle()
+        if fullscreen == 1:
+            self.blue_machine.shape("Textures/Enemies/Enemy(1-5)_Scaled.gif")
+        else:
+            self.blue_machine.shape("Textures/Enemies/Enemy(1-5).gif")
+        # Ensure that the turtle does not draw lines on the screen while moving
+        self.blue_machine.penup()
+        self.blue_machine.shapesize(2 * scale_factor_y, 2 * scale_factor_x)
+        # Correct location based on id
+        if id == 1:
+            self.blue_machine.goto(-200 * scale_factor_x, 220 * scale_factor_y)
+        elif id == 2:
+            self.blue_machine.goto(200 * scale_factor_x, 220 * scale_factor_y)
+        elif id == 3:
+            self.blue_machine.goto(500 * scale_factor_x, 220 * scale_factor_y)
+        elif id == 4:
+            self.blue_machine.goto(-500 * scale_factor_x, 220 * scale_factor_y)
+        elif id == 5:
+            self.blue_machine.goto(-400 * scale_factor_x, 220 * scale_factor_y)
+        self.blue_machine.direction = "down"
+
+        self.blue_machine_laser = turtle.Turtle()
+        if fullscreen == 1:
+            self.blue_machine_laser.shape("Textures/Lasers/Enemy(1-5)_Laser_Scaled.gif")
+        else:
+            self.blue_machine_laser.shape("Textures/Lasers/Enemy(1-5)_Laser.gif")
+        # Ensure that the turtle does not draw lines on the screen while moving
+        self.blue_machine_laser.penup()
+        self.blue_machine_laser.shapesize(2.25 * scale_factor_y, 0.5 * scale_factor_x)
+        self.blue_machine_laser.direction = "down"
+        # Correct location based on id
+        if id == 1:
+            self.blue_machine_laser.goto(-200 * scale_factor_x, 170 * scale_factor_y)
+        elif id == 2:
+            self.blue_machine_laser.goto(200 * scale_factor_x, 170 * scale_factor_y)
+        elif id == 3:
+            self.blue_machine_laser.goto(500 * scale_factor_x, 170 * scale_factor_y)
+        elif id == 4:
+            self.blue_machine_laser.goto(-500 * scale_factor_x, 170 * scale_factor_y)
+        elif id == 5:
+            self.blue_machine_laser.goto(-400 * scale_factor_x, 170 * scale_factor_y)
+
+        self.death_count = 0
+        self.update = 0
+        self.movement = 1
+        self.float = 1
+        self.float_movement = 0
+        self.start_time = 0
+        self.laser_start_time = 0
+        self.move_start_time = 0
+        self.float_start_time = 0
+        self.laser_has_attacked = 0
+        self.id = id
+
+    def __del__(self):
+        """
+            Cleans up the sprite from memory once the program has terminated
+
+            :return: None
+        """
+
+        self.blue_machine.clear()
+        self.blue_machine_laser.clear()
+        del self.blue_machine
+        del self.blue_machine_laser
+
+    def reinstate(self, id, scale_factor_x, scale_factor_y, fullscreen):
+        """
+            Reuses the existing sprite to spawn a blue machine on the screen with the correct id
+
+            :param id: Ths id of the new blue machine (Determines where it spawns and its keeps track of how many are
+                on the screen)
+            :type id: int
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+
+            :param fullscreen: The variable that determines if fullscreen is on or off
+            :type fullscreen: int
+
+            :return: None
+        """
+
+        if fullscreen == 1:
+            self.blue_machine.shape("Textures/Enemies/Enemy(1-5)_Scaled.gif")
+        else:
+            self.blue_machine.shape("Textures/Enemies/Enemy(1-5).gif")
+        # Correct location based on id
+        if id == 1:
+            self.blue_machine.goto(-200 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine_laser.goto(-200 * scale_factor_x, 170 * scale_factor_y)
+        elif id == 2:
+            self.blue_machine.goto(200 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine_laser.goto(200 * scale_factor_x, 170 * scale_factor_y)
+        elif id == 3:
+            self.blue_machine.goto(500 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine_laser.goto(500 * scale_factor_x, 170 * scale_factor_y)
+        elif id == 4:
+            self.blue_machine.goto(-500 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine_laser.goto(-500 * scale_factor_x, 170 * scale_factor_y)
+        elif id == 5:
+            self.blue_machine.goto(-400 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine_laser.goto(-400 * scale_factor_x, 170 * scale_factor_y)
+        self.blue_machine.direction = "down"
+        self.blue_machine_laser.direction = "down"
+        # Set the id to the new id
+        self.id = id
+        self.blue_machine.showturtle()
+        self.blue_machine_laser.showturtle()
+
+    def get_blue_machine(self):
+        """
+            Returns the blue_machine sprite so its class attributes can be accessed
+
+            :return: blue_machine: the blue machine sprite
+            :type: turtle.Turtle()
+        """
+
+        return self.blue_machine
+
+    def get_blue_machine_laser(self):
+        """
+            Returns the blue_machine_laser sprite so its class attributes can be accessed
+
+            :return: blue_machine_laser: the blue machine laser sprite
+            :type: turtle.Turtle()
+        """
+
+        return self.blue_machine_laser
+
+    def get_id(self):
+        """
+            Returns the id of the blue machine
+
+            :return: id: the id of the blue machine
+            :type: int
+        """
+
+        return self.id
+
+    def get_update_value(self):
+        """
+            Returns the death animation update value of the blue machine
+
+            :return: update: the death animation update value of the blue machine
+            :type: float
+        """
+
+        return self.update
+
+    def set_death_count(self, new_death_count):
+        """
+            Sets the death count for the blue machine. (Used for when the player dies and the death count has to
+                be set to 0)
+
+            :param new_death_count: The new death count of the blue machine.
+            :type new_death_count: int
+
+            :return: None
+        """
+
+        self.death_count = new_death_count
+
+    def set_laser_has_attacked(self, new_value):
+        """
+            Sets the laser_has_attacked of the blue machine (Used for when the player fires a new laser and this value
+                has to be reset to 0)
+
+            :param new_value: The new laser_has_attacked of the blue machine.
+            :type new_value: int
+
+            :return: None
+        """
+
+        self.laser_has_attacked = new_value
+
+    def remove(self):
+        """
+            Removes the blue machine sprite form the screen and resets its attributes.
+
+            :return: None
+        """
+
+        self.blue_machine.hideturtle()
+        self.blue_machine_laser.hideturtle()
+        self.death_count = 0
+        self.update = 0
+        self.movement = 1
+        self.start_time = 0
+        self.laser_start_time = 0
+        self.move_start_time = 0
+        self.float_start_time = 0
+        self.laser_has_attacked = 0
+
+    def shoot_laser(self, green_power_up, shooting_sound, scale_factor_y):
+        """
+            Shoots the blue machine laser (Spawning it right below the sprite) and move it down across the screen)
+
+            :param green_power_up: Variable used to determine if the green power up is active or not. If it is active,
+                the enemy laser will not fire.
+            :type green_power_up: int
+
+            :param shooting_sound: Determines whether the toggle for the enemy lasers shooting sound is on. If it is,
+                the shooting sound will play when the enemy laser is fired.
+            :type shooting_sound: int
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+
+            :return: None
+        """
+
+        if green_power_up == 0:
+            # Remove the laser from the screen once it has hit the player
+            if self.laser_has_attacked == 1:
+                self.blue_machine_laser.hideturtle()
+            else:
+                self.blue_machine_laser.showturtle()
+            # If the laser is still visible in the frame of the screen
+            if self.blue_machine_laser.ycor() > -360 * scale_factor_y:
+                # Keep moving the laser down the screen 4.8 units every 0.01 seconds
+                current_time = time.time()
+                elapsed_time = current_time - self.laser_start_time
+                if elapsed_time >= 0.01:
+                    self.blue_machine_laser.sety(self.blue_machine_laser.ycor() - 4.8 * scale_factor_y)
+                    self.laser_start_time = time.time()
+            else:
+                # Otherwise, set the laser to its original state and shoot it again
+                self.blue_machine_laser.setx(self.blue_machine.xcor())
+                self.blue_machine_laser.sety(self.blue_machine.ycor() - 50 * scale_factor_y)
+                self.laser_has_attacked = 0
+                if shooting_sound == 1:
+                    sound = pygame.mixer.Sound("Sound/Laser_Gun_Enemy.wav")
+                    sound.play()
+                self.laser_start_time = time.time()
+        # If the green power up is active, hide the laser and do not fire
+        else:
+            self.blue_machine_laser.hideturtle()
+            self.blue_machine_laser.setx(self.blue_machine.xcor())
+            self.blue_machine_laser.sety(self.blue_machine.ycor() - 50 * scale_factor_y)
+            self.laser_has_attacked = 0
+            self.laser_start_time = time.time()
+
+    def kill_enemy(self, death_sound, coins_on_screen, all_coins, scale_factor_x, scale_factor_y, fullscreen):
+        """
+            Kills the enemy and plays the enemies death animation. After that, it spawns the enemy in a new location.
+
+            :param death_sound: Determines if the death sound for the enemy is toggled on or off
+            :type death_sound: int
+
+            :param coins_on_screen: Array that lists all of the coins currently on the screen
+            :type coins_on_screen: list
+
+            :param all_coins: Array that lists all of the coin sprites generated since the
+                programs execution (for reusing purposes)
+            :type all_coins: list
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+
+            :param fullscreen: The variable that determines if fullscreen is on or off
+            :type fullscreen: int
+
+            :return: None
+        """
+
+        # When the death animation and respawning is finished, the blue machine appears on the screen again
+        if self.update == 6:
+            self.blue_machine.showturtle()
+            self.update = 0
+            return
+
+        # Wait 0.05 seconds
+        if 3.5 <= self.update < 6:
+            current_time = time.time()
+            elapsed_time = current_time - self.start_time
+            if elapsed_time >= 0.05:
+                self.update = 6
+                self.start_time = 0
+            return
+
+        if self.update == 3:
+            # Hide the blue machine and spawn a copper coin where the blue machine died
+            self.blue_machine.hideturtle()
+            if len(all_coins) <= len(coins_on_screen):
+                copper_coin = Coin(type="copper", pos_x=self.blue_machine.xcor(), pos_y=self.blue_machine.ycor(), fullscreen=fullscreen)
+                coins_on_screen.append(copper_coin)
+                all_coins.append(copper_coin)
+            else:
+                for coin in all_coins:
+                    if coin.get_coin().isvisible():
+                        continue
+                    else:
+                        coin.reinstate_to_copper(pos_x=self.blue_machine.xcor(), pos_y=self.blue_machine.ycor(), fullscreen=fullscreen)
+                        coins_on_screen.append(coin)
+                        break
+            # Respawn the blue machine in a different random location
+            if fullscreen == 1:
+                self.blue_machine.shape("Textures/Enemies/Enemy(1-5)_Scaled.gif")
+            else:
+                self.blue_machine.shape("Textures/Enemies/Enemy(1-5).gif")
+            self.blue_machine.goto(random.randint(-640 * scale_factor_x, 640 * scale_factor_x), random.randint(120 * scale_factor_y, 220 * scale_factor_y))
+            self.update = 3.5
+            self.start_time = time.time()
+            return
+
+        # Wait 0.15 seconds
+        if 1.5 <= self.update < 3:
+            current_time = time.time()
+            elapsed_time = current_time - self.start_time
+            if elapsed_time >= 0.15:
+                self.update = 3
+                self.start_time = 0
+            return
+
+        # Change the texture of the blue machine to the second frame of the explosion
+        if 1.0 <= self.update <= 1.1:
+            if fullscreen == 1:
+                self.blue_machine.shape("Textures/Explosions/Explosion2_Scaled.gif")
+            else:
+                self.blue_machine.shape("Textures/Explosions/Explosion2.gif")
+            self.update = 1.5
+            self.start_time = time.time()
+            self.kill_enemy(death_sound, coins_on_screen, all_coins, scale_factor_x, scale_factor_y, fullscreen)
+            return
+
+        # Wait 0.1 seconds
+        if 0.5 <= self.update < 1:
+            current_time = time.time()
+            elapsed_time = current_time - self.start_time
+            if elapsed_time >= 0.1:
+                self.update = 1
+                self.start_time = 0
+            return
+
+        if self.update == 0:
+            # Increase the death count
+            self.death_count = self.death_count + 1
+            # Play the death sound
+            if death_sound == 1:
+                sound = pygame.mixer.Sound("Sound/Explosion.wav")
+                sound.play()
+            # Change the texture of the blue machine to the first frame of the death explosion
+            if fullscreen == 1:
+                self.blue_machine.shape("Textures/Explosions/Explosion1_Scaled.gif")
+            else:
+                self.blue_machine.shape("Textures/Explosions/Explosion1.gif")
+            self.update = 0.5
+            self.start_time = time.time()
+            return
+
+    def float_effect(self, scale_factor_y):
+        """
+            Moves the blue machine up and down to create a float effect and make it seem as if the enemy is moving fast
+                through outer space.
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+
+            :return: None
+        """
+
+        if self.float_movement == 110 and self.float == 1:
+            # Move down
+            self.float = -1
+            self.float_movement = 0
+        elif self.float_movement == 110 and self.float == -1:
+            # Move up
+            self.float = 1
+            self.float_movement = 0
+        current_time = time.time()
+        elapsed_time = current_time - self.float_start_time
+        # Make a movement every 0.0075 seconds to reduce the effects of lag
+        if elapsed_time >= 0.0075:
+            if self.float == 1:
+                self.blue_machine.goto(self.blue_machine.xcor(), self.blue_machine.ycor() + 0.3 * scale_factor_y)
+                self.float_movement = self.float_movement + 1
+            elif self.float == -1:
+                self.blue_machine.goto(self.blue_machine.xcor(), self.blue_machine.ycor() - 0.3 * scale_factor_y)
+                self.float_movement = self.float_movement + 1
+            self.float_start_time = time.time()
+
+    def move_enemy(self, death, scale_factor_x):
+        """
+            When the blue machine has died enough times, this function will cause it to start moving left and
+                right, which will speed up the more times that the blue machine dies.
+
+            :param death: Determines whether the death animation for the player is active or not.
+            :type death: int
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :return: None
+        """
+
+        if self.death_count >= 4 and death == 0 and self.update == 0:
+            # Move the blue machine every 0.02 seconds
+            current_time = time.time()
+            elapsed_time = current_time - self.move_start_time
+            if elapsed_time >= 0.02:
+                # Blue machine reaches the right end of the screen
+                if 600 * scale_factor_x < self.blue_machine.xcor() < 650 * scale_factor_x:
+                    # Move left
+                    self.movement = -1
+                # Blue machine reaches the left end of the screen
+                if -600 * scale_factor_x > self.blue_machine.xcor() > -650 * scale_factor_x:
+                    # Move right
+                    self.movement = 1
+                if self.movement == 1:
+                    # Speeds up based on the death_count variable
+                    if 4 <= self.death_count < 7:
+                        self.blue_machine.setx(self.blue_machine.xcor() + 2 * scale_factor_x)
+                    elif 7 <= self.death_count < 10:
+                        self.blue_machine.setx(self.blue_machine.xcor() + 4 * scale_factor_x)
+                    elif 10 <= self.death_count < 13:
+                        self.blue_machine.setx(self.blue_machine.xcor() + 6 * scale_factor_x)
+                    elif 13 <= self.death_count < 16:
+                        self.blue_machine.setx(self.blue_machine.xcor() + 8 * scale_factor_x)
+                    elif 16 <= self.death_count:
+                        self.blue_machine.setx(self.blue_machine.xcor() + 10 * scale_factor_x)
+                elif self.movement == -1:
+                    if 4 <= self.death_count < 7:
+                        self.blue_machine.setx(self.blue_machine.xcor() - 2 * scale_factor_x)
+                    elif 7 <= self.death_count < 10:
+                        self.blue_machine.setx(self.blue_machine.xcor() - 4 * scale_factor_x)
+                    elif 10 <= self.death_count < 13:
+                        self.blue_machine.setx(self.blue_machine.xcor() - 6 * scale_factor_x)
+                    elif 13 <= self.death_count < 16:
+                        self.blue_machine.setx(self.blue_machine.xcor() - 8 * scale_factor_x)
+                    elif 16 <= self.death_count:
+                        self.blue_machine.setx(self.blue_machine.xcor() - 10 * scale_factor_x)
+                self.move_start_time = time.time()
+        else:
+            self.move_start_time = 0
