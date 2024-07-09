@@ -4,8 +4,8 @@ Listed here are both the software and hardware specifications for the game and t
 
 ## Hardware specifications:
 
-|  Type | Minimum        |   Recommended              |
--------------------------------------------------------
+|  Type             | Minimum    |   Recommended      |
+|-------------------|------------|--------------------|
 | Operating System  | Windows 7x | Windows 11x or 10x |
 | Screen Resolution | 1280 X 720 | 1920 x 1080        |
 | Aspect Ratio      | 16/10      | 16/9               |
