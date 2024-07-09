@@ -34,7 +34,11 @@ Here are the steps for installing Laser Fighter onto your computer:
 ## Specifications
 
 Laser Fighter is currently a windows only application. Linux support is planned in the future but not here yet :(.
-For more specific requirements, visit the [specifications page](./Docs/HISTORY.md).
+For more specific requirements, visit the [specifications page](./Docs/SPECIFICATIONS.md).
+
+## What Laser Fighter Offers:
+
+Laser Fighter is a 2D shooting game created in Python. It currently offers two gameplay modes: Machine Mode and Alien Mode. In both modes, you are in space, shooting lasers, and trying to defend yourself from monsters. If you want to learn more about Laser Fighters features, check out the [features page](./Docs/FEATURES.md)
 
 ## License
 
