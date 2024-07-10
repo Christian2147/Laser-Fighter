@@ -14,12 +14,12 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 # Created By: Christian Marinkovich (@Christian2147 On GitHub) This is the main source file for Laser Fighter.
-# This is game version beta 1.0.0 released on 07/05/24
+# This is game version beta 1.0.1 released on 07/13/24
 
 """
     File: main.py
     Author: Christian Marinkovich
-    Date: 2024-07-08
+    Date: 2024-07-13
     Description:
     This file is the main file for Laser Fighter.
     The main file contains the main game functions, like the controls and spawning sprites, and also includes of the
@@ -1046,7 +1046,7 @@ def update_text():
             if t.id == 1:
                 t.write("Laser Fighter", 72, "bold", scale_factor)
             elif t.id == 2:
-                t.write("Beta 1.0.0b", 24, "normal", scale_factor)
+                t.write("Beta 1.0.1b", 24, "normal", scale_factor)
             elif t.id == 3:
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Machine_Mode":
