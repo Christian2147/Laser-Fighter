@@ -54,7 +54,7 @@ Listed here are all the external libraries used to create Laser Fighter. You mus
 12. random
 13. ctypes
 
-These libraries were NOT created by me and were used in the production of this software. Some of these are installed with Python by default, some have to be installed manually.
+These libraries were NOT created by me and were simply used in the production of this software. Some of these are installed with Python by default, some have to be installed manually.
 
 ## Additonal Note
 
