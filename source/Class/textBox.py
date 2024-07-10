@@ -71,6 +71,7 @@ class Text:
 
         self.moving = 1
         self.start_time = 0
+        self.movement_activated = 0
         self.id = id
         self.in_use = 1
 
@@ -136,6 +137,7 @@ class Text:
 
         self.text_box.clear()
         self.in_use = 0
+        self.movement_activated = 0
 
     def write(self, text, size, type, scale_factor):
         """
@@ -203,6 +205,10 @@ class Text:
             :return: None
         """
 
+        # If the movement has just started, a start time is created for it
+        if self.movement_activated == 0:
+            self.start_time = time.time()
+            self.movement_activated = 1
         # Move the text box every 0.02 seconds
         current_time = time.time()
         elapsed_time = current_time - self.start_time
@@ -217,7 +223,12 @@ class Text:
                 self.moving = -1
             # Move 5 units each timed iteration
             if self.moving == 1:
-                self.text_box.setx(self.text_box.xcor() + 5 * scale_factor_x)
+                # Calculate the delta movement
+                # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
+                # Done to ensure the game speed stays the same regardless of frame rate
+                delta_movement = 5 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                self.text_box.setx(self.text_box.xcor() + 5 * scale_factor_x + delta_movement)
             if self.moving == -1:
-                self.text_box.setx(self.text_box.xcor() - 5 * scale_factor_x)
+                delta_movement = 5 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                self.text_box.setx(self.text_box.xcor() - 5 * scale_factor_x - delta_movement)
             self.start_time = time.time()

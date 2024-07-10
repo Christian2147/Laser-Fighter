@@ -1856,8 +1856,8 @@ def on_quit():
     global quit_loop
     # Quit loop means the game loop must be closed
     quit_loop = 1
-    # After 100 milliseconds, destroy the window and terminate the program
-    wn._root.after(100, wn._root.destroy)
+    # After 300 milliseconds, destroy the window and terminate the program
+    wn._root.after(300, wn._root.destroy)
 
 # Set the keybinds for the turtle graphics window:
 # Bind the current keybinds to their appropriate functions
@@ -2408,36 +2408,40 @@ while True:
                 # For every enemy, check if the enemies laser has hit the player
                 for bm in blue_machines:
                     if bm.get_blue_machine_laser().distance(p.get_player()) < 125 * scale_factor:
-                        if bm.get_blue_machine_laser().isvisible() and -30 * scale_factor_X < (bm.get_blue_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X and p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
-                            # If so kill the player and set the score down to 0 to reset the game
-                            p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
-                            score = 0
-                            player_update_value = player_update_value + 1
+                        if bm.get_blue_machine_laser().isvisible() and -30 * scale_factor_X < (bm.get_blue_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             bm.set_laser_has_attacked(1)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
+                                # If so kill the player and set the score down to 0 to reset the game
+                                p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
+                                score = 0
+                                player_update_value = player_update_value + 1
 
                 for ym in yellow_machines:
                     if ym.get_yellow_machine_laser().distance(p.get_player()) < 125 * scale_factor:
-                        if ym.get_yellow_machine_laser().isvisible() and -30 * scale_factor_X < (ym.get_yellow_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X and p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
-                            p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
-                            score = 0
-                            player_update_value = player_update_value + 1
+                        if ym.get_yellow_machine_laser().isvisible() and -30 * scale_factor_X < (ym.get_yellow_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             ym.set_laser_has_attacked(1)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
+                                p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
+                                score = 0
+                                player_update_value = player_update_value + 1
 
                 for rm in red_machines:
                     if rm.get_red_machine_laser().distance(p.get_player()) < 125 * scale_factor:
-                        if rm.get_red_machine_laser().isvisible() and -30 * scale_factor_X < (rm.get_red_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X and p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
-                            p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
-                            score = 0
-                            player_update_value = player_update_value + 1
+                        if rm.get_red_machine_laser().isvisible() and -30 * scale_factor_X < (rm.get_red_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             rm.set_laser_has_attacked(1)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
+                                p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
+                                score = 0
+                                player_update_value = player_update_value + 1
 
                 for b in boss:
                     if b.get_boss_laser().distance(p.get_player()) < 125 * scale_factor:
-                        if b.get_boss_laser().isvisible() and -30 * scale_factor_X < (b.get_boss_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X and p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
-                            p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
-                            score = 0
-                            player_update_value = player_update_value + 1
+                        if b.get_boss_laser().isvisible() and -30 * scale_factor_X < (b.get_boss_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             b.set_laser_has_attacked(1)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
+                                p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
+                                score = 0
+                                player_update_value = player_update_value + 1
 
             # If the player has more than 1 health, only deal 1 health of damage
             # If the hit delay is ongoing
@@ -2460,32 +2464,36 @@ while True:
                 # Check if the lasers of any enemies have hit the player
                 for bm in blue_machines:
                     if bm.get_blue_machine_laser().distance(p.get_player()) < 125 * scale_factor:
-                        if bm.get_blue_machine_laser().isvisible() and -30 * scale_factor_X < (bm.get_blue_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X and p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
-                            # Hit the player
-                            p.hit_player(player_hit_sound, fullscreen)
-                            player_hit_value = player_hit_value + 1
+                        if bm.get_blue_machine_laser().isvisible() and -30 * scale_factor_X < (bm.get_blue_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             bm.set_laser_has_attacked(1)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
+                                # Hit the player
+                                p.hit_player(player_hit_sound, fullscreen)
+                                player_hit_value = player_hit_value + 1
 
                 for ym in yellow_machines:
                     if ym.get_yellow_machine_laser().distance(p.get_player()) < 125 * scale_factor:
-                        if ym.get_yellow_machine_laser().isvisible() and -30 * scale_factor_X < (ym.get_yellow_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X and p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
-                            p.hit_player(player_hit_sound, fullscreen)
-                            player_hit_value = player_hit_value + 1
+                        if ym.get_yellow_machine_laser().isvisible() and -30 * scale_factor_X < (ym.get_yellow_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             ym.set_laser_has_attacked(1)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
+                                p.hit_player(player_hit_sound, fullscreen)
+                                player_hit_value = player_hit_value + 1
 
                 for rm in red_machines:
                     if rm.get_red_machine_laser().distance(p.get_player()) < 125 * scale_factor:
-                        if rm.get_red_machine_laser().isvisible() and -30 * scale_factor_X < (rm.get_red_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X and p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
-                            p.hit_player(player_hit_sound, fullscreen)
-                            player_hit_value = player_hit_value + 1
+                        if rm.get_red_machine_laser().isvisible() and -30 * scale_factor_X < (rm.get_red_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             rm.set_laser_has_attacked(1)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
+                                p.hit_player(player_hit_sound, fullscreen)
+                                player_hit_value = player_hit_value + 1
 
                 for b in boss:
                     if b.get_boss_laser().distance(p.get_player()) < 125 * scale_factor:
-                        if b.get_boss_laser().isvisible() and -30 * scale_factor_X < (b.get_boss_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X and p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
-                            p.hit_player(player_hit_sound, fullscreen)
-                            player_hit_value = player_hit_value + 1
+                        if b.get_boss_laser().isvisible() and -30 * scale_factor_X < (b.get_boss_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             b.set_laser_has_attacked(1)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
+                                p.hit_player(player_hit_sound, fullscreen)
+                                player_hit_value = player_hit_value + 1
 
         # Function for the float effect of the machine enemies
         # This float effect was added to create the illusion that the enemies are flying through outer space at
