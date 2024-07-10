@@ -4,7 +4,7 @@
 
 [![Stable Release: v1.0.0b](https://img.shields.io/badge/Stable-v1.0.0b-brightgreen.svg)](https://github.com/Christian2147/Laser-Fighter/releases/download/v1.0.0/Laser.Fighter.v1.0.0b.zip) [![Latest Release: v1.0.0b](https://img.shields.io/badge/Latest-v1.0.0b-red.svg)](https://github.com/Christian2147/Laser-Fighter/releases/download/v1.0.0/Laser.Fighter.v1.0.0b.zip)
 
-Laser Fighter is a 2D laser shooting game and is the first game that I have created. The first versions was finished in December of 2021 and it has been growing ever since. About 500 hours of work have so far been put into this game and more is along the way. I created this game not only because it was fun but also because I wanted to learn more about the software development process by actually creating a real piece of software. Considering I am really familiter with gaming and indie games, I felt that a 2D pixel shooting game would be a good place to start. If you want to know more about the timeline of Laser Fighter, check out its [history](./Docs/HISTORY.md).
+Laser Fighter is a 2D laser shooting game and is the first game that I have created. The first versions was finished in December of 2021 and it has been growing ever since. About 500 hours of work have so far been put into this game and more is along the way. I created this game not only because it was fun but also because I wanted to learn more about the software development process by actually creating a real piece of software. Considering I am really familiter with gaming and indie games, I felt that a 2D pixel shooting game would be a good place to start. If you want to know more about the timeline of Laser Fighter, check out its [history](./docs/HISTORY.md).
 
 ## Releases
 
@@ -34,13 +34,13 @@ Here are the steps for installing Laser Fighter onto your computer:
 ## Specifications
 
 Laser Fighter is currently a windows only application. Linux support is planned in the future but not here yet :(.
-For more specific requirements and design specifications, visit the [specifications page](./Docs/SPECIFICATIONS.md).
+For more specific requirements and design specifications, visit the [specifications page](./docs/SPECIFICATIONS.md).
 
 If you want to work with the source code and create your own virtual environment, go to the [instructions page](./docs/INSTRUCTIONS.md).
 
 ## What Laser Fighter Offers:
 
-Laser Fighter is a 2D shooting game created in Python. It currently offers two gameplay modes: Machine Mode and Alien Mode. In both modes, you are in space, shooting lasers, and trying to defend yourself from monsters. If you want to learn more about Laser Fighters features, check out the [features page](./Docs/FEATURES.md).
+Laser Fighter is a 2D shooting game created in Python. It currently offers two gameplay modes: Machine Mode and Alien Mode. In both modes, you are in space, shooting lasers, and trying to defend yourself from monsters. If you want to learn more about Laser Fighters features, check out the [features page](./docs/FEATURES.md).
 
 ## License
 
