@@ -66,6 +66,8 @@ class Boss:
                 movement happen in a consistent amount of time)
             laser_has_attacked (int): Determines if the enemy has been hit by the players laser since it was last fired
                 (So that it does not get hit two times in a row)
+            movement_activated (int): Check if the enemies side to side movement is currently happening or not. (So
+                that it can create a start time for it)
     """
 
     def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
@@ -124,9 +126,10 @@ class Boss:
         self.start_time = 0
         self.hit_start_time = 0
         self.laser_start_time = 0
-        self.move_start_time = 0
-        self.float_start_time = 0
+        self.move_start_time = time.time()
+        self.float_start_time = time.time()
         self.laser_has_attacked = 0
+        self.movement_activated = 0
 
     def __del__(self):
         """
@@ -177,6 +180,8 @@ class Boss:
         self.boss.showturtle()
         self.boss_laser.showturtle()
         self.boss_health_bar.showturtle()
+        self.move_start_time = time.time()
+        self.float_start_time = time.time()
 
     def get_boss(self):
         """
@@ -262,6 +267,7 @@ class Boss:
         self.move_start_time = 0
         self.float_start_time = 0
         self.laser_has_attacked = 0
+        self.movement_activated = 0
 
     def shoot_laser(self, green_power_up, shooting_sound, scale_factor_y):
         """
@@ -290,21 +296,29 @@ class Boss:
                 self.boss_laser.showturtle()
             # If the laser is still visible in the frame of the screen
             if self.boss_laser.ycor() > -360 * scale_factor_y:
-                # Keep moving the laser down the screen every 0.01 seconds
+                # Keep moving the laser down the screen every 0.015 seconds
                 current_time = time.time()
                 elapsed_time = current_time - self.laser_start_time
-                if elapsed_time >= 0.01:
+                if elapsed_time >= 0.015:
                     # Speed depends on the bosses health
                     if 10 >= self.health_bar > 8:
-                        self.boss_laser.sety(self.boss_laser.ycor() - 9.5 * scale_factor_y)
+                        # Calculate the delta movement
+                        # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
+                        # Done to ensure the game speed stays the same regardless of frame rate
+                        delta_movement = 9.5 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                        self.boss_laser.sety(self.boss_laser.ycor() - 9.5 * scale_factor_y - delta_movement)
                     if 8 >= self.health_bar > 6:
-                        self.boss_laser.sety(self.boss_laser.ycor() - 11 * scale_factor_y)
+                        delta_movement = 11 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                        self.boss_laser.sety(self.boss_laser.ycor() - 11 * scale_factor_y - delta_movement)
                     if 6 >= self.health_bar > 4:
-                        self.boss_laser.sety(self.boss_laser.ycor() - 12.5 * scale_factor_y)
+                        delta_movement = 12.5 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                        self.boss_laser.sety(self.boss_laser.ycor() - 12.5 * scale_factor_y - delta_movement)
                     if 4 >= self.health_bar > 2:
-                        self.boss_laser.sety(self.boss_laser.ycor() - 14 * scale_factor_y)
+                        delta_movement = 14 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                        self.boss_laser.sety(self.boss_laser.ycor() - 14 * scale_factor_y - delta_movement)
                     if 2 >= self.health_bar > -1:
-                        self.boss_laser.sety(self.boss_laser.ycor() - 15.5 * scale_factor_y)
+                        delta_movement = 15.5 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                        self.boss_laser.sety(self.boss_laser.ycor() - 15.5 * scale_factor_y - delta_movement)
                     self.laser_start_time = time.time()
             else:
                 # Otherwise, set the laser to its original state and shoot it again
@@ -353,6 +367,7 @@ class Boss:
         if self.update == 6:
             self.boss.showturtle()
             self.boss_health_bar.showturtle()
+            self.movement_activated = 0
             self.update = 0
             return
 
@@ -555,11 +570,15 @@ class Boss:
         # Make a movement every 0.0075 seconds to reduce the effects of lag
         if elapsed_time >= 0.0075:
             if self.float == 1:
-                self.boss.goto(self.boss.xcor(), self.boss.ycor() + 0.3 * scale_factor_y)
+                # Calculate the delta movement and add it as additional movement required
+                delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
+                self.boss.goto(self.boss.xcor(), self.boss.ycor() + 0.15 * scale_factor_y + delta_movement)
                 self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
                 self.float_movement = self.float_movement + 1
             elif self.float == -1:
-                self.boss.goto(self.boss.xcor(), self.boss.ycor() - 0.3 * scale_factor_y)
+                # Calculate the delta movement and add it as additional movement required
+                delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
+                self.boss.goto(self.boss.xcor(), self.boss.ycor() - 0.15 * scale_factor_y - delta_movement)
                 self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
                 self.float_movement = self.float_movement + 1
             self.float_start_time = time.time()
@@ -579,6 +598,10 @@ class Boss:
         """
 
         if self.death_count >= 4 and death == 0 and self.update == 0:
+            # If the movement has just started, a start time is created for it
+            if self.movement_activated == 0:
+                self.move_start_time = time.time()
+                self.movement_activated = 1
             # Move the boss every 0.02 seconds
             current_time = time.time()
             elapsed_time = current_time - self.move_start_time
@@ -594,35 +617,46 @@ class Boss:
                 if self.movement == 1:
                     # Speeds up based on the death_count variable
                     if 4 <= self.death_count < 7:
-                        self.boss.setx(self.boss.xcor() + 2 * scale_factor_x)
+                        # Calculate the delta movement as extra movement needed
+                        delta_movement = 2 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + 2 * scale_factor_x + delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
                     elif 7 <= self.death_count < 10:
-                        self.boss.setx(self.boss.xcor() + 4 * scale_factor_x)
+                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + 4 * scale_factor_x + delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
                     elif 10 <= self.death_count < 13:
-                        self.boss.setx(self.boss.xcor() + 6 * scale_factor_x)
+                        delta_movement = 6 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + 6 * scale_factor_x + delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
                     elif 13 <= self.death_count < 16:
-                        self.boss.setx(self.boss.xcor() + 8 * scale_factor_x)
+                        delta_movement = 8 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + 8 * scale_factor_x + delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
                     elif 16 <= self.death_count:
-                        self.boss.setx(self.boss.xcor() + 10 * scale_factor_x)
+                        delta_movement = 10 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + 10 * scale_factor_x + delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
                 elif self.movement == -1:
                     if 4 <= self.death_count < 7:
-                        self.boss.setx(self.boss.xcor() - 2 * scale_factor_x)
+                        delta_movement = 2 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - 2 * scale_factor_x - delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
                     elif 7 <= self.death_count < 10:
-                        self.boss.setx(self.boss.xcor() - 4 * scale_factor_x)
+                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - 4 * scale_factor_x - delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
                     elif 10 <= self.death_count < 13:
-                        self.boss.setx(self.boss.xcor() - 6 * scale_factor_x)
+                        delta_movement = 6 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - 6 * scale_factor_x - delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
                     elif 13 <= self.death_count < 16:
-                        self.boss.setx(self.boss.xcor() - 8 * scale_factor_x)
+                        delta_movement = 8 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - 8 * scale_factor_x - delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
                     elif 16 <= self.death_count:
-                        self.boss.setx(self.boss.xcor() - 10 * scale_factor_x)
+                        delta_movement = 10 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - 10 * scale_factor_x - delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
                 self.move_start_time = time.time()
         else:

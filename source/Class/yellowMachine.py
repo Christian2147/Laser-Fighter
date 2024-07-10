@@ -59,6 +59,8 @@ class YellowMachine:
                 movement happen in a consistent amount of time)
             laser_has_attacked (int): Determines if the enemy has been hit by the players laser since it was last fired
                 (So that it does not get hit two times in a row)
+            movement_activated (int): Check if the enemies side to side movement is currently happening or not. (So
+                that it can create a start time for it)
             id (int): The id of the current yellow machine (Used for counting how many are on the screen)
     """
 
@@ -129,9 +131,10 @@ class YellowMachine:
         self.float_movement = 0
         self.start_time = 0
         self.laser_start_time = 0
-        self.move_start_time = 0
-        self.float_start_time = 0
+        self.move_start_time = time.time()
+        self.float_start_time = time.time()
         self.laser_has_attacked = 0
+        self.movement_activated = 0
         self.id = id
 
     def __del__(self):
@@ -194,6 +197,8 @@ class YellowMachine:
         self.id = id
         self.yellow_machine.showturtle()
         self.yellow_machine_laser.showturtle()
+        self.move_start_time = time.time()
+        self.float_start_time = time.time()
 
     def get_yellow_machine(self):
         """
@@ -255,6 +260,7 @@ class YellowMachine:
         self.move_start_time = 0
         self.float_start_time = 0
         self.laser_has_attacked = 0
+        self.movement_activated = 0
 
     def shoot_laser(self, green_power_up, shooting_sound, scale_factor_y):
         """
@@ -282,11 +288,15 @@ class YellowMachine:
                 self.yellow_machine_laser.showturtle()
             # If the laser is still visible in the frame of the screen
             if self.yellow_machine_laser.ycor() > -360 * scale_factor_y:
-                # Keep moving the laser down the screen 8.7 units every 0.01 seconds
+                # Keep moving the laser down the screen 8.7 units every 0.015 seconds
                 current_time = time.time()
                 elapsed_time = current_time - self.laser_start_time
-                if elapsed_time >= 0.01:
-                    self.yellow_machine_laser.sety(self.yellow_machine_laser.ycor() - 8.7 * scale_factor_y)
+                if elapsed_time >= 0.015:
+                    # Calculate the delta movement
+                    # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
+                    # Done to ensure the game speed stays the same regardless of frame rate
+                    delta_movement = 8.7 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                    self.yellow_machine_laser.sety(self.yellow_machine_laser.ycor() - 8.7 * scale_factor_y - delta_movement)
                     self.laser_start_time = time.time()
             else:
                 # Otherwise, set the laser to its original state and shoot it again
@@ -334,6 +344,7 @@ class YellowMachine:
         # When the death animation and respawning is finished, the yellow machine appears on the screen again
         if self.update == 6:
             self.yellow_machine.showturtle()
+            self.movement_activated = 0
             self.update = 0
             return
 
@@ -441,10 +452,14 @@ class YellowMachine:
         # Make a movement every 0.0075 seconds to reduce the effects of lag
         if elapsed_time >= 0.0075:
             if self.float == 1:
-                self.yellow_machine.goto(self.yellow_machine.xcor(), self.yellow_machine.ycor() + 0.3 * scale_factor_y)
+                # Calculate the delta movement and add it as additional movement required
+                delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
+                self.yellow_machine.goto(self.yellow_machine.xcor(), self.yellow_machine.ycor() + 0.15 * scale_factor_y + delta_movement)
                 self.float_movement = self.float_movement + 1
             elif self.float == -1:
-                self.yellow_machine.goto(self.yellow_machine.xcor(), self.yellow_machine.ycor() - 0.3 * scale_factor_y)
+                # Calculate the delta movement and add it as additional movement required
+                delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
+                self.yellow_machine.goto(self.yellow_machine.xcor(), self.yellow_machine.ycor() - 0.15 * scale_factor_y - delta_movement)
                 self.float_movement = self.float_movement + 1
             self.float_start_time = time.time()
 
@@ -463,6 +478,10 @@ class YellowMachine:
         """
 
         if self.death_count >= 4 and death == 0 and self.update == 0:
+            # If the movement has just started, a start time is created for it
+            if self.movement_activated == 0:
+                self.move_start_time = time.time()
+                self.movement_activated = 1
             # Move the yellow machine every 0.02 seconds
             current_time = time.time()
             elapsed_time = current_time - self.move_start_time
@@ -478,26 +497,37 @@ class YellowMachine:
                 if self.movement == 1:
                     # Speeds up based on the death_count variable
                     if 4 <= self.death_count < 7:
-                        self.yellow_machine.setx(self.yellow_machine.xcor() + 2 * scale_factor_x)
+                        # Calculate the delta movement as extra movement needed
+                        delta_movement = 2 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.yellow_machine.setx(self.yellow_machine.xcor() + 2 * scale_factor_x + delta_movement)
                     elif 7 <= self.death_count < 10:
-                        self.yellow_machine.setx(self.yellow_machine.xcor() + 4 * scale_factor_x)
+                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.yellow_machine.setx(self.yellow_machine.xcor() + 4 * scale_factor_x + delta_movement)
                     elif 10 <= self.death_count < 13:
-                        self.yellow_machine.setx(self.yellow_machine.xcor() + 6 * scale_factor_x)
+                        delta_movement = 6 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.yellow_machine.setx(self.yellow_machine.xcor() + 6 * scale_factor_x + delta_movement)
                     elif 13 <= self.death_count < 16:
-                        self.yellow_machine.setx(self.yellow_machine.xcor() + 8 * scale_factor_x)
+                        delta_movement = 8 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.yellow_machine.setx(self.yellow_machine.xcor() + 8 * scale_factor_x + delta_movement)
                     elif 16 <= self.death_count:
-                        self.yellow_machine.setx(self.yellow_machine.xcor() + 10 * scale_factor_x)
+                        delta_movement = 10 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.yellow_machine.setx(self.yellow_machine.xcor() + 10 * scale_factor_x + delta_movement)
                 elif self.movement == -1:
                     if 4 <= self.death_count < 7:
-                        self.yellow_machine.setx(self.yellow_machine.xcor() - 2 * scale_factor_x)
+                        delta_movement = 2 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.yellow_machine.setx(self.yellow_machine.xcor() - 2 * scale_factor_x - delta_movement)
                     elif 7 <= self.death_count < 10:
-                        self.yellow_machine.setx(self.yellow_machine.xcor() - 4 * scale_factor_x)
+                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.yellow_machine.setx(self.yellow_machine.xcor() - 4 * scale_factor_x - delta_movement)
                     elif 10 <= self.death_count < 13:
-                        self.yellow_machine.setx(self.yellow_machine.xcor() - 6 * scale_factor_x)
+                        delta_movement = 6 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.yellow_machine.setx(self.yellow_machine.xcor() - 6 * scale_factor_x - delta_movement)
                     elif 13 <= self.death_count < 16:
-                        self.yellow_machine.setx(self.yellow_machine.xcor() - 8 * scale_factor_x)
+                        delta_movement = 8 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.yellow_machine.setx(self.yellow_machine.xcor() - 8 * scale_factor_x - delta_movement)
                     elif 16 <= self.death_count:
-                        self.yellow_machine.setx(self.yellow_machine.xcor() - 10 * scale_factor_x)
+                        delta_movement = 10 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.yellow_machine.setx(self.yellow_machine.xcor() - 10 * scale_factor_x - delta_movement)
                 self.move_start_time = time.time()
         else:
             self.move_start_time = 0

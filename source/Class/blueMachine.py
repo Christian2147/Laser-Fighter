@@ -59,7 +59,7 @@ class BlueMachine:
             laser_has_attacked (int): Determines if the enemy has been hit by the players laser since it was last fired
                 (So that it does not get hit two times in a row)
             movement_activated (int): Check if the enemies side to side movement is currently happening or not. (So
-                that it can create a start time for it).
+                that it can create a start time for it)
             id (int): The id of the current blue machine (Used for counting how many are on the screen)
     """
 
@@ -310,12 +310,12 @@ class BlueMachine:
                 self.blue_machine_laser.showturtle()
             # If the laser is still visible in the frame of the screen
             if self.blue_machine_laser.ycor() > -360 * scale_factor_y:
-                # Keep moving the laser down the screen 4.8 units every 0.01 seconds
+                # Keep moving the laser down the screen 4.8 units every 0.015 seconds
                 current_time = time.time()
                 elapsed_time = current_time - self.laser_start_time
                 if elapsed_time >= 0.015:
                     # Calculate the delta movement
-                    # This the extra movement required to make up for the amount of time passed beyond 0.01 seconds
+                    # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
                     delta_movement = 4.8 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
                     self.blue_machine_laser.sety(self.blue_machine_laser.ycor() - 4.8 * scale_factor_y - delta_movement)

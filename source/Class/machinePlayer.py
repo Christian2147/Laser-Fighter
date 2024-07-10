@@ -341,14 +341,19 @@ class Player:
 
         # While the laser is still in the frame of the screen
         if self.laser.ycor() < 360 * scale_factor_y:
-            # Keep moving it 14.5 or 43.5 units every 0.01 seconds
+            # Keep moving it 14.5 or 43.5 units every 0.015 seconds
             current_time = time.time()
             elapsed_time = current_time - self.laser_start_time
-            if elapsed_time >= 0.01:
+            if elapsed_time >= 0.015:
                 if yellow_power_up == 0:
-                    self.laser.sety(self.laser.ycor() + 14.5 * scale_factor_y)
+                    # Calculate the delta movement
+                    # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
+                    # Done to ensure the game speed stays the same regardless of frame rate
+                    delta_movement = 14.5 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                    self.laser.sety(self.laser.ycor() + 14.5 * scale_factor_y + delta_movement)
                 elif yellow_power_up == 1:
-                    self.laser.sety(self.laser.ycor() + 43.5 * scale_factor_y)
+                    delta_movement = 43.5 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                    self.laser.sety(self.laser.ycor() + 43.5 * scale_factor_y + delta_movement)
                 self.laser_start_time = time.time()
         else:
             self.laser.hideturtle()
