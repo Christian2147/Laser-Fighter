@@ -366,7 +366,8 @@ class YellowMachine:
                 self.yellow_machine.shape("Textures/Enemies/Enemy(6-10)_Scaled.gif")
             else:
                 self.yellow_machine.shape("Textures/Enemies/Enemy(6-10).gif")
-            self.yellow_machine.goto(random.randint(-640 * scale_factor_x, 640 * scale_factor_x), random.randint(120 * scale_factor_y, 220 * scale_factor_y))
+            # Want to cast these ranges to integers to avoid a crash at certain resolutions
+            self.yellow_machine.goto(random.randint(int(-640 * scale_factor_x), int(640 * scale_factor_x)), random.randint(int(120 * scale_factor_y), int(220 * scale_factor_y)))
             self.update = 3.5
             self.start_time = time.time()
             return

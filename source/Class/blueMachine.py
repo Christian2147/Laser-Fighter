@@ -58,6 +58,8 @@ class BlueMachine:
                 movement happen in a consistent amount of time)
             laser_has_attacked (int): Determines if the enemy has been hit by the players laser since it was last fired
                 (So that it does not get hit two times in a row)
+            movement_activated (int): Check if the enemies side to side movement is currently happening or not. (So
+                that it can create a start time for it).
             id (int): The id of the current blue machine (Used for counting how many are on the screen)
     """
 
@@ -128,9 +130,10 @@ class BlueMachine:
         self.float_movement = 0
         self.start_time = 0
         self.laser_start_time = 0
-        self.move_start_time = 0
-        self.float_start_time = 0
+        self.move_start_time = time.time()
+        self.float_start_time = time.time()
         self.laser_has_attacked = 0
+        self.movement_activated = 0
         self.id = id
 
     def __del__(self):
@@ -191,6 +194,8 @@ class BlueMachine:
         self.id = id
         self.blue_machine.showturtle()
         self.blue_machine_laser.showturtle()
+        self.move_start_time = time.time()
+        self.float_start_time = time.time()
 
     def get_blue_machine(self):
         """
@@ -235,7 +240,8 @@ class BlueMachine:
     def set_death_count(self, new_death_count):
         """
             Sets the death count for the blue machine. (Used for when the player dies and the death count has to
-                be set to 0)
+                be set to 0). The movement activated is also set to 0 because the enemies side to side movement stops
+                happening.
 
             :param new_death_count: The new death count of the blue machine.
             :type new_death_count: int
@@ -244,6 +250,7 @@ class BlueMachine:
         """
 
         self.death_count = new_death_count
+        self.movement_activated = 0
 
     def set_laser_has_attacked(self, new_value):
         """
@@ -275,6 +282,7 @@ class BlueMachine:
         self.move_start_time = 0
         self.float_start_time = 0
         self.laser_has_attacked = 0
+        self.movement_activated = 0
 
     def shoot_laser(self, green_power_up, shooting_sound, scale_factor_y):
         """
@@ -305,8 +313,12 @@ class BlueMachine:
                 # Keep moving the laser down the screen 4.8 units every 0.01 seconds
                 current_time = time.time()
                 elapsed_time = current_time - self.laser_start_time
-                if elapsed_time >= 0.01:
-                    self.blue_machine_laser.sety(self.blue_machine_laser.ycor() - 4.8 * scale_factor_y)
+                if elapsed_time >= 0.015:
+                    # Calculate the delta movement
+                    # This the extra movement required to make up for the amount of time passed beyond 0.01 seconds
+                    # Done to ensure the game speed stays the same regardless of frame rate
+                    delta_movement = 4.8 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                    self.blue_machine_laser.sety(self.blue_machine_laser.ycor() - 4.8 * scale_factor_y - delta_movement)
                     self.laser_start_time = time.time()
             else:
                 # Otherwise, set the laser to its original state and shoot it again
@@ -354,6 +366,7 @@ class BlueMachine:
         # When the death animation and respawning is finished, the blue machine appears on the screen again
         if self.update == 6:
             self.blue_machine.showturtle()
+            self.movement_activated = 0
             self.update = 0
             return
 
@@ -386,7 +399,8 @@ class BlueMachine:
                 self.blue_machine.shape("Textures/Enemies/Enemy(1-5)_Scaled.gif")
             else:
                 self.blue_machine.shape("Textures/Enemies/Enemy(1-5).gif")
-            self.blue_machine.goto(random.randint(-640 * scale_factor_x, 640 * scale_factor_x), random.randint(120 * scale_factor_y, 220 * scale_factor_y))
+            # Want to cast these ranges to integers to avoid a crash at certain resolutions
+            self.blue_machine.goto(random.randint(int(-640 * scale_factor_x), int(640 * scale_factor_x)), random.randint(int(120 * scale_factor_y), int(220 * scale_factor_y)))
             self.update = 3.5
             self.start_time = time.time()
             return
@@ -460,10 +474,14 @@ class BlueMachine:
         # Make a movement every 0.0075 seconds to reduce the effects of lag
         if elapsed_time >= 0.0075:
             if self.float == 1:
-                self.blue_machine.goto(self.blue_machine.xcor(), self.blue_machine.ycor() + 0.3 * scale_factor_y)
+                # Calculate the delta movement and add it as additional movement required
+                delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
+                self.blue_machine.goto(self.blue_machine.xcor(), self.blue_machine.ycor() + 0.15 * scale_factor_y + delta_movement)
                 self.float_movement = self.float_movement + 1
             elif self.float == -1:
-                self.blue_machine.goto(self.blue_machine.xcor(), self.blue_machine.ycor() - 0.3 * scale_factor_y)
+                # Calculate the delta movement and add it as additional movement required
+                delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
+                self.blue_machine.goto(self.blue_machine.xcor(), self.blue_machine.ycor() - 0.15 * scale_factor_y - delta_movement)
                 self.float_movement = self.float_movement + 1
             self.float_start_time = time.time()
 
@@ -482,6 +500,10 @@ class BlueMachine:
         """
 
         if self.death_count >= 4 and death == 0 and self.update == 0:
+            # If the movement has just started, a start time is created for it
+            if self.movement_activated == 0:
+                self.move_start_time = time.time()
+                self.movement_activated = 1
             # Move the blue machine every 0.02 seconds
             current_time = time.time()
             elapsed_time = current_time - self.move_start_time
@@ -497,26 +519,37 @@ class BlueMachine:
                 if self.movement == 1:
                     # Speeds up based on the death_count variable
                     if 4 <= self.death_count < 7:
-                        self.blue_machine.setx(self.blue_machine.xcor() + 2 * scale_factor_x)
+                        # Calculate the delta movement as extra movement needed
+                        delta_movement = 2 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.blue_machine.setx(self.blue_machine.xcor() + 2 * scale_factor_x + delta_movement)
                     elif 7 <= self.death_count < 10:
-                        self.blue_machine.setx(self.blue_machine.xcor() + 4 * scale_factor_x)
+                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.blue_machine.setx(self.blue_machine.xcor() + 4 * scale_factor_x + delta_movement)
                     elif 10 <= self.death_count < 13:
-                        self.blue_machine.setx(self.blue_machine.xcor() + 6 * scale_factor_x)
+                        delta_movement = 6 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.blue_machine.setx(self.blue_machine.xcor() + 6 * scale_factor_x + delta_movement)
                     elif 13 <= self.death_count < 16:
-                        self.blue_machine.setx(self.blue_machine.xcor() + 8 * scale_factor_x)
+                        delta_movement = 8 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.blue_machine.setx(self.blue_machine.xcor() + 8 * scale_factor_x + delta_movement)
                     elif 16 <= self.death_count:
-                        self.blue_machine.setx(self.blue_machine.xcor() + 10 * scale_factor_x)
+                        delta_movement = 10 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.blue_machine.setx(self.blue_machine.xcor() + 10 * scale_factor_x + delta_movement)
                 elif self.movement == -1:
                     if 4 <= self.death_count < 7:
-                        self.blue_machine.setx(self.blue_machine.xcor() - 2 * scale_factor_x)
+                        delta_movement = 2 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.blue_machine.setx(self.blue_machine.xcor() - 2 * scale_factor_x - delta_movement)
                     elif 7 <= self.death_count < 10:
-                        self.blue_machine.setx(self.blue_machine.xcor() - 4 * scale_factor_x)
+                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.blue_machine.setx(self.blue_machine.xcor() - 4 * scale_factor_x - delta_movement)
                     elif 10 <= self.death_count < 13:
-                        self.blue_machine.setx(self.blue_machine.xcor() - 6 * scale_factor_x)
+                        delta_movement = 6 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.blue_machine.setx(self.blue_machine.xcor() - 6 * scale_factor_x - delta_movement)
                     elif 13 <= self.death_count < 16:
-                        self.blue_machine.setx(self.blue_machine.xcor() - 8 * scale_factor_x)
+                        delta_movement = 8 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.blue_machine.setx(self.blue_machine.xcor() - 8 * scale_factor_x - delta_movement)
                     elif 16 <= self.death_count:
-                        self.blue_machine.setx(self.blue_machine.xcor() - 10 * scale_factor_x)
+                        delta_movement = 10 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.blue_machine.setx(self.blue_machine.xcor() - 10 * scale_factor_x - delta_movement)
                 self.move_start_time = time.time()
         else:
             self.move_start_time = 0
