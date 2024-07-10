@@ -1,0 +1,1165 @@
+('C:\\Users\\Christian '
+ 'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\build\\main\\PYZ-00.pyz',
+ [('os',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\os.py',
+   'PYMODULE'),
+  ('subprocess',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\subprocess.py',
+   'PYMODULE'),
+  ('selectors',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\selectors.py',
+   'PYMODULE'),
+  ('threading',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\threading.py',
+   'PYMODULE'),
+  ('_threading_local',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\_threading_local.py',
+   'PYMODULE'),
+  ('contextlib',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\contextlib.py',
+   'PYMODULE'),
+  ('signal',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\signal.py',
+   'PYMODULE'),
+  ('_strptime',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\_strptime.py',
+   'PYMODULE'),
+  ('datetime',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\datetime.py',
+   'PYMODULE'),
+  ('calendar',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\calendar.py',
+   'PYMODULE'),
+  ('argparse',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\argparse.py',
+   'PYMODULE'),
+  ('textwrap',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\textwrap.py',
+   'PYMODULE'),
+  ('copy',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\copy.py',
+   'PYMODULE'),
+  ('gettext',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\gettext.py',
+   'PYMODULE'),
+  ('struct',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\struct.py',
+   'PYMODULE'),
+  ('ntpath',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\ntpath.py',
+   'PYMODULE'),
+  ('string',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\string.py',
+   'PYMODULE'),
+  ('genericpath',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\genericpath.py',
+   'PYMODULE'),
+  ('posixpath',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\posixpath.py',
+   'PYMODULE'),
+  ('stat',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\stat.py',
+   'PYMODULE'),
+  ('pywintypes',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\win32\\lib\\pywintypes.py',
+   'PYMODULE'),
+  ('pywin32_system32', '-', 'PYMODULE'),
+  ('importlib.util',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\importlib\\util.py',
+   'PYMODULE'),
+  ('importlib._bootstrap_external',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\importlib\\_bootstrap_external.py',
+   'PYMODULE'),
+  ('tokenize',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\tokenize.py',
+   'PYMODULE'),
+  ('token',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\token.py',
+   'PYMODULE'),
+  ('importlib._bootstrap',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\importlib\\_bootstrap.py',
+   'PYMODULE'),
+  ('importlib.abc',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\importlib\\abc.py',
+   'PYMODULE'),
+  ('importlib',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\importlib\\__init__.py',
+   'PYMODULE'),
+  ('importlib.machinery',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\importlib\\machinery.py',
+   'PYMODULE'),
+  ('pkg_resources',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging._compat',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\_compat.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.markers',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\markers.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.__about__',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\__about__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.utils',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\utils.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.requirements',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\requirements.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.version',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\version.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.six',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\six.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.specifiers',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\specifiers.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\pyparsing.py',
+   'PYMODULE'),
+  ('uuid',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\uuid.py',
+   'PYMODULE'),
+  ('hashlib',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\hashlib.py',
+   'PYMODULE'),
+  ('logging',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\logging\\__init__.py',
+   'PYMODULE'),
+  ('pickle',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\pickle.py',
+   'PYMODULE'),
+  ('doctest',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\doctest.py',
+   'PYMODULE'),
+  ('unittest',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\unittest\\__init__.py',
+   'PYMODULE'),
+  ('unittest.signals',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\unittest\\signals.py',
+   'PYMODULE'),
+  ('unittest.main',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\unittest\\main.py',
+   'PYMODULE'),
+  ('unittest.runner',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\unittest\\runner.py',
+   'PYMODULE'),
+  ('unittest.loader',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\unittest\\loader.py',
+   'PYMODULE'),
+  ('fnmatch',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\fnmatch.py',
+   'PYMODULE'),
+  ('unittest.suite',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\unittest\\suite.py',
+   'PYMODULE'),
+  ('unittest.case',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\unittest\\case.py',
+   'PYMODULE'),
+  ('unittest.result',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\unittest\\result.py',
+   'PYMODULE'),
+  ('unittest.util',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\unittest\\util.py',
+   'PYMODULE'),
+  ('difflib',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\difflib.py',
+   'PYMODULE'),
+  ('_compat_pickle',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\_compat_pickle.py',
+   'PYMODULE'),
+  ('random',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\random.py',
+   'PYMODULE'),
+  ('bisect',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\bisect.py',
+   'PYMODULE'),
+  ('ctypes.util',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\ctypes\\util.py',
+   'PYMODULE'),
+  ('ctypes._aix',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\ctypes\\_aix.py',
+   'PYMODULE'),
+  ('ctypes.macholib.dyld',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\ctypes\\macholib\\dyld.py',
+   'PYMODULE'),
+  ('ctypes.macholib',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\ctypes\\macholib\\__init__.py',
+   'PYMODULE'),
+  ('ctypes.macholib.dylib',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\ctypes\\macholib\\dylib.py',
+   'PYMODULE'),
+  ('ctypes.macholib.framework',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\ctypes\\macholib\\framework.py',
+   'PYMODULE'),
+  ('netbios',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\win32\\lib\\netbios.py',
+   'PYMODULE'),
+  ('socket',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\socket.py',
+   'PYMODULE'),
+  ('shutil',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\shutil.py',
+   'PYMODULE'),
+  ('tarfile',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\tarfile.py',
+   'PYMODULE'),
+  ('gzip',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\gzip.py',
+   'PYMODULE'),
+  ('_compression',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\_compression.py',
+   'PYMODULE'),
+  ('lzma',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\lzma.py',
+   'PYMODULE'),
+  ('bz2',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\bz2.py',
+   'PYMODULE'),
+  ('pdb',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\pdb.py',
+   'PYMODULE'),
+  ('getopt',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\getopt.py',
+   'PYMODULE'),
+  ('pydoc',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\pydoc.py',
+   'PYMODULE'),
+  ('webbrowser',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\webbrowser.py',
+   'PYMODULE'),
+  ('email.message',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\message.py',
+   'PYMODULE'),
+  ('email.policy',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\policy.py',
+   'PYMODULE'),
+  ('email.contentmanager',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\contentmanager.py',
+   'PYMODULE'),
+  ('email.quoprimime',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\quoprimime.py',
+   'PYMODULE'),
+  ('email.headerregistry',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\headerregistry.py',
+   'PYMODULE'),
+  ('email._header_value_parser',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\_header_value_parser.py',
+   'PYMODULE'),
+  ('urllib',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\urllib\\__init__.py',
+   'PYMODULE'),
+  ('email.iterators',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\iterators.py',
+   'PYMODULE'),
+  ('email.generator',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\generator.py',
+   'PYMODULE'),
+  ('email._encoded_words',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\_encoded_words.py',
+   'PYMODULE'),
+  ('base64',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\base64.py',
+   'PYMODULE'),
+  ('email.charset',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\charset.py',
+   'PYMODULE'),
+  ('email.encoders',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\encoders.py',
+   'PYMODULE'),
+  ('email.base64mime',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\base64mime.py',
+   'PYMODULE'),
+  ('email._policybase',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\_policybase.py',
+   'PYMODULE'),
+  ('email.header',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\header.py',
+   'PYMODULE'),
+  ('email.errors',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\errors.py',
+   'PYMODULE'),
+  ('email.utils',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\utils.py',
+   'PYMODULE'),
+  ('email._parseaddr',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\_parseaddr.py',
+   'PYMODULE'),
+  ('email',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\__init__.py',
+   'PYMODULE'),
+  ('quopri',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\quopri.py',
+   'PYMODULE'),
+  ('uu',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\uu.py',
+   'PYMODULE'),
+  ('optparse',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\optparse.py',
+   'PYMODULE'),
+  ('http.server',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\http\\server.py',
+   'PYMODULE'),
+  ('http',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\http\\__init__.py',
+   'PYMODULE'),
+  ('socketserver',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\socketserver.py',
+   'PYMODULE'),
+  ('mimetypes',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\mimetypes.py',
+   'PYMODULE'),
+  ('http.client',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\http\\client.py',
+   'PYMODULE'),
+  ('ssl',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\ssl.py',
+   'PYMODULE'),
+  ('html',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\html\\__init__.py',
+   'PYMODULE'),
+  ('html.entities',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\html\\entities.py',
+   'PYMODULE'),
+  ('pydoc_data.topics',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\pydoc_data\\topics.py',
+   'PYMODULE'),
+  ('pydoc_data',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\pydoc_data\\__init__.py',
+   'PYMODULE'),
+  ('tty',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\tty.py',
+   'PYMODULE'),
+  ('urllib.parse',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\urllib\\parse.py',
+   'PYMODULE'),
+  ('runpy',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\runpy.py',
+   'PYMODULE'),
+  ('shlex',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\shlex.py',
+   'PYMODULE'),
+  ('glob',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\glob.py',
+   'PYMODULE'),
+  ('code',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\code.py',
+   'PYMODULE'),
+  ('codeop',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\codeop.py',
+   'PYMODULE'),
+  ('dis',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\dis.py',
+   'PYMODULE'),
+  ('opcode',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\opcode.py',
+   'PYMODULE'),
+  ('bdb',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\bdb.py',
+   'PYMODULE'),
+  ('cmd',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\cmd.py',
+   'PYMODULE'),
+  ('pprint',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\pprint.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.appdirs',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\appdirs.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging._structures',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\_structures.py',
+   'PYMODULE'),
+  ('sysconfig',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\sysconfig.py',
+   'PYMODULE'),
+  ('_osx_support',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\_osx_support.py',
+   'PYMODULE'),
+  ('distutils.log',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\distutils\\log.py',
+   'PYMODULE'),
+  ('distutils',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\distutils\\__init__.py',
+   'PYMODULE'),
+  ('distutils.sysconfig',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\distutils\\sysconfig.py',
+   'PYMODULE'),
+  ('distutils.text_file',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\distutils\\text_file.py',
+   'PYMODULE'),
+  ('distutils.errors',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\distutils\\errors.py',
+   'PYMODULE'),
+  ('pkg_resources.py31compat',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\py31compat.py',
+   'PYMODULE'),
+  ('pkg_resources.extern',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pkg_resources\\extern\\__init__.py',
+   'PYMODULE'),
+  ('imp',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\imp.py',
+   'PYMODULE'),
+  ('inspect',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\inspect.py',
+   'PYMODULE'),
+  ('ast',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\ast.py',
+   'PYMODULE'),
+  ('tempfile',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\tempfile.py',
+   'PYMODULE'),
+  ('email.parser',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\parser.py',
+   'PYMODULE'),
+  ('email.feedparser',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\email\\feedparser.py',
+   'PYMODULE'),
+  ('plistlib',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\plistlib.py',
+   'PYMODULE'),
+  ('xml.parsers.expat',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\xml\\parsers\\expat.py',
+   'PYMODULE'),
+  ('xml.parsers',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\xml\\parsers\\__init__.py',
+   'PYMODULE'),
+  ('xml',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\xml\\__init__.py',
+   'PYMODULE'),
+  ('xml.sax.expatreader',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\xml\\sax\\expatreader.py',
+   'PYMODULE'),
+  ('xml.sax.saxutils',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\xml\\sax\\saxutils.py',
+   'PYMODULE'),
+  ('urllib.request',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\urllib\\request.py',
+   'PYMODULE'),
+  ('getpass',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\getpass.py',
+   'PYMODULE'),
+  ('nturl2path',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\nturl2path.py',
+   'PYMODULE'),
+  ('ftplib',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\ftplib.py',
+   'PYMODULE'),
+  ('netrc',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\netrc.py',
+   'PYMODULE'),
+  ('http.cookiejar',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\http\\cookiejar.py',
+   'PYMODULE'),
+  ('urllib.response',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\urllib\\response.py',
+   'PYMODULE'),
+  ('urllib.error',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\urllib\\error.py',
+   'PYMODULE'),
+  ('xml.sax',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\xml\\sax\\__init__.py',
+   'PYMODULE'),
+  ('xml.sax.handler',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\xml\\sax\\handler.py',
+   'PYMODULE'),
+  ('xml.sax._exceptions',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\xml\\sax\\_exceptions.py',
+   'PYMODULE'),
+  ('xml.sax.xmlreader',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\xml\\sax\\xmlreader.py',
+   'PYMODULE'),
+  ('platform',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\platform.py',
+   'PYMODULE'),
+  ('pkgutil',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\pkgutil.py',
+   'PYMODULE'),
+  ('zipfile',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\zipfile.py',
+   'PYMODULE'),
+  ('py_compile',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\py_compile.py',
+   'PYMODULE'),
+  ('__future__',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\__future__.py',
+   'PYMODULE'),
+  ('pathlib',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\pathlib.py',
+   'PYMODULE'),
+  ('typing',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\typing.py',
+   'PYMODULE'),
+  ('_py_abc',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\_py_abc.py',
+   'PYMODULE'),
+  ('stringprep',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\stringprep.py',
+   'PYMODULE'),
+  ('tracemalloc',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\tracemalloc.py',
+   'PYMODULE'),
+  ('Class.ufo',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\ufo.py',
+   'PYMODULE'),
+  ('Class', '-', 'PYMODULE'),
+  ('pygame',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\__init__.py',
+   'PYMODULE'),
+  ('pygame.colordict',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\colordict.py',
+   'PYMODULE'),
+  ('pygame.macosx',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\macosx.py',
+   'PYMODULE'),
+  ('pygame.pkgdata',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\pkgdata.py',
+   'PYMODULE'),
+  ('pygame.fastevent',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\fastevent.py',
+   'PYMODULE'),
+  ('pygame.sndarray',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\sndarray.py',
+   'PYMODULE'),
+  ('pygame.surfarray',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\surfarray.py',
+   'PYMODULE'),
+  ('pygame.sysfont',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\sysfont.py',
+   'PYMODULE'),
+  ('pygame.ftfont',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\ftfont.py',
+   'PYMODULE'),
+  ('pygame.threads',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\threads\\__init__.py',
+   'PYMODULE'),
+  ('queue',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\queue.py',
+   'PYMODULE'),
+  ('pygame.sprite',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\sprite.py',
+   'PYMODULE'),
+  ('pygame.cursors',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\cursors.py',
+   'PYMODULE'),
+  ('pygame.version',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\pygame\\version.py',
+   'PYMODULE'),
+  ('turtle',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\turtle.py',
+   'PYMODULE'),
+  ('tkinter.simpledialog',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\tkinter\\simpledialog.py',
+   'PYMODULE'),
+  ('tkinter.messagebox',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\tkinter\\messagebox.py',
+   'PYMODULE'),
+  ('tkinter.commondialog',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\tkinter\\commondialog.py',
+   'PYMODULE'),
+  ('tkinter',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\tkinter\\__init__.py',
+   'PYMODULE'),
+  ('tkinter.constants',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\tkinter\\constants.py',
+   'PYMODULE'),
+  ('Class.largeAliens',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\largeAliens.py',
+   'PYMODULE'),
+  ('Class.mediumAliens',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\mediumAliens.py',
+   'PYMODULE'),
+  ('Class.smallAliens',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\smallAliens.py',
+   'PYMODULE'),
+  ('Class.humanPlayer',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\humanPlayer.py',
+   'PYMODULE'),
+  ('Class.backgroundEffects',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\backgroundEffects.py',
+   'PYMODULE'),
+  ('Class.boss',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\boss.py',
+   'PYMODULE'),
+  ('Class.redMachine',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\redMachine.py',
+   'PYMODULE'),
+  ('Class.yellowMachine',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\yellowMachine.py',
+   'PYMODULE'),
+  ('Class.blueMachine',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\blueMachine.py',
+   'PYMODULE'),
+  ('Class.machinePlayer',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\machinePlayer.py',
+   'PYMODULE'),
+  ('Class.powerUps',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\powerUps.py',
+   'PYMODULE'),
+  ('Class.coin',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\coin.py',
+   'PYMODULE'),
+  ('Class.textBox',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\textBox.py',
+   'PYMODULE'),
+  ('Class.button',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Class\\button.py',
+   'PYMODULE'),
+  ('Data.screen',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Data\\screen.py',
+   'PYMODULE'),
+  ('Data', '-', 'PYMODULE'),
+  ('PIL.Image',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\Image.py',
+   'PYMODULE'),
+  ('PIL.PcdImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\PcdImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.ImageFile',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImageFile.py',
+   'PYMODULE'),
+  ('PIL.DdsImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\DdsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.FpxImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\FpxImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PalmImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\PalmImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.SgiImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\SgiImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.Hdf5StubImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\Hdf5StubImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.MpoImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\MpoImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.ImageSequence',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImageSequence.py',
+   'PYMODULE'),
+  ('PIL.XpmImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\XpmImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.ImImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.FitsStubImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\FitsStubImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.IcnsImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\IcnsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.features',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\features.py',
+   'PYMODULE'),
+  ('PIL.GribStubImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\GribStubImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.WebPImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\WebPImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.McIdasImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\McIdasImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.XbmImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\XbmImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.FitsImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\FitsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.SunImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\SunImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.GbrImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\GbrImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PdfImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\PdfImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PdfParser',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\PdfParser.py',
+   'PYMODULE'),
+  ('PIL.MpegImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\MpegImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.QoiImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\QoiImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.MspImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\MspImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PsdImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\PsdImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.BufrStubImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\BufrStubImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.DcxImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\DcxImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.EpsImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\EpsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.FtexImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\FtexImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PixarImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\PixarImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.ImtImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImtImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.Jpeg2KImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\Jpeg2KImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PcxImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\PcxImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.SpiderImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\SpiderImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.ImageTk',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImageTk.py',
+   'PYMODULE'),
+  ('PIL.CurImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\CurImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.FliImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\FliImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.WmfImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\WmfImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.MicImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\MicImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.IptcImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\IptcImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.IcoImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\IcoImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.TgaImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\TgaImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.XVThumbImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\XVThumbImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.BlpImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\BlpImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.TiffImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\TiffImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.ImageOps',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImageOps.py',
+   'PYMODULE'),
+  ('numbers',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\numbers.py',
+   'PYMODULE'),
+  ('fractions',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\fractions.py',
+   'PYMODULE'),
+  ('decimal',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\decimal.py',
+   'PYMODULE'),
+  ('_pydecimal',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\_pydecimal.py',
+   'PYMODULE'),
+  ('contextvars',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\contextvars.py',
+   'PYMODULE'),
+  ('PIL.ImageShow',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImageShow.py',
+   'PYMODULE'),
+  ('PIL.ImageQt',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImageQt.py',
+   'PYMODULE'),
+  ('PIL.ImageColor',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImageColor.py',
+   'PYMODULE'),
+  ('colorsys',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\colorsys.py',
+   'PYMODULE'),
+  ('PIL.ImageFilter',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImageFilter.py',
+   'PYMODULE'),
+  ('PIL.ImageCms',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImageCms.py',
+   'PYMODULE'),
+  ('PIL.ImageWin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImageWin.py',
+   'PYMODULE'),
+  ('PIL.PyAccess',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\PyAccess.py',
+   'PYMODULE'),
+  ('PIL.ImagePalette',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImagePalette.py',
+   'PYMODULE'),
+  ('PIL.PaletteFile',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\PaletteFile.py',
+   'PYMODULE'),
+  ('PIL.GimpPaletteFile',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\GimpPaletteFile.py',
+   'PYMODULE'),
+  ('PIL.GimpGradientFile',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\GimpGradientFile.py',
+   'PYMODULE'),
+  ('PIL.PngImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\PngImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.ImageChops',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImageChops.py',
+   'PYMODULE'),
+  ('PIL.PpmImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\PpmImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.JpegImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\JpegImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.JpegPresets',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\JpegPresets.py',
+   'PYMODULE'),
+  ('PIL.GifImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\GifImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.BmpImagePlugin',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\BmpImagePlugin.py',
+   'PYMODULE'),
+  ('PIL._util',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\_util.py',
+   'PYMODULE'),
+  ('PIL._deprecate',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\_deprecate.py',
+   'PYMODULE'),
+  ('PIL._binary',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\_binary.py',
+   'PYMODULE'),
+  ('PIL.TiffTags',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\TiffTags.py',
+   'PYMODULE'),
+  ('PIL.ImageMode',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ImageMode.py',
+   'PYMODULE'),
+  ('PIL.ExifTags',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\ExifTags.py',
+   'PYMODULE'),
+  ('PIL',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\__init__.py',
+   'PYMODULE'),
+  ('PIL._version',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\PIL\\_version.py',
+   'PYMODULE'),
+  ('win32con',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\site-packages\\win32\\lib\\win32con.py',
+   'PYMODULE'),
+  ('Data.data',
+   'C:\\Users\\Christian '
+   'Marinkovic\\Documents\\GitHub\\Laser-Fighter\\source\\Data\\data.py',
+   'PYMODULE'),
+  ('configparser',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\configparser.py',
+   'PYMODULE'),
+  ('ctypes',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\ctypes\\__init__.py',
+   'PYMODULE'),
+  ('ctypes._endian',
+   'c:\\users\\christian '
+   'marinkovic\\appdata\\local\\programs\\python\\python37-32\\lib\\ctypes\\_endian.py',
+   'PYMODULE')])
