@@ -1,0 +1,8 @@
+# Ignore the biuld directory in the source directory
+source/build/
+source/dist/
+source/main.spec
+
+# Ignore the venv file
+venv/
+.idea/
