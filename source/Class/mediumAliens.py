@@ -54,6 +54,8 @@ class MediumAlien:
                 walking animation happens in a consistent amount of time)
             move_start_time (float): Used as a timestamp for the medium aliens movement (To make the medium aliens
                 movement happen in a consistent amount of time and not based on code execution speed)
+            movement_activated (int): Check if the aliens movement is currently happening or not. (So that
+                it can create a start time for it)
     """
 
     def __init__(self, id, scale_factor_x, scale_factor_y, fullscreen):
@@ -112,7 +114,8 @@ class MediumAlien:
         self.kill_start_time = 0
         self.hit_start_time = 0
         self.walk_start_time = 0
-        self.move_start_time = 0
+        self.move_start_time = time.time()
+        self.movement_activated = 0
 
     def __del__(self):
         """
@@ -167,6 +170,7 @@ class MediumAlien:
             self.medium_alien_health_bar.shape("Textures/Health_Bars/HealthBar_2.2.gif")
         self.medium_alien_health_bar.goto(self.medium_alien.xcor(), -39 * scale_factor_y)
         self.medium_alien_health_bar.showturtle()
+        self.move_start_time = time.time()
 
     def get_medium_alien(self):
         """
@@ -236,6 +240,7 @@ class MediumAlien:
         self.hit_start_time = 0
         self.walk_start_time = 0
         self.move_start_time = 0
+        self.movement_activated = 0
 
     def set_alien_direction(self, player_x):
         """
@@ -364,6 +369,7 @@ class MediumAlien:
             self.health = 2
             self.medium_alien.showturtle()
             self.medium_alien_health_bar.showturtle()
+            self.movement_activated = 0
             self.death_animation = 0
             return
 
@@ -471,6 +477,10 @@ class MediumAlien:
         """
 
         if self.medium_alien.isvisible() and self.death_animation == 0:
+            # If the movement has just started, a start time is created for it
+            if self.movement_activated == 0:
+                self.move_start_time = time.time()
+                self.movement_activated = 1
             # Move the medium alien every 0.012 seconds
             current_time = time.time()
             elapsed_time = current_time - self.move_start_time
@@ -479,44 +489,57 @@ class MediumAlien:
                 if self.direction == 1:
                     # Move the alien right
                     if 0 <= self.death_count < 6:
-                        self.medium_alien.setx(self.medium_alien.xcor() + 0.3 * scale_factor_x)
-                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() + 0.3 * scale_factor_x)
+                        # Calculate the delta movement as extra movement needed
+                        delta_movement = 0.3 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.medium_alien.setx(self.medium_alien.xcor() + 0.3 * scale_factor_x + delta_movement)
+                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() + 0.3 * scale_factor_x + delta_movement)
                     if 6 <= self.death_count < 12:
-                        self.medium_alien.setx(self.medium_alien.xcor() + 0.6 * scale_factor_x)
-                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() + 0.6 * scale_factor_x)
+                        delta_movement = 0.6 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.medium_alien.setx(self.medium_alien.xcor() + 0.6 * scale_factor_x + delta_movement)
+                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() + 0.6 * scale_factor_x + delta_movement)
                     if 12 <= self.death_count < 18:
-                        self.medium_alien.setx(self.medium_alien.xcor() + 0.9 * scale_factor_x)
-                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() + 0.9 * scale_factor_x)
+                        delta_movement = 0.9 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.medium_alien.setx(self.medium_alien.xcor() + 0.9 * scale_factor_x + delta_movement)
+                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() + 0.9 * scale_factor_x + delta_movement)
                     if 18 <= self.death_count < 24:
-                        self.medium_alien.setx(self.medium_alien.xcor() + 1.2 * scale_factor_x)
-                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() + 1.2 * scale_factor_x)
+                        delta_movement = 1.2 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.medium_alien.setx(self.medium_alien.xcor() + 1.2 * scale_factor_x + delta_movement)
+                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() + 1.2 * scale_factor_x + delta_movement)
                     if 24 <= self.death_count < 30:
-                        self.medium_alien.setx(self.medium_alien.xcor() + 1.5 * scale_factor_x)
-                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() + 1.5 * scale_factor_x)
+                        delta_movement = 1.5 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.medium_alien.setx(self.medium_alien.xcor() + 1.5 * scale_factor_x + delta_movement)
+                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() + 1.5 * scale_factor_x + delta_movement)
                     if 30 <= self.death_count:
-                        self.medium_alien.setx(self.medium_alien.xcor() + 1.8 * scale_factor_x)
-                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() + 1.8 * scale_factor_x)
+                        delta_movement = 1.8 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.medium_alien.setx(self.medium_alien.xcor() + 1.8 * scale_factor_x + delta_movement)
+                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() + 1.8 * scale_factor_x + delta_movement)
                 # If the aliens direction is left
                 else:
                     # Move the alien left
                     if 0 <= self.death_count < 6:
-                        self.medium_alien.setx(self.medium_alien.xcor() - 0.3 * scale_factor_x)
-                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() - 0.3 * scale_factor_x)
+                        delta_movement = 0.3 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.medium_alien.setx(self.medium_alien.xcor() - 0.3 * scale_factor_x - delta_movement)
+                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() - 0.3 * scale_factor_x - delta_movement)
                     if 6 <= self.death_count < 12:
-                        self.medium_alien.setx(self.medium_alien.xcor() - 0.6 * scale_factor_x)
-                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() - 0.6 * scale_factor_x)
+                        delta_movement = 0.6 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.medium_alien.setx(self.medium_alien.xcor() - 0.6 * scale_factor_x - delta_movement)
+                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() - 0.6 * scale_factor_x - delta_movement)
                     if 12 <= self.death_count < 18:
-                        self.medium_alien.setx(self.medium_alien.xcor() - 0.9 * scale_factor_x)
-                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() - 0.9 * scale_factor_x)
+                        delta_movement = 0.9 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.medium_alien.setx(self.medium_alien.xcor() - 0.9 * scale_factor_x - delta_movement)
+                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() - 0.9 * scale_factor_x - delta_movement)
                     if 18 <= self.death_count < 24:
-                        self.medium_alien.setx(self.medium_alien.xcor() - 1.2 * scale_factor_x)
-                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() - 1.2 * scale_factor_x)
+                        delta_movement = 1.2 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.medium_alien.setx(self.medium_alien.xcor() - 1.2 * scale_factor_x - delta_movement)
+                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() - 1.2 * scale_factor_x - delta_movement)
                     if 24 <= self.death_count < 30:
-                        self.medium_alien.setx(self.medium_alien.xcor() - 1.5 * scale_factor_x)
-                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() - 1.5 * scale_factor_x)
+                        delta_movement = 1.5 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.medium_alien.setx(self.medium_alien.xcor() - 1.5 * scale_factor_x - delta_movement)
+                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() - 1.5 * scale_factor_x - delta_movement)
                     if 30 <= self.death_count:
-                        self.medium_alien.setx(self.medium_alien.xcor() - 1.8 * scale_factor_x)
-                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() - 1.8 * scale_factor_x)
+                        delta_movement = 1.8 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.medium_alien.setx(self.medium_alien.xcor() - 1.8 * scale_factor_x - delta_movement)
+                        self.medium_alien_health_bar.setx(self.medium_alien_health_bar.xcor() - 1.8 * scale_factor_x - delta_movement)
                 self.move_start_time = time.time()
         else:
             self.move_start_time = 0

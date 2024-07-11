@@ -57,6 +57,8 @@ class UFO:
                 happens in a consistent amount of time)
             move_start_time (float): Used as a timestamp for the UFOs movement (To make the UFOs
                 movement happen in a consistent amount of time and not based on code execution speed)
+            movement_activated (int): Check if the aliens movement is currently happening or not. (So that
+                it can create a start time for it)
     """
 
     def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
@@ -114,7 +116,8 @@ class UFO:
         self.kill_start_time = 0
         self.hit_start_time = 0
         self.laser_start_time = 0
-        self.move_start_time = 0
+        self.move_start_time = time.time()
+        self.movement_activated = 0
 
     def __del__(self):
         """
@@ -162,6 +165,7 @@ class UFO:
             self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
         self.ufo_health_bar.goto(875 * scale_factor_x, 50 * scale_factor_y)
         self.ufo_health_bar.showturtle()
+        self.move_start_time = time.time()
 
     def get_ufo(self):
         """
@@ -255,6 +259,7 @@ class UFO:
         self.hit_start_time = 0
         self.laser_start_time = 0
         self.move_start_time = 0
+        self.movement_activated = 0
 
     def shoot_laser(self, shooting_sound, scale_factor_x, scale_factor_y):
         """
@@ -280,7 +285,11 @@ class UFO:
                 current_time = time.time()
                 elapsed_time = current_time - self.laser_start_time
                 if elapsed_time >= 0.0075:
-                    self.ufo_laser.sety(self.ufo_laser.ycor() - 3.2 * scale_factor_y)
+                    # Calculate the delta movement
+                    # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
+                    # Done to ensure the game speed stays the same regardless of frame rate
+                    delta_movement = 3.2 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
+                    self.ufo_laser.sety(self.ufo_laser.ycor() - 3.2 * scale_factor_y - delta_movement)
                     self.laser_start_time = time.time()
             # If the UFO is not dying
             elif self.death_animation == 0:
@@ -383,6 +392,7 @@ class UFO:
             self.health = 10
             self.ufo.showturtle()
             self.ufo_health_bar.showturtle()
+            self.movement_activated = 0
             self.death_animation = 0
             return
 
@@ -536,6 +546,10 @@ class UFO:
         """
 
         if self.ufo.isvisible() and self.death_animation == 0:
+            # If the movement has just started, a start time is created for it
+            if self.movement_activated == 0:
+                self.move_start_time = time.time()
+                self.movement_activated = 1
             # Move the UFO every 0.012 seconds
             current_time = time.time()
             elapsed_time = current_time - self.move_start_time
@@ -544,44 +558,57 @@ class UFO:
                 if self.direction == 1:
                     # Move the UFO right
                     if 0 <= self.death_count < 3:
-                        self.ufo.setx(self.ufo.xcor() + 0.25 * scale_factor_x)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 0.25 * scale_factor_x)
+                        # Calculate the delta movement as extra movement needed
+                        delta_movement = 0.25 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() + 0.25 * scale_factor_x + delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 0.25 * scale_factor_x + delta_movement)
                     if 3 <= self.death_count < 6:
-                        self.ufo.setx(self.ufo.xcor() + 0.5 * scale_factor_x)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 0.5 * scale_factor_x)
+                        delta_movement = 0.5 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() + 0.5 * scale_factor_x + delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 0.5 * scale_factor_x + delta_movement)
                     if 6 <= self.death_count < 9:
-                        self.ufo.setx(self.ufo.xcor() + 1 * scale_factor_x)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 1 * scale_factor_x)
+                        delta_movement = 1 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() + 1 * scale_factor_x + delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 1 * scale_factor_x + delta_movement)
                     if 9 <= self.death_count < 12:
-                        self.ufo.setx(self.ufo.xcor() + 1.75 * scale_factor_x)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 1.75 * scale_factor_x)
+                        delta_movement = 1.75 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() + 1.75 * scale_factor_x + delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 1.75 * scale_factor_x + delta_movement)
                     if 12 <= self.death_count < 15:
-                        self.ufo.setx(self.ufo.xcor() + 2.75 * scale_factor_x)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 2.75 * scale_factor_x)
+                        delta_movement = 2.75 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() + 2.75 * scale_factor_x + delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 2.75 * scale_factor_x + delta_movement)
                     if 15 <= self.death_count:
-                        self.ufo.setx(self.ufo.xcor() + 4 * scale_factor_x)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 4 * scale_factor_x)
+                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() + 4 * scale_factor_x + delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 4 * scale_factor_x + delta_movement)
                 # If the UFOs direction is left
                 else:
                     # Move the UFO left
                     if 0 <= self.death_count < 3:
-                        self.ufo.setx(self.ufo.xcor() - 0.25 * scale_factor_x)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 0.25 * scale_factor_x)
+                        delta_movement = 0.25 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() - 0.25 * scale_factor_x - delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 0.25 * scale_factor_x - delta_movement)
                     if 3 <= self.death_count < 6:
-                        self.ufo.setx(self.ufo.xcor() - 0.5 * scale_factor_x)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 0.5 * scale_factor_x)
+                        delta_movement = 0.5 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() - 0.5 * scale_factor_x - delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 0.5 * scale_factor_x - delta_movement)
                     if 6 <= self.death_count < 9:
-                        self.ufo.setx(self.ufo.xcor() - 1 * scale_factor_x)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 1 * scale_factor_x)
+                        delta_movement = 1 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() - 1 * scale_factor_x - delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 1 * scale_factor_x - delta_movement)
                     if 9 <= self.death_count < 12:
-                        self.ufo.setx(self.ufo.xcor() - 1.75 * scale_factor_x)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 1.75 * scale_factor_x)
+                        delta_movement = 1.75 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() - 1.75 * scale_factor_x - delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 1.75 * scale_factor_x - delta_movement)
                     if 12 <= self.death_count < 15:
-                        self.ufo.setx(self.ufo.xcor() - 2.75 * scale_factor_x)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 2.75 * scale_factor_x)
+                        delta_movement = 2.75 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() - 2.75 * scale_factor_x - delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 2.75 * scale_factor_x - delta_movement)
                     if 15 <= self.death_count:
-                        self.ufo.setx(self.ufo.xcor() - 4 * scale_factor_x)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 4 * scale_factor_x)
+                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() - 4 * scale_factor_x - delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 4 * scale_factor_x - delta_movement)
                 self.move_start_time = time.time()
         else:
             self.move_start_time = 0

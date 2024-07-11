@@ -372,7 +372,8 @@ class Human:
         """
 
         # If the player is not already moving, jumping, dying, or off the screen
-        if self.move_update == 0 and self.jump_update == 0 and self.player.xcor() < 640 * scale_factor_x and self.death_animation == 0:
+        if self.move_update == 0 and self.jump_update == 0 and self.player.xcor() < 640 * scale_factor_x and self.death_animation == 0 and self.move_right != 1:
+            self.move_left = 0
             # Set the direction to right
             self.player.direction = "right"
             self.gun.direction = "right"
@@ -383,6 +384,7 @@ class Human:
             # Mark the starting point
             self.Start_X = self.player.xcor()
             self.move_right = 1
+            self.move_start_time = time.time()
 
     def go_left(self, scale_factor_x, scale_factor_y):
         """
@@ -398,7 +400,8 @@ class Human:
         """
 
         # If the player is not already moving, jumping, dying, or off the screen
-        if self.move_update == 0 and self.jump_update == 0 and self.player.xcor() > -640 * scale_factor_x and self.death_animation == 0:
+        if self.move_update == 0 and self.jump_update == 0 and self.player.xcor() > -640 * scale_factor_x and self.death_animation == 0 and self.move_left != 1:
+            self.move_right = 0
             # Set the direction to left
             self.player.direction = "left"
             self.gun.direction = "left"
@@ -409,6 +412,7 @@ class Human:
             # Mark the starting point
             self.Start_X = self.player.xcor()
             self.move_left = 1
+            self.move_start_time = time.time()
 
     def jump(self, scale_factor_x):
         """
@@ -454,6 +458,7 @@ class Human:
             if shooting_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
                 sound.play()
+            self.laser_start_time = time.time()
         # If the player is facing left
         elif self.direction == 2:
             # Shoot to the left
@@ -463,6 +468,7 @@ class Human:
             if shooting_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
                 sound.play()
+            self.laser_start_time = time.time()
 
     def execute_right_movement(self, scale_factor_x, scale_factor_y):
         """
@@ -485,7 +491,9 @@ class Human:
             if elapsed_time >= 0.012:
                 self.move_update = 1
                 if self.player.xcor() < (self.Start_X + 100 * scale_factor_x):
-                    self.player.setx(self.player.xcor() + 4 * scale_factor_x)
+                    # Calculate the delta movement and add it as additional movement required
+                    delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                    self.player.setx(self.player.xcor() + 4 * scale_factor_x + delta_movement)
                     self.oxygen_tank.goto(self.player.xcor() - 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
                     self.gun.goto(self.player.xcor() + 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
                     self.moving_right = 1
@@ -517,7 +525,9 @@ class Human:
             if elapsed_time >= 0.012:
                 self.move_update = 1
                 if self.player.xcor() > (self.Start_X - 100 * scale_factor_x):
-                    self.player.setx(self.player.xcor() - 4 * scale_factor_x)
+                    # Calculate the delta movement and add it as additional movement required
+                    delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                    self.player.setx(self.player.xcor() - 4 * scale_factor_x - delta_movement)
                     self.oxygen_tank.goto(self.player.xcor() + 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
                     self.gun.goto(self.player.xcor() - 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
                     self.moving_left = 1
@@ -674,9 +684,14 @@ class Human:
             elapsed_time = current_time - self.laser_start_time
             if elapsed_time >= 0.01:
                 if yellow_power_up == 1:
-                    self.laser.setx(self.laser.xcor() + 60 * scale_factor_x)
+                    # Calculate the delta movement
+                    # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
+                    # Done to ensure the game speed stays the same regardless of frame rate
+                    delta_movement = 32 * scale_factor_x * ((elapsed_time - 0.01) / 0.01)
+                    self.laser.setx(self.laser.xcor() + 32 * scale_factor_x + delta_movement)
                 else:
-                    self.laser.setx(self.laser.xcor() + 20 * scale_factor_x )
+                    delta_movement = 13 * scale_factor_x * ((elapsed_time - 0.01) / 0.01)
+                    self.laser.setx(self.laser.xcor() + 13 * scale_factor_x + delta_movement)
                 self.laser_start_time = time.time()
         # If the direction is left
         elif -1080 * scale_factor_x < self.laser.xcor() < 1080 * scale_factor_x and self.laser_direction == 2:
@@ -689,9 +704,11 @@ class Human:
             # Move the laser every 0.01 seconds
             if elapsed_time >= 0.01:
                 if yellow_power_up == 1:
-                    self.laser.setx(self.laser.xcor() - 60 * scale_factor_x)
+                    delta_movement = 32 * scale_factor_x * ((elapsed_time - 0.01) / 0.01)
+                    self.laser.setx(self.laser.xcor() - 32 * scale_factor_x - delta_movement)
                 else:
-                    self.laser.setx(self.laser.xcor() - 20 * scale_factor_x)
+                    delta_movement = 13 * scale_factor_x * ((elapsed_time - 0.01) / 0.01)
+                    self.laser.setx(self.laser.xcor() - 13 * scale_factor_x - delta_movement)
                 self.laser_start_time = time.time()
         # If the laser has finished moving
         else:

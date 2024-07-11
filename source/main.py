@@ -3028,7 +3028,7 @@ while True:
             for sa in small_aliens:
                 # If the player laser hits a small alien that is visible and not dying
                 if (sa.get_small_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(sa.get_small_alien()) < 53 * scale_factor and (
-                        (sa.get_small_alien().xcor() - 15 * scale_factor_X < h.get_laser().xcor() < sa.get_small_alien().xcor() + 15 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and
+                        (sa.get_small_alien().xcor() - 26 * scale_factor_X < h.get_laser().xcor() < sa.get_small_alien().xcor() + 26 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and
                         small_aliens_kill_values[current_small_alien_update_value_index] == 0) or small_aliens_kill_values[current_small_alien_update_value_index] != 0:
                     # Kill the alien
                     sa.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
@@ -3063,7 +3063,7 @@ while True:
             for ma in medium_aliens:
                 # If the player laser hits a medium alien that is visible and not dying and has 1 health
                 if (ma.get_medium_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(ma.get_medium_alien()) < 72 * scale_factor and (
-                        (ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.health == 1 and ma.hit_delay == 0 and
+                        (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.health == 1 and ma.hit_delay == 0 and
                         medium_aliens_kill_values[current_medium_alien_update_value_index] == 0) or medium_aliens_kill_values[current_medium_alien_update_value_index] != 0:
                     # Same procedure as before
                     ma.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
@@ -3090,7 +3090,7 @@ while True:
 
                 # If the player laser hits a medium alien that is visible and not dying and has health > 1
                 if (ma.get_medium_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(ma.get_medium_alien()) < 72 * scale_factor and (
-                        (ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.get_medium_alien_health() == 2 and
+                        (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.get_medium_alien_health() == 2 and
                         medium_aliens_hit_values[current_medium_alien_hit_value_index] == 0) or medium_aliens_hit_values[current_medium_alien_hit_value_index] != 0:
                     # Deal one damage to the medium alien
                     ma.hit_alien(enemy_hit_sound, fullscreen)
@@ -3115,7 +3115,7 @@ while True:
             for la in large_aliens:
                 # If the player laser hits a large alien that is visible and not dying and has 1 health
                 if (la.get_large_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(la.get_large_alien()) < 112 * scale_factor and (
-                        (la.get_large_alien().xcor() - 15 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 15 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and la.health == 1 and la.hit_delay == 0 and
+                        (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and la.health == 1 and la.hit_delay == 0 and
                         large_aliens_kill_values[current_large_alien_update_value_index] == 0) or large_aliens_kill_values[current_large_alien_update_value_index] != 0:
                     la.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
                     large_aliens_kill_values[current_large_alien_update_value_index] = large_aliens_kill_values[current_large_alien_update_value_index] + 1
@@ -3141,7 +3141,7 @@ while True:
 
                 # If the player laser hits a medium alien that is visible and not dying and has health > 1
                 if (la.get_large_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(la.get_large_alien()) < 112 * scale_factor and (
-                        (la.get_large_alien().xcor() - 15 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 15 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and (la.get_large_alien_health() == 2 or la.get_large_alien_health() == 3) and
+                        (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and (la.get_large_alien_health() == 2 or la.get_large_alien_health() == 3) and
                         large_aliens_hit_values[current_large_alien_hit_value_index] == 0) or large_aliens_hit_values[current_large_alien_hit_value_index] != 0:
                     # Same procedure as before
                     la.hit_alien(enemy_hit_sound, fullscreen)

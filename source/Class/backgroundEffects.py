@@ -139,6 +139,12 @@ class Sun:
         self.x_coordinate = 0
         self.y_coordinate = 0
         self.start_time = 0
+        self.movement_activated = 0
+
+        self.x_coordinate = 715 * math.cos(math.radians(self.angle))
+        self.y_coordinate = 350 * math.sin(math.radians(self.angle)) - 150
+
+        self.sun.goto(self.x_coordinate * scale_factor_x, self.y_coordinate * scale_factor_y)
 
     def __del__(self):
         """
@@ -177,6 +183,7 @@ class Sun:
         """
 
         self.sun.hideturtle()
+        self.movement_activated = 0
 
     def update_position(self, scale_factor_x, scale_factor_y):
         """
@@ -191,16 +198,22 @@ class Sun:
             :return: None
         """
 
+        # If the movement has just started, a start time is created for it
+        if self.movement_activated == 0:
+            self.start_time = time.time()
+            self.movement_activated = 1
+
         # Update the suns position every 0.2 seconds
         current_time = time.time()
         elapsed_time = current_time - self.start_time
         if elapsed_time >= 0.2:
+            # Create a delta angle so that movement stays consistent regardless of lag
+            delta_angle = 0.1 * ((elapsed_time - 0.2) / 0.2)
             # Move the angle 0.1 every iteration (Very slow movement)
             if self.angle > 0:
-                self.angle = self.angle - 0.1
+                self.angle = self.angle - 0.1 - delta_angle
             else:
                 self.angle = 180
-
             # Find the new x and y coordinate of the sun given the new angle
             self.x_coordinate = 715 * math.cos(math.radians(self.angle))
             self.y_coordinate = 350 * math.sin(math.radians(self.angle)) - 150
