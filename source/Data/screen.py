@@ -172,6 +172,7 @@ texture_paths = [
     "Textures/Buttons/Settings_Main_Menu_Button.gif",
     "Textures/Buttons/Main_Menu_Button_Main.gif",
     "Textures/Buttons/Title_Screen_button.gif",
+    "Textures/Buttons/Title_Screen_Button_Small.gif",
     "Textures/Buttons/Settings_And_Controls_Button.gif",
     "Textures/Power_Ups/Yellow_Lightning_Power_Up.gif",
     "Textures/Power_Ups/Green_Lightning_Power_Up.gif",
