@@ -51,8 +51,9 @@ class RedMachine:
             movement (int): Stores the direction that the enemy is supposed to move on
                 the x-axis (1 = right and -1 = left)
             float (int): Stores the direction that the enemy is supposed to move on the y-axis (1 = up and -1 == down)
-            float_movement (int): Stores the distance that the enemy has moved on the y-axis during the float from the
-                initial starting point (When this goes over 110, the direction of movement switches)
+            start_y_float (float): Stores the y-coordinate of the enemy when the float effect is starting or when
+                it is changing direction
+            float_activated (int): Determines if the float effect is currently active or not (For timing purposes)
             start_time (float): Used as a timestamp for the death animation of the enemy (To make the animation run in
                 a consistent amount of time)
             hit_start_time (float): Used as a timestamp for the hit delay of the enemy (To make the delay tun in
@@ -156,7 +157,8 @@ class RedMachine:
         self.update = 0
         self.movement = 1
         self.float = 1
-        self.float_movement = 0
+        self.start_y_float = 0
+        self.float_activated = 0
         self.start_time = 0
         self.hit_start_time = 0
         self.laser_start_time = 0
@@ -320,6 +322,9 @@ class RedMachine:
         self.health_bar = 2
         self.update = 0
         self.movement = 1
+        self.float = 1
+        self.start_y_float = 0
+        self.float_activated = 0
         self.start_time = 0
         self.hit_start_time = 0
         self.laser_start_time = 0
@@ -558,14 +563,17 @@ class RedMachine:
             :return: None
         """
 
-        if self.float_movement == 110 and self.float == 1:
+        # Activate the float effect
+        if self.float_activated == 0:
+            self.float_activated = 1
+            self.start_y_float = self.red_machine.ycor()
+
+        if self.start_y_float + 50 < self.red_machine.ycor():
             # Move down
             self.float = -1
-            self.float_movement = 0
-        elif self.float_movement == 110 and self.float == -1:
+        elif self.start_y_float - 50 > self.red_machine.ycor():
             # Move up
             self.float = 1
-            self.float_movement = 0
         current_time = time.time()
         elapsed_time = current_time - self.float_start_time
         # Make a movement every 0.0075 seconds to reduce the effects of lag
@@ -575,13 +583,11 @@ class RedMachine:
                 delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
                 self.red_machine.goto(self.red_machine.xcor(), self.red_machine.ycor() + 0.15 * scale_factor_y + delta_movement)
                 self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
-                self.float_movement = self.float_movement + 1
             elif self.float == -1:
                 # Calculate the delta movement and add it as additional movement required
                 delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
                 self.red_machine.goto(self.red_machine.xcor(), self.red_machine.ycor() - 0.15 * scale_factor_y - delta_movement)
                 self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
-                self.float_movement = self.float_movement + 1
             self.float_start_time = time.time()
 
     def move_enemy(self, death, scale_factor_x, scale_factor_y):

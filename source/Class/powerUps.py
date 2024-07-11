@@ -411,12 +411,19 @@ class YellowIndicator:
             elapsed_time = current_time - self.activate_time
             # Every second, the value of "time_value" drops by 1 since "time_value" represents a 20 second timer
             if elapsed_time >= 1.0:
-                if self.time_value != 0:
-                    self.time_value = self.time_value - 1
-                    self.activate_time = time.time()
-                else:
-                    self.yellow_power_up_active = 0
-                    self.activate_time = 0
+                # See if more than 1 whole second has passed (Just in case there is EXTREME lag)
+                # If it has, decrease the timer by the amount of whole seconds that have passed
+                delta_movement = (elapsed_time - 1.0) / 1.0
+                delta_movement = int(delta_movement)
+                iterations = 1 + delta_movement
+                for i in range(iterations):
+                    if self.time_value != 0:
+                        self.time_value = self.time_value - 1
+                        self.activate_time = time.time()
+                    else:
+                        self.yellow_power_up_active = 0
+                        self.activate_time = 0
+                        break
 
 
 class BlueIndicator:
@@ -579,12 +586,19 @@ class BlueIndicator:
             elapsed_time = current_time - self.activate_time
             # Every second, the value of "time_value" drops by 1 since "time_value" represents a 45 second timer
             if elapsed_time >= 1.0:
-                if self.time_value != 0:
-                    self.time_value = self.time_value - 1
-                    self.activate_time = time.time()
-                else:
-                    self.blue_power_up_active = 0
-                    self.activate_time = 0
+                # See if more than 1 whole second has passed (Just in case there is EXTREME lag)
+                # If it has, decrease the timer by the amount of whole seconds that have passed
+                delta_movement = (elapsed_time - 1.0) / 1.0
+                delta_movement = int(delta_movement)
+                iterations = 1 + delta_movement
+                for i in range(iterations):
+                    if self.time_value != 0:
+                        self.time_value = self.time_value - 1
+                        self.activate_time = time.time()
+                    else:
+                        self.blue_power_up_active = 0
+                        self.activate_time = 0
+                        break
 
 
 class ExtraIndicator:
@@ -781,9 +795,16 @@ class ExtraIndicator:
             elapsed_time = current_time - self.activate_time
             # Every second, the value of "time_value" drops by 1 since "time_value" represents a 15 second timer
             if elapsed_time >= 1.0:
-                if self.time_value != 0:
-                    self.time_value = self.time_value - 1
-                    self.activate_time = time.time()
-                else:
-                    self.extra_power_up_active = 0
-                    self.activate_time = 0
+                # See if more than 1 whole second has passed (Just in case there is EXTREME lag)
+                # If it has, decrease the timer by the amount of whole seconds that have passed
+                delta_movement = (elapsed_time - 1.0) / 1.0
+                delta_movement = int(delta_movement)
+                iterations = 1 + delta_movement
+                for i in range(iterations):
+                    if self.time_value != 0:
+                        self.time_value = self.time_value - 1
+                        self.activate_time = time.time()
+                    else:
+                        self.extra_power_up_active = 0
+                        self.activate_time = 0
+                        break
