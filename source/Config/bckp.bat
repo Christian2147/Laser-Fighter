@@ -1,6 +1,6 @@
-rem turn off the display of commands in the command window
 @echo off
 setlocal
+rem echo off turns off the display of commands in the command window
 
 rem Create a new directory named "bak" to store the backup
 set "newDir=bak"

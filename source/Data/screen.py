@@ -33,6 +33,7 @@ import win32con
 import os
 import pygame
 from PIL import Image
+from fractions import Fraction
 from Data.data import fullscreen
 
 # Scale Factors for fullscreen (1 when fullscreen is off)
@@ -65,6 +66,22 @@ if fullscreen == 1:
     # we find the ratio of the current screen width/height over the default screen width/height
     scale_factor_X = current_screen_width/1280
     scale_factor_Y = current_screen_height/720
+
+    # What if the aspect ratio is lower than 16/9?
+    # With the code above, that would cause the text to go off the screen, we need to take the width of th screen
+    #   and manually find its height if it had a 16/9 aspect ratio. Then, we use that in our calculations.
+    # Finding aspect ratio:
+    aspect_ratio = Fraction(current_screen_width, current_screen_height)
+    target_aspect_ratio = Fraction(16, 9)
+    # Check if the ratio is the target ratio or not (16/9)
+    if aspect_ratio != target_aspect_ratio:
+        # If not, find the custom height to work with
+        decimal_aspect_ratio = current_screen_width/current_screen_height
+        decimal_aspect_ratio = 1/decimal_aspect_ratio
+        if decimal_aspect_ratio > 0.5625:
+            # Find the new scale factor based off of that height
+            new_screen_height = current_screen_width * 9/16
+            scale_factor = new_screen_height/720
 
     # Scale the background
     image = Image.open("Textures/Background/Shooting_Game_Background.gif")
