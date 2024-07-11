@@ -1930,9 +1930,15 @@ while True:
     current_power_up_time = time.time()
     elapsed_power_up_time = current_power_up_time - power_up_time
     if elapsed_power_up_time >= 0.4:
-        # Random number between 1 and 200 to create the 1/200 random chance
-        power_up_update = random.randint(-50, 150)
-        power_up_time = time.time()
+        # See if more than 1 whole 0.4 seconds has passed (Just in case there is EXTREME lag)
+        # If it has, run the random chance the number of 0.4 that have passed
+        delta_movement = (elapsed_time - 1.0) / 1.0
+        delta_movement = int(delta_movement)
+        iterations = 1 + delta_movement
+        for i in range(iterations):
+            # Random number between 1 and 200 to create the 1/200 random chance for each power up
+            power_up_update = random.randint(-50, 150)
+            power_up_time = time.time()
 
     # Used when VSync is off
     tick_update = tick_update + 1
