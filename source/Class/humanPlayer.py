@@ -425,13 +425,14 @@ class Human:
         """
 
         # If the player is not already jumping and is facing a direction
-        if self.jump_update == 0 and self.direction != 0:
+        if self.jump_update == 0 and self.direction != 0 and self.do_jump == 0:
             # If the player is not going out of bounds
             if (self.direction == 1 and self.player.xcor() < 640 * scale_factor_x) or (self.direction == 2 and self.player.xcor() > -640 * scale_factor_x):
                 # Prepare the player for a jump
                 self.Start_Y = self.player.ycor()
                 self.Start_X = self.player.xcor()
                 self.do_jump = 1
+                self.jump_start_time = time.time()
 
     def shoot(self, shooting_sound, scale_factor_x, scale_factor_y):
         """
@@ -538,7 +539,7 @@ class Human:
                 self.move_update = 0
                 self.move_start_time = time.time()
 
-    def execute_jump(self, scale_factor_x, scale_factor_y, fullscreen, vsync):
+    def execute_jump(self, scale_factor_x, scale_factor_y):
         """
             Executes the jump movement of the player in the specified direction based on the variable "direction"
 
@@ -562,97 +563,105 @@ class Human:
             self.jump_update = 1
             # If the direction is right
             if (self.direction == 1 and self.jump_direction == 0) or (self.jump_direction == 1):
-                # Turn all the sprites to the right
-                self.jump_direction = 1
-                self.gun.direction = "right"
-                self.gun_direction = 1
-                self.oxygen_tank.goto(self.player.xcor() - 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                self.gun.goto(self.player.xcor() + 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
-                self.gun.showturtle()
-                # Preform the next movement in the bounce every 0.006 seconds or 0.0045 seconds if both fullscreen
-                #   and VSync is on (Will be fixed next update)
                 current_time = time.time()
                 elapsed_time = current_time - self.jump_start_time
-                if elapsed_time >= 0.006 or (elapsed_time >= 0.0045 and fullscreen == 1 and vsync == 1):
-                    self.player.sety(self.player.ycor() + self.current_velocity)
-                    self.player.setx(self.player.xcor() + 7 * scale_factor_x)
-                    self.oxygen_tank.goto(self.player.xcor() - 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                    self.gun.goto(self.player.xcor() + 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
-                    self.jump_start_time = time.time()
-                # If the highest point has not been reached yet
-                if self.current_velocity > 0:
-                    # Find the new velocity using the real world physics formula vf^2 = vi^2 + 2adx where
-                    #   a is the force of gravity on the moon in real life and dx is the distance between the
-                    #   starting point and the current player position
-                    velocity_squared = self.initial_velocity ** 2 + 2 * (-1.625 * scale_factor_y) * abs(self.player.ycor() - self.Start_Y)
-                    # Make sure there is no divide by zero error
-                    if velocity_squared > 0:
-                        self.current_velocity = math.sqrt(velocity_squared)
-                    else:
-                        self.current_velocity = 0
-                # if the highest point has already been reached
-                elif self.player.ycor() > self.Start_Y and self.current_velocity <= 0:
-                    # Find the new velocity using the real world physics formula vf^2 = vi^2 + 2adx where
-                    #   a is the force of gravity on the moon in real life and dx is the distance between the
-                    #   starting point + 175 and the current player position
-                    self.current_velocity = math.sqrt(2 * (1.625 * scale_factor_y) * (self.Start_Y + 175 * scale_factor_y) - self.player.ycor())
-                    self.current_velocity = 0 - self.current_velocity
-                # The jump is finished
-                else:
-                    # Reset the variables
-                    self.jump_update = 0
-                    self.jump_direction = 0
-                    self.do_jump = 0
-                    self.current_velocity = 23.84848 * scale_factor_y
-                    self.player.sety(-141 * scale_factor_y)
-                    self.oxygen_tank.goto(self.player.xcor() - 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                    self.gun.goto(self.player.xcor() + 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+                if elapsed_time >= 0.006:
+                    # Find the delta time (How ,much more time has passed since 0.006 seconds)
+                    delta_movement = (elapsed_time - 0.006) / 0.006
+                    # Convert this value to an integer to get the whole number amounts of
+                    #   "0.006 seconds" that have passed
+                    delta_movement = int(delta_movement)
+                    # Account for delta time in the jump by doing the right number of iterations in a row to ensure
+                    #   that the jumps speed stays consistent
+                    iterations = 1 + delta_movement
+                    for i in range(iterations):
+                        # Turn all the sprites to the right
+                        self.jump_direction = 1
+                        self.gun.direction = "right"
+                        self.gun_direction = 1
+                        # Move the player
+                        self.player.sety(self.player.ycor() + self.current_velocity)
+                        self.player.setx(self.player.xcor() + 7 * scale_factor_x)
+                        self.oxygen_tank.goto(self.player.xcor() - 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
+                        self.gun.goto(self.player.xcor() + 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+                        self.jump_start_time = time.time()
+                        # Finding the new velocity:
+                        # If the highest point has not been reached yet
+                        if self.current_velocity > 0:
+                            # Find the new velocity using the real world physics formula vf^2 = vi^2 + 2adx where
+                            #   a is the force of gravity on the moon in real life and dx is the distance between the
+                            #   starting point and the current player position
+                            velocity_squared = self.initial_velocity ** 2 + 2 * (-1.625 * scale_factor_y) * abs(self.player.ycor() - self.Start_Y)
+                            # Make sure there is no divide by zero error
+                            if velocity_squared > 0:
+                                self.current_velocity = math.sqrt(velocity_squared)
+                            else:
+                                self.current_velocity = 0
+                        # if the highest point has already been reached
+                        elif self.player.ycor() > self.Start_Y and self.current_velocity <= 0:
+                            # Use the same formula as before, but acceleration is increasing this time (because the
+                            #   player is moving down)
+                            self.current_velocity = math.sqrt(2 * (1.625 * scale_factor_y) * (self.Start_Y + 175 * scale_factor_y) - self.player.ycor())
+                            self.current_velocity = 0 - self.current_velocity
+                        # The jump is finished
+                        else:
+                            # Reset the variables
+                            self.jump_update = 0
+                            self.jump_direction = 0
+                            self.do_jump = 0
+                            self.current_velocity = 23.84848 * scale_factor_y
+                            self.player.sety(-141 * scale_factor_y)
+                            self.oxygen_tank.goto(self.player.xcor() - 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
+                            self.gun.goto(self.player.xcor() + 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+                            break
             # If the direction is left
             elif (self.direction == 2 and self.jump_direction == 0) or (self.jump_direction == 2):
-                # Turn all the sprites to the left
-                self.jump_direction = 2
-                self.gun.direction = "left"
-                self.gun_direction = 2
-                self.oxygen_tank.goto(self.player.xcor() + 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                self.gun.goto(self.player.xcor() - 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
-                self.gun.showturtle()
-                # Preform the next movement in the bounce every 0.006 seconds or 0.0045 seconds if both fullscreen
-                #   and VSync is on (Will be fixed next update)
                 current_time = time.time()
                 elapsed_time = current_time - self.jump_start_time
-                if elapsed_time >= 0.006 or (elapsed_time >= 0.0045 and fullscreen == 1 and vsync == 1):
-                    self.player.sety(self.player.ycor() + self.current_velocity)
-                    self.player.setx(self.player.xcor() - 7 * scale_factor_x)
-                    self.oxygen_tank.goto(self.player.xcor() + 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                    self.gun.goto(self.player.xcor() - 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
-                    self.jump_start_time = time.time()
-                # If the highest point has not been reached yet
-                if self.current_velocity > 0:
-                    # Find the new velocity using the real world physics formula vf^2 = vi^2 + 2adx where
-                    #   a is the force of gravity on the moon in real life and dx is the distance between the
-                    #   starting point and the current player position
-                    velocity_squared = self.initial_velocity ** 2 + 2 * (-1.625 * scale_factor_y) * abs(self.player.ycor() - self.Start_Y)
-                    if velocity_squared > 0:
-                        self.current_velocity = math.sqrt(velocity_squared)
-                    else:
-                        self.current_velocity = 0
-                # if the highest point has already been reached
-                elif self.player.ycor() > self.Start_Y and self.current_velocity <= 0:
-                    # Find the new velocity using the real world physics formula vf^2 = vi^2 + 2adx where
-                    #   a is the force of gravity on the moon in real life and dx is the distance between the
-                    #   starting point + 175 and the current player position
-                    self.current_velocity = math.sqrt(2 * (1.625 * scale_factor_y) * (self.Start_Y + 175 * scale_factor_y) - self.player.ycor())
-                    self.current_velocity = 0 - self.current_velocity
-                # The jump is finished
-                else:
-                    # Reset the variables
-                    self.jump_update = 0
-                    self.jump_direction = 0
-                    self.do_jump = 0
-                    self.current_velocity = 23.84848 * scale_factor_y
-                    self.player.sety(-141 * scale_factor_y)
-                    self.oxygen_tank.goto(self.player.xcor() + 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                    self.gun.goto(self.player.xcor() - 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+                if elapsed_time >= 0.006:
+                    # Same process as above to find the delta time
+                    delta_movement = (elapsed_time - 0.006) / 0.006
+                    delta_movement = int(delta_movement)
+                    iterations = 1 + delta_movement
+                    for i in range(iterations):
+                        # Turn all the sprites to the left
+                        self.jump_direction = 2
+                        self.gun.direction = "left"
+                        self.gun_direction = 2
+                        # Move the player
+                        self.player.sety(self.player.ycor() + self.current_velocity)
+                        self.player.setx(self.player.xcor() - 7 * scale_factor_x)
+                        self.oxygen_tank.goto(self.player.xcor() + 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
+                        self.gun.goto(self.player.xcor() - 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+                        self.jump_start_time = time.time()
+                        # Finding the new velocity:
+                        # If the highest point has not been reached yet
+                        if self.current_velocity > 0:
+                            # Find the new velocity using the real world physics formula vf^2 = vi^2 + 2adx where
+                            #   a is the force of gravity on the moon in real life and dx is the distance between the
+                            #   starting point and the current player position
+                            velocity_squared = self.initial_velocity ** 2 + 2 * (-1.625 * scale_factor_y) * abs(self.player.ycor() - self.Start_Y)
+                            if velocity_squared > 0:
+                                self.current_velocity = math.sqrt(velocity_squared)
+                            else:
+                                self.current_velocity = 0
+                        # if the highest point has already been reached
+                        elif self.player.ycor() > self.Start_Y and self.current_velocity <= 0:
+                            # Use the same formula as before, but acceleration is increasing this time (because the
+                            #   player is moving down)
+                            self.current_velocity = math.sqrt(2 * (1.625 * scale_factor_y) * (self.Start_Y + 175 * scale_factor_y) - self.player.ycor())
+                            self.current_velocity = 0 - self.current_velocity
+                        # The jump is finished
+                        else:
+                            # Reset the variables
+                            self.jump_update = 0
+                            self.jump_direction = 0
+                            self.do_jump = 0
+                            self.current_velocity = 23.84848 * scale_factor_y
+                            self.player.sety(-141 * scale_factor_y)
+                            self.oxygen_tank.goto(self.player.xcor() + 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
+                            self.gun.goto(self.player.xcor() - 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+                            break
 
     def execute_shoot(self, yellow_power_up, laser_update, scale_factor_x):
         """

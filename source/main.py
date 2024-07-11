@@ -2930,7 +2930,7 @@ while True:
 
         # Check if a player jump needs to be executed
         for h in current_human:
-            h.execute_jump(scale_factor_X, scale_factor_Y, fullscreen, vsync)
+            h.execute_jump(scale_factor_X, scale_factor_Y)
 
         # Check if the players laser needs to be shot
         for h in current_human:
