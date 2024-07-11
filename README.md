@@ -20,9 +20,9 @@ NOTE: The exe file for this application is unsigned and has an unverified publis
 
 ## Helpful Links
 
-For a full list of specifications and requirements, go to the [specifications page](./docs/SPECIFICATIONS.md)
-For instructions on how to install the game or use the source code, go to the [instructions page](./docs/INSTRUCTIONS.md)
-For a list of features that the game offers, go to the [features page](./docs/FEATURES.md)
+For a full list of specifications and requirements, go to the [specifications page](./docs/SPECIFICATIONS.md)<br>
+For instructions on how to install the game or use the source code, go to the [instructions page](./docs/INSTRUCTIONS.md)<br>
+For a list of features that the game offers, go to the [features page](./docs/FEATURES.md)<br>
 
 ## License
 
