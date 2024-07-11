@@ -19,7 +19,7 @@
 """
     File: main.py
     Author: Christian Marinkovich
-    Date: 2024-07-13
+    Date: 2024-07-11
     Description:
     This file is the main file for Laser Fighter.
     The main file contains the main game functions, like the controls and spawning sprites, and also includes of the
