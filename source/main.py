@@ -201,7 +201,7 @@ def launch_title_mode(x, y):
     global message_output
     global screen_update
     wn.onscreenclick(None)
-    if mode == "Machine_Mode" or mode == "Alien_Mode" or mode == "Stats":
+    if mode == "Machine_Mode" or mode == "Alien_Mode" or mode == "Stats" or mode == "Shop":
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -634 * scale_factor_X) and (x < -442 * scale_factor_X) and (y > 323 * scale_factor_Y) and (y < 355 * scale_factor_Y):
             if button_sound == 1:
@@ -292,6 +292,32 @@ def launch_alien_mode(x, y):
         screen_update = 1
 
 
+def launch_shop_mode(x, y):
+    """
+        Function used to enter the shop in Laser Fighter.
+
+        :param x: The current x-coordinate of the cursor
+        :type x: float
+
+        :param y: The current y-coordinate of the cursor
+        :type y: float
+
+        :return: None
+    """
+
+    global mode
+    global screen_update
+    wn.onscreenclick(None)
+    # Check to see if the cursor is in the bound of the button to be clicked
+    if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -133 * scale_factor_Y) and (y < -61 * scale_factor_Y):
+        if button_sound == 1:
+            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+            sound.play()
+        # Enter The Shop
+        mode = "Shop"
+        screen_update = 1
+
+
 def launch_stats_mode(x, y):
     """
         Function used to enter the statistics screen.
@@ -309,7 +335,7 @@ def launch_stats_mode(x, y):
     global screen_update
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -133 * scale_factor_Y) and (y < -61 * scale_factor_Y):
+    if (x > 9 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -224 * scale_factor_Y) and (y < -150 * scale_factor_Y):
         if button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
@@ -338,7 +364,7 @@ def launch_settings_mode(x, y):
     # If entering from the title screen
     if mode == "Title_Mode":
         # Check to see if the cursor is in the bound of the button to be clicked
-        if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -224 * scale_factor_Y) and (y < -150 * scale_factor_Y):
+        if (x > -252 * scale_factor_X) and (x < -10 * scale_factor_X) and (y > -224 * scale_factor_Y) and (y < -150 * scale_factor_Y):
             if button_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
                 sound.play()
@@ -979,7 +1005,7 @@ def position(event):
     if mode == "Title_Mode":
         for bu in buttons_on_screen_list:
             bu.update_text_color(a, b, scale_factor_X, scale_factor_Y)
-    if mode == "Machine_Mode" or mode == "Alien_Mode" or mode == "Stats":
+    if mode == "Machine_Mode" or mode == "Alien_Mode" or mode == "Stats" or mode == "Shop":
         for bu in buttons_on_screen_list:
             button_update = bu.update_text_color(a, b, scale_factor_X, scale_factor_Y)
     if mode == "Settings":
@@ -1106,6 +1132,12 @@ def update_text():
                 t.write_left("{}".format(total_coins), 24, "normal", scale_factor)
             elif t.id == 6:
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
+    elif mode == "Shop":
+        for bu in buttons_on_screen_list:
+            bu.write_lines(scale_factor)
+        for t in text_on_screen_list:
+            if t.id == 1:
+                t.write_left("{}".format(total_coins), 24, "normal", scale_factor)
     elif mode == "Stats":
         for bu in buttons_on_screen_list:
             bu.write_lines(scale_factor)
@@ -1247,6 +1279,8 @@ def spawn_buttons(type, id):
                     # Reinstate the button to the correct type and id
                     if type == "Title":
                         bu.reinstate_to_title(id, scale_factor_X, scale_factor_Y, fullscreen)
+                    elif type == "Title_Small":
+                        bu.reinstate_to_title_small(id, scale_factor_X, scale_factor_Y, fullscreen)
                     elif type == "Game":
                         bu.reinstate_to_game(scale_factor_X, scale_factor_Y, fullscreen)
                     elif type == "Regular_Settings_And_Controls":
@@ -1906,7 +1940,7 @@ while True:
         elif mode == "Stats":
             if tick_update % 4 == 0:
                 update_text()
-        elif mode == "Settings":
+        elif mode == "Settings" or mode == "Shop":
             if tick_update % 3 == 0:
                 update_text()
         elif mode == "Controls":
@@ -2013,8 +2047,10 @@ while True:
 
         # Spawn the title mode buttons
         if current_button_index == 0:
-            for i in range(5):
+            for i in range(4):
                 spawn_buttons("Title", i + 1)
+            for i in range(2):
+                spawn_buttons("Title_Small", i + 1)
 
         # Spawn the title mode text (Like title and bversion number in the bottom corner)
         if current_text_index == 0:
@@ -2037,11 +2073,14 @@ while True:
                 elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
                     wn.onscreenclick(launch_alien_mode)
                 elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(launch_stats_mode)
+                    wn.onscreenclick(launch_shop_mode)
                 elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(launch_settings_mode)
-                elif id == 5 and button_color == "yellow" and bu.get_button_frame().isvisible():
                     wn.onscreenclick(exit_game)
+            elif button_type == "Title_Small":
+                if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                    wn.onscreenclick(launch_settings_mode)
+                elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                    wn.onscreenclick(launch_stats_mode)
 
     """
         When Machine Mode is on
@@ -3372,6 +3411,29 @@ while True:
         ufo_index = 0
         ufo_kill_value = 0
         ufo_hit_value = 0
+
+    """
+        Code below is for when the Shop is entered
+    """
+
+    if mode == "Shop":
+        # Create Main Menu button
+        if current_button_index == 0:
+            spawn_buttons("Game", 1)
+
+        # Check if the main menu button has been clicked or not
+        for bu in buttons_on_screen_list:
+            button_color, button_type, id = bu.click_button()
+            if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
+                wn.onscreenclick(launch_title_mode)
+
+        # Spawn all the necessary standalone text
+        if current_text_index == 0:
+            spawn_text_box(1, -588, 281, "yellow")
+
+        # Spawn the coin indicator
+        if coin_indicator_index == 0:
+            spawn_coin_indicator()
 
     """
          Code Below is for when Statistics Mode is turned on.

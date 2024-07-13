@@ -66,7 +66,7 @@ class Button:
         self.button_frame.color("#3D3D3D")
         # Ensure that the turtle does not draw lines on the screen while moving
         self.button_frame.penup()
-        # Title Screen button
+        # Title Screen whole button
         if type == "Title":
             if fullscreen == 1:
                 self.button_frame.shape("Textures/Buttons/Title_Screen_button_Scaled.gif")
@@ -80,9 +80,17 @@ class Button:
             elif id == 3:
                 self.button_frame.goto(0, -95 * scale_factor_y)
             elif id == 4:
-                self.button_frame.goto(0, -185 * scale_factor_y)
-            elif id == 5:
                 self.button_frame.goto(0, -275 * scale_factor_y)
+        # Title screen small button
+        elif type == "Title_Small":
+            if fullscreen == 1:
+                self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Scaled.gif")
+            else:
+                self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small.gif")
+            if id == 1:
+                self.button_frame.goto(-130 * scale_factor_x, -185 * scale_factor_y)
+            elif id == 2:
+                self.button_frame.goto(130 * scale_factor_x, -185 * scale_factor_y)
         # In game main menu button
         elif type == "Game":
             if fullscreen == 1:
@@ -132,6 +140,8 @@ class Button:
         self.button_text.penup()
         if type == "Title":
             self.button_text.goto(0, self.button_frame.ycor() - 22 * scale_factor_y)
+        elif type == "Title_Small":
+            self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() - 22 * scale_factor_y)
         elif type == "Game":
             self.button_text.goto(-537 * scale_factor_x, 320 * scale_factor_y)
         elif type == "Regular_Settings_And_Controls":
@@ -221,8 +231,6 @@ class Button:
         elif id == 3:
             self.button_frame.goto(0, -95 * scale_factor_y)
         elif id == 4:
-            self.button_frame.goto(0, -185 * scale_factor_y)
-        elif id == 5:
             self.button_frame.goto(0, -275 * scale_factor_y)
         self.button_frame.showturtle()
 
@@ -231,6 +239,42 @@ class Button:
 
         # Set the type to "Title"
         self.type = "Title"
+        self.id = id
+
+    def reinstate_to_title_small(self, id, scale_factor_x, scale_factor_y, fullscreen):
+        """
+            Reuses the existing button sprite to spawn a small title screen button based on the id.
+
+            :param id: A unique identifier for the button
+            :type id: int
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+
+            :param fullscreen: The variable that determines if fullscreen is on or off
+            :type fullscreen: int
+
+            :return: None
+        """
+
+        if fullscreen == 1:
+            self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Scaled.gif")
+        else:
+            self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small.gif")
+        if id == 1:
+            self.button_frame.goto(-130 * scale_factor_x, -185 * scale_factor_y)
+        elif id == 2:
+            self.button_frame.goto(130 * scale_factor_x, -185 * scale_factor_y)
+        self.button_frame.showturtle()
+
+        self.button_text.color("white")
+        self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() - 22 * scale_factor_y)
+
+        # Set the type to "Title Small"
+        self.type = "Title_Small"
         self.id = id
 
     def reinstate_to_game(self, scale_factor_x, scale_factor_y, fullscreen):
@@ -474,11 +518,14 @@ class Button:
             elif self.id == 2:
                 self.button_text.write("Alien Mode", align="center", font=("Courier", int(30 * scale_factor), "normal"))
             elif self.id == 3:
-                self.button_text.write("Statistics", align="center", font=("Courier", int(30 * scale_factor), "normal"))
+                self.button_text.write("Coin Shop", align="center", font=("Courier", int(30 * scale_factor), "normal"))
             elif self.id == 4:
-                self.button_text.write("Settings", align="center", font=("Courier", int(30 * scale_factor), "normal"))
-            elif self.id == 5:
                 self.button_text.write("Exit", align="center", font=("Courier", int(30 * scale_factor), "normal"))
+        elif self.type == "Title_Small":
+            if self.id == 1:
+                self.button_text.write("Settings", align="center",  font=("Courier", int(30 * scale_factor), "normal"))
+            elif self.id == 2:
+                self.button_text.write("Stats", align="center",  font=("Courier", int(30 * scale_factor), "normal"))
         elif self.type == "Game":
             self.button_text.write("Main Menu", align="center", font=("Courier", int(24 * scale_factor), "normal"))
         elif self.type == "Regular_Settings_And_Controls":
@@ -639,12 +686,18 @@ class Button:
                 else:
                     self.button_text.color("white")
             elif self.id == 4:
-                if 388 * scale_factor_x < x < 890 * scale_factor_x and 509 * scale_factor_y < y < 581 * scale_factor_y:
+                if 388 * scale_factor_x < x < 890 * scale_factor_x and 599 * scale_factor_y < y < 671 * scale_factor_y:
                     self.button_text.color("yellow")
                 else:
                     self.button_text.color("white")
-            elif self.id == 5:
-                if 388 * scale_factor_x < x < 890 * scale_factor_x and 599 * scale_factor_y < y < 671 * scale_factor_y:
+        elif self.type == "Title_Small":
+            if self.id == 1:
+                if 388 * scale_factor_x < x < 630 * scale_factor_x and 509 * scale_factor_y < y < 581 * scale_factor_y:
+                    self.button_text.color("yellow")
+                else:
+                    self.button_text.color("white")
+            elif self.id == 2:
+                if 648 * scale_factor_x < x < 890 * scale_factor_x and 509 * scale_factor_y < y < 581 * scale_factor_y:
                     self.button_text.color("yellow")
                 else:
                     self.button_text.color("white")
