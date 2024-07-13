@@ -83,6 +83,13 @@ all_button_list = []
 buttons_on_screen_list = []
 current_button_index = 0
 
+# Panel Data
+panel_turtle = []
+panel_index = 0
+
+# Which item is being displayed
+displayed = 0
+
 # Text Box Data
 all_text_list = []
 text_on_screen_list = []

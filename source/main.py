@@ -30,6 +30,7 @@ import ctypes
 from Data.data import *
 from Data.screen import *
 from Class.button import Button
+from Class.panel import Panel
 from Class.textBox import Text
 from Class.coin import CoinIndicator
 from Class.powerUps import *
@@ -1135,6 +1136,9 @@ def update_text():
     elif mode == "Shop":
         for bu in buttons_on_screen_list:
             bu.write_lines(scale_factor)
+        for pa in panel_turtle:
+            pa.write_text(displayed, scale_factor)
+            pa.set_indicator(displayed, fullscreen)
         for t in text_on_screen_list:
             if t.id == 1:
                 t.write_left("{}".format(total_coins), 24, "normal", scale_factor)
@@ -1318,6 +1322,31 @@ def spawn_buttons(type, id):
                         buttons_on_screen_list.append(bu)
                         current_button_index = current_button_index + 1
                         break
+
+
+def spawn_panel():
+    """
+        Spawn a panel on the screen with the correct type based on what screen the player is on.
+
+        :return: None
+    """
+
+    global mode
+    global panel_index
+    # If the panel sprite does not exist
+    if len(panel_turtle) == 0:
+        panel = Panel(mode, scale_factor_X, scale_factor_Y, fullscreen)
+        panel_turtle.append(panel)
+        panel_index = panel_index + 1
+    # If it does exist, just reinstate the existing one
+    else:
+        for pa in panel_turtle:
+            if pa.get_panel_frame().isvisible():
+                continue
+            else:
+                if mode == "Shop":
+                    pa.reinstate_to_shop(scale_factor_X, scale_factor_Y, fullscreen)
+                panel_index = panel_index + 1
 
 
 def spawn_text_box(id, x, y, color):
@@ -1985,6 +2014,9 @@ while True:
             bu.remove()
         buttons_on_screen_list.clear()
         current_button_index = 0
+        for pa in panel_turtle:
+            pa.remove()
+        panel_index = 0
         for t in text_on_screen_list:
             t.get_text_box().clear()
             t.remove()
@@ -3417,6 +3449,10 @@ while True:
     """
 
     if mode == "Shop":
+        # Create the side panel
+        if panel_index == 0:
+            spawn_panel()
+
         # Create Main Menu button
         if current_button_index == 0:
             spawn_buttons("Game", 1)
