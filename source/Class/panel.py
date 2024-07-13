@@ -34,7 +34,10 @@ class Panel:
         self.panel_text.color("white")
         # Ensure that the turtle does not draw lines on the screen while moving
         self.panel_text.penup()
-        self.panel_text.goto(self.panel.xcor() + 120 * scale_factor_x, self.panel.ycor() + -8 * scale_factor_y)
+        if fullscreen == 1:
+            self.panel_text.goto(self.panel.xcor() + 120 * scale_factor_x, self.panel.ycor() - 8 * scale_factor_y)
+        else:
+            self.panel_text.goto(self.panel.xcor() + 120 * scale_factor_x, self.panel.ycor() - 28 * scale_factor_y)
         self.panel_text.hideturtle()
 
         self.panel_indicator = turtle.Turtle()
@@ -68,7 +71,10 @@ class Panel:
         self.panel.goto(450 * scale_factor_x, 0)
         self.panel.showturtle()
 
-        self.panel_text.goto(self.panel.xcor() + 120 * scale_factor_x, self.panel.ycor() - 8 * scale_factor_y)
+        if fullscreen == 1:
+            self.panel_text.goto(self.panel.xcor() + 120 * scale_factor_x, self.panel.ycor() - 8 * scale_factor_y)
+        else:
+            self.panel_text.goto(self.panel.xcor() + 120 * scale_factor_x, self.panel.ycor() - 28 * scale_factor_y)
 
         self.panel_indicator.goto(self.panel.xcor(), self.panel.ycor() + 205 * scale_factor_y)
 
@@ -92,6 +98,8 @@ class Panel:
     def write_text(self, id, scale_factor):
         # Clears the existing text
         self.panel_text.clear()
+
+        print(scale_factor)
 
         # Writes new text based on the panel type and id of the text
         if self.type == "Shop":
