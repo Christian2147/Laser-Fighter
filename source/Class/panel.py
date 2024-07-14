@@ -15,7 +15,7 @@
 
 import turtle
 import configparser
-from Data.shop import *
+from Data.shop_data import *
 
 
 class Panel:
