@@ -13,28 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-
-class Description:
-    def __init__(self, align, text, size, font):
-        self.align = align
-        self.text = text
-        self.size = size
-        self.font = font
-
-    def __del__(self):
-        del self.align
-        del self.text
-        del self.size
-        del self.font
-
-    def get_align(self):
-        return self.align
-
-    def get_text(self):
-        return self.text
-
-    def get_size(self):
-        return self.size
-
-    def get_font(self):
-        return self.font
+import turtle
+from Class.button import Button
+from Class.textBox import Text

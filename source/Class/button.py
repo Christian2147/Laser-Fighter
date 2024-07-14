@@ -27,6 +27,7 @@
 """
 
 import turtle
+import configparser
 
 
 class Button:
@@ -98,6 +99,18 @@ class Button:
             else:
                 self.button_frame.shape("Textures/Buttons/Main_Menu_Button_Main.gif")
             self.button_frame.goto(-537 * scale_factor_x, 339 * scale_factor_y)
+        # The item slots in the shop
+        elif type == "Shop_Slot":
+            if fullscreen == 1:
+                self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Scaled.gif")
+            else:
+                self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+            if id < 6:
+                self.button_frame.goto((-580 + (72.5 * (id - 1))) * scale_factor_x, 176 * scale_factor_y)
+            elif 5 < id < 11:
+                self.button_frame.goto((-580 + (72.5 * (id - 1))) * scale_factor_x, 23 * scale_factor_y)
+            elif 10 < id < 15:
+                self.button_frame.goto((-580 + (72.5 * (id - 1))) * scale_factor_x, -130 * scale_factor_y)
         # Standard buttons on the settings and controls screen
         elif type == "Regular_Settings_And_Controls":
             if fullscreen == 1:
@@ -144,11 +157,18 @@ class Button:
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() - 22 * scale_factor_y)
         elif type == "Game":
             self.button_text.goto(-537 * scale_factor_x, 320 * scale_factor_y)
+        elif type == "Shop_Slot":
+            if fullscreen == 1:
+                self.button_text.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
+            else:
+                self.button_text.shape("Textures/Gun/Player_Gun_Right.gif")
+            self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 70 * scale_factor_y)
         elif type == "Regular_Settings_And_Controls":
             self.button_text.goto(315.5 * scale_factor_x, self.button_frame.ycor() - 22 * scale_factor_y)
         elif type == "Settings_Toggle" or type == "Controls_Toggle":
             self.button_text.goto(self.button_frame.xcor() - 30 * scale_factor_x, self.button_frame.ycor() - 22 * scale_factor_y)
-        self.button_text.hideturtle()
+        if type != "Shop_Slot":
+            self.button_text.hideturtle()
 
         # Create the indicators for the toggle buttons on the settings screen
         if type == "Settings_Toggle":
@@ -182,6 +202,14 @@ class Button:
             self.button_indicator.hideturtle()
 
             self.indicator = 1
+        elif type == "Shop Slot" and id != 1 and id != 6 and id != 11 and id != 12 and id != 13:
+            self.button_indicator = turtle.Turtle()
+            self.button_indicator.penup()
+            self.button_indicator.shape("Textures/GUI/Locked.gif")
+            self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 70 * scale_factor_y)
+            self.button_indicator.hideturtle()
+
+            self.button_indicator = 1
         else:
             self.indicator = 0
 
@@ -306,6 +334,36 @@ class Button:
         # Set the type to "Game"
         self.type = "Game"
         self.id = 1
+
+    def reinstate_to_shop_slot(self, id, scale_factor_x, scale_factor_y, fullscreen):
+        if fullscreen == 1:
+            self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Scaled.gif")
+        else:
+            self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+        if id < 6:
+            self.button_frame.goto((-580 + (72.5 * (id - 1))) * scale_factor_x, 176 * scale_factor_y)
+        elif 5 < id < 11:
+            self.button_frame.goto((-580 + (72.5 * (id - 1))) * scale_factor_x, 23 * scale_factor_y)
+        elif 10 < id < 15:
+            self.button_frame.goto((-580 + (72.5 * (id - 1))) * scale_factor_x, -130 * scale_factor_y)
+        self.button_frame.showturtle()
+
+        if fullscreen == 1:
+            self.button_text.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
+        else:
+            self.button_text.shape("Textures/Gun/Player_Gun_Right.gif")
+        self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 70 * scale_factor_y)
+
+        # If the button indicator does not already exist, create one
+        if self.indicator == 0:
+            self.button_indicator = turtle.Turtle()
+            self.button_indicator.penup()
+            self.indicator = 1
+        self.button_indicator.shape("Textures/GUI/Locked.gif")
+        self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 70 * scale_factor_y)
+
+        self.type = "Shop_Slot"
+        self.id = id
 
     def reinstate_to_regular_settings_and_controls(self, id, scale_factor_x, scale_factor_y, fullscreen):
         """
@@ -510,7 +568,8 @@ class Button:
         """
 
         # Clears the existing text
-        self.button_text.clear()
+        if self.type != "Shop_Slot":
+            self.button_text.clear()
         # Writes new text based on the button type and id
         if self.type == "Title":
             if self.id == 1:
@@ -649,6 +708,16 @@ class Button:
                 self.button_indicator.clear()
                 self.button_indicator.write("Off", align="center", font=("Courier", int(28 * scale_factor), "bold"))
 
+    def toggle_indicator(self, catigory, id):
+        if self.type == "Shop_Slot":
+            config = configparser.ConfigParser()
+            config.read('Config/config.ini')
+            check_setting = config[catigory].getint(id)
+            if check_setting == 0:
+                self.button_indicator.showturtle()
+            else:
+                self.button_indicator.hideturtle()
+
     def update_text_color(self, x, y, scale_factor_x, scale_factor_y):
         """
             Used to change the color of the buttons text when the user decides to hover their mouse over the area
@@ -708,6 +777,28 @@ class Button:
             else:
                 self.button_text.color("white")
                 return 0
+        elif self.type == "Shop_Slot":
+            if self.id < 6:
+                if (6 + (73 * (self.id - 1))) * scale_factor_x < x < (112 + (73 * (self.id - 1))) * scale_factor_x and 131 * scale_factor_y < y < 236 * scale_factor_y:
+                    self.button_frame.color("yellow")
+                    self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted.gif")
+                else:
+                    self.button_frame.color("White")
+                    self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+            elif 5 < self.id < 11:
+                if (6 + (73 * (self.id - 1))) * scale_factor_x < x < (112 + (73 * (self.id - 1))) * scale_factor_x and 284 * scale_factor_y < y < 389 * scale_factor_y:
+                    self.button_frame.color("yellow")
+                    self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted.gif")
+                else:
+                    self.button_frame.color("White")
+                    self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+            elif 10 < self.id < 15:
+                if (6 + (73 * (self.id - 1))) * scale_factor_x < x < (112 + (73 * (self.id - 1))) * scale_factor_x and 437 * scale_factor_y < y < 542 * scale_factor_y:
+                    self.button_frame.color("yellow")
+                    self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted.gif")
+                else:
+                    self.button_frame.color("White")
+                    self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
         elif self.type == "Regular_Settings_And_Controls":
             if self.id == 1:
                 if 669 * scale_factor_x < x < 1240 * scale_factor_x and 614 * scale_factor_y < y < 675 * scale_factor_y:
@@ -841,4 +932,8 @@ class Button:
         """
 
         button_color = self.button_text.fillcolor()
+        return button_color, self.type, self.id
+
+    def click_slot(self):
+        button_color = self.button_frame.fillcolor()
         return button_color, self.type, self.id

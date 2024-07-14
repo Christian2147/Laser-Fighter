@@ -195,7 +195,7 @@ class Text:
 
         self.text_box.color(color)
 
-    def move(self, scale_factor_x):
+    def move(self, mode, scale_factor_x):
         """
             Moves the text side to side on the screen (Used for screen titles)
 
@@ -213,14 +213,24 @@ class Text:
         current_time = time.time()
         elapsed_time = current_time - self.start_time
         if elapsed_time >= 0.02:
-            # Text box reaches the left limit
-            if self.text_box.xcor() < -120 * scale_factor_x:
-                # Move right
-                self.moving = 1
-            # Text box reaches the right limit
-            if self.text_box.xcor() > 120 * scale_factor_x:
-                # Move left
-                self.moving = -1
+            if mode == "Shop":
+                # Text box reaches the left limit
+                if self.text_box.xcor() < -195 * scale_factor_x:
+                    # Move right
+                    self.moving = 1
+                # Text box reaches the right limit
+                if self.text_box.xcor() > 45 * scale_factor_x:
+                    # Move left
+                    self.moving = -1
+            else:
+                # Text box reaches the left limit
+                if self.text_box.xcor() < -120 * scale_factor_x:
+                    # Move right
+                    self.moving = 1
+                # Text box reaches the right limit
+                if self.text_box.xcor() > 120 * scale_factor_x:
+                    # Move left
+                    self.moving = -1
             # Move 5 units each timed iteration
             if self.moving == 1:
                 # Calculate the delta movement

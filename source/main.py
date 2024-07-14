@@ -1141,7 +1141,15 @@ def update_text():
             pa.set_indicator(displayed, fullscreen)
         for t in text_on_screen_list:
             if t.id == 1:
+                t.write("Shop", 72, "bold", scale_factor)
+            elif t.id == 2:
                 t.write_left("{}".format(total_coins), 24, "normal", scale_factor)
+            elif t.id == 3:
+                t.write_left("Machine Mode", 25, "bold", scale_factor)
+            elif t.id == 4:
+                t.write_left("Alien Mode", 25, "bold", scale_factor)
+            elif t.id == 5:
+                t.write_left("Power Ups", 25, "bold", scale_factor)
     elif mode == "Stats":
         for bu in buttons_on_screen_list:
             bu.write_lines(scale_factor)
@@ -2092,7 +2100,7 @@ while True:
                 spawn_text_box(3, 481, 320, "white")
         for t in text_on_screen_list:
             if t.id == 1:
-                t.move(scale_factor_X)
+                t.move(mode, scale_factor_X)
 
         # detect if the buttons have been clicked
         for bu in buttons_on_screen_list:
@@ -3465,11 +3473,31 @@ while True:
 
         # Spawn all the necessary standalone text
         if current_text_index == 0:
-            spawn_text_box(1, -588, 281, "yellow")
+            spawn_text_box(1, -75, 240, "red")
+            spawn_text_box(2, -588, 281, "yellow")
+            spawn_text_box(3, -630, 228, "#ff5349")
+            spawn_text_box(4, -630, 75, "#ff5349")
+            spawn_text_box(5, -630, -78, "#ff5349")
+            slot = turtle.Turtle()
+            slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+            slot.goto(-580 * scale_factor_X, 176 * scale_factor_Y)
+            slot = turtle.Turtle()
+            slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+            slot.goto(-580 * scale_factor_X, 23 * scale_factor_Y)
+            slot = turtle.Turtle()
+            slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+            slot.goto(-580 * scale_factor_X, -130 * scale_factor_Y)
 
         # Spawn the coin indicator
         if coin_indicator_index == 0:
             spawn_coin_indicator()
+
+        # Move the title text back and fourth across the screen as needed
+        for t in text_on_screen_list:
+            if t.id == 1:
+                t.move(mode, scale_factor_X)
+                break
+
 
     """
          Code Below is for when Statistics Mode is turned on.
@@ -3501,7 +3529,7 @@ while True:
         # Move the title text back and fourth across the screen as needed
         for t in text_on_screen_list:
             if t.id == 1:
-                t.move(scale_factor_X)
+                t.move(mode, scale_factor_X)
                 break
 
     """
@@ -3560,7 +3588,7 @@ while True:
         # Move the title text left and right across the screen
         for t in text_on_screen_list:
             if t.id == 1:
-                t.move(scale_factor_X)
+                t.move(mode, scale_factor_X)
                 break
 
         # Settings Data Updates
@@ -3658,7 +3686,7 @@ while True:
         # Move the title text left and right across the screen
         for t in text_on_screen_list:
             if t.id == 1:
-                t.move(scale_factor_X)
+                t.move(mode, scale_factor_X)
                 break
 
         # Control Setting Conflict Updates

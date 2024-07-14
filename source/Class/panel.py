@@ -99,8 +99,6 @@ class Panel:
         # Clears the existing text
         self.panel_text.clear()
 
-        print(scale_factor)
-
         # Writes new text based on the panel type and id of the text
         if self.type == "Shop":
             if id == 0:
