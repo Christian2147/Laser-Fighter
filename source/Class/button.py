@@ -711,7 +711,7 @@ class Button:
     def toggle_indicator(self, catigory, id):
         if self.type == "Shop_Slot":
             config = configparser.ConfigParser()
-            config.read('Config/config.ini')
+            config.read('Config/playerData.ini')
             check_setting = config[catigory].getint(id)
             if check_setting == 0:
                 self.button_indicator.showturtle()

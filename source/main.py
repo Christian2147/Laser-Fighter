@@ -30,6 +30,7 @@ import ctypes
 from Data.data import *
 from Data.screen import *
 from Class.button import Button
+from Class.slot import Slot
 from Class.panel import Panel
 from Class.textBox import Text
 from Class.coin import CoinIndicator
@@ -1137,7 +1138,7 @@ def update_text():
         for bu in buttons_on_screen_list:
             bu.write_lines(scale_factor)
         for pa in panel_turtle:
-            pa.write_text(displayed, scale_factor)
+            pa.write_text(scale_factor)
             pa.set_indicator(displayed, fullscreen)
         for t in text_on_screen_list:
             if t.id == 1:
@@ -3478,15 +3479,18 @@ while True:
             spawn_text_box(3, -630, 228, "#ff5349")
             spawn_text_box(4, -630, 75, "#ff5349")
             spawn_text_box(5, -630, -78, "#ff5349")
-            slot = turtle.Turtle()
-            slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
-            slot.goto(-580 * scale_factor_X, 176 * scale_factor_Y)
-            slot = turtle.Turtle()
-            slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
-            slot.goto(-580 * scale_factor_X, 23 * scale_factor_Y)
-            slot = turtle.Turtle()
-            slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
-            slot.goto(-580 * scale_factor_X, -130 * scale_factor_Y)
+            #slot = turtle.Turtle()
+            #slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+            #slot.goto(-580 * scale_factor_X, 176 * scale_factor_Y)
+            #slot = turtle.Turtle()
+            #slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+            #slot.goto(-580 * scale_factor_X, 23 * scale_factor_Y)
+            #slot = turtle.Turtle()
+            #slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+            #slot.goto(-580 * scale_factor_X, -130 * scale_factor_Y)
+
+        #for pa in panel_turtle:
+            #pa.set_panel_text("Machine_Mode", 5)
 
         # Spawn the coin indicator
         if coin_indicator_index == 0:

@@ -32,28 +32,28 @@ main_description = [
 
 # For the Machine Player upgrades
 machine_descriptions = [
-    Description("right", "Default\n\nLaser Speed: 14.5\nLaser Color: Green\nLaser Size: Large\nLasers Per Round: 1\nDamage: 1\nSpecial Abilities: None", 16, "Courier"),
-    Description("right", "Machine Washer\n\nLaser Speed: 25\nLaser Color: Sky Blue\nLaser Size: Extra Large\nLasers Per Round: 1\nDamage: 1\nSpecial Abilities: None", 16, "Courier"),
-    Description("right", "The Incinerater\n\nLaser Speed: 20\nLaser Color: Orange\nLaser Size: Extra Large\nLasers Per Round: 2\nDamage: 1\nSpecial Abilities: None", 16, "Courier"),
-    Description("right", "The Black Hole\n\nLaser Speed: 28\nLaser Color: Purple\nLaser Size: Extra Extra Large\nLasers Per Round: 3\nDamage: 2\nSpecial Abilities:\nDouble Score", 16, "Courier"),
-    Description("right", "The Star Killer\n\nLaser Speed: 30\nLaser Color: Multicolor\nLaser Size: Extra Extra Large\nLasers Per Round: 3\n Damage: 2\nSp[ecial Abilities:\nDouble Score\nPower Up Spawns Incresed", 16, "Courier")
+    Description("right", "Default\n\nLaser Speed: 14.5\nLaser Color: Green\nLaser Size: L\nLasers Per Round: 1\nDamage: 1\nSpecial Abilities:\nNone", 16, "Courier"),
+    Description("right", "Machine Washer\n\nLaser Speed: 25\nLaser Color: Sky Blue\nLaser Size: XL\nLasers Per Round: 1\nDamage: 1\nSpecial Abilities:\nNone", 16, "Courier"),
+    Description("right", "The Incinerater\n\nLaser Speed: 20\nLaser Color: Orange\nLaser Size: XL\nLasers Per Round: 2\nDamage: 1\nSpecial Abilities:\nNone", 16, "Courier"),
+    Description("right", "The Black Hole\n\nLaser Speed: 28\nLaser Color: Purple\nLaser Size: XXL\nLasers Per Round: 3\nDamage: 2\nSpecial Abilities:\nDouble Score", 16, "Courier"),
+    Description("right", "The Star Killer\n\nLaser Speed: 30\nLaser Color: Multicolor\nLaser Size: XXL\nLasers Per Round: 3\nDamage: 2\nSpecial Abilities:\nDouble Score\nPower Up Spawns Incr.", 16, "Courier")
 ]
 
 # For the alien gun upgrades
 alien_descriptions = [
-    Description("right", "Default\n\nLaser Speed: 13\nLaser Color: Red\nLaser Size: Large\nLasers Per Round: 1\nDamage: 1\nPiercing: 2\nSpecial Abilities: None", 16, "Courier"),
-    Description("right", "The Cooker\n\nLaser Speed: 15\nLaser Color: Orange\nLaser Size: Medium\nLasers Per Round: 1\nDamage: 1\nPiercing: 3\nSpecial Abilities: None", 16, "Courier"),
-    Description("right", "Poison Dart Gun\n\nLaser Speed: 25\nLaser Color: Green\nLaser Size: Large\nLasers Per Round: 2\nDamage: 2\nPiercing: 2\nSpecial Abilities: None", 16, "Courier"),
-    Description("right", "Meteor Gun\n\nLaser Speed: 24\nLaser Color: Multicolor\nLaser Size: Extra Large\nLasers Per Round: 1\nDamage: 3\nPiercing: 3\nSpecial Abilities:\nDouble Score\n", 16, "Courier"),
-    Description("right", "The Supernova\n\nLaser Speed: 30\nLaser Color: Multicolor\nLaser Size: Extra Large\nLasers Per Round: 2\nDamage: 3\nPiercing: 4\nSpecial Abilities:\nDouble Score\nFaster Movement\nPower Up Spawns Increased", 16, "Courier")
+    Description("right", "Default\n\nLaser Speed: 13\nLaser Color: Red\nLaser Size: L\nLasers Per Round: 1\nDamage: 1\nPiercing: 2\nSpecial Abilities:\nNone", 16, "Courier"),
+    Description("right", "The Cooker\n\nLaser Speed: 15\nLaser Color: Orange\nLaser Size: M\nLasers Per Round: 1\nDamage: 1\nPiercing: 3\nSpecial Abilities:\nNone", 16, "Courier"),
+    Description("right", "Poison Dart Gun\n\nLaser Speed: 25\nLaser Color: Green\nLaser Size: L\nLasers Per Round: 2\nDamage: 2\nPiercing: 2\nSpecial Abilities:\nNone", 16, "Courier"),
+    Description("right", "Meteor Gun\n\nLaser Speed: 24\nLaser Color: Multicolor\nLaser Size: XL\nLasers Per Round: 1\nDamage: 3\nPiercing: 3\nSpecial Abilities:\nDouble Score", 16, "Courier"),
+    Description("right", "The Supernova\n\nLaser Speed: 30\nLaser Color: Multicolor\nLaser Size: XL\nLasers Per Round: 2\nDamage: 3\nPiercing: 4\nSpecial Abilities:\nDouble Score\nFaster Movement\nPower Up Spawns Incr.", 16, "Courier")
 ]
 
 # For the yellow power up upgrades
 yellow_power_up_descriptions = [
-    Description("right", "Level 2\n\nSpeed Increase: 3x\nDuration: 20\nSpecial: None", 16, "Courier"),
-    Description("right", "Level 3\n\nSpeed Increase: 3x\nDuration: 30\nSpecial: None", 16, "Courier"),
-    Description("right", "Level 4\n\nSpeed Increase: 4x\nDuration: 45\nSpecial: None", 16, "Courier"),
-    Description("right", "Level 5\n\nSpeed Increase: 4x\nDuration: 60\nSpecial: Player movement 1.5x", 16, "Courier"),
+    Description("right", "Level 2\n\nSpeed Increase: 3x\nDuration: 20\nSpecial:\nNone", 16, "Courier"),
+    Description("right", "Level 3\n\nSpeed Increase: 3x\nDuration: 30\nSpecial:\nNone", 16, "Courier"),
+    Description("right", "Level 4\n\nSpeed Increase: 4x\nDuration: 45\nSpecial:\nNone", 16, "Courier"),
+    Description("right", "Level 5\n\nSpeed Increase: 4x\nDuration: 60\nSpecial:\nPlayer movement 1.5x", 16, "Courier"),
     Description("right", "Max Level Reached!", 16, "Courier")
 ]
 

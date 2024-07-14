@@ -14,6 +14,7 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import turtle
+import configparser
 from Data.shop import *
 
 
@@ -48,6 +49,8 @@ class Panel:
         self.panel_indicator.hideturtle()
 
         self.type = type
+        self.catigory = "Welcome"
+        self.id = 1
 
     def __del__(self):
         """
@@ -79,6 +82,8 @@ class Panel:
         self.panel_indicator.goto(self.panel.xcor(), self.panel.ycor() + 205 * scale_factor_y)
 
         self.type = "Shop"
+        self.catigory = "Welcome"
+        self.id = 1
 
     def get_panel_frame(self):
         return self.panel
@@ -89,20 +94,73 @@ class Panel:
     def get_panel_indicator(self):
         return self.panel_indicator
 
+    def set_panel_text(self, new_catigory, new_id):
+        self.catigory = new_catigory
+        self.id = new_id
+
     def remove(self):
         self.panel.hideturtle()
         self.panel_text.hideturtle()
         self.panel_text.clear()
         self.panel_indicator.hideturtle()
 
-    def write_text(self, id, scale_factor):
+    def write_text(self, scale_factor):
         # Clears the existing text
         self.panel_text.clear()
 
         # Writes new text based on the panel type and id of the text
         if self.type == "Shop":
-            if id == 0:
-                self.panel_text.write("Welcome to\n the Shop!\n\nHere, you can\nupgrade your\nweapons,\nabilities,\nand power-ups\nto become even\nmore powerful.", align="right", font=("Courier", int(24 * scale_factor), "normal"))
+            if self.catigory == "Welcome":
+                self.panel_text.write("{}".format(main_description[self.id - 1].get_text()),
+                                        align=main_description[self.id - 1].get_align(),
+                                        font=(main_description[self.id - 1].get_font(),
+                                        int(main_description[self.id - 1].get_size() * scale_factor), "normal"))
+            elif self.catigory == "Machine_Mode":
+                self.panel_text.write("{}".format(machine_descriptions[self.id - 1].get_text()),
+                                        align=machine_descriptions[self.id - 1].get_align(),
+                                        font=(machine_descriptions[self.id - 1].get_font(),
+                                        int(machine_descriptions[self.id - 1].get_size() * scale_factor), "normal"))
+            elif self.catigory == "Alien_Mode":
+                self.panel_text.write("{}".format(alien_descriptions[self.id - 1].get_text()),
+                                        align=alien_descriptions[self.id - 1].get_align(),
+                                        font=(alien_descriptions[self.id - 1].get_font(),
+                                        int(alien_descriptions[self.id - 1].get_size() * scale_factor), "normal"))
+            elif self.catigory == "Yellow_Power_Up":
+                config = configparser.ConfigParser()
+                config.read('Config/playerData.ini')
+                check_setting = config['Power_Up_Levels'].getint('yellow_power_up')
+
+                self.panel_text.write("{}".format(yellow_power_up_descriptions[check_setting - 1].get_text()),
+                                        align=yellow_power_up_descriptions[check_setting - 1].get_align(),
+                                        font=(yellow_power_up_descriptions[check_setting - 1].get_font(),
+                                        int(yellow_power_up_descriptions[check_setting - 1].get_size() * scale_factor), "normal"))
+            elif self.catigory == "Blue_Power_Up":
+                config = configparser.ConfigParser()
+                config.read('Config/playerData.ini')
+                check_setting = config['Power_Up_Levels'].getint('blue_power_up')
+
+                self.panel_text.write("{}".format(blue_power_up_descriptions[check_setting - 1].get_text()),
+                                        align=blue_power_up_descriptions[check_setting - 1].get_align(),
+                                        font=(blue_power_up_descriptions[check_setting - 1].get_font(),
+                                        int(blue_power_up_descriptions[check_setting - 1].get_size() * scale_factor), "normal"))
+            elif self.catigory == "Green_Power_Up":
+                config = configparser.ConfigParser()
+                config.read('Config/playerData.ini')
+                check_setting = config['Power_Up_Levels'].getint('green_power_up')
+
+                self.panel_text.write("{}".format(green_power_up_descriptions[check_setting - 1].get_text()),
+                                        align=green_power_up_descriptions[check_setting - 1].get_align(),
+                                        font=(green_power_up_descriptions[check_setting - 1].get_font(),
+                                        int(green_power_up_descriptions[check_setting - 1].get_size() * scale_factor), "normal"))
+            elif self.catigory == "Red_Power_Up":
+                config = configparser.ConfigParser()
+                config.read('Config/playerData.ini')
+                check_setting = config['Power_Up_Levels'].getint('red_power_up')
+
+                self.panel_text.write("{}".format(red_power_up_descriptions[check_setting - 1].get_text()),
+                                        align=red_power_up_descriptions[check_setting - 1].get_align(),
+                                        font=(red_power_up_descriptions[check_setting - 1].get_font(),
+                                        int(red_power_up_descriptions[check_setting - 1].get_size() * scale_factor), "normal"))
 
     def set_indicator(self, id, fullscreen):
         if id != 0:
