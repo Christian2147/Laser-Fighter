@@ -28,6 +28,8 @@ import os
 
 # Current Screen Variable - Determines what screen is currently being displayed in the window
 mode = "Title_Mode"
+# Determines the subscreen
+page = "Machine_Mode"
 
 # Button text highlighting - Used to ensure button text highlighting stays consistent across screens
 button_update = 0

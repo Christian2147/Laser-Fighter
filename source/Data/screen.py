@@ -181,6 +181,8 @@ texture_paths = [
     "Textures/Buttons/Title_Screen_Button_Small.gif",
     "Textures/Buttons/Inventory_Slot_Frame.gif",
     "Textures/Buttons/Inventory_Slot_Frame_Highlighted.gif",
+    "Textures/Buttons/Tab.gif",
+    "Textures/Buttons/Tab_Highlighted.gif",
     "Textures/GUI/Side_Panel_Shop.gif",
     "Textures/GUI/Locked.gif",
     "Textures/Buttons/Settings_And_Controls_Button.gif",

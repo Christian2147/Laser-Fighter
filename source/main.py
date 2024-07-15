@@ -320,6 +320,48 @@ def launch_shop_mode(x, y):
         screen_update = 1
 
 
+def display_machine_mode_page(x, y):
+    global page
+    global screen_update
+    wn.onscreenclick(None)
+    # Check to see if the cursor is in the bound of the button to be clicked
+    if (x > -641 * scale_factor_X) and (x < -574 * scale_factor_X) and (y > 99 * scale_factor_Y) and (y < 201 * scale_factor_Y):
+        if button_sound == 1:
+            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+            sound.play()
+        # Enter the Machine Mode page
+        page = "Machine_Mode"
+        screen_update = 1
+
+
+def display_alien_mode_page(x, y):
+    global page
+    global screen_update
+    wn.onscreenclick(None)
+    # Check to see if the cursor is in the bound of the button to be clicked
+    if (x > -641 * scale_factor_X) and (x < -574 * scale_factor_X) and (y > -21 * scale_factor_Y) and (y < 81 * scale_factor_Y):
+        if button_sound == 1:
+            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+            sound.play()
+        # Enter the Alien Mode page
+        page = "Alien_Mode"
+        screen_update = 1
+
+
+def display_power_up_page(x, y):
+    global page
+    global screen_update
+    wn.onscreenclick(None)
+    # Check to see if the cursor is in the bound of the button to be clicked
+    if (x > -641 * scale_factor_X) and (x < -574 * scale_factor_X) and (y > -141 * scale_factor_Y) and (y < -39 * scale_factor_Y):
+        if button_sound == 1:
+            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+            sound.play()
+        # Enter the Power Ups page
+        page = "Power_Ups"
+        screen_update = 1
+
+
 def launch_stats_mode(x, y):
     """
         Function used to enter the statistics screen.
@@ -1006,26 +1048,26 @@ def position(event):
     # Update button text as needed
     if mode == "Title_Mode":
         for bu in buttons_on_screen_list:
-            bu.update_text_color(a, b, scale_factor_X, scale_factor_Y)
+            bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
     if mode == "Machine_Mode" or mode == "Alien_Mode" or mode == "Stats" or mode == "Shop":
         for bu in buttons_on_screen_list:
-            button_update = bu.update_text_color(a, b, scale_factor_X, scale_factor_Y)
+            button_update = bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
     if mode == "Settings":
         for bu in buttons_on_screen_list:
             if bu.type == "Regular_Settings_And_Controls":
                 if id == 1:
-                    button_update = bu.update_text_color(a, b, scale_factor_X, scale_factor_Y)
+                    button_update = bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
                 else:
-                    bu.update_text_color(a, b, scale_factor_X, scale_factor_Y)
+                    bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
             else:
-                bu.update_text_color(a, b, scale_factor_X, scale_factor_Y)
+                bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
     if mode == "Controls":
         for bu in buttons_on_screen_list:
             if bu.type == "Regular_Settings_And_Controls":
                 if id == 1:
-                    button_update = bu.update_text_color(a, b, scale_factor_X, scale_factor_Y)
+                    button_update = bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
                 else:
-                    bu.update_text_color(a, b, scale_factor_X, scale_factor_Y)
+                    bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
             elif bu.type == "Controls_Toggle":
                 if bu.id == 1:
                     # If there is a keybind conflict
@@ -1052,7 +1094,7 @@ def position(event):
                     else:
                         bu.update_controls_text_color(0, a, b, scale_factor_X, scale_factor_Y)
             else:
-                bu.update_text_color(a, b, scale_factor_X, scale_factor_Y)
+                bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
 
 
 def update_text():
@@ -1146,11 +1188,12 @@ def update_text():
             elif t.id == 2:
                 t.write_left("{}".format(total_coins), 24, "normal", scale_factor)
             elif t.id == 3:
-                t.write_left("Machine Mode", 25, "bold", scale_factor)
-            elif t.id == 4:
-                t.write_left("Alien Mode", 25, "bold", scale_factor)
-            elif t.id == 5:
-                t.write_left("Power Ups", 25, "bold", scale_factor)
+                if page == "Machine_Mode":
+                    t.write_left("Machine Mode", 36, "bold", scale_factor)
+                elif page == "Alien_Mode":
+                    t.write_left("Alien Mode", 36, "bold", scale_factor)
+                elif page == "Power_Ups":
+                    t.write_left("Power Ups", 36, "bold", scale_factor)
     elif mode == "Stats":
         for bu in buttons_on_screen_list:
             bu.write_lines(scale_factor)
@@ -1296,6 +1339,8 @@ def spawn_buttons(type, id):
                         bu.reinstate_to_title_small(id, scale_factor_X, scale_factor_Y, fullscreen)
                     elif type == "Game":
                         bu.reinstate_to_game(scale_factor_X, scale_factor_Y, fullscreen)
+                    elif type == "Tab":
+                        bu.reinstate_to_tab(id, scale_factor_X, scale_factor_Y, fullscreen)
                     elif type == "Regular_Settings_And_Controls":
                         bu.reinstate_to_regular_settings_and_controls(id, scale_factor_X, scale_factor_Y, fullscreen)
                     elif type == "Controls_Toggle":
@@ -3465,6 +3510,8 @@ while True:
         # Create Main Menu button
         if current_button_index == 0:
             spawn_buttons("Game", 1)
+            for i in range(3):
+                spawn_buttons("Tab", i + 1)
 
         # Check if the main menu button has been clicked or not
         for bu in buttons_on_screen_list:
@@ -3472,22 +3519,30 @@ while True:
             if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
                 wn.onscreenclick(launch_title_mode)
 
+        for bu in buttons_on_screen_list:
+            button_color, button_type, id = bu.click_slot()
+            if button_type == "Tab":
+                if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                    wn.onscreenclick(display_machine_mode_page)
+                elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                    wn.onscreenclick(display_alien_mode_page)
+                elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                    wn.onscreenclick(display_power_up_page)
+
         # Spawn all the necessary standalone text
         if current_text_index == 0:
             spawn_text_box(1, -75, 240, "red")
             spawn_text_box(2, -588, 281, "yellow")
-            spawn_text_box(3, -630, 228, "#ff5349")
-            spawn_text_box(4, -630, 75, "#ff5349")
-            spawn_text_box(5, -630, -78, "#ff5349")
+            spawn_text_box(3, -500, 190, "#ff5349")
             #slot = turtle.Turtle()
             #slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
-            #slot.goto(-580 * scale_factor_X, 176 * scale_factor_Y)
+            #slot.goto(-427 * scale_factor_X, 96 * scale_factor_Y)
             #slot = turtle.Turtle()
             #slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
-            #slot.goto(-580 * scale_factor_X, 23 * scale_factor_Y)
+            #slot.goto(-257 * scale_factor_X, 96 * scale_factor_Y)
             #slot = turtle.Turtle()
             #slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
-            #slot.goto(-580 * scale_factor_X, -130 * scale_factor_Y)
+            #slot.goto(-427 * scale_factor_X, -94 * scale_factor_Y)
 
         #for pa in panel_turtle:
             #pa.set_panel_text("Machine_Mode", 5)
