@@ -3578,7 +3578,6 @@ while True:
                 t.move(mode, scale_factor_X)
                 break
 
-
     """
          Code Below is for when Statistics Mode is turned on.
     """

@@ -803,9 +803,6 @@ class Button:
             :param catigory: The catigory of the slot in the shop (Machine, Alien, Power Up)
             :type catigory: string
 
-            :param id: The id of the shop slot (for location)
-            :type id: int
-
             :return: None
         """
 
@@ -894,27 +891,32 @@ class Button:
                 else:
                     self.button_frame.shape("Textures/Buttons/Tab.gif")
         elif self.type == "Shop_Slot":
-            if self.id < 6:
-                if (6 + (73 * (self.id - 1))) * scale_factor_x < x < (112 + (73 * (self.id - 1))) * scale_factor_x and 131 * scale_factor_y < y < 236 * scale_factor_y:
+            if self.id < 5:
+                if (137 + (170 * (self.id - 1))) * scale_factor_x < x < (288 + (170 * (self.id - 1))) * scale_factor_x and 178 * scale_factor_y < y < 349 * scale_factor_y:
                     self.button_frame.color("yellow")
-                    self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted.gif")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
-            elif 5 < self.id < 11:
-                if (6 + (73 * (self.id - 1))) * scale_factor_x < x < (112 + (73 * (self.id - 1))) * scale_factor_x and 284 * scale_factor_y < y < 389 * scale_factor_y:
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+            elif 4 < self.id < 9:
+                if (137 + (170 * (self.id - 1 - 4))) * scale_factor_x < x < (288 + (170 * (self.id - 1 - 4))) * scale_factor_x and 368 * scale_factor_y < y < 539 * scale_factor_y:
                     self.button_frame.color("yellow")
-                    self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted.gif")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted.gif")
                 else:
                     self.button_frame.color("White")
-                    self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
-            elif 10 < self.id < 15:
-                if (6 + (73 * (self.id - 1))) * scale_factor_x < x < (112 + (73 * (self.id - 1))) * scale_factor_x and 437 * scale_factor_y < y < 542 * scale_factor_y:
-                    self.button_frame.color("yellow")
-                    self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted.gif")
-                else:
-                    self.button_frame.color("White")
-                    self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
         elif self.type == "Regular_Settings_And_Controls":
             if self.id == 1:
                 if 669 * scale_factor_x < x < 1240 * scale_factor_x and 614 * scale_factor_y < y < 675 * scale_factor_y:
