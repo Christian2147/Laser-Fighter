@@ -32,7 +32,12 @@ class Panel:
         Represents the panel in Laser Fighter for displaying important information.
 
         Attributes:
-
+            panel (turtle.Turtle()): The sprite that represents the frame of the panel
+            panel_text (turtle.Turtle()): The sprite that displays the panels text
+            panel_indicator (turtle.Turtle()): The sprite that displays the visual element on the panel
+            type (string): The type of panel generated (depending on the current screen)
+            catigory (string): The current type of description being displayed
+            id (int): The id for the specific description being displayed
     """
 
     def __init__(self, type, scale_factor_x, scale_factor_y, fullscreen):
