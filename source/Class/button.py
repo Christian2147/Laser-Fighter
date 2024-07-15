@@ -20,10 +20,12 @@
     Description:
     This file contains the logic related to buttons in Laser Fighter.
     This includes the button texture, the button text, and any button indicators.
-    Every button will have its text turn yellow when the mouse is hovering over it. If the player clicks with the
-    mouse while hovering over the button, it will executes that buttons function.
+    Every button will have its text turn yellow (except the shop slot) when the mouse is hovering over it.
+    If the player clicks with the mouse while hovering over the button, it will executes that buttons function.
     This code is messy as every single buttons attributes and location need to be individually configured since there
         is a different texture for every single type of button and every button acts differently than the others.
+    This class also contains the logic for the frame of the shop slot, which is a special type of button with extra
+        visuals.
 """
 
 import turtle
@@ -202,8 +204,10 @@ class Button:
             self.button_indicator.hideturtle()
 
             self.indicator = 1
+        # Create the locks for the slots in the shop
         elif type == "Shop Slot" and id != 1 and id != 6 and id != 11 and id != 12 and id != 13:
             self.button_indicator = turtle.Turtle()
+            # Ensure that the turtle does not draw lines on the screen while moving
             self.button_indicator.penup()
             self.button_indicator.shape("Textures/GUI/Locked.gif")
             self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 70 * scale_factor_y)
@@ -336,6 +340,24 @@ class Button:
         self.id = 1
 
     def reinstate_to_shop_slot(self, id, scale_factor_x, scale_factor_y, fullscreen):
+        """
+            Reuses the existing button sprite to spawn a shop slot and place it in a location based on the id.
+
+            :param id: A unique identifier for the shop slots location
+            :type id: int
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+
+            :param fullscreen: The variable that determines if fullscreen is on or off
+            :type fullscreen: int
+
+            :return: None
+        """
+
         if fullscreen == 1:
             self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Scaled.gif")
         else:
@@ -362,6 +384,7 @@ class Button:
         self.button_indicator.shape("Textures/GUI/Locked.gif")
         self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 70 * scale_factor_y)
 
+        # Set the type to "Shop Slot"
         self.type = "Shop_Slot"
         self.id = id
 
@@ -709,6 +732,18 @@ class Button:
                 self.button_indicator.write("Off", align="center", font=("Courier", int(28 * scale_factor), "bold"))
 
     def toggle_indicator(self, catigory, id):
+        """
+            Toggles the lock for the given shop slot on/off as needed
+
+            :param catigory: The catigory of the slot in the shop (Machine, Alien, Power Up)
+            :type catigory: string
+
+            :param id: The id of the shop slot (for location)
+            :type id: int
+
+            :return: None
+        """
+
         if self.type == "Shop_Slot":
             config = configparser.ConfigParser()
             config.read('Config/playerData.ini')
@@ -935,5 +970,20 @@ class Button:
         return button_color, self.type, self.id
 
     def click_slot(self):
+        """
+            Returns the required attributes of the shop slot to determine if it has been clicked or not.
+            This works differently than the button because the text is not highlighted yellow, rather, the entire
+                button is.
+
+            :return: button_color: the current color of the buttons frame
+            :type: string
+
+            :return: type: The type of button that the current button is
+            :type: string
+
+            :return: id: The unique identifier for the current button
+            :type: int
+        """
+
         button_color = self.button_frame.fillcolor()
         return button_color, self.type, self.id

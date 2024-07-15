@@ -14,7 +14,12 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    
+    File: panel.py
+    Author: Christian Marinkovich
+    Date: 2024-07-14
+    Description:
+    This file contains the logic for the side panel. This includes updating the description on the side panel and
+        loading all of the preview data of the item currently selected.
 """
 
 import turtle
@@ -23,6 +28,13 @@ from Data.shop_data import *
 
 
 class Panel:
+    """
+        Represents the panel in Laser Fighter for displaying important information.
+
+        Attributes:
+
+    """
+
     def __init__(self, type, scale_factor_x, scale_factor_y, fullscreen):
         self.panel = turtle.Turtle()
         self.panel.color("#3D3D3D")
