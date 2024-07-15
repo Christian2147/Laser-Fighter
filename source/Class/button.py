@@ -118,7 +118,7 @@ class Button:
             if id < 5:
                 self.button_frame.goto((-427 + (170 * (id - 1))) * scale_factor_x, 96 * scale_factor_y)
             elif 4 < id < 9:
-                self.button_frame.goto((-427 + (170 * (id - 1))) * scale_factor_x, -94 * scale_factor_y)
+                self.button_frame.goto((-427 + (170 * (id - 1 - 4))) * scale_factor_x, -94 * scale_factor_y)
         # Standard buttons on the settings and controls screen
         elif type == "Regular_Settings_And_Controls":
             if fullscreen == 1:
@@ -187,7 +187,7 @@ class Button:
                 self.button_text.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
             else:
                 self.button_text.shape("Textures/Gun/Player_Gun_Right.gif")
-            self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 70 * scale_factor_y)
+            self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
         elif type == "Regular_Settings_And_Controls":
             self.button_text.goto(315.5 * scale_factor_x, self.button_frame.ycor() - 22 * scale_factor_y)
         elif type == "Settings_Toggle" or type == "Controls_Toggle":
@@ -228,15 +228,17 @@ class Button:
 
             self.indicator = 1
         # Create the locks for the slots in the shop
-        elif type == "Shop Slot" and id != 1 and id != 6 and id != 11 and id != 12 and id != 13:
+        elif type == "Shop_Slot":
             self.button_indicator = turtle.Turtle()
             # Ensure that the turtle does not draw lines on the screen while moving
             self.button_indicator.penup()
-            self.button_indicator.shape("Textures/GUI/Locked.gif")
-            self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 70 * scale_factor_y)
-            self.button_indicator.hideturtle()
+            if fullscreen == 1:
+                self.button_indicator.shape("Textures/GUI/Locked_Scaled.gif")
+            else:
+                self.button_indicator.shape("Textures/GUI/Locked.gif")
+            self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
 
-            self.button_indicator = 1
+            self.indicator = 1
         else:
             self.indicator = 0
 
@@ -419,24 +421,27 @@ class Button:
         if id < 5:
             self.button_frame.goto((-427 + (170 * (id - 1))) * scale_factor_x, 96 * scale_factor_y)
         elif 4 < id < 9:
-            self.button_frame.goto((-427 + (170 * (id - 1))) * scale_factor_x, -94 * scale_factor_y)
+            self.button_frame.goto((-427 + (170 * (id - 1 - 4))) * scale_factor_x, -94 * scale_factor_y)
         self.button_frame.showturtle()
 
         if fullscreen == 1:
             self.button_text.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
         else:
             self.button_text.shape("Textures/Gun/Player_Gun_Right.gif")
-        self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 70 * scale_factor_y)
+        self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
         self.button_text.showturtle()
 
         # If the button indicator does not already exist, create one
         if self.indicator == 0:
             self.button_indicator = turtle.Turtle()
+            # Ensure that the turtle does not draw lines on the screen while moving
             self.button_indicator.penup()
             self.indicator = 1
-        self.button_indicator.shape("Textures/GUI/Locked.gif")
-        self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 70 * scale_factor_y)
-        self.button_indicator.showturtle()
+        if fullscreen == 1:
+            self.button_indicator.shape("Textures/GUI/Locked_Scaled.gif")
+        else:
+            self.button_indicator.shape("Textures/GUI/Locked.gif")
+        self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
 
         # Set the type to "Shop Slot"
         self.type = "Shop_Slot"
@@ -619,6 +624,12 @@ class Button:
         if self.indicator == 1:
             return self.button_indicator
 
+    def get_type(self):
+        return self.type
+
+    def get_id(self):
+        return self.id
+
     def remove(self):
         """
             Removes the button sprites from the screen and resets its attributes.
@@ -785,7 +796,7 @@ class Button:
                 self.button_indicator.clear()
                 self.button_indicator.write("Off", align="center", font=("Courier", int(28 * scale_factor), "bold"))
 
-    def toggle_indicator(self, catigory, id):
+    def toggle_indicator(self, catigory):
         """
             Toggles the lock for the given shop slot on/off as needed
 
@@ -799,13 +810,16 @@ class Button:
         """
 
         if self.type == "Shop_Slot":
-            config = configparser.ConfigParser()
-            config.read('Config/playerData.ini')
-            check_setting = config[catigory].getint(id)
-            if check_setting == 0:
-                self.button_indicator.showturtle()
-            else:
+            if catigory == 'Power_Ups':
                 self.button_indicator.hideturtle()
+            else:
+                config = configparser.ConfigParser()
+                config.read('Config/playerData.ini')
+                check_setting = config[catigory].getint('slot_' + str(self.id))
+                if check_setting == 0:
+                    self.button_indicator.showturtle()
+                else:
+                    self.button_indicator.hideturtle()
 
     def update_text_color(self, x, y, scale_factor_x, scale_factor_y, fullscreen):
         """

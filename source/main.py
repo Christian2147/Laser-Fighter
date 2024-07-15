@@ -30,7 +30,6 @@ import ctypes
 from Data.data import *
 from Data.screen import *
 from Class.button import Button
-from Class.slot import Slot
 from Class.panel import Panel
 from Class.textBox import Text
 from Class.coin import CoinIndicator
@@ -308,6 +307,7 @@ def launch_shop_mode(x, y):
     """
 
     global mode
+    global page
     global screen_update
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
@@ -317,6 +317,7 @@ def launch_shop_mode(x, y):
             sound.play()
         # Enter The Shop
         mode = "Shop"
+        page = "Machine_Mode"
         screen_update = 1
 
 
@@ -1178,7 +1179,8 @@ def update_text():
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Shop":
         for bu in buttons_on_screen_list:
-            bu.write_lines(scale_factor)
+            if bu.get_type() != "Shop_Slot":
+                bu.write_lines(scale_factor)
         for pa in panel_turtle:
             pa.write_text(scale_factor)
             pa.set_indicator(displayed, fullscreen)
@@ -1323,7 +1325,7 @@ def spawn_buttons(type, id):
     # If a usable button sprite does exist
     else:
         # If the button to create does not need a button indicator
-        if type != "Settings_Toggle":
+        if type != "Settings_Toggle" and type != "Shop_Slot":
             # Reinstate the button like normal
             # Go throguh all the button sprites
             for bu in all_button_list:
@@ -1354,12 +1356,15 @@ def spawn_buttons(type, id):
             found = 0
             # Go through all the button sprites
             for bu in all_button_list:
-                # Firest check if one can be found with a button indicator
+                # First check if one can be found with a button indicator
                 if bu.get_button_frame().isvisible() or bu.indicator == 0:
                     continue
                 # If found, reinstate that one
                 else:
-                    bu.reinstate_to_settings_toggle(id, scale_factor_X, scale_factor_Y, fullscreen)
+                    if type == "Settings_Toggle":
+                        bu.reinstate_to_settings_toggle(id, scale_factor_X, scale_factor_Y, fullscreen)
+                    elif type == "Shop_Slot":
+                        bu.reinstate_to_shop_slot(id, scale_factor_X, scale_factor_Y, fullscreen)
                     buttons_on_screen_list.append(bu)
                     current_button_index = current_button_index + 1
                     found = 1
@@ -1372,7 +1377,10 @@ def spawn_buttons(type, id):
                         continue
                     else:
                         # Reinstate it and add the button indicator
-                        bu.reinstate_to_settings_toggle(id, scale_factor_X, scale_factor_Y, fullscreen)
+                        if type == "Settings_Toggle":
+                            bu.reinstate_to_settings_toggle(id, scale_factor_X, scale_factor_Y, fullscreen)
+                        elif type == "Shop_Slot":
+                            bu.reinstate_to_shop_slot(id, scale_factor_X, scale_factor_Y, fullscreen)
                         buttons_on_screen_list.append(bu)
                         current_button_index = current_button_index + 1
                         break
@@ -3534,18 +3542,31 @@ while True:
             spawn_text_box(1, -75, 240, "red")
             spawn_text_box(2, -588, 281, "yellow")
             spawn_text_box(3, -500, 190, "#ff5349")
-            #slot = turtle.Turtle()
-            #slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
-            #slot.goto(-427 * scale_factor_X, 96 * scale_factor_Y)
-            #slot = turtle.Turtle()
-            #slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
-            #slot.goto(-257 * scale_factor_X, 96 * scale_factor_Y)
-            #slot = turtle.Turtle()
-            #slot.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
-            #slot.goto(-427 * scale_factor_X, -94 * scale_factor_Y)
 
-        #for pa in panel_turtle:
-            #pa.set_panel_text("Machine_Mode", 5)
+        if page == "Machine_Mode":
+            if current_button_index == 4:
+                for i in range(5):
+                    spawn_buttons("Shop_Slot", i + 1)
+
+            for bu in buttons_on_screen_list:
+                if bu.get_type() == "Shop_Slot":
+                    bu.toggle_indicator('Machine_Unlocked')
+        elif page == "Alien_Mode":
+            if current_button_index == 4:
+                for i in range(5):
+                    spawn_buttons("Shop_Slot", i + 1)
+
+            for bu in buttons_on_screen_list:
+                if bu.get_type() == "Shop_Slot":
+                    bu.toggle_indicator('Alien_Unlocked')
+        elif page == "Power_Ups":
+            if current_button_index == 4:
+                for i in range(4):
+                    spawn_buttons("Shop_Slot", i + 1)
+
+            for bu in buttons_on_screen_list:
+                if bu.get_type() == "Shop_Slot":
+                    bu.toggle_indicator('Power_Ups')
 
         # Spawn the coin indicator
         if coin_indicator_index == 0:
