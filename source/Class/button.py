@@ -452,12 +452,12 @@ class Button:
             self.button_indicator = turtle.Turtle()
             # Ensure that the turtle does not draw lines on the screen while moving
             self.button_indicator.penup()
-            self.button_indicator.color("white")
             self.indicator = 1
         if fullscreen == 1:
             self.button_indicator.shape("Textures/GUI/Locked_Scaled.gif")
         else:
             self.button_indicator.shape("Textures/GUI/Locked.gif")
+        self.button_indicator.color("white")
         self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
         self.indicator_toggled = 0
 

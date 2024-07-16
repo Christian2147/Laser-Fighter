@@ -229,13 +229,13 @@ pygame.init()
 pygame.mixer.init()
 
 # Extract the refresh rate of the users monitor through the windows API
-display_device = win32api.EnumDisplayDevices(None, 0)
-settings = win32api.EnumDisplaySettings(display_device.DeviceName, win32con.ENUM_CURRENT_SETTINGS)
-refresh_rate = settings.DisplayFrequency
+DISPLAY_DEVICE = win32api.EnumDisplayDevices(None, 0)
+SETTINGS = win32api.EnumDisplaySettings(DISPLAY_DEVICE.DeviceName, win32con.ENUM_CURRENT_SETTINGS)
+REFRESH_RATE = SETTINGS.DisplayFrequency
 
 # Set the target FPS to the refresh rate for VSync, otherwise the FPS is not used since "unlimited" would be allowed
 # Unlimited FPS means that the game loop executes as fast as possible
-clock = pygame.time.Clock()
-target_FPS = refresh_rate
+CLOCK = pygame.time.Clock()
+TARGET_FPS = REFRESH_RATE
 start_ticks = pygame.time.get_ticks()
-monitor_delay = 1.0/target_FPS
+MONITOR_DELAY = 1.0/TARGET_FPS

@@ -25,6 +25,7 @@
 import configparser
 import subprocess
 import os
+from utils.ConfigUpdateShop import ShopConfig
 
 # Current Screen Variable - Determines what screen is currently being displayed in the window
 mode = "Title_Mode"
@@ -335,25 +336,7 @@ else:
     high_score_machine_war = "NA"
     high_score_alien_mode = "NA"
 
-# Extract the current slot selected
-config = configparser.ConfigParser()
-config.read('Config/playerData.ini')
-machine_slot_selected = config['Machine_Player_Enabled'].getint('type_enabled')
-alien_slot_selected = config['Alien_Mode_Gun_Enabled'].getint('type_enabled')
-
-# Extract the slot unlocks and the power up levels
-config = configparser.ConfigParser()
-config.read('Config/playerData.ini')
-machine_slots_unlocked = []
-for i in range(5):
-    machine_slots_unlocked.append(config['Machine_Unlocked'].getint('slot_' + str(i + 1)))
-alien_slots_unlocked = []
-for i in range(5):
-    alien_slots_unlocked.append(config['Alien_Unlocked'].getint('slot_' + str(i + 1)))
-yellow_power_up_level = config['Power_Up_Levels'].getint('Yellow_Power_Up')
-blue_power_up_level = config['Power_Up_Levels'].getint('Blue_Power_Up')
-green_power_up_level = config['Power_Up_Levels'].getint('Green_Power_Up')
-red_power_up_level = config['Power_Up_Levels'].getint('Red_Power_Up')
+shop_config = ShopConfig()
 
 # Backup the player data and config files on launch through a batch file (Made so that the user can run the
 #   script whenever they want
