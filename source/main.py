@@ -31,28 +31,28 @@ import time
 import random
 from Data.data import *
 from Data.screen import *
-from components.gui.button import Button
-from components.gui.panel import Panel
-from components.gui.textBox import Text
-from components.gui.priceLabel import PriceLabel
-from components.coin import CoinIndicator
-from components.powerUps import PowerUp
-from components.powerUps import YellowIndicator
-from components.powerUps import BlueIndicator
-from components.powerUps import ExtraIndicator
-from components.player.machinePlayer import Player
-from components.player.humanPlayer import Human
-from components.enemy.blueMachine import BlueMachine
-from components.enemy.yellowMachine import YellowMachine
-from components.enemy.redMachine import RedMachine
-from components.enemy.boss import Boss
-from components.enemy.smallAliens import SmallAlien
-from components.enemy.mediumAliens import MediumAlien
-from components.enemy.largeAliens import LargeAlien
-from components.enemy.ufo import UFO
-from components.backgroundEffects import Earth
-from components.backgroundEffects import Sun
-from components.backgroundEffects import BackgroundObjects
+from components.gui.InterfaceButton import Button
+from components.gui.InterfacePanel import Panel
+from components.gui.InterfaceTextBox import Text
+from components.gui.InterfacePriceLabel import PriceLabel
+from components.ItemCoin import CoinIndicator
+from components.ItemPowerUp import PowerUp
+from components.ItemPowerUp import YellowIndicator
+from components.ItemPowerUp import BlueIndicator
+from components.ItemPowerUp import ExtraIndicator
+from components.player.MachinePlayer import Player
+from components.player.HumanPlayer import Human
+from components.enemy.MachineBlueMachine import BlueMachine
+from components.enemy.MachineYellowMachine import YellowMachine
+from components.enemy.MachineRedMachine import RedMachine
+from components.enemy.MachineBoss import Boss
+from components.enemy.AlienSmallAlien import SmallAlien
+from components.enemy.AlienMediumAlien import MediumAlien
+from components.enemy.AlienLargeAlien import LargeAlien
+from components.enemy.AlienUFO import UFO
+from components.EffectBackgroundEffect import Earth
+from components.EffectBackgroundEffect import Sun
+from components.EffectBackgroundEffect import BackgroundObjects
 
 """
     The functions below are for the player controls.

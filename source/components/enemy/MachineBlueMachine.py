@@ -14,16 +14,16 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: yellowMachine.py
+    File: MachineBlueMachine.py
     Author: Christian Marinkovich
     Date: 2024-07-05
     Description:
-    This file contains the logic related to the yellow machine, which is the second enemy you will
-    encounter in Machine Mode.
-    The yellow machine fires medium sized yellow lasers at the player. It dies in one hit and has a 1.5 second long
+    This file contains the logic related to the blue machine, which is the first enemy you will encounter
+    in Machine Mode.
+    The blue machine fires small blue lasers at the player. It dies in one hit and has a 1.5 second long
     death animation.
-    When killed, the yellow machine grants the player 2 points.
-    The yellow machine also moves up and down to simulate floating in outer space. It also moves left to right after
+    When killed, the blue machine grants the player 1 point.
+    The blue machine also moves up and down to simulate floating in outer space. It also moves left to right after
     it has been killed enough times.
 """
 
@@ -31,17 +31,16 @@ import turtle
 import random
 import pygame
 import time
-from components.coin import Coin
+from components.ItemCoin import Coin
 
 
-class YellowMachine:
+class BlueMachine:
     """
-        Represents a yellow machine in Laser Fighter. The second enemy in Machine Mode that is yellow
-            and fires yellow lasers.
+        Represents a blue machine in Laser Fighter. The first enemy in Machine Mode that is blue and fires blue lasers.
 
         Attributes:
-            yellow_machine (turtle.Turtle()): The yellow machine enemy sprite.
-            yellow_machine_laser (turtle.Turtle()): The laser sprite for each yellow machine enemy.
+            blue_machine (turtle.Turtle()): The blue machine enemy sprite.
+            blue_machine_laser (turtle.Turtle()): The laser sprite for each blue machine enemy.
             death_count (int): Stores the death count for the enemy since the player has last died.
             update (float): Value that is incremented during the death animation of the enemy.
             movement (int): Stores the direction that the enemy is supposed to move on
@@ -62,14 +61,14 @@ class YellowMachine:
                 (So that it does not get hit two times in a row)
             movement_activated (int): Check if the enemies side to side movement is currently happening or not. (So
                 that it can create a start time for it)
-            id (int): The id of the current yellow machine (Used for counting how many are on the screen)
+            id (int): The id of the current blue machine (Used for counting how many are on the screen)
     """
 
     def __init__(self, id, scale_factor_x, scale_factor_y, fullscreen):
         """
-            Creates a yellow machine object and spawns it on the screen
+            Creates a blue machine object and spawns it on the screen
 
-            :param id: Ths id of the yellow machine (Determines where it spawns and it keeps track of how many are on
+            :param id: Ths id of the blue machine (Determines where it spawns and it keeps track of how many are on
                 the screen)
             :type id: int
 
@@ -83,47 +82,47 @@ class YellowMachine:
             :type fullscreen: int
         """
 
-        self.yellow_machine = turtle.Turtle()
+        self.blue_machine = turtle.Turtle()
         if fullscreen == 1:
-            self.yellow_machine.shape("Textures/Enemies/Enemy(6-10)_Scaled.gif")
+            self.blue_machine.shape("Textures/Enemies/Enemy(1-5)_Scaled.gif")
         else:
-            self.yellow_machine.shape("Textures/Enemies/Enemy(6-10).gif")
+            self.blue_machine.shape("Textures/Enemies/Enemy(1-5).gif")
         # Ensure that the turtle does not draw lines on the screen while moving
-        self.yellow_machine.penup()
-        self.yellow_machine.shapesize(2 * scale_factor_y, 2 * scale_factor_x)
+        self.blue_machine.penup()
+        self.blue_machine.shapesize(2 * scale_factor_y, 2 * scale_factor_x)
         # Correct location based on id
         if id == 1:
-            self.yellow_machine.goto(-300 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine.goto(-200 * scale_factor_x, 220 * scale_factor_y)
         elif id == 2:
-            self.yellow_machine.goto(-250 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine.goto(200 * scale_factor_x, 220 * scale_factor_y)
         elif id == 3:
-            self.yellow_machine.goto(250 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine.goto(500 * scale_factor_x, 220 * scale_factor_y)
         elif id == 4:
-            self.yellow_machine.goto(-350 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine.goto(-500 * scale_factor_x, 220 * scale_factor_y)
         elif id == 5:
-            self.yellow_machine.goto(350 * scale_factor_x, 220 * scale_factor_y)
-        self.yellow_machine.direction = "down"
+            self.blue_machine.goto(-400 * scale_factor_x, 220 * scale_factor_y)
+        self.blue_machine.direction = "down"
 
-        self.yellow_machine_laser = turtle.Turtle()
+        self.blue_machine_laser = turtle.Turtle()
         if fullscreen == 1:
-            self.yellow_machine_laser.shape("Textures/Lasers/Enemy(6-10)_Laser_Scaled.gif")
+            self.blue_machine_laser.shape("Textures/Lasers/Enemy(1-5)_Laser_Scaled.gif")
         else:
-            self.yellow_machine_laser.shape("Textures/Lasers/Enemy(6-10)_Laser.gif")
+            self.blue_machine_laser.shape("Textures/Lasers/Enemy(1-5)_Laser.gif")
         # Ensure that the turtle does not draw lines on the screen while moving
-        self.yellow_machine_laser.penup()
-        self.yellow_machine_laser.shapesize(2.25 * scale_factor_y, 0.5 * scale_factor_x)
-        self.yellow_machine_laser.direction = "down"
+        self.blue_machine_laser.penup()
+        self.blue_machine_laser.shapesize(2.25 * scale_factor_y, 0.5 * scale_factor_x)
+        self.blue_machine_laser.direction = "down"
         # Correct location based on id
         if id == 1:
-            self.yellow_machine_laser.goto(-300 * scale_factor_x, 158 * scale_factor_y)
+            self.blue_machine_laser.goto(-200 * scale_factor_x, 170 * scale_factor_y)
         elif id == 2:
-            self.yellow_machine_laser.goto(-250 * scale_factor_x, 158 * scale_factor_y)
+            self.blue_machine_laser.goto(200 * scale_factor_x, 170 * scale_factor_y)
         elif id == 3:
-            self.yellow_machine_laser.goto(250 * scale_factor_x, 158 * scale_factor_y)
+            self.blue_machine_laser.goto(500 * scale_factor_x, 170 * scale_factor_y)
         elif id == 4:
-            self.yellow_machine_laser.goto(-350 * scale_factor_x, 158 * scale_factor_y)
+            self.blue_machine_laser.goto(-500 * scale_factor_x, 170 * scale_factor_y)
         elif id == 5:
-            self.yellow_machine_laser.goto(350 * scale_factor_x, 158 * scale_factor_y)
+            self.blue_machine_laser.goto(-400 * scale_factor_x, 170 * scale_factor_y)
 
         self.death_count = 0
         self.update = 0
@@ -146,18 +145,16 @@ class YellowMachine:
             :return: None
         """
 
-        self.yellow_machine.hideturtle()
-        self.yellow_machine_laser.hideturtle()
-        self.yellow_machine.clear()
-        self.yellow_machine_laser.clear()
-        del self.yellow_machine
-        del self.yellow_machine_laser
+        self.blue_machine.clear()
+        self.blue_machine_laser.clear()
+        del self.blue_machine
+        del self.blue_machine_laser
 
     def reinstate(self, id, scale_factor_x, scale_factor_y, fullscreen):
         """
-            Reuses the existing sprite to spawn a yellow machine on the screen with the correct id
+            Reuses the existing sprite to spawn a blue machine on the screen with the correct id
 
-            :param id: Ths id of the new yellow machine (Determines where it spawns and its keeps track of how many are
+            :param id: Ths id of the new blue machine (Determines where it spawns and its keeps track of how many are
                 on the screen)
             :type id: int
 
@@ -174,70 +171,95 @@ class YellowMachine:
         """
 
         if fullscreen == 1:
-            self.yellow_machine.shape("Textures/Enemies/Enemy(6-10)_Scaled.gif")
+            self.blue_machine.shape("Textures/Enemies/Enemy(1-5)_Scaled.gif")
         else:
-            self.yellow_machine.shape("Textures/Enemies/Enemy(6-10).gif")
+            self.blue_machine.shape("Textures/Enemies/Enemy(1-5).gif")
         # Correct location based on id
         if id == 1:
-            self.yellow_machine.goto(-300 * scale_factor_x, 220 * scale_factor_y)
-            self.yellow_machine_laser.goto(-300 * scale_factor_x, 158 * scale_factor_y)
+            self.blue_machine.goto(-200 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine_laser.goto(-200 * scale_factor_x, 170 * scale_factor_y)
         elif id == 2:
-            self.yellow_machine.goto(-250 * scale_factor_x, 220 * scale_factor_y)
-            self.yellow_machine_laser.goto(-250 * scale_factor_x, 158 * scale_factor_y)
+            self.blue_machine.goto(200 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine_laser.goto(200 * scale_factor_x, 170 * scale_factor_y)
         elif id == 3:
-            self.yellow_machine.goto(250 * scale_factor_x, 220 * scale_factor_y)
-            self.yellow_machine_laser.goto(250 * scale_factor_x, 158 * scale_factor_y)
+            self.blue_machine.goto(500 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine_laser.goto(500 * scale_factor_x, 170 * scale_factor_y)
         elif id == 4:
-            self.yellow_machine.goto(-350 * scale_factor_x, 220 * scale_factor_y)
-            self.yellow_machine_laser.goto(-350 * scale_factor_x, 158 * scale_factor_y)
+            self.blue_machine.goto(-500 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine_laser.goto(-500 * scale_factor_x, 170 * scale_factor_y)
         elif id == 5:
-            self.yellow_machine.goto(350 * scale_factor_x, 220 * scale_factor_y)
-            self.yellow_machine_laser.goto(350 * scale_factor_x, 158 * scale_factor_y)
-        self.yellow_machine.direction = "down"
-        self.yellow_machine_laser.direction = "down"
+            self.blue_machine.goto(-400 * scale_factor_x, 220 * scale_factor_y)
+            self.blue_machine_laser.goto(-400 * scale_factor_x, 170 * scale_factor_y)
+        self.blue_machine.direction = "down"
+        self.blue_machine_laser.direction = "down"
         # Set the id to the new id
         self.id = id
-        self.yellow_machine.showturtle()
-        self.yellow_machine_laser.showturtle()
+        self.blue_machine.showturtle()
+        self.blue_machine_laser.showturtle()
         self.move_start_time = time.time()
         self.float_start_time = time.time()
 
-    def get_yellow_machine(self):
+    def get_blue_machine(self):
         """
-            Returns the yellow_machine sprite so its class attributes can be accessed
+            Returns the blue_machine sprite so its class attributes can be accessed
 
-            :return: yellow_machine: the yellow machine sprite
+            :return: blue_machine: the blue machine sprite
             :type: turtle.Turtle()
         """
 
-        return self.yellow_machine
+        return self.blue_machine
 
-    def get_yellow_machine_laser(self):
+    def get_blue_machine_laser(self):
         """
-            Returns the yellow_machine_laser sprite so its class attributes can be accessed
+            Returns the blue_machine_laser sprite so its class attributes can be accessed
 
-            :return: yellow_machine_laser: the yellow machine laser sprite
+            :return: blue_machine_laser: the blue machine laser sprite
             :type: turtle.Turtle()
         """
 
-        return self.yellow_machine_laser
+        return self.blue_machine_laser
+
+    def get_id(self):
+        """
+            Returns the id of the blue machine
+
+            :return: id: the id of the blue machine
+            :type: int
+        """
+
+        return self.id
 
     def get_update_value(self):
         """
-            Returns the death animation update value of the yellow machine
+            Returns the death animation update value of the blue machine
 
-            :return: update: the death animation update value of the yellow machine
+            :return: update: the death animation update value of the blue machine
             :type: float
         """
 
         return self.update
 
+    def set_death_count(self, new_death_count):
+        """
+            Sets the death count for the blue machine. (Used for when the player dies and the death count has to
+                be set to 0). The movement activated is also set to 0 because the enemies side to side movement stops
+                happening.
+
+            :param new_death_count: The new death count of the blue machine.
+            :type new_death_count: int
+
+            :return: None
+        """
+
+        self.death_count = new_death_count
+        self.movement_activated = 0
+
     def set_laser_has_attacked(self, new_value):
         """
-            Sets the laser_has_attacked of the yellow machine (Used for when the player fires a new laser and this value
+            Sets the laser_has_attacked of the blue machine (Used for when the player fires a new laser and this value
                 has to be reset to 0)
 
-            :param new_value: The new laser_has_attacked of the yellow machine.
+            :param new_value: The new laser_has_attacked of the blue machine.
             :type new_value: int
 
             :return: None
@@ -247,13 +269,13 @@ class YellowMachine:
 
     def remove(self):
         """
-            Removes the yellow machine sprite form the screen and resets its attributes.
+            Removes the blue machine sprite form the screen and resets its attributes.
 
             :return: None
         """
 
-        self.yellow_machine.hideturtle()
-        self.yellow_machine_laser.hideturtle()
+        self.blue_machine.hideturtle()
+        self.blue_machine_laser.hideturtle()
         self.death_count = 0
         self.update = 0
         self.movement = 1
@@ -269,7 +291,7 @@ class YellowMachine:
 
     def shoot_laser(self, green_power_up, shooting_sound, scale_factor_y):
         """
-            Shoots the yellow machine laser (Spawning it right below the sprite) and move it down across the screen)
+            Shoots the blue machine laser (Spawning it right below the sprite) and move it down across the screen)
 
             :param green_power_up: Variable used to determine if the green power up is active or not. If it is active,
                 the enemy laser will not fire.
@@ -288,25 +310,25 @@ class YellowMachine:
         if green_power_up == 0:
             # Remove the laser from the screen once it has hit the player
             if self.laser_has_attacked == 1:
-                self.yellow_machine_laser.hideturtle()
+                self.blue_machine_laser.hideturtle()
             else:
-                self.yellow_machine_laser.showturtle()
+                self.blue_machine_laser.showturtle()
             # If the laser is still visible in the frame of the screen
-            if self.yellow_machine_laser.ycor() > -360 * scale_factor_y:
-                # Keep moving the laser down the screen 8.7 units every 0.015 seconds
+            if self.blue_machine_laser.ycor() > -360 * scale_factor_y:
+                # Keep moving the laser down the screen 4.8 units every 0.015 seconds
                 current_time = time.time()
                 elapsed_time = current_time - self.laser_start_time
                 if elapsed_time >= 0.015:
                     # Calculate the delta movement
                     # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
-                    delta_movement = 8.7 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                    self.yellow_machine_laser.sety(self.yellow_machine_laser.ycor() - 8.7 * scale_factor_y - delta_movement)
+                    delta_movement = 4.8 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                    self.blue_machine_laser.sety(self.blue_machine_laser.ycor() - 4.8 * scale_factor_y - delta_movement)
                     self.laser_start_time = time.time()
             else:
                 # Otherwise, set the laser to its original state and shoot it again
-                self.yellow_machine_laser.setx(self.yellow_machine.xcor())
-                self.yellow_machine_laser.sety(self.yellow_machine.ycor() - 62 * scale_factor_y)
+                self.blue_machine_laser.setx(self.blue_machine.xcor())
+                self.blue_machine_laser.sety(self.blue_machine.ycor() - 50 * scale_factor_y)
                 self.laser_has_attacked = 0
                 if shooting_sound == 1:
                     sound = pygame.mixer.Sound("Sound/Laser_Gun_Enemy.wav")
@@ -314,9 +336,9 @@ class YellowMachine:
                 self.laser_start_time = time.time()
         # If the green power up is active, hide the laser and do not fire
         else:
-            self.yellow_machine_laser.hideturtle()
-            self.yellow_machine_laser.setx(self.yellow_machine.xcor())
-            self.yellow_machine_laser.sety(self.yellow_machine.ycor() - 62 * scale_factor_y)
+            self.blue_machine_laser.hideturtle()
+            self.blue_machine_laser.setx(self.blue_machine.xcor())
+            self.blue_machine_laser.sety(self.blue_machine.ycor() - 50 * scale_factor_y)
             self.laser_has_attacked = 0
             self.laser_start_time = time.time()
 
@@ -346,9 +368,9 @@ class YellowMachine:
             :return: None
         """
 
-        # When the death animation and respawning is finished, the yellow machine appears on the screen again
+        # When the death animation and respawning is finished, the blue machine appears on the screen again
         if self.update == 6:
-            self.yellow_machine.showturtle()
+            self.blue_machine.showturtle()
             self.movement_activated = 0
             self.update = 0
             return
@@ -363,27 +385,27 @@ class YellowMachine:
             return
 
         if self.update == 3:
-            # Hide the yellow machine and spawn a silver coin where the yellow machine died
-            self.yellow_machine.hideturtle()
+            # Hide the blue machine and spawn a copper coin where the blue machine died
+            self.blue_machine.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
-                silver_coin = Coin(type="silver", pos_x=self.yellow_machine.xcor(), pos_y=self.yellow_machine.ycor(), fullscreen=fullscreen)
-                coins_on_screen.append(silver_coin)
-                all_coins.append(silver_coin)
+                copper_coin = Coin(type="copper", pos_x=self.blue_machine.xcor(), pos_y=self.blue_machine.ycor(), fullscreen=fullscreen)
+                coins_on_screen.append(copper_coin)
+                all_coins.append(copper_coin)
             else:
                 for coin in all_coins:
                     if coin.get_coin().isvisible():
                         continue
                     else:
-                        coin.reinstate_to_silver(pos_x=self.yellow_machine.xcor(), pos_y=self.yellow_machine.ycor(), fullscreen=fullscreen)
+                        coin.reinstate_to_copper(pos_x=self.blue_machine.xcor(), pos_y=self.blue_machine.ycor(), fullscreen=fullscreen)
                         coins_on_screen.append(coin)
                         break
-            # Respawn the yellow machine in a different random location
+            # Respawn the blue machine in a different random location
             if fullscreen == 1:
-                self.yellow_machine.shape("Textures/Enemies/Enemy(6-10)_Scaled.gif")
+                self.blue_machine.shape("Textures/Enemies/Enemy(1-5)_Scaled.gif")
             else:
-                self.yellow_machine.shape("Textures/Enemies/Enemy(6-10).gif")
+                self.blue_machine.shape("Textures/Enemies/Enemy(1-5).gif")
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
-            self.yellow_machine.goto(random.randint(int(-640 * scale_factor_x), int(640 * scale_factor_x)), random.randint(int(120 * scale_factor_y), int(220 * scale_factor_y)))
+            self.blue_machine.goto(random.randint(int(-640 * scale_factor_x), int(640 * scale_factor_x)), random.randint(int(120 * scale_factor_y), int(220 * scale_factor_y)))
             self.update = 3.5
             self.start_time = time.time()
             return
@@ -397,12 +419,12 @@ class YellowMachine:
                 self.start_time = 0
             return
 
-        # Change the texture of the yellow machine to the second frame of the explosion
+        # Change the texture of the blue machine to the second frame of the explosion
         if 1.0 <= self.update <= 1.1:
             if fullscreen == 1:
-                self.yellow_machine.shape("Textures/Explosions/Explosion2_Scaled.gif")
+                self.blue_machine.shape("Textures/Explosions/Explosion2_Scaled.gif")
             else:
-                self.yellow_machine.shape("Textures/Explosions/Explosion2.gif")
+                self.blue_machine.shape("Textures/Explosions/Explosion2.gif")
             self.update = 1.5
             self.start_time = time.time()
             self.kill_enemy(death_sound, coins_on_screen, all_coins, scale_factor_x, scale_factor_y, fullscreen)
@@ -424,19 +446,19 @@ class YellowMachine:
             if death_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Explosion.wav")
                 sound.play()
-            # Change the texture of the yellow machine to the first frame of the death explosion
+            # Change the texture of the blue machine to the first frame of the death explosion
             if fullscreen == 1:
-                self.yellow_machine.shape("Textures/Explosions/Explosion1_Scaled.gif")
+                self.blue_machine.shape("Textures/Explosions/Explosion1_Scaled.gif")
             else:
-                self.yellow_machine.shape("Textures/Explosions/Explosion1.gif")
+                self.blue_machine.shape("Textures/Explosions/Explosion1.gif")
             self.update = 0.5
             self.start_time = time.time()
             return
 
     def float_effect(self, scale_factor_y):
         """
-            Moves the yellow machine up and down to create a float effect and make it seem as if the enemy is moving
-                fast through outer space.
+            Moves the blue machine up and down to create a float effect and make it seem as if the enemy is moving fast
+                through outer space.
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
@@ -447,12 +469,12 @@ class YellowMachine:
         # Activate the float effect
         if self.float_activated == 0:
             self.float_activated = 1
-            self.start_y_float = self.yellow_machine.ycor()
+            self.start_y_float = self.blue_machine.ycor()
 
-        if self.start_y_float + 50 < self.yellow_machine.ycor():
+        if self.start_y_float + 50 < self.blue_machine.ycor():
             # Move down
             self.float = -1
-        elif self.start_y_float - 50 > self.yellow_machine.ycor():
+        elif self.start_y_float - 50 > self.blue_machine.ycor():
             # Move up
             self.float = 1
         current_time = time.time()
@@ -462,17 +484,17 @@ class YellowMachine:
             if self.float == 1:
                 # Calculate the delta movement and add it as additional movement required
                 delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
-                self.yellow_machine.goto(self.yellow_machine.xcor(), self.yellow_machine.ycor() + 0.15 * scale_factor_y + delta_movement)
+                self.blue_machine.goto(self.blue_machine.xcor(), self.blue_machine.ycor() + 0.15 * scale_factor_y + delta_movement)
             elif self.float == -1:
                 # Calculate the delta movement and add it as additional movement required
                 delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
-                self.yellow_machine.goto(self.yellow_machine.xcor(), self.yellow_machine.ycor() - 0.15 * scale_factor_y - delta_movement)
+                self.blue_machine.goto(self.blue_machine.xcor(), self.blue_machine.ycor() - 0.15 * scale_factor_y - delta_movement)
             self.float_start_time = time.time()
 
     def move_enemy(self, death, scale_factor_x):
         """
-            When the yellow machine has died enough times, this function will cause it to start moving left and
-                right, which will speed up the more times that the yellow machine dies.
+            When the blue machine has died enough times, this function will cause it to start moving left and
+                right, which will speed up the more times that the blue machine dies.
 
             :param death: Determines whether the death animation for the player is active or not.
             :type death: int
@@ -488,16 +510,16 @@ class YellowMachine:
             if self.movement_activated == 0:
                 self.move_start_time = time.time()
                 self.movement_activated = 1
-            # Move the yellow machine every 0.02 seconds
+            # Move the blue machine every 0.02 seconds
             current_time = time.time()
             elapsed_time = current_time - self.move_start_time
             if elapsed_time >= 0.02:
-                # Yellow machine reaches the right end of the screen
-                if 600 * scale_factor_x < self.yellow_machine.xcor() < 650 * scale_factor_x:
+                # Blue machine reaches the right end of the screen
+                if 600 * scale_factor_x < self.blue_machine.xcor() < 650 * scale_factor_x:
                     # Move left
                     self.movement = -1
-                # Yellow machine reaches the left end of the screen
-                if -600 * scale_factor_x > self.yellow_machine.xcor() > -650 * scale_factor_x:
+                # Blue machine reaches the left end of the screen
+                if -600 * scale_factor_x > self.blue_machine.xcor() > -650 * scale_factor_x:
                     # Move right
                     self.movement = 1
                 if self.movement == 1:
@@ -505,35 +527,35 @@ class YellowMachine:
                     if 4 <= self.death_count < 7:
                         # Calculate the delta movement as extra movement needed
                         delta_movement = 2 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.yellow_machine.setx(self.yellow_machine.xcor() + 2 * scale_factor_x + delta_movement)
+                        self.blue_machine.setx(self.blue_machine.xcor() + 2 * scale_factor_x + delta_movement)
                     elif 7 <= self.death_count < 10:
                         delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.yellow_machine.setx(self.yellow_machine.xcor() + 4 * scale_factor_x + delta_movement)
+                        self.blue_machine.setx(self.blue_machine.xcor() + 4 * scale_factor_x + delta_movement)
                     elif 10 <= self.death_count < 13:
                         delta_movement = 6 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.yellow_machine.setx(self.yellow_machine.xcor() + 6 * scale_factor_x + delta_movement)
+                        self.blue_machine.setx(self.blue_machine.xcor() + 6 * scale_factor_x + delta_movement)
                     elif 13 <= self.death_count < 16:
                         delta_movement = 8 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.yellow_machine.setx(self.yellow_machine.xcor() + 8 * scale_factor_x + delta_movement)
+                        self.blue_machine.setx(self.blue_machine.xcor() + 8 * scale_factor_x + delta_movement)
                     elif 16 <= self.death_count:
                         delta_movement = 10 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.yellow_machine.setx(self.yellow_machine.xcor() + 10 * scale_factor_x + delta_movement)
+                        self.blue_machine.setx(self.blue_machine.xcor() + 10 * scale_factor_x + delta_movement)
                 elif self.movement == -1:
                     if 4 <= self.death_count < 7:
                         delta_movement = 2 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.yellow_machine.setx(self.yellow_machine.xcor() - 2 * scale_factor_x - delta_movement)
+                        self.blue_machine.setx(self.blue_machine.xcor() - 2 * scale_factor_x - delta_movement)
                     elif 7 <= self.death_count < 10:
                         delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.yellow_machine.setx(self.yellow_machine.xcor() - 4 * scale_factor_x - delta_movement)
+                        self.blue_machine.setx(self.blue_machine.xcor() - 4 * scale_factor_x - delta_movement)
                     elif 10 <= self.death_count < 13:
                         delta_movement = 6 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.yellow_machine.setx(self.yellow_machine.xcor() - 6 * scale_factor_x - delta_movement)
+                        self.blue_machine.setx(self.blue_machine.xcor() - 6 * scale_factor_x - delta_movement)
                     elif 13 <= self.death_count < 16:
                         delta_movement = 8 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.yellow_machine.setx(self.yellow_machine.xcor() - 8 * scale_factor_x - delta_movement)
+                        self.blue_machine.setx(self.blue_machine.xcor() - 8 * scale_factor_x - delta_movement)
                     elif 16 <= self.death_count:
                         delta_movement = 10 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.yellow_machine.setx(self.yellow_machine.xcor() - 10 * scale_factor_x - delta_movement)
+                        self.blue_machine.setx(self.blue_machine.xcor() - 10 * scale_factor_x - delta_movement)
                 self.move_start_time = time.time()
         else:
             self.move_start_time = 0

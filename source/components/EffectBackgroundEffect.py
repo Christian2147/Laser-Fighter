@@ -14,7 +14,7 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: backgroundEffects.py
+    File: EffectBackgroundEffect.py
     Author: Christian Marinkovich
     Date: 2024-07-07
     Description:

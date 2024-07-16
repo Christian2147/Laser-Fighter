@@ -14,7 +14,7 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: coin.py
+    File: ItemCoin.py
     Author: Christian Marinkovich
     Date: 2024-07-05
     Description: This file contains the logic related to coins, which is the main in game currency that will later on

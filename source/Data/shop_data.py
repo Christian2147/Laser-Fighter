@@ -23,7 +23,7 @@
     A .py file is used in this case because it is the quickest to access and the data does not need modifying.
 """
 
-from components.gui.description import Description
+from components.gui.GUIDataDescription import Description
 
 # Shop Welcome Message
 main_description = [

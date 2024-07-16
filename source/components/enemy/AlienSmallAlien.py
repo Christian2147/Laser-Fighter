@@ -14,7 +14,7 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: smallAliens.py
+    File: AlienSmallAlien.py
     Author: Christian Marinkovich
     Date: 2024-07-08
     Description:
@@ -29,7 +29,7 @@ import turtle
 import pygame
 import random
 import time
-from components.coin import Coin
+from components.ItemCoin import Coin
 
 
 class SmallAlien:

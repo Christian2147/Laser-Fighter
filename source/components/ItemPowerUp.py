@@ -14,7 +14,7 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: powerUps.py
+    File: ItemPowerUp.py
     Author: Christian Marinkovich
     Date: 2024-07-08
     Description:

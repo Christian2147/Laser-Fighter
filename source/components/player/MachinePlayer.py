@@ -14,7 +14,7 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: machinePlayer.py
+    File: MachinePlayer.py
     Author: Christian Marinkovich
     Date: 2024-07-05
     Description:
