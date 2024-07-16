@@ -110,7 +110,7 @@ class Button:
             if id < 5:
                 self.button_frame.goto(-602.5 * scale_factor_x, (150 - (120 * (id - 1))) * scale_factor_y)
         # The item slots in the shop
-        elif type == "Shop_Slot":
+        elif type == "Shop_Slot" or type == "Power_Up_Slot":
             if fullscreen == 1:
                 self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Scaled.gif")
             else:
@@ -182,7 +182,7 @@ class Button:
                 else:
                     self.button_text.shape("Textures/Power_Ups/Yellow_Lightning_Power_Up.gif")
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor())
-        elif type == "Shop_Slot":
+        elif type == "Shop_Slot" or type == "Power_Up_Slot":
             if fullscreen == 1:
                 self.button_text.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
             else:
@@ -228,10 +228,11 @@ class Button:
 
             self.indicator = 1
         # Create the locks for the slots in the shop
-        elif type == "Shop_Slot":
+        elif type == "Shop_Slot" or type == "Power_Up_Slot":
             self.button_indicator = turtle.Turtle()
             # Ensure that the turtle does not draw lines on the screen while moving
             self.button_indicator.penup()
+            self.button_indicator.color("white")
             if fullscreen == 1:
                 self.button_indicator.shape("Textures/GUI/Locked_Scaled.gif")
             else:
@@ -397,6 +398,20 @@ class Button:
         self.id = id
 
     def reinstate_to_shop_slot(self, id, scale_factor_x, scale_factor_y, fullscreen):
+        self.reinstate_to_slot(id, scale_factor_x, scale_factor_y, fullscreen)
+
+        # Set the type to "Shop Slot"
+        self.type = "Shop_Slot"
+        self.id = id
+
+    def reinstate_to_power_up_slot(self, id, scale_factor_x, scale_factor_y, fullscreen):
+        self.reinstate_to_slot(id, scale_factor_x, scale_factor_y, fullscreen)
+
+        # Set the type to "Shop Slot"
+        self.type = "Power_Up_Slot"
+        self.id = id
+
+    def reinstate_to_slot(self, id, scale_factor_x, scale_factor_y, fullscreen):
         """
             Reuses the existing button sprite to spawn a shop slot and place it in a location based on the id.
 
@@ -437,6 +452,7 @@ class Button:
             self.button_indicator = turtle.Turtle()
             # Ensure that the turtle does not draw lines on the screen while moving
             self.button_indicator.penup()
+            self.button_indicator.color("white")
             self.indicator = 1
         if fullscreen == 1:
             self.button_indicator.shape("Textures/GUI/Locked_Scaled.gif")
@@ -444,10 +460,6 @@ class Button:
             self.button_indicator.shape("Textures/GUI/Locked.gif")
         self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
         self.indicator_toggled = 0
-
-        # Set the type to "Shop Slot"
-        self.type = "Shop_Slot"
-        self.id = id
 
     def reinstate_to_regular_settings_and_controls(self, id, scale_factor_x, scale_factor_y, fullscreen):
         """
@@ -761,14 +773,19 @@ class Button:
             :return: None
         """
 
-        if setting == 1:
-            self.button_indicator.color("green")
-            self.button_indicator.clear()
-            self.button_indicator.write("On", align="center", font=("Courier", int(28 * scale_factor), "bold"))
-        else:
-            self.button_indicator.color("red")
-            self.button_indicator.clear()
-            self.button_indicator.write("Off", align="center", font=("Courier", int(28 * scale_factor), "bold"))
+        if self.type == "Settings_Toggle":
+            if setting == 1:
+                self.button_indicator.color("green")
+                self.button_indicator.clear()
+                self.button_indicator.write("On", align="center", font=("Courier", int(28 * scale_factor), "bold"))
+            else:
+                self.button_indicator.color("red")
+                self.button_indicator.clear()
+                self.button_indicator.write("Off", align="center", font=("Courier", int(28 * scale_factor), "bold"))
+        elif self.type == "Power_Up_Slot":
+            if setting != 0:
+                self.button_indicator.clear()
+                self.button_indicator.write("Level {}".format(setting), align="center", font=("Courier", int(18 * scale_factor), "normal"))
 
     def write_fullscreen_indicator(self, setting, fullscreen_toggled, scale_factor):
         """
@@ -802,29 +819,19 @@ class Button:
                 self.button_indicator.clear()
                 self.button_indicator.write("Off", align="center", font=("Courier", int(28 * scale_factor), "bold"))
 
-    def toggle_indicator(self, catigory):
-        """
-            Toggles the lock for the given shop slot on/off as needed
+    def toggle_indicator(self, check_value):
+        if check_value == 0:
+            self.button_indicator.showturtle()
+            self.indicator_toggled = 1
+        else:
+            self.button_indicator.hideturtle()
+            self.indicator_toggled = 0
 
-            :param catigory: The catigory of the slot in the shop (Machine, Alien, Power Up)
-            :type catigory: string
-
-            :return: None
-        """
-
-        if self.type == "Shop_Slot":
-            if catigory == 'Power_Ups':
-                self.button_indicator.hideturtle()
-            else:
-                config = configparser.ConfigParser()
-                config.read('Config/playerData.ini')
-                check_setting = config[catigory].getint('slot_' + str(self.id))
-                if check_setting == 0:
-                    self.button_indicator.showturtle()
-                    self.indicator_toggled = 1
-                else:
-                    self.button_indicator.hideturtle()
-                    self.indicator_toggled = 0
+    def set_indicator_location(self, scale_factor_y):
+        if self.indicator_toggled == 1:
+            self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
+        else:
+            self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() - 45 * scale_factor_y)
 
     def update_text_color(self, x, y, scale_factor_x, scale_factor_y, fullscreen):
         """
@@ -898,7 +905,7 @@ class Button:
                     self.button_frame.shape("Textures/Buttons/Tab_Scaled.gif")
                 else:
                     self.button_frame.shape("Textures/Buttons/Tab.gif")
-        elif self.type == "Shop_Slot":
+        elif self.type == "Shop_Slot" or self.type == "Power_Up_Slot":
             if self.id < 5:
                 if (137 + (170 * (self.id - 1))) * scale_factor_x < x < (288 + (170 * (self.id - 1))) * scale_factor_x and 178 * scale_factor_y < y < 349 * scale_factor_y:
                     self.button_frame.color("yellow")

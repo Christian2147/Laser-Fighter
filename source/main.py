@@ -1182,6 +1182,15 @@ def update_text():
         for bu in buttons_on_screen_list:
             if bu.get_type() != "Shop_Slot":
                 bu.write_lines(scale_factor)
+            if bu.get_type() == "Power_Up_Slot":
+                if bu.get_id() == 1:
+                    bu.write_indicator(yellow_power_up_level, scale_factor)
+                elif bu.get_id() == 2:
+                    bu.write_indicator(blue_power_up_level, scale_factor)
+                elif bu.get_id() == 3:
+                    bu.write_indicator(green_power_up_level, scale_factor)
+                elif bu.get_id() == 4:
+                    bu.write_indicator(red_power_up_level, scale_factor)
         for pa in panel_turtle:
             pa.write_text(scale_factor)
             pa.set_indicator(displayed, fullscreen)
@@ -1215,6 +1224,42 @@ def update_text():
             elif page == "Power_Ups":
                 if t.id == 3:
                     t.write_left("Power Ups", 36, "bold", scale_factor)
+                elif t.id == 4:
+                    if yellow_power_up_level == 1:
+                        t.write_left(" 1000", 22, "normal", scale_factor)
+                    elif yellow_power_up_level == 2:
+                        t.write_left(" 5000", 22, "normal", scale_factor)
+                    elif yellow_power_up_level == 3:
+                        t.write_left(" 15000", 22, "normal", scale_factor)
+                    elif yellow_power_up_level == 4:
+                        t.write_left(" 30000", 22, "normal", scale_factor)
+                elif t.id == 5:
+                    if blue_power_up_level == 1:
+                        t.write_left(" 1000", 22, "normal", scale_factor)
+                    elif blue_power_up_level == 2:
+                        t.write_left(" 5000", 22, "normal", scale_factor)
+                    elif blue_power_up_level == 3:
+                        t.write_left(" 15000", 22, "normal", scale_factor)
+                    elif blue_power_up_level == 4:
+                        t.write_left(" 30000", 22, "normal", scale_factor)
+                elif t.id == 6:
+                    if green_power_up_level == 1:
+                        t.write_left(" 1000", 22, "normal", scale_factor)
+                    elif green_power_up_level == 2:
+                        t.write_left(" 5000", 22, "normal", scale_factor)
+                    elif green_power_up_level == 3:
+                        t.write_left(" 15000", 22, "normal", scale_factor)
+                    elif green_power_up_level == 4:
+                        t.write_left(" 30000", 22, "normal", scale_factor)
+                elif t.id == 7:
+                    if red_power_up_level == 1:
+                        t.write_left(" 1000", 22, "normal", scale_factor)
+                    elif red_power_up_level == 2:
+                        t.write_left(" 5000", 22, "normal", scale_factor)
+                    elif red_power_up_level == 3:
+                        t.write_left(" 15000", 22, "normal", scale_factor)
+                    elif red_power_up_level == 4:
+                        t.write_left(" 30000", 22, "normal", scale_factor)
     elif mode == "Stats":
         for bu in buttons_on_screen_list:
             bu.write_lines(scale_factor)
@@ -1344,7 +1389,7 @@ def spawn_buttons(type, id):
     # If a usable button sprite does exist
     else:
         # If the button to create does not need a button indicator
-        if type != "Settings_Toggle" and type != "Shop_Slot":
+        if type != "Settings_Toggle" and type != "Shop_Slot" and type != "Power_Up_Slot":
             # Reinstate the button like normal
             # Go throguh all the button sprites
             for bu in all_button_list:
@@ -1384,6 +1429,8 @@ def spawn_buttons(type, id):
                         bu.reinstate_to_settings_toggle(id, scale_factor_X, scale_factor_Y, fullscreen)
                     elif type == "Shop_Slot":
                         bu.reinstate_to_shop_slot(id, scale_factor_X, scale_factor_Y, fullscreen)
+                    elif type == "Power_Up_Slot":
+                        bu.reinstate_to_power_up_slot(id, scale_factor_X, scale_factor_Y, fullscreen)
                     buttons_on_screen_list.append(bu)
                     current_button_index = current_button_index + 1
                     found = 1
@@ -1400,6 +1447,8 @@ def spawn_buttons(type, id):
                             bu.reinstate_to_settings_toggle(id, scale_factor_X, scale_factor_Y, fullscreen)
                         elif type == "Shop_Slot":
                             bu.reinstate_to_shop_slot(id, scale_factor_X, scale_factor_Y, fullscreen)
+                        elif type == "Power_Up_Slot":
+                            bu.reinstate_to_power_up_slot(id, scale_factor_X, scale_factor_Y, fullscreen)
                         buttons_on_screen_list.append(bu)
                         current_button_index = current_button_index + 1
                         break
@@ -3601,7 +3650,16 @@ while True:
 
             for bu in buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
-                    bu.toggle_indicator('Machine_Unlocked')
+                    if bu.get_id() == 1:
+                        bu.toggle_indicator(machine_slots_unlocked[0])
+                    elif bu.get_id() == 2:
+                        bu.toggle_indicator(machine_slots_unlocked[1])
+                    elif bu.get_id() == 3:
+                        bu.toggle_indicator(machine_slots_unlocked[2])
+                    elif bu.get_id() == 4:
+                        bu.toggle_indicator(machine_slots_unlocked[3])
+                    elif bu.get_id() == 5:
+                        bu.toggle_indicator(machine_slots_unlocked[4])
         elif page == "Alien_Mode":
             if current_button_index == 4:
                 for i in range(5):
@@ -3618,21 +3676,54 @@ while True:
 
             for bu in buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
-                    bu.toggle_indicator('Alien_Unlocked')
+                    if bu.get_id() == 1:
+                        bu.toggle_indicator(alien_slots_unlocked[0])
+                    elif bu.get_id() == 2:
+                        bu.toggle_indicator(alien_slots_unlocked[1])
+                    elif bu.get_id() == 3:
+                        bu.toggle_indicator(alien_slots_unlocked[2])
+                    elif bu.get_id() == 4:
+                        bu.toggle_indicator(alien_slots_unlocked[3])
+                    elif bu.get_id() == 5:
+                        bu.toggle_indicator(alien_slots_unlocked[4])
         elif page == "Power_Ups":
             if current_button_index == 4:
                 for i in range(4):
-                    spawn_buttons("Shop_Slot", i + 1)
+                    spawn_buttons("Power_Up_Slot", i + 1)
 
             if current_text_index == 3:
-                spawn_text_box(4, -427 * scale_factor_X, 26 * scale_factor_Y, "yellow")
-                spawn_text_box(5, -257 * scale_factor_X, 26 * scale_factor_Y, "yellow")
-                spawn_text_box(6, -87 * scale_factor_X, 26 * scale_factor_Y, "yellow")
-                spawn_text_box(7, 83 * scale_factor_X, 26 * scale_factor_Y, "yellow")
+                counter = 4
+                for bu in buttons_on_screen_list:
+                    if bu.get_type() == "Power_Up_Slot":
+                        if bu.get_id() == 1:
+                            if yellow_power_up_level != 5 and yellow_power_up_level != 0:
+                                spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                                spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                        elif bu.get_id() == 2:
+                            if blue_power_up_level != 5 and blue_power_up_level != 0:
+                                spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                                spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                        elif bu.get_id() == 3:
+                            if green_power_up_level != 5 and green_power_up_level != 0:
+                                spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                                spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                        elif bu.get_id() == 4:
+                            if red_power_up_level != 5 and red_power_up_level != 0:
+                                spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                                spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                        counter = counter + 1
 
             for bu in buttons_on_screen_list:
-                if bu.get_type() == "Shop_Slot":
-                    bu.toggle_indicator('Power_Ups')
+                if bu.get_type() == "Power_Up_Slot":
+                    if bu.get_id() == 1:
+                        bu.toggle_indicator(yellow_power_up_level)
+                    elif bu.get_id() == 2:
+                        bu.toggle_indicator(blue_power_up_level)
+                    elif bu.get_id() == 3:
+                        bu.toggle_indicator(green_power_up_level)
+                    elif bu.get_id() == 4:
+                        bu.toggle_indicator(red_power_up_level)
+                    bu.set_indicator_location(scale_factor_Y)
 
         # Spawn the coin indicator
         if coin_indicator_index == 0:
@@ -3643,6 +3734,27 @@ while True:
             if t.id == 1:
                 t.move(mode, scale_factor_X)
                 break
+
+        if update_variables == 1:
+            # Extract the current slot selected
+            config = configparser.ConfigParser()
+            config.read('Config/playerData.ini')
+            machine_slot_selected = config['Machine_Player_Enabled'].getint('type_enabled')
+            alien_slot_selected = config['Alien_Mode_Gun_Enabled'].getint('type_enabled')
+
+            # Extract the slot unlocks and the power up levels
+            config = configparser.ConfigParser()
+            config.read('Config/playerData.ini')
+            machine_slots_unlocked = []
+            for i in range(5):
+                machine_slots_unlocked.append(config['Machine_Unlocked'].getint('slot_' + str(i + 1)))
+            alien_slots_unlocked = []
+            for i in range(5):
+                alien_slots_unlocked.append(config['Alien_Unlocked'].getint('slot_' + str(i + 1)))
+            yellow_power_up_level = config['Power_Up_Levels'].getint('Yellow_Power_Up')
+            blue_power_up_level = config['Power_Up_Levels'].getint('Blue_Power_Up')
+            green_power_up_level = config['Power_Up_Levels'].getint('Green_Power_Up')
+            red_power_up_level = config['Power_Up_Levels'].getint('Red_Power_Up')
 
     """
          Code Below is for when Statistics Mode is turned on.
