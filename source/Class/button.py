@@ -239,6 +239,7 @@ class Button:
             self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
 
             self.indicator = 1
+            self.indicator_toggled = 0
         else:
             self.indicator = 0
 
@@ -442,6 +443,7 @@ class Button:
         else:
             self.button_indicator.shape("Textures/GUI/Locked.gif")
         self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
+        self.indicator_toggled = 0
 
         # Set the type to "Shop Slot"
         self.type = "Shop_Slot"
@@ -630,6 +632,10 @@ class Button:
     def get_id(self):
         return self.id
 
+    def get_indicator_toggled(self):
+        if self.type == "Shop_Slot":
+            return self.indicator_toggled
+
     def remove(self):
         """
             Removes the button sprites from the screen and resets its attributes.
@@ -815,8 +821,10 @@ class Button:
                 check_setting = config[catigory].getint('slot_' + str(self.id))
                 if check_setting == 0:
                     self.button_indicator.showturtle()
+                    self.indicator_toggled = 1
                 else:
                     self.button_indicator.hideturtle()
+                    self.indicator_toggled = 0
 
     def update_text_color(self, x, y, scale_factor_x, scale_factor_y, fullscreen):
         """

@@ -39,7 +39,7 @@ class Text:
             in_use (int): Determines whether a text box object is currently on the screen or not
     """
 
-    def __init__(self, id, x, y, color, scale_factor_x, scale_factor_y):
+    def __init__(self, id, x, y, color):
         """
             Creates a text box object on the screen
 
@@ -54,19 +54,13 @@ class Text:
 
             :param color: The color of the text box
             :type color: string
-
-            :param scale_factor_x:
-            :type scale_factor_x:
-
-            :param scale_factor_y:
-            :type scale_factor_y:
         """
 
         self.text_box = turtle.Turtle()
         self.text_box.color(color)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.text_box.penup()
-        self.text_box.goto(x * scale_factor_x, y * scale_factor_y)
+        self.text_box.goto(x, y)
         self.text_box.hideturtle()
 
         self.moving = 1
@@ -85,24 +79,18 @@ class Text:
         self.text_box.clear()
         del self.text_box
 
-    def reinstate(self, id, x, y, color, scale_factor_x, scale_factor_y):
+    def reinstate(self, id, x, y, color):
         """
             Reuses the existing sprite to spawn a text box on the screen with the correct id
 
             :param id: Ths id of the new text box (For identification of the object in main)
             :type id: int
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
             :return: None
         """
 
         self.text_box.color(color)
-        self.text_box.goto(x * scale_factor_x, y * scale_factor_y)
+        self.text_box.goto(x, y)
 
         self.moving = 1
         self.id = id
@@ -136,6 +124,7 @@ class Text:
         """
 
         self.text_box.clear()
+        self.text_box.hideturtle()
         self.in_use = 0
         self.movement_activated = 0
 
@@ -182,6 +171,10 @@ class Text:
 
         self.text_box.clear()
         self.text_box.write(text, align="left", font=("Courier", int(size * scale_factor), type))
+
+    def write_right(self, text, size, type, scale_factor):
+        self.text_box.clear()
+        self.text_box.write(text, align="right", font=("Courier", int(size * scale_factor), type))
 
     def set_color(self, color):
         """

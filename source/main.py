@@ -32,6 +32,7 @@ from Data.screen import *
 from Class.button import Button
 from Class.panel import Panel
 from Class.textBox import Text
+from Class.priceLabel import PriceLabel
 from Class.coin import CoinIndicator
 from Class.powerUps import *
 from Class.machinePlayer import Player
@@ -1189,12 +1190,30 @@ def update_text():
                 t.write("Shop", 72, "bold", scale_factor)
             elif t.id == 2:
                 t.write_left("{}".format(total_coins), 24, "normal", scale_factor)
-            elif t.id == 3:
-                if page == "Machine_Mode":
+            if page == "Machine_Mode":
+                if t.id == 3:
                     t.write_left("Machine Mode", 36, "bold", scale_factor)
-                elif page == "Alien_Mode":
+                elif t.id == 5:
+                    t.write_left(" 5000", 22, "normal", scale_factor)
+                elif t.id == 6:
+                    t.write_left(" 15000", 22, "normal", scale_factor)
+                elif t.id == 7:
+                    t.write_left(" 40000", 22, "normal", scale_factor)
+                elif t.id == 8:
+                    t.write_left(" 100000", 22, "normal", scale_factor)
+            elif page == "Alien_Mode":
+                if t.id == 3:
                     t.write_left("Alien Mode", 36, "bold", scale_factor)
-                elif page == "Power_Ups":
+                elif t.id == 5:
+                    t.write_left(" 5000", 22, "normal", scale_factor)
+                elif t.id == 6:
+                    t.write_left(" 15000", 22, "normal", scale_factor)
+                elif t.id == 7:
+                    t.write_left(" 40000", 22, "normal", scale_factor)
+                elif t.id == 8:
+                    t.write_left(" 100000", 22, "normal", scale_factor)
+            elif page == "Power_Ups":
+                if t.id == 3:
                     t.write_left("Power Ups", 36, "bold", scale_factor)
     elif mode == "Stats":
         for bu in buttons_on_screen_list:
@@ -1437,7 +1456,7 @@ def spawn_text_box(id, x, y, color):
     # This is why a global list exists for every type of sprite in the game.
     global current_text_index
     if len(all_text_list) <= len(text_on_screen_list):
-        text_box = Text(id, x, y, color, scale_factor_X, scale_factor_Y)
+        text_box = Text(id, x, y, color)
         text_on_screen_list.append(text_box)
         current_text_index = current_text_index + 1
         all_text_list.append(text_box)
@@ -1446,9 +1465,27 @@ def spawn_text_box(id, x, y, color):
             if t.in_use == 1:
                 continue
             else:
-                t.reinstate(id, x, y, color, scale_factor_X, scale_factor_Y)
+                t.reinstate(id, x, y, color)
                 text_on_screen_list.append(t)
                 current_text_index = current_text_index + 1
+                break
+
+
+def spawn_price_label(x, y):
+    global current_price_index
+    if len(all_price_label) <= len(price_label_on_screen_list):
+        price_label = PriceLabel(x, y, fullscreen)
+        price_label_on_screen_list.append(price_label)
+        current_price_index = current_price_index + 1
+        all_price_label.append(price_label)
+    else:
+        for pl in all_price_label:
+            if pl.get_price_label().isvisible():
+                continue
+            else:
+                pl.reinstate(x, y)
+                price_label_on_screen_list.append(pl)
+                current_price_index = current_price_index + 1
                 break
 
 
@@ -2084,8 +2121,13 @@ while True:
             t.remove()
         text_on_screen_list.clear()
         current_text_index = 0
+        for pl in price_label_on_screen_list:
+            pl.remove()
+        price_label_on_screen_list.clear()
+        current_price_index = 0
         score = 0
         screen_update = 0
+        print(len(wn.turtles()))
 
     # The Alien Mode background objects are created right when the game is launched.
     # This is done to make sure that they are truely in the background and that nothing lies behind these sprites.
@@ -2148,10 +2190,10 @@ while True:
 
         # Spawn the title mode text (Like title and bversion number in the bottom corner)
         if current_text_index == 0:
-            spawn_text_box(1, 0, 155, "red")
-            spawn_text_box(2, 510, -347, "white")
+            spawn_text_box(1, 0, 155 * scale_factor_Y, "red")
+            spawn_text_box(2, 510 * scale_factor_X, -347 * scale_factor_Y, "white")
             if god_mode == 1:
-                spawn_text_box(3, 481, 320, "white")
+                spawn_text_box(3, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
         for t in text_on_screen_list:
             if t.id == 1:
                 t.move(mode, scale_factor_X)
@@ -2196,13 +2238,13 @@ while True:
         # The power up timers are created as just ordinary text boxes with the correct colors
         # This is done to ensure turtle are being reused
         if current_text_index == 0:
-            spawn_text_box(1, 0, 320, "white")
-            spawn_text_box(2, -65, 278, "#737000")
-            spawn_text_box(3, 10, 278, "#00001A")
-            spawn_text_box(4, 80, 278, "#001C00")
-            spawn_text_box(5, -588, 281, "yellow")
+            spawn_text_box(1, 0, 320 * scale_factor_Y, "white")
+            spawn_text_box(2, -65 * scale_factor_X, 278 * scale_factor_Y, "#737000")
+            spawn_text_box(3, 10 * scale_factor_X, 278 * scale_factor_Y, "#00001A")
+            spawn_text_box(4, 80 * scale_factor_X, 278 * scale_factor_Y, "#001C00")
+            spawn_text_box(5, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
             if god_mode == 1:
-                spawn_text_box(6, 481, 320, "white")
+                spawn_text_box(6, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Spawn the coin indicator
         if coin_indicator_index == 0:
@@ -2828,13 +2870,13 @@ while True:
         # The power up timers are created as just ordinary text boxes with the correct colors
         # This is done to ensure turtle are being reused
         if current_text_index == 0:
-            spawn_text_box(1, 0, 320, "white")
-            spawn_text_box(2, -65, 278, "#737000")
-            spawn_text_box(3, 10, 278, "#00001A")
-            spawn_text_box(4, 80, 278, "#300000")
-            spawn_text_box(5, -588, 281, "yellow")
+            spawn_text_box(1, 0, 320 * scale_factor_Y, "white")
+            spawn_text_box(2, -65 * scale_factor_X, 278 * scale_factor_Y, "#737000")
+            spawn_text_box(3, 10 * scale_factor_X, 278 * scale_factor_Y, "#00001A")
+            spawn_text_box(4, 80 * scale_factor_X, 278 * scale_factor_Y, "#300000")
+            spawn_text_box(5, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
             if god_mode == 1:
-                spawn_text_box(6, 481, 320, "white")
+                spawn_text_box(6, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Spawn all of the Alien Mode background objects
         if sun_index == 0:
@@ -3539,14 +3581,23 @@ while True:
 
         # Spawn all the necessary standalone text
         if current_text_index == 0:
-            spawn_text_box(1, -75, 240, "red")
-            spawn_text_box(2, -588, 281, "yellow")
-            spawn_text_box(3, -500, 190, "#ff5349")
+            spawn_text_box(1, -75 * scale_factor_X, 240 * scale_factor_Y, "red")
+            spawn_text_box(2, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
+            spawn_text_box(3, -500 * scale_factor_X, 190 * scale_factor_Y, "#ff5349")
 
         if page == "Machine_Mode":
             if current_button_index == 4:
                 for i in range(5):
                     spawn_buttons("Shop_Slot", i + 1)
+
+            if current_text_index == 3:
+                counter = 4
+                for bu in buttons_on_screen_list:
+                    if bu.get_type() == "Shop_Slot":
+                        if bu.get_indicator_toggled() == 1:
+                            spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                            spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                        counter = counter + 1
 
             for bu in buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
@@ -3556,6 +3607,15 @@ while True:
                 for i in range(5):
                     spawn_buttons("Shop_Slot", i + 1)
 
+            if current_text_index == 3:
+                counter = 4
+                for bu in buttons_on_screen_list:
+                    if bu.get_type() == "Shop_Slot":
+                        if bu.get_indicator_toggled() == 1:
+                            spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                            spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                        counter = counter + 1
+
             for bu in buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
                     bu.toggle_indicator('Alien_Unlocked')
@@ -3563,6 +3623,12 @@ while True:
             if current_button_index == 4:
                 for i in range(4):
                     spawn_buttons("Shop_Slot", i + 1)
+
+            if current_text_index == 3:
+                spawn_text_box(4, -427 * scale_factor_X, 26 * scale_factor_Y, "yellow")
+                spawn_text_box(5, -257 * scale_factor_X, 26 * scale_factor_Y, "yellow")
+                spawn_text_box(6, -87 * scale_factor_X, 26 * scale_factor_Y, "yellow")
+                spawn_text_box(7, 83 * scale_factor_X, 26 * scale_factor_Y, "yellow")
 
             for bu in buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
@@ -3595,15 +3661,15 @@ while True:
 
         # Create the statistics text
         if current_text_index == 0:
-            spawn_text_box(1, 0, 240, "red")
-            spawn_text_box(2, -320, 140, "#ff5349")
-            spawn_text_box(3, 320, 140, "#ff5349")
+            spawn_text_box(1, 0, 240 * scale_factor_Y, "red")
+            spawn_text_box(2, -320 * scale_factor_X, 140 * scale_factor_Y, "#ff5349")
+            spawn_text_box(3, 320 * scale_factor_X, 140 * scale_factor_Y, "#ff5349")
             for i in range(10):
-                spawn_text_box(i + 4, -320, 90 - (i * 40), "white")
+                spawn_text_box(i + 4, -320 * scale_factor_X, (90 - (i * 40)) * scale_factor_Y, "white")
             for i in range(11):
-                spawn_text_box(13 + i + 1, 320, 90 - (i * 40), "white")
+                spawn_text_box(13 + i + 1, 320 * scale_factor_X, (90 - (i * 40)) * scale_factor_Y, "white")
             if god_mode == 1:
-                spawn_text_box(25, 481, 320, "white")
+                spawn_text_box(25, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Move the title text back and fourth across the screen as needed
         for t in text_on_screen_list:
@@ -3660,9 +3726,9 @@ while True:
 
         # Create all additional text boxes
         if current_text_index == 0:
-            spawn_text_box(1, 0, 240, "red")
+            spawn_text_box(1, 0, 240 * scale_factor_Y, "red")
             if god_mode == 1:
-                spawn_text_box(2, 481, 320, "white")
+                spawn_text_box(2, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Move the title text left and right across the screen
         for t in text_on_screen_list:
@@ -3758,9 +3824,9 @@ while True:
 
         # Create any additional text boxes
         if current_text_index == 0:
-            spawn_text_box(1, 0, 240, "red")
+            spawn_text_box(1, 0, 240 * scale_factor_Y, "red")
             if god_mode == 1:
-                spawn_text_box(2, 481, 320, "white")
+                spawn_text_box(2, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Move the title text left and right across the screen
         for t in text_on_screen_list:
