@@ -32,7 +32,7 @@ import turtle
 import random
 import pygame
 import time
-from Class.coin import Coin
+from components.coin import Coin
 
 
 class RedMachine:

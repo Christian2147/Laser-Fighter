@@ -33,7 +33,7 @@ import turtle
 import pygame
 import random
 import time
-from Class.coin import Coin
+from components.coin import Coin
 
 
 class Boss:

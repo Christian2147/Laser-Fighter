@@ -27,28 +27,32 @@
 """
 
 import ctypes
+import time
+import random
 from Data.data import *
 from Data.screen import *
-from utils.ConfigUpdateShop import ShopConfig
-from Class.button import Button
-from Class.panel import Panel
-from Class.textBox import Text
-from Class.priceLabel import PriceLabel
-from Class.coin import CoinIndicator
-from Class.powerUps import *
-from Class.machinePlayer import Player
-from Class.blueMachine import BlueMachine
-from Class.yellowMachine import YellowMachine
-from Class.redMachine import RedMachine
-from Class.boss import Boss
-from Class.backgroundEffects import Earth
-from Class.backgroundEffects import Sun
-from Class.backgroundEffects import BackgroundObjects
-from Class.humanPlayer import Human
-from Class.smallAliens import SmallAlien
-from Class.mediumAliens import MediumAlien
-from Class.largeAliens import LargeAlien
-from Class.ufo import UFO
+from components.gui.button import Button
+from components.gui.panel import Panel
+from components.gui.textBox import Text
+from components.gui.priceLabel import PriceLabel
+from components.coin import CoinIndicator
+from components.powerUps import PowerUp
+from components.powerUps import YellowIndicator
+from components.powerUps import BlueIndicator
+from components.powerUps import ExtraIndicator
+from components.player.machinePlayer import Player
+from components.player.humanPlayer import Human
+from components.enemy.blueMachine import BlueMachine
+from components.enemy.yellowMachine import YellowMachine
+from components.enemy.redMachine import RedMachine
+from components.enemy.boss import Boss
+from components.enemy.smallAliens import SmallAlien
+from components.enemy.mediumAliens import MediumAlien
+from components.enemy.largeAliens import LargeAlien
+from components.enemy.ufo import UFO
+from components.backgroundEffects import Earth
+from components.backgroundEffects import Sun
+from components.backgroundEffects import BackgroundObjects
 
 """
     The functions below are for the player controls.
