@@ -500,6 +500,76 @@ def exit_game(x, y):
         on_quit()
 
 
+def slot_1_select(x, y):
+    global page
+    wn.onscreenclick(None)
+    # Check to see if the cursor is in the bound of the button to be clicked
+    if (x > -503 * scale_factor_X) and (x < -352 * scale_factor_X) and (y > 11 * scale_factor_Y) and (y < 182 * scale_factor_Y):
+        if page == "Machine_Mode":
+            execute_slot_function("Machine_Mode", 1)
+        elif page == "Alien_Mode":
+            execute_slot_function("Alien_Mode", 1)
+        elif page == "Power_Ups":
+            execute_slot_function("Power_Ups", 1)
+
+
+def slot_2_select(x, y):
+    global page
+    wn.onscreenclick(None)
+    # Check to see if the cursor is in the bound of the button to be clicked
+    if (x > -333 * scale_factor_X) and (x < -182 * scale_factor_X) and (y > 11 * scale_factor_Y) and (y < 182 * scale_factor_Y):
+        if page == "Machine_Mode":
+            execute_slot_function("Machine_Mode", 2)
+        elif page == "Alien_Mode":
+            execute_slot_function("Alien_Mode", 2)
+        elif page == "Power_Ups":
+            execute_slot_function("Power_Ups", 2)
+
+
+def slot_3_select(x, y):
+    global page
+    wn.onscreenclick(None)
+    # Check to see if the cursor is in the bound of the button to be clicked
+    if (x > -163 * scale_factor_X) and (x < -12 * scale_factor_X) and (y > 11 * scale_factor_Y) and (y < 182 * scale_factor_Y):
+        if page == "Machine_Mode":
+            execute_slot_function("Machine_Mode", 3)
+        elif page == "Alien_Mode":
+            execute_slot_function("Alien_Mode", 3)
+        elif page == "Power_Ups":
+            execute_slot_function("Power_Ups", 3)
+
+
+def slot_4_select(x, y):
+    global page
+    wn.onscreenclick(None)
+    # Check to see if the cursor is in the bound of the button to be clicked
+    if (x > 7 * scale_factor_X) and (x < 158 * scale_factor_X) and (y > 11 * scale_factor_Y) and (y < 182 * scale_factor_Y):
+        if page == "Machine_Mode":
+            execute_slot_function("Machine_Mode", 4)
+        elif page == "Alien_Mode":
+            execute_slot_function("Alien_Mode", 4)
+        elif page == "Power_Ups":
+            execute_slot_function("Power_Ups", 4)
+
+
+def slot_5_select(x, y):
+    global page
+    wn.onscreenclick(None)
+    # Check to see if the cursor is in the bound of the button to be clicked
+    if (x > -503 * scale_factor_X) and (x < -352 * scale_factor_X) and (y > -179 * scale_factor_Y) and (y < -8 * scale_factor_Y):
+        if page == "Machine_Mode":
+            execute_slot_function("Machine_Mode", 5)
+        elif page == "Alien_Mode":
+            execute_slot_function("Alien_Mode", 5)
+
+
+def execute_slot_function(current_page, slot_id):
+    # Button sound is played
+    if button_sound == 1:
+        sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+        sound.play()
+
+
 """
     The next functions are for changing the game settings.
 """
@@ -3725,6 +3795,20 @@ while True:
                         bu.toggle_indicator(shop_config.machine_slots_unlocked[3])
                     elif bu.get_id() == 5:
                         bu.toggle_indicator(shop_config.machine_slots_unlocked[4])
+
+            for bu in buttons_on_screen_list:
+                button_color, button_type, id = bu.click_slot()
+                if bu.get_type() == "Shop_Slot":
+                    if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_1_select)
+                    elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_2_select)
+                    elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_3_select)
+                    elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_4_select)
+                    elif id == 5 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_5_select)
         elif page == "Alien_Mode":
             if current_button_index == 4:
                 for i in range(5):
@@ -3770,6 +3854,20 @@ while True:
                         bu.toggle_indicator(shop_config.alien_slots_unlocked[3])
                     elif bu.get_id() == 5:
                         bu.toggle_indicator(shop_config.alien_slots_unlocked[4])
+
+            for bu in buttons_on_screen_list:
+                button_color, button_type, id = bu.click_slot()
+                if bu.get_type() == "Shop_Slot":
+                    if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_1_select)
+                    elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_2_select)
+                    elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_3_select)
+                    elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_4_select)
+                    elif id == 5 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_5_select)
         elif page == "Power_Ups":
             if current_button_index == 4:
                 for i in range(4):
@@ -3816,6 +3914,18 @@ while True:
                     elif bu.get_id() == 4:
                         bu.toggle_indicator(shop_config.red_power_up_level)
                     bu.set_indicator_location(scale_factor_Y)
+
+            for bu in buttons_on_screen_list:
+                button_color, button_type, id = bu.click_slot()
+                if bu.get_type() == "Shop_Slot":
+                    if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_1_select)
+                    elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_2_select)
+                    elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_3_select)
+                    elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(slot_4_select)
 
         # Spawn the coin indicator
         if coin_indicator_index == 0:
