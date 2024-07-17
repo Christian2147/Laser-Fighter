@@ -333,7 +333,7 @@ def display_machine_mode_page(x, y):
     global screen_update
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -641 * scale_factor_X) and (x < -574 * scale_factor_X) and (y > 99 * scale_factor_Y) and (y < 201 * scale_factor_Y):
+    if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > 99 * scale_factor_Y) and (y < 201 * scale_factor_Y):
         if button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
@@ -347,7 +347,7 @@ def display_alien_mode_page(x, y):
     global screen_update
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -641 * scale_factor_X) and (x < -574 * scale_factor_X) and (y > -21 * scale_factor_Y) and (y < 81 * scale_factor_Y):
+    if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > -21 * scale_factor_Y) and (y < 81 * scale_factor_Y):
         if button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
@@ -361,7 +361,7 @@ def display_power_up_page(x, y):
     global screen_update
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -641 * scale_factor_X) and (x < -574 * scale_factor_X) and (y > -141 * scale_factor_Y) and (y < -39 * scale_factor_Y):
+    if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > -141 * scale_factor_Y) and (y < -39 * scale_factor_Y):
         if button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
