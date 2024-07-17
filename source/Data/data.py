@@ -25,7 +25,7 @@
 import configparser
 import subprocess
 import os
-from utils.ConfigUpdateShop import ShopConfig
+from utils.UpdateShopData import ShopConfig
 
 # Current Screen Variable - Determines what screen is currently being displayed in the window
 mode = "Title_Mode"
