@@ -316,6 +316,7 @@ def launch_shop_mode(x, y):
     global mode
     global page
     global screen_update
+    global move_slot_selector
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -133 * scale_factor_Y) and (y < -61 * scale_factor_Y):
@@ -326,11 +327,14 @@ def launch_shop_mode(x, y):
         mode = "Shop"
         page = "Machine_Mode"
         screen_update = 1
+        move_slot_selector = 1
 
 
 def display_machine_mode_page(x, y):
     global page
     global screen_update
+    global move_tab_selector
+    global move_slot_selector
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > 99 * scale_factor_Y) and (y < 201 * scale_factor_Y):
@@ -340,11 +344,15 @@ def display_machine_mode_page(x, y):
         # Enter the Machine Mode page
         page = "Machine_Mode"
         screen_update = 1
+        move_tab_selector = 1
+        move_slot_selector = 1
 
 
 def display_alien_mode_page(x, y):
     global page
     global screen_update
+    global move_tab_selector
+    global move_slot_selector
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > -21 * scale_factor_Y) and (y < 81 * scale_factor_Y):
@@ -354,11 +362,14 @@ def display_alien_mode_page(x, y):
         # Enter the Alien Mode page
         page = "Alien_Mode"
         screen_update = 1
+        move_tab_selector = 1
+        move_slot_selector = 1
 
 
 def display_power_up_page(x, y):
     global page
     global screen_update
+    global move_tab_selector
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > -141 * scale_factor_Y) and (y < -39 * scale_factor_Y):
@@ -368,6 +379,7 @@ def display_power_up_page(x, y):
         # Enter the Power Ups page
         page = "Power_Ups"
         screen_update = 1
+        move_tab_selector = 1
 
 
 def launch_stats_mode(x, y):
@@ -1544,6 +1556,27 @@ def spawn_price_label(x, y):
                 break
 
 
+def spawn_selector(type):
+    global current_selector_index
+    if len(all_selector) <= len(selectors_on_screen_list):
+        selector = Selector(type, scale_factor_X, scale_factor_Y, fullscreen)
+        selectors_on_screen_list.append(selector)
+        current_selector_index = current_selector_index + 1
+        all_selector.append(selector)
+    else:
+        for s in all_selector:
+            if s.get_selector().isvisible():
+                continue
+            else:
+                if type == "Tab":
+                    s.reinstate_to_tab(scale_factor_X, scale_factor_Y, fullscreen)
+                elif type == "Slot":
+                    s.reinstate_to_slot(scale_factor_X, scale_factor_Y, fullscreen)
+                selectors_on_screen_list.append(s)
+                current_selector_index = current_selector_index + 1
+                break
+
+
 def spawn_coin_indicator():
     """
         Spawn a coin indicator at the top of the screen.
@@ -2180,6 +2213,10 @@ while True:
             pl.remove()
         price_label_on_screen_list.clear()
         current_price_index = 0
+        for s in selectors_on_screen_list:
+            s.remove()
+        selectors_on_screen_list.clear()
+        current_selector_index = 0
         score = 0
         screen_update = 0
         print(len(wn.turtles()))
@@ -3640,6 +3677,9 @@ while True:
             spawn_text_box(2, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
             spawn_text_box(3, -500 * scale_factor_X, 190 * scale_factor_Y, "#ff5349")
 
+        if current_selector_index == 0:
+            spawn_selector("Tab")
+
         if page == "Machine_Mode":
             if current_button_index == 4:
                 for i in range(5):
@@ -3653,6 +3693,25 @@ while True:
                             spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                             spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
+
+            if current_selector_index == 1:
+                spawn_selector("Slot")
+
+            if move_tab_selector == 1:
+                for s in selectors_on_screen_list:
+                    if s.get_type() == "Tab":
+                        for bu in buttons_on_screen_list:
+                            if bu.get_type() == "Tab" and bu.get_id() == 1:
+                                s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
+                                move_tab_selector = 0
+
+            if move_slot_selector == 1:
+                for s in selectors_on_screen_list:
+                    if s.get_type() == "Slot":
+                        for bu in buttons_on_screen_list:
+                            if bu.get_type() == "Shop_Slot" and bu.get_id() == shop_config.machine_slot_selected:
+                                s.new_select(bu.get_button_frame().xcor(), bu.get_button_frame().ycor())
+                                move_slot_selector = 0
 
             for bu in buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
@@ -3679,6 +3738,25 @@ while True:
                             spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                             spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
+
+            if current_selector_index == 1:
+                spawn_selector("Slot")
+
+            if move_tab_selector == 1:
+                for s in selectors_on_screen_list:
+                    if s.get_type() == "Tab":
+                        for bu in buttons_on_screen_list:
+                            if bu.get_type() == "Tab" and bu.get_id() == 2:
+                                s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
+                                move_tab_selector = 0
+
+            if move_slot_selector == 1:
+                for s in selectors_on_screen_list:
+                    if s.get_type() == "Slot":
+                        for bu in buttons_on_screen_list:
+                            if bu.get_type() == "Shop_Slot" and bu.get_id() == shop_config.alien_slot_selected:
+                                s.new_select(bu.get_button_frame().xcor(), bu.get_button_frame().ycor())
+                                move_slot_selector = 0
 
             for bu in buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
@@ -3718,6 +3796,14 @@ while True:
                                 spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                                 spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
+
+            if move_tab_selector == 1:
+                for s in selectors_on_screen_list:
+                    if s.get_type() == "Tab":
+                        for bu in buttons_on_screen_list:
+                            if bu.get_type() == "Tab" and bu.get_id() == 3:
+                                s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
+                                move_tab_selector = 0
 
             for bu in buttons_on_screen_list:
                 if bu.get_type() == "Power_Up_Slot":

@@ -25,13 +25,13 @@ class Selector:
                 self.selector.shape("Textures/GUI/Tab_Selector_Scaled.gif")
             else:
                 self.selector.shape("Textures/GUI/Tab_Selector.gif")
-            self.selector.goto(-604.5 * scale_factor_x, 150 * scale_factor_y)
+            self.selector.goto(-603.5 * scale_factor_x, 150 * scale_factor_y)
         else:
             if fullscreen == 1:
                 self.selector.shape("Textures/GUI/Slot_Selector_Scaled.gif")
             else:
                 self.selector.shape("Textures/GUI/Slot_Selector.gif")
-            self.selector.goto(-427 * scale_factor_x, 96 * scale_factor_y)
+            self.selector.goto(-427 * scale_factor_x, 95.5 * scale_factor_y)
 
         self.type = type
 
@@ -45,7 +45,7 @@ class Selector:
             self.selector.shape("Textures/GUI/Tab_Selector_Scaled.gif")
         else:
             self.selector.shape("Textures/GUI/Tab_Selector.gif")
-        self.selector.goto(-604.5 * scale_factor_x, 150 * scale_factor_y)
+        self.selector.goto(-603.5 * scale_factor_x, 150 * scale_factor_y)
         self.selector.showturtle()
 
         self.type = "Tab"
@@ -55,7 +55,7 @@ class Selector:
             self.selector.shape("Textures/GUI/Slot_Selector_Scaled.gif")
         else:
             self.selector.shape("Textures/GUI/Slot_Selector.gif")
-        self.selector.goto(-427 * scale_factor_x, 96 * scale_factor_y)
+        self.selector.goto(-427 * scale_factor_x, 95.5 * scale_factor_y)
         self.selector.showturtle()
 
         self.type = "Slot"

@@ -83,6 +83,8 @@ clickable = 0
 
 # Update variables (When things only need to be updated in certain circumstances)
 update_variables = 0
+move_tab_selector = 0
+move_slot_selector = 0
 
 # Button Data
 all_button_list = []
