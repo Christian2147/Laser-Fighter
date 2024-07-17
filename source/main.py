@@ -31,6 +31,7 @@ import time
 import random
 from Data.data import *
 from Data.screen import *
+from Data.shop_data import *
 from components.gui.InterfaceButton import Button
 from components.gui.InterfacePanel import Panel
 from components.gui.InterfaceTextBox import Text
@@ -316,6 +317,8 @@ def launch_shop_mode(x, y):
     global mode
     global page
     global screen_update
+    global refresh_panel
+    global refresh_text
     global move_slot_selector
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
@@ -327,12 +330,16 @@ def launch_shop_mode(x, y):
         mode = "Shop"
         page = "Machine_Mode"
         screen_update = 1
+        refresh_panel = 1
+        refresh_text = 1
         move_slot_selector = 1
 
 
 def display_machine_mode_page(x, y):
     global page
     global screen_update
+    global page_update
+    global refresh_text
     global move_tab_selector
     global move_slot_selector
     wn.onscreenclick(None)
@@ -344,6 +351,8 @@ def display_machine_mode_page(x, y):
         # Enter the Machine Mode page
         page = "Machine_Mode"
         screen_update = 1
+        page_update = 1
+        refresh_text = 1
         move_tab_selector = 1
         move_slot_selector = 1
 
@@ -351,6 +360,8 @@ def display_machine_mode_page(x, y):
 def display_alien_mode_page(x, y):
     global page
     global screen_update
+    global page_update
+    global refresh_text
     global move_tab_selector
     global move_slot_selector
     wn.onscreenclick(None)
@@ -362,6 +373,8 @@ def display_alien_mode_page(x, y):
         # Enter the Alien Mode page
         page = "Alien_Mode"
         screen_update = 1
+        page_update = 1
+        refresh_text = 1
         move_tab_selector = 1
         move_slot_selector = 1
 
@@ -369,6 +382,8 @@ def display_alien_mode_page(x, y):
 def display_power_up_page(x, y):
     global page
     global screen_update
+    global page_update
+    global refresh_text
     global move_tab_selector
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
@@ -379,6 +394,8 @@ def display_power_up_page(x, y):
         # Enter the Power Ups page
         page = "Power_Ups"
         screen_update = 1
+        page_update = 1
+        refresh_text = 1
         move_tab_selector = 1
 
 
@@ -397,6 +414,7 @@ def launch_stats_mode(x, y):
 
     global mode
     global screen_update
+    global refresh_text
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > 9 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -224 * scale_factor_Y) and (y < -150 * scale_factor_Y):
@@ -406,6 +424,7 @@ def launch_stats_mode(x, y):
         # Go to the statistics screen
         mode = "Stats"
         screen_update = 1
+        refresh_text = 1
 
 
 def launch_settings_mode(x, y):
@@ -564,10 +583,39 @@ def slot_5_select(x, y):
 
 
 def execute_slot_function(current_page, slot_id):
+    global refresh_panel
+    global move_slot_selector
     # Button sound is played
     if button_sound == 1:
         sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
         sound.play()
+    if current_page != "Power_Ups":
+        for pa in panel_turtle:
+            pa.set_panel_text(current_page, slot_id)
+        if current_page == "Machine_Mode":
+            if shop_config.machine_slots_unlocked[slot_id - 1] == 1:
+                shop_config.machine_slot_selected = slot_id
+                shop_config.save()
+                move_slot_selector = 1
+        elif current_page == "Alien_Mode":
+            if shop_config.alien_slots_unlocked[slot_id - 1] == 1:
+                shop_config.alien_slot_selected = slot_id
+                shop_config.save()
+                move_slot_selector = 1
+    else:
+        if slot_id == 1:
+            for pa in panel_turtle:
+                pa.set_panel_text("Yellow_Power_Up", slot_id)
+        elif slot_id == 2:
+            for pa in panel_turtle:
+                pa.set_panel_text("Blue_Power_Up", slot_id)
+        elif slot_id == 3:
+            for pa in panel_turtle:
+                pa.set_panel_text("Green_Power_Up", slot_id)
+        elif slot_id == 4:
+            for pa in panel_turtle:
+                pa.set_panel_text("Red_Power_Up", slot_id)
+    refresh_panel = 1
 
 
 """
@@ -848,7 +896,7 @@ def execute_setting_function(type):
 
         :return: None
     """
-
+    global refresh_indicator
     # Button sound is played
     if button_sound == 1:
         sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
@@ -865,6 +913,7 @@ def execute_setting_function(type):
     # Write back to file
     with open('Config/config.ini', 'w') as configfile:
         config.write(configfile)
+    refresh_indicator = 1
 
 
 def change_go_right_key(x, y):
@@ -1198,6 +1247,9 @@ def update_text():
     """
 
     global mode
+    global refresh_indicator
+    global refresh_panel
+    global refresh_text
     # Update based on the current mode
     if mode == "Title_Mode":
         for bu in buttons_on_screen_list:
@@ -1279,157 +1331,170 @@ def update_text():
                     bu.write_indicator(shop_config.green_power_up_level, scale_factor)
                 elif bu.get_id() == 4:
                     bu.write_indicator(shop_config.red_power_up_level, scale_factor)
-        for pa in panel_turtle:
-            pa.write_text(scale_factor)
-            pa.set_indicator(displayed, fullscreen)
+        if refresh_panel == 1:
+            for pa in panel_turtle:
+                pa.write_text(scale_factor)
+                pa.set_indicator(displayed, fullscreen)
+            refresh_panel = 0
         for t in text_on_screen_list:
             if t.id == 1:
                 t.write("Shop", 72, "bold", scale_factor)
             elif t.id == 2:
                 t.write_left("{}".format(total_coins), 24, "normal", scale_factor)
-            if page == "Machine_Mode":
-                if t.id == 3:
-                    t.write_left("Machine Mode", 36, "bold", scale_factor)
-                elif t.id == 5:
-                    t.write_left(" 5000", 22, "normal", scale_factor)
-                elif t.id == 6:
-                    t.write_left(" 15000", 22, "normal", scale_factor)
-                elif t.id == 7:
-                    t.write_left(" 40000", 22, "normal", scale_factor)
-                elif t.id == 8:
-                    t.write_left(" 100000", 22, "normal", scale_factor)
-            elif page == "Alien_Mode":
-                if t.id == 3:
-                    t.write_left("Alien Mode", 36, "bold", scale_factor)
-                elif t.id == 5:
-                    t.write_left(" 5000", 22, "normal", scale_factor)
-                elif t.id == 6:
-                    t.write_left(" 15000", 22, "normal", scale_factor)
-                elif t.id == 7:
-                    t.write_left(" 40000", 22, "normal", scale_factor)
-                elif t.id == 8:
-                    t.write_left(" 100000", 22, "normal", scale_factor)
-            elif page == "Power_Ups":
-                if t.id == 3:
-                    t.write_left("Power Ups", 36, "bold", scale_factor)
-                elif t.id == 4:
-                    if shop_config.yellow_power_up_level == 1:
-                        t.write_left(" 1000", 22, "normal", scale_factor)
-                    elif shop_config.yellow_power_up_level == 2:
+            if refresh_text == 1:
+                if page == "Machine_Mode":
+                    if t.id == 3:
+                        t.write_left("Machine Mode", 36, "bold", scale_factor)
+                    elif t.id == 5:
                         t.write_left(" 5000", 22, "normal", scale_factor)
-                    elif shop_config.yellow_power_up_level == 3:
+                    elif t.id == 6:
                         t.write_left(" 15000", 22, "normal", scale_factor)
-                    elif shop_config.yellow_power_up_level == 4:
-                        t.write_left(" 30000", 22, "normal", scale_factor)
-                elif t.id == 5:
-                    if shop_config.blue_power_up_level == 1:
-                        t.write_left(" 1000", 22, "normal", scale_factor)
-                    elif shop_config.blue_power_up_level == 2:
+                    elif t.id == 7:
+                        t.write_left(" 40000", 22, "normal", scale_factor)
+                    elif t.id == 8:
+                        t.write_left(" 100000", 22, "normal", scale_factor)
+                elif page == "Alien_Mode":
+                    if t.id == 3:
+                        t.write_left("Alien Mode", 36, "bold", scale_factor)
+                    elif t.id == 5:
                         t.write_left(" 5000", 22, "normal", scale_factor)
-                    elif shop_config.blue_power_up_level == 3:
+                    elif t.id == 6:
                         t.write_left(" 15000", 22, "normal", scale_factor)
-                    elif shop_config.blue_power_up_level == 4:
-                        t.write_left(" 30000", 22, "normal", scale_factor)
-                elif t.id == 6:
-                    if shop_config.green_power_up_level == 1:
-                        t.write_left(" 1000", 22, "normal", scale_factor)
-                    elif shop_config.green_power_up_level == 2:
-                        t.write_left(" 5000", 22, "normal", scale_factor)
-                    elif shop_config.green_power_up_level == 3:
-                        t.write_left(" 15000", 22, "normal", scale_factor)
-                    elif shop_config.green_power_up_level == 4:
-                        t.write_left(" 30000", 22, "normal", scale_factor)
-                elif t.id == 7:
-                    if shop_config.red_power_up_level == 1:
-                        t.write_left(" 1000", 22, "normal", scale_factor)
-                    elif shop_config.red_power_up_level == 2:
-                        t.write_left(" 5000", 22, "normal", scale_factor)
-                    elif shop_config.red_power_up_level == 3:
-                        t.write_left(" 15000", 22, "normal", scale_factor)
-                    elif shop_config.red_power_up_level == 4:
-                        t.write_left(" 30000", 22, "normal", scale_factor)
+                    elif t.id == 7:
+                        t.write_left(" 40000", 22, "normal", scale_factor)
+                    elif t.id == 8:
+                        t.write_left(" 100000", 22, "normal", scale_factor)
+                elif page == "Power_Ups":
+                    if t.id == 3:
+                        t.write_left("Power Ups", 36, "bold", scale_factor)
+                    elif t.id == 4:
+                        if shop_config.yellow_power_up_level == 1:
+                            t.write_left(" 1000", 22, "normal", scale_factor)
+                        elif shop_config.yellow_power_up_level == 2:
+                            t.write_left(" 5000", 22, "normal", scale_factor)
+                        elif shop_config.yellow_power_up_level == 3:
+                            t.write_left(" 15000", 22, "normal", scale_factor)
+                        elif shop_config.yellow_power_up_level == 4:
+                            t.write_left(" 30000", 22, "normal", scale_factor)
+                    elif t.id == 5:
+                        if shop_config.blue_power_up_level == 1:
+                            t.write_left(" 1000", 22, "normal", scale_factor)
+                        elif shop_config.blue_power_up_level == 2:
+                            t.write_left(" 5000", 22, "normal", scale_factor)
+                        elif shop_config.blue_power_up_level == 3:
+                            t.write_left(" 15000", 22, "normal", scale_factor)
+                        elif shop_config.blue_power_up_level == 4:
+                            t.write_left(" 30000", 22, "normal", scale_factor)
+                    elif t.id == 6:
+                        if shop_config.green_power_up_level == 1:
+                            t.write_left(" 1000", 22, "normal", scale_factor)
+                        elif shop_config.green_power_up_level == 2:
+                            t.write_left(" 5000", 22, "normal", scale_factor)
+                        elif shop_config.green_power_up_level == 3:
+                            t.write_left(" 15000", 22, "normal", scale_factor)
+                        elif shop_config.green_power_up_level == 4:
+                            t.write_left(" 30000", 22, "normal", scale_factor)
+                    elif t.id == 7:
+                        if shop_config.red_power_up_level == 1:
+                            t.write_left(" 1000", 22, "normal", scale_factor)
+                        elif shop_config.red_power_up_level == 2:
+                            t.write_left(" 5000", 22, "normal", scale_factor)
+                        elif shop_config.red_power_up_level == 3:
+                            t.write_left(" 15000", 22, "normal", scale_factor)
+                        elif shop_config.red_power_up_level == 4:
+                            t.write_left(" 30000", 22, "normal", scale_factor)
+        if refresh_text == 1:
+            refresh_text = 0
     elif mode == "Stats":
         for bu in buttons_on_screen_list:
             bu.write_lines(scale_factor)
         for t in text_on_screen_list:
             if t.id == 1:
                 t.write("Statistics", 72, "bold", scale_factor)
-            elif t.id == 2:
-                t.write("Machine Mode", 48, "bold", scale_factor)
-            elif t.id == 3:
-                t.write("Alien Mode", 48, "bold", scale_factor)
-            elif t.id == 4:
-                t.write("High Score: {}".format(high_score_machine_war), 24, "normal", scale_factor)
-            elif t.id == 5:
-                t.write("Bosses Killed: {}".format(bosses_killed), 24, "normal", scale_factor)
-            elif t.id == 6:
-                t.write("Red Bots Killed: {}".format(red_bots_killed), 24, "normal", scale_factor)
-            elif t.id == 7:
-                t.write("Yellow Bots Killed: {}".format(yellow_bots_killed), 24, "normal", scale_factor)
-            elif t.id == 8:
-                t.write("Blue Bots Killed: {}".format(blue_bots_killed), 24, "normal", scale_factor)
-            elif t.id == 9:
-                t.write("Deaths: {}".format(classic_deaths), 24, "normal", scale_factor)
-            elif t.id == 10:
-                t.write("Damage Taken: {}".format(machine_damage_taken), 24, "normal", scale_factor)
-            elif t.id == 11:
-                t.write("Lasers Fired: {}".format(classic_lasers_fired), 24, "normal", scale_factor)
-            elif t.id == 12:
-                t.write("Power Ups Picked Up: {}".format(classic_power_ups_picked_up), 24, "normal", scale_factor)
-            elif t.id == 13:
-                t.write("Coins Collected: {}".format(machine_coins_collected), 24, "normal", scale_factor)
-            elif t.id == 14:
-                t.write("High Score: {}".format(high_score_alien_mode), 24, "normal", scale_factor)
-            elif t.id == 15:
-                t.write("UFOs Killed: {}".format(ufos_killed), 24, "normal", scale_factor)
-            elif t.id == 16:
-                t.write("Big Aliens Killed: {}".format(big_aliens_killed), 24, "normal", scale_factor)
-            elif t.id == 17:
-                t.write("Medium Aliens Killed: {}".format(medium_aliens_killed), 24, "normal", scale_factor)
-            elif t.id == 18:
-                t.write("Small Aliens Killed: {}".format(small_aliens_killed), 24, "normal", scale_factor)
-            elif t.id == 19:
-                t.write("Deaths: {}".format(alien_deaths), 24, "normal", scale_factor)
-            elif t.id == 20:
-                t.write("Damage Taken: {}".format(damage_taken), 24, "normal", scale_factor)
-            elif t.id == 21:
-                t.write("Lasers Fired: {}".format(alien_lasers_fired), 24, "normal", scale_factor)
-            elif t.id == 22:
-                t.write("Jumps: {}".format(jumps), 24, "normal", scale_factor)
-            elif t.id == 23:
-                t.write("Power Ups Picked Up: {}".format(alien_power_ups_picked_up), 24, "normal", scale_factor)
-            elif t.id == 24:
-                t.write("Coins Collected: {}".format(alien_coins_collected), 24, "normal", scale_factor)
-            elif t.id == 25:
+            if refresh_text == 1:
+                if t.id == 2:
+                    t.write("Machine Mode", 48, "bold", scale_factor)
+                elif t.id == 3:
+                    t.write("Alien Mode", 48, "bold", scale_factor)
+                elif t.id == 4:
+                    t.write("High Score: {}".format(high_score_machine_war), 24, "normal", scale_factor)
+                elif t.id == 5:
+                    t.write("Bosses Killed: {}".format(bosses_killed), 24, "normal", scale_factor)
+                elif t.id == 6:
+                    t.write("Red Bots Killed: {}".format(red_bots_killed), 24, "normal", scale_factor)
+                elif t.id == 7:
+                    t.write("Yellow Bots Killed: {}".format(yellow_bots_killed), 24, "normal", scale_factor)
+                elif t.id == 8:
+                    t.write("Blue Bots Killed: {}".format(blue_bots_killed), 24, "normal", scale_factor)
+                elif t.id == 9:
+                    t.write("Deaths: {}".format(classic_deaths), 24, "normal", scale_factor)
+                elif t.id == 10:
+                    t.write("Damage Taken: {}".format(machine_damage_taken), 24, "normal", scale_factor)
+                elif t.id == 11:
+                    t.write("Lasers Fired: {}".format(classic_lasers_fired), 24, "normal", scale_factor)
+                elif t.id == 12:
+                    t.write("Power Ups Picked Up: {}".format(classic_power_ups_picked_up), 24, "normal", scale_factor)
+                elif t.id == 13:
+                    t.write("Coins Collected: {}".format(machine_coins_collected), 24, "normal", scale_factor)
+                elif t.id == 14:
+                    t.write("High Score: {}".format(high_score_alien_mode), 24, "normal", scale_factor)
+                elif t.id == 15:
+                    t.write("UFOs Killed: {}".format(ufos_killed), 24, "normal", scale_factor)
+                elif t.id == 16:
+                    t.write("Big Aliens Killed: {}".format(big_aliens_killed), 24, "normal", scale_factor)
+                elif t.id == 17:
+                    t.write("Medium Aliens Killed: {}".format(medium_aliens_killed), 24, "normal", scale_factor)
+                elif t.id == 18:
+                    t.write("Small Aliens Killed: {}".format(small_aliens_killed), 24, "normal", scale_factor)
+                elif t.id == 19:
+                    t.write("Deaths: {}".format(alien_deaths), 24, "normal", scale_factor)
+                elif t.id == 20:
+                    t.write("Damage Taken: {}".format(damage_taken), 24, "normal", scale_factor)
+                elif t.id == 21:
+                    t.write("Lasers Fired: {}".format(alien_lasers_fired), 24, "normal", scale_factor)
+                elif t.id == 22:
+                    t.write("Jumps: {}".format(jumps), 24, "normal", scale_factor)
+                elif t.id == 23:
+                    t.write("Power Ups Picked Up: {}".format(alien_power_ups_picked_up), 24, "normal", scale_factor)
+                elif t.id == 24:
+                    t.write("Coins Collected: {}".format(alien_coins_collected), 24, "normal", scale_factor)
+                    refresh_text = 0
+            if t.id == 25:
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Settings":
         for bu in buttons_on_screen_list:
             bu.write_lines(scale_factor)
-            if bu.type == "Settings_Toggle":
-                if bu.id == 1:
-                    bu.write_indicator(button_sound, scale_factor)
-                elif bu.id == 2:
-                    bu.write_indicator(player_shooting_sound, scale_factor)
-                elif bu.id == 3:
-                    bu.write_indicator(enemy_shooting_sound, scale_factor)
-                elif bu.id == 4:
-                    bu.write_indicator(player_death_sound, scale_factor)
-                elif bu.id == 5:
-                    bu.write_indicator(enemy_death_sound, scale_factor)
-                elif bu.id == 6:
-                    bu.write_indicator(player_hit_sound, scale_factor)
-                elif bu.id == 7:
-                    bu.write_indicator(enemy_hit_sound, scale_factor)
-                elif bu.id == 8:
-                    bu.write_indicator(power_up_pickup_sound, scale_factor)
-                elif bu.id == 9:
-                    bu.write_indicator(power_up_spawn_sound, scale_factor)
-                elif bu.id == 10:
-                    bu.write_indicator(coin_pickup_sound, scale_factor)
-                elif bu.id == 11:
-                    bu.write_fullscreen_indicator(fullscreen, fullscreen_toggled, scale_factor)
-                elif bu.id == 12:
-                    bu.write_indicator(vsync, scale_factor)
+            if refresh_indicator == 1 or refresh_indicator == 2:
+                print("dude")
+                if bu.type == "Settings_Toggle":
+                    if bu.id == 1:
+                        bu.write_indicator(button_sound, scale_factor)
+                    elif bu.id == 2:
+                        bu.write_indicator(player_shooting_sound, scale_factor)
+                    elif bu.id == 3:
+                        bu.write_indicator(enemy_shooting_sound, scale_factor)
+                    elif bu.id == 4:
+                        bu.write_indicator(player_death_sound, scale_factor)
+                    elif bu.id == 5:
+                        bu.write_indicator(enemy_death_sound, scale_factor)
+                    elif bu.id == 6:
+                        bu.write_indicator(player_hit_sound, scale_factor)
+                    elif bu.id == 7:
+                        bu.write_indicator(enemy_hit_sound, scale_factor)
+                    elif bu.id == 8:
+                        bu.write_indicator(power_up_pickup_sound, scale_factor)
+                    elif bu.id == 9:
+                        bu.write_indicator(power_up_spawn_sound, scale_factor)
+                    elif bu.id == 10:
+                        bu.write_indicator(coin_pickup_sound, scale_factor)
+                    elif bu.id == 11:
+                        bu.write_fullscreen_indicator(fullscreen, fullscreen_toggled, scale_factor)
+                    elif bu.id == 12:
+                        bu.write_indicator(vsync, scale_factor)
+        if refresh_indicator == 2:
+            refresh_indicator = 0
+        elif refresh_indicator == 1:
+            refresh_indicator = 2
         for t in text_on_screen_list:
             if t.id == 1:
                 t.write("Settings", 72, "bold", scale_factor)
@@ -2215,6 +2280,10 @@ while True:
             start_ticks = pygame.time.get_ticks()
     # If VSync is off
     else:
+        # Get the elapsed time
+        current_ticks = pygame.time.get_ticks()
+        elapsed_time = (current_ticks - start_ticks) / 1000.0
+
         # Update the screen as many times as the hardware allows (Not ideal)
         # "tick_update" is used for updating text because the game lags when the text is updated too often
         # The frequency of updating depends on the screen
@@ -2271,9 +2340,10 @@ while True:
             bu.remove()
         buttons_on_screen_list.clear()
         current_button_index = 0
-        for pa in panel_turtle:
-            pa.remove()
-        panel_index = 0
+        if page_update != 1:
+            for pa in panel_turtle:
+                pa.remove()
+            panel_index = 0
         for t in text_on_screen_list:
             t.get_text_box().clear()
             t.remove()
@@ -2288,7 +2358,10 @@ while True:
         selectors_on_screen_list.clear()
         current_selector_index = 0
         score = 0
+        refresh_indicator = 1
+        refresh_text = 1
         screen_update = 0
+        page_update = 0
         print(len(wn.turtles()))
 
     # The Alien Mode background objects are created right when the game is launched.
@@ -3917,7 +3990,7 @@ while True:
 
             for bu in buttons_on_screen_list:
                 button_color, button_type, id = bu.click_slot()
-                if bu.get_type() == "Shop_Slot":
+                if bu.get_type() == "Power_Up_Slot":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(slot_1_select)
                     elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():

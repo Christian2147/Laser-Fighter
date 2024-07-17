@@ -132,56 +132,56 @@ class Panel:
         # Writes new text based on the panel type and id of the text
         if self.type == "Shop":
             if self.catigory == "Welcome":
-                self.panel_text.write("{}".format(main_description[self.id - 1].get_text()),
-                                        align=main_description[self.id - 1].get_align(),
-                                        font=(main_description[self.id - 1].get_font(),
-                                        int(main_description[self.id - 1].get_size() * scale_factor), "normal"))
+                self.panel_text.write("{}".format(MAIN_DESCRIPTION[self.id - 1].get_text()),
+                                        align=MAIN_DESCRIPTION[self.id - 1].get_align(),
+                                        font=(MAIN_DESCRIPTION[self.id - 1].get_font(),
+                                        int(MAIN_DESCRIPTION[self.id - 1].get_size() * scale_factor), "normal"))
             elif self.catigory == "Machine_Mode":
-                self.panel_text.write("{}".format(machine_descriptions[self.id - 1].get_text()),
-                                        align=machine_descriptions[self.id - 1].get_align(),
-                                        font=(machine_descriptions[self.id - 1].get_font(),
-                                        int(machine_descriptions[self.id - 1].get_size() * scale_factor), "normal"))
+                self.panel_text.write("{}".format(MACHINE_DESCRIPTIONS[self.id - 1].get_text()),
+                                        align=MACHINE_DESCRIPTIONS[self.id - 1].get_align(),
+                                        font=(MACHINE_DESCRIPTIONS[self.id - 1].get_font(),
+                                        int(MACHINE_DESCRIPTIONS[self.id - 1].get_size() * scale_factor), "normal"))
             elif self.catigory == "Alien_Mode":
-                self.panel_text.write("{}".format(alien_descriptions[self.id - 1].get_text()),
-                                        align=alien_descriptions[self.id - 1].get_align(),
-                                        font=(alien_descriptions[self.id - 1].get_font(),
-                                        int(alien_descriptions[self.id - 1].get_size() * scale_factor), "normal"))
+                self.panel_text.write("{}".format(ALIEN_DESCRIPTIONS[self.id - 1].get_text()),
+                                        align=ALIEN_DESCRIPTIONS[self.id - 1].get_align(),
+                                        font=(ALIEN_DESCRIPTIONS[self.id - 1].get_font(),
+                                        int(ALIEN_DESCRIPTIONS[self.id - 1].get_size() * scale_factor), "normal"))
             elif self.catigory == "Yellow_Power_Up":
                 config = configparser.ConfigParser()
                 config.read('Config/playerData.ini')
                 check_setting = config['Power_Up_Levels'].getint('yellow_power_up')
 
-                self.panel_text.write("{}".format(yellow_power_up_descriptions[check_setting - 1].get_text()),
-                                        align=yellow_power_up_descriptions[check_setting - 1].get_align(),
-                                        font=(yellow_power_up_descriptions[check_setting - 1].get_font(),
-                                        int(yellow_power_up_descriptions[check_setting - 1].get_size() * scale_factor), "normal"))
+                self.panel_text.write("{}".format(YELLOW_POWER_UP_DESCRIPTIONS[check_setting - 1].get_text()),
+                                        align=YELLOW_POWER_UP_DESCRIPTIONS[check_setting - 1].get_align(),
+                                        font=(YELLOW_POWER_UP_DESCRIPTIONS[check_setting - 1].get_font(),
+                                        int(YELLOW_POWER_UP_DESCRIPTIONS[check_setting - 1].get_size() * scale_factor), "normal"))
             elif self.catigory == "Blue_Power_Up":
                 config = configparser.ConfigParser()
                 config.read('Config/playerData.ini')
                 check_setting = config['Power_Up_Levels'].getint('blue_power_up')
 
-                self.panel_text.write("{}".format(blue_power_up_descriptions[check_setting - 1].get_text()),
-                                        align=blue_power_up_descriptions[check_setting - 1].get_align(),
-                                        font=(blue_power_up_descriptions[check_setting - 1].get_font(),
-                                        int(blue_power_up_descriptions[check_setting - 1].get_size() * scale_factor), "normal"))
+                self.panel_text.write("{}".format(BLUE_POWER_UP_DESCRIPTIONS[check_setting - 1].get_text()),
+                                        align=BLUE_POWER_UP_DESCRIPTIONS[check_setting - 1].get_align(),
+                                        font=(BLUE_POWER_UP_DESCRIPTIONS[check_setting - 1].get_font(),
+                                        int(BLUE_POWER_UP_DESCRIPTIONS[check_setting - 1].get_size() * scale_factor), "normal"))
             elif self.catigory == "Green_Power_Up":
                 config = configparser.ConfigParser()
                 config.read('Config/playerData.ini')
                 check_setting = config['Power_Up_Levels'].getint('green_power_up')
 
-                self.panel_text.write("{}".format(green_power_up_descriptions[check_setting - 1].get_text()),
-                                        align=green_power_up_descriptions[check_setting - 1].get_align(),
-                                        font=(green_power_up_descriptions[check_setting - 1].get_font(),
-                                        int(green_power_up_descriptions[check_setting - 1].get_size() * scale_factor), "normal"))
+                self.panel_text.write("{}".format(GREEN_POWER_UP_DESCRIPTIONS[check_setting - 1].get_text()),
+                                        align=GREEN_POWER_UP_DESCRIPTIONS[check_setting - 1].get_align(),
+                                        font=(GREEN_POWER_UP_DESCRIPTIONS[check_setting - 1].get_font(),
+                                        int(GREEN_POWER_UP_DESCRIPTIONS[check_setting - 1].get_size() * scale_factor), "normal"))
             elif self.catigory == "Red_Power_Up":
                 config = configparser.ConfigParser()
                 config.read('Config/playerData.ini')
                 check_setting = config['Power_Up_Levels'].getint('red_power_up')
 
-                self.panel_text.write("{}".format(red_power_up_descriptions[check_setting - 1].get_text()),
-                                        align=red_power_up_descriptions[check_setting - 1].get_align(),
-                                        font=(red_power_up_descriptions[check_setting - 1].get_font(),
-                                        int(red_power_up_descriptions[check_setting - 1].get_size() * scale_factor), "normal"))
+                self.panel_text.write("{}".format(RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_text()),
+                                        align=RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_align(),
+                                        font=(RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_font(),
+                                        int(RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_size() * scale_factor), "normal"))
 
     def set_indicator(self, id, fullscreen):
         if id != 0:

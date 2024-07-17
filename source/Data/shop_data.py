@@ -25,13 +25,17 @@
 
 from components.gui.GUIDataDescription import Description
 
+MACHINE_PRICES = [0, 5000, 15000, 40000, 100000]
+ALIEN_PRICES = [0, 5000, 15000, 40000, 100000]
+POWER_UP_PRICES = [1000, 5000, 15000, 30000]
+
 # Shop Welcome Message
-main_description = [
+MAIN_DESCRIPTION = [
     Description("right", "Welcome to\n the Shop!\n\nHere, you can\nupgrade your\nweapons,\nabilities,\nand power-ups\nto become even\nmore powerful.", 24, "Courier")
 ]
 
 # For the Machine Player upgrades
-machine_descriptions = [
+MACHINE_DESCRIPTIONS = [
     Description("right", "Default\n\nLaser Speed: 14.5\nLaser Color: Green\nLaser Size: L\nLasers Per Round: 1\nDamage: 1\nSpecial Abilities:\nNone", 16, "Courier"),
     Description("right", "Machine Washer\n\nLaser Speed: 25\nLaser Color: Sky Blue\nLaser Size: XL\nLasers Per Round: 1\nDamage: 1\nSpecial Abilities:\nNone", 16, "Courier"),
     Description("right", "The Incinerater\n\nLaser Speed: 20\nLaser Color: Orange\nLaser Size: XL\nLasers Per Round: 2\nDamage: 1\nSpecial Abilities:\nNone", 16, "Courier"),
@@ -40,7 +44,7 @@ machine_descriptions = [
 ]
 
 # For the alien gun upgrades
-alien_descriptions = [
+ALIEN_DESCRIPTIONS = [
     Description("right", "Default\n\nLaser Speed: 13\nLaser Color: Red\nLaser Size: L\nLasers Per Round: 1\nDamage: 1\nPiercing: 2\nSpecial Abilities:\nNone", 16, "Courier"),
     Description("right", "The Cooker\n\nLaser Speed: 15\nLaser Color: Orange\nLaser Size: M\nLasers Per Round: 1\nDamage: 1\nPiercing: 3\nSpecial Abilities:\nNone", 16, "Courier"),
     Description("right", "Poison Dart Gun\n\nLaser Speed: 25\nLaser Color: Green\nLaser Size: L\nLasers Per Round: 2\nDamage: 2\nPiercing: 2\nSpecial Abilities:\nNone", 16, "Courier"),
@@ -49,7 +53,7 @@ alien_descriptions = [
 ]
 
 # For the yellow power up upgrades
-yellow_power_up_descriptions = [
+YELLOW_POWER_UP_DESCRIPTIONS = [
     Description("right", "Level 2\n\nSpeed Increase: 3x\nDuration: 20\nSpecial:\nNone", 16, "Courier"),
     Description("right", "Level 3\n\nSpeed Increase: 3x\nDuration: 30\nSpecial:\nNone", 16, "Courier"),
     Description("right", "Level 4\n\nSpeed Increase: 4x\nDuration: 45\nSpecial:\nNone", 16, "Courier"),
@@ -58,7 +62,7 @@ yellow_power_up_descriptions = [
 ]
 
 # For the blue power up upgrades
-blue_power_up_descriptions = [
+BLUE_POWER_UP_DESCRIPTIONS = [
     Description("right", "Level 2\n\nMultiplier: 3\nCoin Multiplier: 1\nDuration: 45", 16, "Courier"),
     Description("right", "Level 3\n\nMultiplier: 3\nCoin Multiplier: 2\nDuration: 60", 16, "Courier"),
     Description("right", "Level 4\n\nMultiplier: 4\nCoin Multiplier: 2\nDuration: 75", 16, "Courier"),
@@ -67,7 +71,7 @@ blue_power_up_descriptions = [
 ]
 
 # For the green power up upgrades
-green_power_up_descriptions = [
+GREEN_POWER_UP_DESCRIPTIONS = [
     Description("right", "Level 2\n\nDuration: 20", 16, "Courier"),
     Description("right", "Level 3\n\nDuration: 25", 16, "Courier"),
     Description("right", "Level 4\n\nDuration: 30", 16, "Courier"),
@@ -76,7 +80,7 @@ green_power_up_descriptions = [
 ]
 
 # For the red power up upgrades
-red_power_up_descriptions = [
+RED_POWER_UP_DESCRIPTIONS = [
     Description("right", "Level 2\n\nDuration: 20", 16, "Courier"),
     Description("right", "Level 3\n\nDuration: 25", 16, "Courier"),
     Description("right", "Level 4\n\nDuration: 30", 16, "Courier"),
