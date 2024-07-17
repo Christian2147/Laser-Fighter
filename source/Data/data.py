@@ -106,6 +106,11 @@ all_price_label = []
 price_label_on_screen_list = []
 current_price_index = 0
 
+# Selector Data
+all_selector = []
+selectors_on_screen_list = []
+current_selector_index = 0
+
 # Coin Data
 all_coins_list = []
 all_coins_index = 0

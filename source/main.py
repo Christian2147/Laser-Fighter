@@ -34,6 +34,7 @@ from Data.screen import *
 from components.gui.InterfaceButton import Button
 from components.gui.InterfacePanel import Panel
 from components.gui.InterfaceTextBox import Text
+from components.gui.InterfaceSelect import Selector
 from components.gui.InterfacePriceLabel import PriceLabel
 from components.ItemCoin import CoinIndicator
 from components.ItemPowerUp import PowerUp

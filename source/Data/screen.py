@@ -185,6 +185,8 @@ texture_paths = [
     "Textures/Buttons/Tab_Highlighted.gif",
     "Textures/GUI/Side_Panel_Shop.gif",
     "Textures/GUI/Locked.gif",
+    "Textures/GUI/Tab_Selector.gif",
+    "Textures/GUI/Slot_Selector.gif",
     "Textures/Buttons/Settings_And_Controls_Button.gif",
     "Textures/Power_Ups/Yellow_Lightning_Power_Up.gif",
     "Textures/Power_Ups/Green_Lightning_Power_Up.gif",
