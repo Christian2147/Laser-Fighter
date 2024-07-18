@@ -72,9 +72,9 @@ class Button:
         # Title Screen whole button
         if type == "Title":
             if fullscreen == 1:
-                self.button_frame.shape("Textures/Buttons/Title_Screen_button_Scaled.gif")
+                self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Scaled.gif")
             else:
-                self.button_frame.shape("Textures/Buttons/Title_Screen_button.gif")
+                self.button_frame.shape("Textures/Buttons/Title_Screen_Button.gif")
             self.button_frame.shapesize(3.5 * scale_factor_y, 25 * scale_factor_x)
             if id == 1:
                 self.button_frame.goto(0, 85 * scale_factor_y)
@@ -279,9 +279,9 @@ class Button:
         """
 
         if fullscreen == 1:
-            self.button_frame.shape("Textures/Buttons/Title_Screen_button_Scaled.gif")
+            self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Scaled.gif")
         else:
-            self.button_frame.shape("Textures/Buttons/Title_Screen_button.gif")
+            self.button_frame.shape("Textures/Buttons/Title_Screen_Button.gif")
         self.button_frame.shapesize(3.5 * scale_factor_y, 25 * scale_factor_x)
         if id == 1:
             self.button_frame.goto(0, 85 * scale_factor_y)
@@ -291,6 +291,7 @@ class Button:
             self.button_frame.goto(0, -95 * scale_factor_y)
         elif id == 4:
             self.button_frame.goto(0, -275 * scale_factor_y)
+        self.button_frame.color("white")
         self.button_frame.showturtle()
 
         self.button_text.color("white")
@@ -833,7 +834,7 @@ class Button:
         else:
             self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() - 45 * scale_factor_y)
 
-    def update_text_color(self, x, y, scale_factor_x, scale_factor_y, fullscreen):
+    def update_highlight(self, x, y, scale_factor_x, scale_factor_y, fullscreen):
         """
             Used to change the color of the buttons text when the user decides to hover their mouse over the area
                 that the  button takes up.
@@ -850,47 +851,106 @@ class Button:
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
 
+            :param fullscreen: The variable that determines if fullscreen is on or off
+            :type fullscreen: int
+
             :return: None
         """
 
         if self.type == "Title":
             if self.id == 1:
                 if 388 * scale_factor_x < x < 890 * scale_factor_x and 239 * scale_factor_y < y < 311 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button.gif")
             elif self.id == 2:
                 if 388 * scale_factor_x < x < 890 * scale_factor_x and 329 * scale_factor_y < y < 401 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button.gif")
             elif self.id == 3:
                 if 388 * scale_factor_x < x < 890 * scale_factor_x and 419 * scale_factor_y < y < 491 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button.gif")
             elif self.id == 4:
                 if 388 * scale_factor_x < x < 890 * scale_factor_x and 599 * scale_factor_y < y < 671 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button.gif")
         elif self.type == "Title_Small":
             if self.id == 1:
                 if 388 * scale_factor_x < x < 630 * scale_factor_x and 509 * scale_factor_y < y < 581 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small.gif")
             elif self.id == 2:
                 if 648 * scale_factor_x < x < 890 * scale_factor_x and 509 * scale_factor_y < y < 581 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small.gif")
         elif self.type == "Game":
             if 6 * scale_factor_x < x < 197 * scale_factor_x and 5 * scale_factor_y < y < 37 * scale_factor_y:
-                self.button_text.color("yellow")
+                self.button_frame.color("yellow")
+                if fullscreen == 1:
+                    self.button_frame.shape("Textures/Buttons/Main_Menu_Button_Main_Highlighted_Scaled.gif")
+                else:
+                    self.button_frame.shape("Textures/Buttons/Main_Menu_Button_Main_Highlighted.gif")
                 return 1
             else:
-                self.button_text.color("white")
+                self.button_frame.color("white")
+                if fullscreen == 1:
+                    self.button_frame.shape("Textures/Buttons/Main_Menu_Button_Main_Scaled.gif")
+                else:
+                    self.button_frame.shape("Textures/Buttons/Main_Menu_Button_Main.gif")
                 return 0
         elif self.type == "Tab":
             if 0 * scale_factor_x < x < 75 * scale_factor_x and (159 + (120 * (self.id - 1))) * scale_factor_y < y < (259 + (120 * (self.id - 1))) * scale_factor_y:
@@ -935,49 +995,166 @@ class Button:
         elif self.type == "Regular_Settings_And_Controls":
             if self.id == 1:
                 if 669 * scale_factor_x < x < 1240 * scale_factor_x and 614 * scale_factor_y < y < 675 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                     return 1
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
                     return 0
             elif self.id == 2 or self.id == 3:
                 if 669 * scale_factor_x < x < 1240 * scale_factor_x and 534 * scale_factor_y < y < 595 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
         elif self.type == "Settings_Toggle":
             if self.id < 8:
                 if 28 * scale_factor_x < x < 599 * scale_factor_x and (134 + (80 * (self.id - 1))) * scale_factor_y < y < (195 + (80 * (self.id - 1))) * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 8:
                 if 671 * scale_factor_x < x < 1243 * scale_factor_x and 134 * scale_factor_y < y < 195 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 9:
                 if 671 * scale_factor_x < x < 1243 * scale_factor_x and 214 * scale_factor_y < y < 275 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 10:
                 if 671 * scale_factor_x < x < 1243 * scale_factor_x and 294 * scale_factor_y < y < 355 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 11:
                 if 671 * scale_factor_x < x < 1243 * scale_factor_x and 374 * scale_factor_y < y < 435 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 12:
                 if 671 * scale_factor_x < x < 1243 * scale_factor_x and 454 * scale_factor_y < y < 515 * scale_factor_y:
-                    self.button_text.color("yellow")
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
-                    self.button_text.color("white")
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
+        elif self.type == "Controls_Toggle":
+            if self.id == 1:
+                if 28 * scale_factor_x < x < 599 * scale_factor_x and 134 * scale_factor_y < y < 195 * scale_factor_y:
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
+                else:
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
+            elif self.id == 2:
+                if 28 * scale_factor_x < x < 599 * scale_factor_x and 214 * scale_factor_y < y < 275 * scale_factor_y:
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
+                else:
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
+            elif self.id == 3:
+                if 28 * scale_factor_x < x < 599 * scale_factor_x and 294 * scale_factor_y < y < 355 * scale_factor_y:
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
+                else:
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
+            elif self.id == 4:
+                if 28 * scale_factor_x < x < 599 * scale_factor_x and 374 * scale_factor_y < y < 435 * scale_factor_y:
+                    self.button_frame.color("yellow")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
+                else:
+                    self.button_frame.color("white")
+                    if fullscreen == 1:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
+                    else:
+                        self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
 
-    def update_controls_text_color(self, alert, x, y, scale_factor_x, scale_factor_y):
+    def update_controls_text_color(self, alert):
         """
             Used to change the color of the control toggle buttons text when the user decides to hover their mouse over
                 the area that the  button takes up.
@@ -986,88 +1163,35 @@ class Button:
                 for this buttons control
             :type alert: int
 
-            :param x: The current x-coordinate of the cursor
-            :type x: int
-
-            :param y: The current y-coordinate of the cursor
-            :type y: int
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
             :return: None
         """
 
         if self.id == 1:
             # If the there is a keybind conflict, use red and orange as the colors rather than yellow and white
             if alert == 1:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and 134 * scale_factor_y < y < 195 * scale_factor_y:
-                    self.button_text.color("orange")
-                else:
-                    self.button_text.color("red")
+                self.button_text.color("red")
             else:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and 134 * scale_factor_y < y < 195 * scale_factor_y:
-                    self.button_text.color("yellow")
-                else:
-                    self.button_text.color("white")
+                self.button_text.color("white")
         elif self.id == 2:
             # If the there is a keybind conflict, use red and orange as the colors rather than yellow and white
             if alert == 2:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and 214 * scale_factor_y < y < 275 * scale_factor_y:
-                    self.button_text.color("orange")
-                else:
-                    self.button_text.color("red")
+                self.button_text.color("red")
             else:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and 214 * scale_factor_y < y < 275 * scale_factor_y:
-                    self.button_text.color("yellow")
-                else:
-                    self.button_text.color("white")
+                self.button_text.color("white")
         elif self.id == 3:
             # If the there is a keybind conflict, use red and orange as the colors rather than yellow and white
             if alert == 3:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and 294 * scale_factor_y < y < 355 * scale_factor_y:
-                    self.button_text.color("orange")
-                else:
-                    self.button_text.color("red")
+                self.button_text.color("red")
             else:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and 294 * scale_factor_y < y < 355 * scale_factor_y:
-                    self.button_text.color("yellow")
-                else:
-                    self.button_text.color("white")
+                self.button_text.color("white")
         elif self.id == 4:
             # If the there is a keybind conflict, use red and orange as the colors rather than yellow and white
             if alert == 4:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and 374 * scale_factor_y < y < 435 * scale_factor_y:
-                    self.button_text.color("orange")
-                else:
-                    self.button_text.color("red")
+                self.button_text.color("red")
             else:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and 374 * scale_factor_y < y < 435 * scale_factor_y:
-                    self.button_text.color("yellow")
-                else:
-                    self.button_text.color("white")
+                self.button_text.color("white")
 
     def click_button(self):
-        """
-            Returns the required attributes of the button to determine if it has been clicked or not.
-
-            :return: button_color: the current color of the buttons text
-            :type: string
-
-            :return: type: The type of button that the current button is
-            :type: string
-
-            :return: id: The unique identifier for the current button
-            :type: int
-        """
-
-        button_color = self.button_text.fillcolor()
-        return button_color, self.type, self.id
-
-    def click_slot(self):
         """
             Returns the required attributes of the shop slot to determine if it has been clicked or not.
             This works differently than the button because the text is not highlighted yellow, rather, the entire

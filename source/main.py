@@ -904,6 +904,7 @@ def execute_setting_function(type):
     # Write back to file
     with open('Config/config.ini', 'w') as configfile:
         config.write(configfile)
+    refresh_variables.refresh_button = 1
     refresh_variables.refresh_indicator = 1
 
 
@@ -993,6 +994,7 @@ def execute_control_setting(type):
         :return: None
     """
 
+    global refresh_variables
     global message_output
     global updated_controls
     # Actual keybind
@@ -1154,6 +1156,7 @@ def execute_control_setting(type):
     # If the keybind settings to do not need to updated
     else:
         key_2 = key_backup
+    refresh_variables.refresh_button = 1
 
 
 """
@@ -1178,53 +1181,28 @@ def position(event):
     # Update button text as needed
     if mode == "Title_Mode":
         for bu in buttons_on_screen_list:
-            bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+            bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
     if mode == "Machine_Mode" or mode == "Alien_Mode" or mode == "Stats" or mode == "Shop":
         for bu in buttons_on_screen_list:
-            button_update = bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+            button_update = bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
     if mode == "Settings":
         for bu in buttons_on_screen_list:
             if bu.type == "Regular_Settings_And_Controls":
                 if id == 1:
-                    button_update = bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+                    button_update = bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
                 else:
-                    bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+                    bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
             else:
-                bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+                bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
     if mode == "Controls":
         for bu in buttons_on_screen_list:
             if bu.type == "Regular_Settings_And_Controls":
                 if id == 1:
-                    button_update = bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+                    button_update = bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
                 else:
-                    bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+                    bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
             elif bu.type == "Controls_Toggle":
-                if bu.id == 1:
-                    # If there is a keybind conflict
-                    if go_right_key_alert == 1:
-                        bu.update_controls_text_color(1, a, b, scale_factor_X, scale_factor_Y)
-                    else:
-                        bu.update_controls_text_color(0, a, b, scale_factor_X, scale_factor_Y)
-                elif bu.id == 2:
-                    # If there is a keybind conflict
-                    if go_left_key_alert == 1:
-                        bu.update_controls_text_color(2, a, b, scale_factor_X, scale_factor_Y)
-                    else:
-                        bu.update_controls_text_color(0, a, b, scale_factor_X, scale_factor_Y)
-                elif bu.id == 3:
-                    # If there is a keybind conflict
-                    if shoot_key_alert == 1:
-                        bu.update_controls_text_color(3, a, b, scale_factor_X, scale_factor_Y)
-                    else:
-                        bu.update_controls_text_color(0, a, b, scale_factor_X, scale_factor_Y)
-                elif bu.id == 4:
-                    # If there is a keybind conflict
-                    if jump_key_alert == 1:
-                        bu.update_controls_text_color(4, a, b, scale_factor_X, scale_factor_Y)
-                    else:
-                        bu.update_controls_text_color(0, a, b, scale_factor_X, scale_factor_Y)
-            else:
-                bu.update_text_color(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+                bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
 
 
 def update_text():
@@ -1241,8 +1219,13 @@ def update_text():
     global refresh_variables
     # Update based on the current mode
     if mode == "Title_Mode":
-        for bu in buttons_on_screen_list:
-            bu.write_lines(scale_factor)
+        if refresh_variables.refresh_button == 1 or refresh_variables.refresh_button == 2:
+            for bu in buttons_on_screen_list:
+                bu.write_lines(scale_factor)
+        if refresh_variables.refresh_button == 1:
+            refresh_variables.refresh_button = 2
+        elif refresh_variables.refresh_button == 2:
+            refresh_variables.refresh_button = 0
         for t in text_on_screen_list:
             if t.id == 1:
                 t.write("Laser Fighter", 72, "bold", scale_factor)
@@ -1251,8 +1234,11 @@ def update_text():
             elif t.id == 3:
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Machine_Mode":
-        for bu in buttons_on_screen_list:
-            bu.write_lines(scale_factor)
+        if refresh_variables.refresh_button == 1:
+            for bu in buttons_on_screen_list:
+                bu.write_lines(scale_factor)
+        if refresh_variables.refresh_button == 1:
+            refresh_variables.refresh_button = 0
         for t in text_on_screen_list:
             if t.id == 1:
                 t.write("Score: {}  High Score: {}".format(score, high_score_machine_war), 24, "normal", scale_factor)
@@ -1279,8 +1265,11 @@ def update_text():
             elif t.id == 6:
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Alien_Mode":
-        for bu in buttons_on_screen_list:
-            bu.write_lines(scale_factor)
+        if refresh_variables.refresh_button == 1:
+            for bu in buttons_on_screen_list:
+                bu.write_lines(scale_factor)
+        if refresh_variables.refresh_button == 1:
+            refresh_variables.refresh_button = 0
         for t in text_on_screen_list:
             if t.id == 1:
                 t.write("Score: {}  High Score: {}".format(score, high_score_alien_mode), 24, "normal",
@@ -1308,18 +1297,21 @@ def update_text():
             elif t.id == 6:
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Shop":
-        for bu in buttons_on_screen_list:
-            if bu.get_type() != "Shop_Slot":
-                bu.write_lines(scale_factor)
-            if bu.get_type() == "Power_Up_Slot":
-                if bu.get_id() == 1:
-                    bu.write_indicator(shop_config.yellow_power_up_level, scale_factor)
-                elif bu.get_id() == 2:
-                    bu.write_indicator(shop_config.blue_power_up_level, scale_factor)
-                elif bu.get_id() == 3:
-                    bu.write_indicator(shop_config.green_power_up_level, scale_factor)
-                elif bu.get_id() == 4:
-                    bu.write_indicator(shop_config.red_power_up_level, scale_factor)
+        if refresh_variables.refresh_button == 1:
+            for bu in buttons_on_screen_list:
+                if bu.get_type() != "Shop_Slot":
+                    bu.write_lines(scale_factor)
+                if bu.get_type() == "Power_Up_Slot":
+                    if bu.get_id() == 1:
+                        bu.write_indicator(shop_config.yellow_power_up_level, scale_factor)
+                    elif bu.get_id() == 2:
+                        bu.write_indicator(shop_config.blue_power_up_level, scale_factor)
+                    elif bu.get_id() == 3:
+                        bu.write_indicator(shop_config.green_power_up_level, scale_factor)
+                    elif bu.get_id() == 4:
+                        bu.write_indicator(shop_config.red_power_up_level, scale_factor)
+        if refresh_variables.refresh_button == 1:
+            refresh_variables.refresh_button = 0
         if refresh_variables.refresh_panel == 1:
             for pa in panel_turtle:
                 pa.write_text(scale_factor, scale_factor_Y, fullscreen)
@@ -1394,8 +1386,11 @@ def update_text():
         if refresh_variables.refresh_text == 1:
             refresh_variables.refresh_text = 0
     elif mode == "Stats":
-        for bu in buttons_on_screen_list:
-            bu.write_lines(scale_factor)
+        if refresh_variables.refresh_button == 1:
+            for bu in buttons_on_screen_list:
+                bu.write_lines(scale_factor)
+        if refresh_variables.refresh_button == 1:
+            refresh_variables.refresh_button = 0
         for t in text_on_screen_list:
             if t.id == 1:
                 t.write("Statistics", 72, "bold", scale_factor)
@@ -1451,7 +1446,8 @@ def update_text():
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Settings":
         for bu in buttons_on_screen_list:
-            bu.write_lines(scale_factor)
+            if refresh_variables.refresh_button == 1:
+                bu.write_lines(scale_factor)
             if refresh_variables.refresh_indicator == 1 or refresh_variables.refresh_indicator == 2:
                 if bu.type == "Settings_Toggle":
                     if bu.id == 1:
@@ -1478,6 +1474,8 @@ def update_text():
                         bu.write_fullscreen_indicator(fullscreen, fullscreen_toggled, scale_factor)
                     elif bu.id == 12:
                         bu.write_indicator(vsync, scale_factor)
+        if refresh_variables.refresh_button == 1:
+            refresh_variables.refresh_button = 0
         if refresh_variables.refresh_indicator == 2:
             refresh_variables.refresh_indicator = 0
         elif refresh_variables.refresh_indicator == 1:
@@ -1488,11 +1486,36 @@ def update_text():
             elif t.id == 2:
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Controls":
-        for bu in buttons_on_screen_list:
-            if bu.type != "Controls_Toggle":
-                bu.write_lines(scale_factor)
-            else:
-                bu.write_control(go_right_key, go_left_key, shoot_key, jump_key, scale_factor)
+        if refresh_variables.refresh_button == 1 or refresh_variables.refresh_button == 2:
+            for bu in buttons_on_screen_list:
+                if bu.type != "Controls_Toggle":
+                    bu.write_lines(scale_factor)
+                else:
+                    bu.write_control(go_right_key, go_left_key, shoot_key, jump_key, scale_factor)
+                    if bu.id == 1:
+                        if go_right_key_alert == 1:
+                            bu.update_controls_text_color(bu.id)
+                        else:
+                            bu.update_controls_text_color(0)
+                    elif bu.id == 2:
+                        if go_left_key_alert == 1:
+                            bu.update_controls_text_color(bu.id)
+                        else:
+                            bu.update_controls_text_color(0)
+                    elif bu.id == 3:
+                        if shoot_key_alert == 1:
+                            bu.update_controls_text_color(bu.id)
+                        else:
+                            bu.update_controls_text_color(0)
+                    elif bu.id == 4:
+                        if jump_key_alert == 1:
+                            bu.update_controls_text_color(bu.id)
+                        else:
+                            bu.update_controls_text_color(0)
+        if refresh_variables.refresh_button == 1:
+            refresh_variables.refresh_button = 2
+        elif refresh_variables.refresh_button == 2:
+            refresh_variables.refresh_button = 0
         for t in text_on_screen_list:
             if t.id == 1:
                 t.write("Controls", 72, "bold", scale_factor)
@@ -2345,6 +2368,7 @@ while True:
         selectors_on_screen_list.clear()
         current_selector_index = 0
         score = 0
+        refresh_variables.refresh_button = 1
         refresh_variables.refresh_indicator = 1
         refresh_variables.refresh_text = 1
         screen_update = 0
@@ -3792,7 +3816,7 @@ while True:
                 wn.onscreenclick(launch_title_mode)
 
         for bu in buttons_on_screen_list:
-            button_color, button_type, id = bu.click_slot()
+            button_color, button_type, id = bu.click_button()
             if button_type == "Tab":
                 if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
                     wn.onscreenclick(display_machine_mode_page)
@@ -3857,7 +3881,7 @@ while True:
                         bu.toggle_indicator(shop_config.machine_slots_unlocked[4])
 
             for bu in buttons_on_screen_list:
-                button_color, button_type, id = bu.click_slot()
+                button_color, button_type, id = bu.click_button()
                 if bu.get_type() == "Shop_Slot":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(slot_1_select)
@@ -3916,7 +3940,7 @@ while True:
                         bu.toggle_indicator(shop_config.alien_slots_unlocked[4])
 
             for bu in buttons_on_screen_list:
-                button_color, button_type, id = bu.click_slot()
+                button_color, button_type, id = bu.click_button()
                 if bu.get_type() == "Shop_Slot":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(slot_1_select)
@@ -3976,7 +4000,7 @@ while True:
                     bu.set_indicator_location(scale_factor_Y)
 
             for bu in buttons_on_screen_list:
-                button_color, button_type, id = bu.click_slot()
+                button_color, button_type, id = bu.click_button()
                 if bu.get_type() == "Power_Up_Slot":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(slot_1_select)
