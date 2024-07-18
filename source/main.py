@@ -583,7 +583,7 @@ def execute_slot_function(current_page, slot_id):
         sound.play()
     if current_page != "Power_Ups":
         for pa in panel_turtle:
-            pa.set_panel_text(current_page, slot_id)
+            pa.set_panel_text(current_page, slot_id, scale_factor_X, scale_factor_Y)
         if current_page == "Machine_Mode":
             if shop_config.machine_slots_unlocked[slot_id - 1] == 1:
                 shop_config.machine_slot_selected = slot_id
@@ -597,16 +597,16 @@ def execute_slot_function(current_page, slot_id):
     else:
         if slot_id == 1:
             for pa in panel_turtle:
-                pa.set_panel_text("Yellow_Power_Up", slot_id)
+                pa.set_panel_text("Yellow_Power_Up", slot_id, scale_factor_X, scale_factor_Y)
         elif slot_id == 2:
             for pa in panel_turtle:
-                pa.set_panel_text("Blue_Power_Up", slot_id)
+                pa.set_panel_text("Blue_Power_Up", slot_id, scale_factor_X, scale_factor_Y)
         elif slot_id == 3:
             for pa in panel_turtle:
-                pa.set_panel_text("Green_Power_Up", slot_id)
+                pa.set_panel_text("Green_Power_Up", slot_id, scale_factor_X, scale_factor_Y)
         elif slot_id == 4:
             for pa in panel_turtle:
-                pa.set_panel_text("Red_Power_Up", slot_id)
+                pa.set_panel_text("Red_Power_Up", slot_id, scale_factor_X, scale_factor_Y)
     refresh_variables.refresh_panel = 1
 
 

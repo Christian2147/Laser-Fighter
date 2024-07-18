@@ -40,7 +40,7 @@ MAIN_DESCRIPTION = [
         "upgrade your",
         "weapons,",
         "abilities",
-        "and power_ups",
+        "and power ups",
         "to become even",
         "more powerful."
     ], 24, "Courier")
@@ -181,7 +181,7 @@ YELLOW_POWER_UP_DESCRIPTIONS = [
         "Duration: 20",
         "Special:",
         "None"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Level 3",
         "",
@@ -189,7 +189,7 @@ YELLOW_POWER_UP_DESCRIPTIONS = [
         "Duration: 30",
         "Special:",
         "None"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Level 4",
         "",
@@ -197,7 +197,7 @@ YELLOW_POWER_UP_DESCRIPTIONS = [
         "Duration: 45",
         "Special:",
         "None"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Level 5",
         "",
@@ -205,10 +205,10 @@ YELLOW_POWER_UP_DESCRIPTIONS = [
         "Duration: 60",
         "Special:",
         "Player movement 1.5x"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Max Level Reached!"
-    ], 16, "Courier")
+    ], 20, "Courier")
 ]
 
 # For the blue power up upgrades
@@ -219,31 +219,31 @@ BLUE_POWER_UP_DESCRIPTIONS = [
         "Multiplier: 3",
         "Coin Multiplier: 1",
         "Duration: 45"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Level 3",
         "",
         "Multiplier: 3",
         "Coin Multiplier: 2",
         "Duration: 60"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Level 4",
         "",
         "Multiplier: 4",
         "Coin Multiplier: 2",
         "Duration: 75"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Level 5",
         "",
         "Multiplier: 5",
         "Coin Multiplier: 3",
         "Duration: 90"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Max Level Reached!"
-    ], 16, "Courier")
+    ], 20, "Courier")
 ]
 
 # For the green power up upgrades
@@ -252,25 +252,25 @@ GREEN_POWER_UP_DESCRIPTIONS = [
         "Level 2",
         "",
         "Duration: 20"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Level 3",
         "",
         "Duration: 25"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Level 4",
         "",
         "Duration: 30"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Level 5",
         "",
         "Duration: 40"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Max Level Reached!"
-    ], 16, "Courier")
+    ], 20, "Courier")
 ]
 
 # For the red power up upgrades
@@ -279,23 +279,23 @@ RED_POWER_UP_DESCRIPTIONS = [
         "Level 2",
         "",
         "Duration: 20"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Level 3",
         "",
         "Duration: 25"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Level 4",
         "",
         "Duration: 30"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Level 5",
         "",
         "Duration: 40"
-    ], 16, "Courier"),
+    ], 20, "Courier"),
     Description("left", [
         "Max Level Reached!"
-    ], 16, "Courier")
+    ], 20, "Courier")
 ]
