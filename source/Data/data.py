@@ -25,6 +25,7 @@
 import configparser
 import subprocess
 import os
+from utils.Refresh import Refresh
 from utils.UpdateShopData import ShopConfig
 
 # Current Screen Variable - Determines what screen is currently being displayed in the window
@@ -82,13 +83,8 @@ screen_update = 0
 page_update = 0
 clickable = 0
 
-# Update variables (When things only need to be updated in certain circumstances)
-update_variables = 0
-refresh_indicator = 0
-refresh_text = 0
-refresh_panel = 0
-move_tab_selector = 0
-move_slot_selector = 0
+# Initialize the update variables
+refresh_variables = Refresh()
 
 # Button Data
 all_button_list = []

@@ -317,9 +317,7 @@ def launch_shop_mode(x, y):
     global mode
     global page
     global screen_update
-    global refresh_panel
-    global refresh_text
-    global move_slot_selector
+    global refresh_variables
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -133 * scale_factor_Y) and (y < -61 * scale_factor_Y):
@@ -330,18 +328,16 @@ def launch_shop_mode(x, y):
         mode = "Shop"
         page = "Machine_Mode"
         screen_update = 1
-        refresh_panel = 1
-        refresh_text = 1
-        move_slot_selector = 1
+        refresh_variables.refresh_panel = 1
+        refresh_variables.refresh_text = 1
+        refresh_variables.move_slot_selector = 1
 
 
 def display_machine_mode_page(x, y):
     global page
     global screen_update
     global page_update
-    global refresh_text
-    global move_tab_selector
-    global move_slot_selector
+    global refresh_variables
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > 99 * scale_factor_Y) and (y < 201 * scale_factor_Y):
@@ -352,18 +348,16 @@ def display_machine_mode_page(x, y):
         page = "Machine_Mode"
         screen_update = 1
         page_update = 1
-        refresh_text = 1
-        move_tab_selector = 1
-        move_slot_selector = 1
+        refresh_variables.refresh_text = 1
+        refresh_variables.move_tab_selector = 1
+        refresh_variables.move_slot_selector = 1
 
 
 def display_alien_mode_page(x, y):
     global page
     global screen_update
     global page_update
-    global refresh_text
-    global move_tab_selector
-    global move_slot_selector
+    global refresh_variables
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > -21 * scale_factor_Y) and (y < 81 * scale_factor_Y):
@@ -374,17 +368,16 @@ def display_alien_mode_page(x, y):
         page = "Alien_Mode"
         screen_update = 1
         page_update = 1
-        refresh_text = 1
-        move_tab_selector = 1
-        move_slot_selector = 1
+        refresh_variables.refresh_text = 1
+        refresh_variables.move_tab_selector = 1
+        refresh_variables.move_slot_selector = 1
 
 
 def display_power_up_page(x, y):
     global page
     global screen_update
     global page_update
-    global refresh_text
-    global move_tab_selector
+    global refresh_variables
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > -141 * scale_factor_Y) and (y < -39 * scale_factor_Y):
@@ -395,8 +388,8 @@ def display_power_up_page(x, y):
         page = "Power_Ups"
         screen_update = 1
         page_update = 1
-        refresh_text = 1
-        move_tab_selector = 1
+        refresh_variables.refresh_text = 1
+        refresh_variables.move_tab_selector = 1
 
 
 def launch_stats_mode(x, y):
@@ -414,7 +407,7 @@ def launch_stats_mode(x, y):
 
     global mode
     global screen_update
-    global refresh_text
+    global refresh_variables
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > 9 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -224 * scale_factor_Y) and (y < -150 * scale_factor_Y):
@@ -424,7 +417,7 @@ def launch_stats_mode(x, y):
         # Go to the statistics screen
         mode = "Stats"
         screen_update = 1
-        refresh_text = 1
+        refresh_variables.refresh_text = 1
 
 
 def launch_settings_mode(x, y):
@@ -583,8 +576,7 @@ def slot_5_select(x, y):
 
 
 def execute_slot_function(current_page, slot_id):
-    global refresh_panel
-    global move_slot_selector
+    global refresh_variables
     # Button sound is played
     if button_sound == 1:
         sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
@@ -596,12 +588,12 @@ def execute_slot_function(current_page, slot_id):
             if shop_config.machine_slots_unlocked[slot_id - 1] == 1:
                 shop_config.machine_slot_selected = slot_id
                 shop_config.save()
-                move_slot_selector = 1
+                refresh_variables.move_slot_selector = 1
         elif current_page == "Alien_Mode":
             if shop_config.alien_slots_unlocked[slot_id - 1] == 1:
                 shop_config.alien_slot_selected = slot_id
                 shop_config.save()
-                move_slot_selector = 1
+                refresh_variables.move_slot_selector = 1
     else:
         if slot_id == 1:
             for pa in panel_turtle:
@@ -615,7 +607,7 @@ def execute_slot_function(current_page, slot_id):
         elif slot_id == 4:
             for pa in panel_turtle:
                 pa.set_panel_text("Red_Power_Up", slot_id)
-    refresh_panel = 1
+    refresh_variables.refresh_panel = 1
 
 
 """
@@ -896,7 +888,7 @@ def execute_setting_function(type):
 
         :return: None
     """
-    global refresh_indicator
+    global refresh_variables
     # Button sound is played
     if button_sound == 1:
         sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
@@ -913,7 +905,7 @@ def execute_setting_function(type):
     # Write back to file
     with open('Config/config.ini', 'w') as configfile:
         config.write(configfile)
-    refresh_indicator = 1
+    refresh_variables.refresh_indicator = 1
 
 
 def change_go_right_key(x, y):
@@ -1247,9 +1239,7 @@ def update_text():
     """
 
     global mode
-    global refresh_indicator
-    global refresh_panel
-    global refresh_text
+    global refresh_variables
     # Update based on the current mode
     if mode == "Title_Mode":
         for bu in buttons_on_screen_list:
@@ -1331,17 +1321,17 @@ def update_text():
                     bu.write_indicator(shop_config.green_power_up_level, scale_factor)
                 elif bu.get_id() == 4:
                     bu.write_indicator(shop_config.red_power_up_level, scale_factor)
-        if refresh_panel == 1:
+        if refresh_variables.refresh_panel == 1:
             for pa in panel_turtle:
                 pa.write_text(scale_factor)
                 pa.set_indicator(displayed, fullscreen)
-            refresh_panel = 0
+            refresh_variables.refresh_panel = 0
         for t in text_on_screen_list:
             if t.id == 1:
                 t.write("Shop", 72, "bold", scale_factor)
             elif t.id == 2:
                 t.write_left("{}".format(total_coins), 24, "normal", scale_factor)
-            if refresh_text == 1:
+            if refresh_variables.refresh_text == 1:
                 if page == "Machine_Mode":
                     if t.id == 3:
                         t.write_left("Machine Mode", 36, "bold", scale_factor)
@@ -1403,15 +1393,15 @@ def update_text():
                             t.write_left(" 15000", 22, "normal", scale_factor)
                         elif shop_config.red_power_up_level == 4:
                             t.write_left(" 30000", 22, "normal", scale_factor)
-        if refresh_text == 1:
-            refresh_text = 0
+        if refresh_variables.refresh_text == 1:
+            refresh_variables.refresh_text = 0
     elif mode == "Stats":
         for bu in buttons_on_screen_list:
             bu.write_lines(scale_factor)
         for t in text_on_screen_list:
             if t.id == 1:
                 t.write("Statistics", 72, "bold", scale_factor)
-            if refresh_text == 1:
+            if refresh_variables.refresh_text == 1:
                 if t.id == 2:
                     t.write("Machine Mode", 48, "bold", scale_factor)
                 elif t.id == 3:
@@ -1458,13 +1448,13 @@ def update_text():
                     t.write("Power Ups Picked Up: {}".format(alien_power_ups_picked_up), 24, "normal", scale_factor)
                 elif t.id == 24:
                     t.write("Coins Collected: {}".format(alien_coins_collected), 24, "normal", scale_factor)
-                    refresh_text = 0
+                    refresh_variables.refresh_text = 0
             if t.id == 25:
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Settings":
         for bu in buttons_on_screen_list:
             bu.write_lines(scale_factor)
-            if refresh_indicator == 1 or refresh_indicator == 2:
+            if refresh_variables.refresh_indicator == 1 or refresh_variables.refresh_indicator == 2:
                 print("dude")
                 if bu.type == "Settings_Toggle":
                     if bu.id == 1:
@@ -1491,10 +1481,10 @@ def update_text():
                         bu.write_fullscreen_indicator(fullscreen, fullscreen_toggled, scale_factor)
                     elif bu.id == 12:
                         bu.write_indicator(vsync, scale_factor)
-        if refresh_indicator == 2:
-            refresh_indicator = 0
-        elif refresh_indicator == 1:
-            refresh_indicator = 2
+        if refresh_variables.refresh_indicator == 2:
+            refresh_variables.refresh_indicator = 0
+        elif refresh_variables.refresh_indicator == 1:
+            refresh_variables.refresh_indicator = 2
         for t in text_on_screen_list:
             if t.id == 1:
                 t.write("Settings", 72, "bold", scale_factor)
@@ -2358,8 +2348,8 @@ while True:
         selectors_on_screen_list.clear()
         current_selector_index = 0
         score = 0
-        refresh_indicator = 1
-        refresh_text = 1
+        refresh_variables.refresh_indicator = 1
+        refresh_variables.refresh_text = 1
         screen_update = 0
         page_update = 0
         print(len(wn.turtles()))
@@ -3840,21 +3830,21 @@ while True:
             if current_selector_index == 1:
                 spawn_selector("Slot")
 
-            if move_tab_selector == 1:
+            if refresh_variables.move_tab_selector == 1:
                 for s in selectors_on_screen_list:
                     if s.get_type() == "Tab":
                         for bu in buttons_on_screen_list:
                             if bu.get_type() == "Tab" and bu.get_id() == 1:
                                 s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
-                                move_tab_selector = 0
+                                refresh_variables.move_tab_selector = 0
 
-            if move_slot_selector == 1:
+            if refresh_variables.move_slot_selector == 1:
                 for s in selectors_on_screen_list:
                     if s.get_type() == "Slot":
                         for bu in buttons_on_screen_list:
                             if bu.get_type() == "Shop_Slot" and bu.get_id() == shop_config.machine_slot_selected:
                                 s.new_select(bu.get_button_frame().xcor(), bu.get_button_frame().ycor())
-                                move_slot_selector = 0
+                                refresh_variables.move_slot_selector = 0
 
             for bu in buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
@@ -3899,21 +3889,21 @@ while True:
             if current_selector_index == 1:
                 spawn_selector("Slot")
 
-            if move_tab_selector == 1:
+            if refresh_variables.move_tab_selector == 1:
                 for s in selectors_on_screen_list:
                     if s.get_type() == "Tab":
                         for bu in buttons_on_screen_list:
                             if bu.get_type() == "Tab" and bu.get_id() == 2:
                                 s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
-                                move_tab_selector = 0
+                                refresh_variables.move_tab_selector = 0
 
-            if move_slot_selector == 1:
+            if refresh_variables.move_slot_selector == 1:
                 for s in selectors_on_screen_list:
                     if s.get_type() == "Slot":
                         for bu in buttons_on_screen_list:
                             if bu.get_type() == "Shop_Slot" and bu.get_id() == shop_config.alien_slot_selected:
                                 s.new_select(bu.get_button_frame().xcor(), bu.get_button_frame().ycor())
-                                move_slot_selector = 0
+                                refresh_variables.move_slot_selector = 0
 
             for bu in buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
@@ -3968,13 +3958,13 @@ while True:
                                 spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
 
-            if move_tab_selector == 1:
+            if refresh_variables.move_tab_selector == 1:
                 for s in selectors_on_screen_list:
                     if s.get_type() == "Tab":
                         for bu in buttons_on_screen_list:
                             if bu.get_type() == "Tab" and bu.get_id() == 3:
                                 s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
-                                move_tab_selector = 0
+                                refresh_variables.move_tab_selector = 0
 
             for bu in buttons_on_screen_list:
                 if bu.get_type() == "Power_Up_Slot":
@@ -4010,9 +4000,9 @@ while True:
                 t.move(mode, scale_factor_X)
                 break
 
-        if update_variables == 1:
+        if refresh_variables.update_variables == 1:
             shop_config.load()
-            update_variables = 0
+            refresh_variables.update_variables = 0
 
     """
          Code Below is for when Statistics Mode is turned on.
