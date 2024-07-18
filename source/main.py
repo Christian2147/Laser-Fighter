@@ -29,9 +29,8 @@
 import ctypes
 import time
 import random
-from Data.data import *
-from Data.screen import *
-from Data.shop_data import *
+from setup.Initialization import *
+from setup.ScreenSetup import *
 from components.gui.InterfaceButton import Button
 from components.gui.InterfacePanel import Panel
 from components.gui.InterfaceTextBox import Text
@@ -1454,7 +1453,6 @@ def update_text():
         for bu in buttons_on_screen_list:
             bu.write_lines(scale_factor)
             if refresh_variables.refresh_indicator == 1 or refresh_variables.refresh_indicator == 2:
-                print("dude")
                 if bu.type == "Settings_Toggle":
                     if bu.id == 1:
                         bu.write_indicator(button_sound, scale_factor)

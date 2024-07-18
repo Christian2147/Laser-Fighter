@@ -14,7 +14,7 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: data.py
+    File: Initialization.py
     Author: Christian Marinkovich
     Date: 2024-07-07
     Description:
@@ -58,20 +58,20 @@ Sprite variables and how they work:
 - "index" variables - used to access a specific slot in these lists
 """
 
-# Power Up Data
+# Power Up setup
 all_power_ups = []
 current_power_ups = []
 power_up_index = [0, 0, 0, 0]
 
-# Yellow Power Up Indicator Data
+# Yellow Power Up Indicator setup
 yellow_power_up_indicator_turtle = []
 yellow_power_up_indicator_index = 0
 
-# Blue Power Up Indicator Data
+# Blue Power Up Indicator setup
 blue_power_up_indicator_turtle = []
 blue_power_up_indicator_index = 0
 
-# Red/Green Power Up Indicator Data
+# Red/Green Power Up Indicator setup
 extra_power_up_indicator_turtle = []
 extra_power_up_indicator_index = 0
 
@@ -86,19 +86,19 @@ clickable = 0
 # Initialize the update variables
 refresh_variables = Refresh()
 
-# Button Data
+# Button setup
 all_button_list = []
 buttons_on_screen_list = []
 current_button_index = 0
 
-# Panel Data
+# Panel setup
 panel_turtle = []
 panel_index = 0
 
 # Which item is being displayed
 displayed = 0
 
-# Text Box Data
+# Text Box setup
 all_text_list = []
 text_on_screen_list = []
 current_text_index = 0
@@ -108,95 +108,95 @@ all_price_label = []
 price_label_on_screen_list = []
 current_price_index = 0
 
-# Selector Data
+# Selector setup
 all_selector = []
 selectors_on_screen_list = []
 current_selector_index = 0
 
-# Coin Data
+# Coin setup
 all_coins_list = []
 all_coins_index = 0
 coins_on_screen_list = []
 current_coin_index = 0
 coin_pickup_delay = 0
 
-# Coin Indicator Data
+# Coin Indicator setup
 coin_indicator_turtle = []
 coin_indicator_index = 0
 
-# Machine Player Data
+# Machine Player setup
 all_player = []
 current_player = []
 current_player_index = 0
 player_hit_value = 0
 player_update_value = 0
 
-# Blue Machine Data
+# Blue Machine setup
 all_blue_machines = []
 blue_machines = []
 blue_machines_update_values = []
 blue_machine_index = 0
 
-# Yellow Machine Data
+# Yellow Machine setup
 all_yellow_machines = []
 yellow_machines = []
 yellow_machines_update_values = []
 yellow_machine_index = 0
 
-# Red Machine Data
+# Red Machine setup
 all_red_machines = []
 red_machines = []
 red_machines_update_values = []
 red_machines_hit_values = []
 red_machine_index = 0
 
-# Boss Data
+# Boss setup
 all_boss = []
 boss = []
 boss_update_value = 0
 boss_hit_value = 0
 boss_index = 0
 
-# Earth Object Data
+# Earth Object setup
 earth_turtle = []
 earth_index = 0
 
-# Sun Object Data
+# Sun Object setup
 sun_turtle = []
 sun_index = 0
 
-# Background Object Data
+# Background Object setup
 background_objects = []
 background_objects_index = 0
 
-# Human Data
+# Human setup
 all_human = []
 current_human = []
 current_human_index = 0
 human_hit_value = 0
 human_update_value = 0
 
-# Small Alien Data
+# Small Alien setup
 all_small_aliens = []
 small_aliens = []
 small_aliens_kill_values = []
 small_alien_index = 0
 
-# Medium Alien Data
+# Medium Alien setup
 all_medium_aliens = []
 medium_aliens = []
 medium_aliens_kill_values = []
 medium_aliens_hit_values = []
 medium_alien_index = 0
 
-# Large Alien Data
+# Large Alien setup
 all_large_aliens = []
 large_aliens = []
 large_aliens_kill_values = []
 large_aliens_hit_values = []
 large_alien_index = 0
 
-# UFO Data
+# UFO setup
 all_ufos = []
 ufos = []
 ufo_kill_value = 0
@@ -217,10 +217,10 @@ go_left_key_alert = 0
 shoot_key_alert = 0
 jump_key_alert = 0
 
-# Message Box Data
+# Message Box setup
 message_output = 0
 
-# Close Window Data
+# Close Window setup
 quit_loop = 0
 
 # Extract the amount of coins the user has from the playerData ini file
@@ -343,6 +343,7 @@ else:
     high_score_machine_war = "NA"
     high_score_alien_mode = "NA"
 
+# Current Shop Configuration
 shop_config = ShopConfig()
 
 # Backup the player data and config files on launch through a batch file (Made so that the user can run the

@@ -16,7 +16,7 @@
 # This file sets up the application window and initializes all necessary processes
 
 """
-    File: screen.py
+    File: ScreenSetup.py
     Author: Christian Marinkovich
     Date: 2024-07-06
     Description:
@@ -34,7 +34,7 @@ import os
 import pygame
 from PIL import Image
 from fractions import Fraction
-from Data.data import fullscreen
+from setup.Initialization import fullscreen
 
 # Scale Factors for fullscreen (1 when fullscreen is off)
 # All raw coordinates, distances, and movements are multiplied by the scale factor to ensure that the game stays scaled

@@ -23,15 +23,14 @@
 """
 
 import turtle
-import configparser
-from Data.data import shop_config
-from Data.shop_data import MAIN_DESCRIPTION
-from Data.shop_data import MACHINE_DESCRIPTIONS
-from Data.shop_data import ALIEN_DESCRIPTIONS
-from Data.shop_data import YELLOW_POWER_UP_DESCRIPTIONS
-from Data.shop_data import BLUE_POWER_UP_DESCRIPTIONS
-from Data.shop_data import GREEN_POWER_UP_DESCRIPTIONS
-from Data.shop_data import RED_POWER_UP_DESCRIPTIONS
+from setup.Initialization import shop_config
+from setup.data.ShopDescriptions import MAIN_DESCRIPTION
+from setup.data.ShopDescriptions import MACHINE_DESCRIPTIONS
+from setup.data.ShopDescriptions import ALIEN_DESCRIPTIONS
+from setup.data.ShopDescriptions import YELLOW_POWER_UP_DESCRIPTIONS
+from setup.data.ShopDescriptions import BLUE_POWER_UP_DESCRIPTIONS
+from setup.data.ShopDescriptions import GREEN_POWER_UP_DESCRIPTIONS
+from setup.data.ShopDescriptions import RED_POWER_UP_DESCRIPTIONS
 
 
 class Panel:

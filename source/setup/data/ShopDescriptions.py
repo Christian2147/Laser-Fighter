@@ -14,7 +14,7 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: shop_data.py
+    File: ShopDescriptions.py
     Author: Christian Marinkovich
     Date: 2024-07-13
     Description:
