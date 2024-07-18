@@ -25,65 +25,277 @@
 
 from components.gui.GUIDataDescription import Description
 
+# Prices for each item in the shop
 MACHINE_PRICES = [0, 5000, 15000, 40000, 100000]
 ALIEN_PRICES = [0, 5000, 15000, 40000, 100000]
 POWER_UP_PRICES = [1000, 5000, 15000, 30000]
 
 # Shop Welcome Message
 MAIN_DESCRIPTION = [
-    Description("right", "Welcome to\n the Shop!\n\nHere, you can\nupgrade your\nweapons,\nabilities,\nand power-ups\nto become even\nmore powerful.", 24, "Courier")
+    Description("left", [
+        "Welcome to",
+        "the Shop!",
+        "",
+        "Here, you can",
+        "upgrade your",
+        "weapons,",
+        "abilities",
+        "and power_ups",
+        "to become even",
+        "more powerful."
+    ], 24, "Courier")
 ]
 
 # For the Machine Player upgrades
 MACHINE_DESCRIPTIONS = [
-    Description("right", "Default\n\nLaser Speed: 14.5\nLaser Color: Green\nLaser Size: L\nLasers Per Round: 1\nDamage: 1\nSpecial Abilities:\nNone", 16, "Courier"),
-    Description("right", "Machine Washer\n\nLaser Speed: 25\nLaser Color: Sky Blue\nLaser Size: XL\nLasers Per Round: 1\nDamage: 1\nSpecial Abilities:\nNone", 16, "Courier"),
-    Description("right", "The Incinerater\n\nLaser Speed: 20\nLaser Color: Orange\nLaser Size: XL\nLasers Per Round: 2\nDamage: 1\nSpecial Abilities:\nNone", 16, "Courier"),
-    Description("right", "The Black Hole\n\nLaser Speed: 28\nLaser Color: Purple\nLaser Size: XXL\nLasers Per Round: 3\nDamage: 2\nSpecial Abilities:\nDouble Score", 16, "Courier"),
-    Description("right", "The Star Killer\n\nLaser Speed: 30\nLaser Color: Multicolor\nLaser Size: XXL\nLasers Per Round: 3\nDamage: 2\nSpecial Abilities:\nDouble Score\nPower Up Spawns Incr.", 16, "Courier")
+    Description("left", [
+        "Default",
+        "",
+        "Laser Speed: 14.5",
+        "Laser Color: Green",
+        "Laser Size: L",
+        "Lasers Per Round: 1",
+        "Damage: 1",
+        "Special Abilities:",
+        "None"
+    ], 16, "Courier"),
+    Description("left", [
+        "Machine Washer",
+        "",
+        "Laser Speed: 25",
+        "Laser Color: Sky Blue",
+        "Laser Size: XL",
+        "Lasers Per Round: 1",
+        "Damage: 1",
+        "Special Abilities:",
+        "None"
+    ], 16, "Courier"),
+    Description("left", [
+        "The Incinerator",
+        "",
+        "Laser Speed: 20",
+        "Laser Color: Orange",
+        "Laser Size: XL",
+        "Lasers Per Round: 2",
+        "Damage: 1",
+        "Special Abilities:",
+        "None"
+    ], 16, "Courier"),
+    Description("left", [
+        "The Black Hole",
+        "",
+        "Laser Speed: 28",
+        "Laser Color: Purple",
+        "Laser Size: XXL",
+        "Lasers Per Round: 3",
+        "Damage: 2",
+        "Special Abilities:",
+        "Double Score"
+    ], 16, "Courier"),
+    Description("left", [
+        "The Star Killer",
+        "",
+        "Laser Speed: 30",
+        "Laser Color: Multicolor",
+        "Laser Size: XXL",
+        "Lasers Per Round: 3",
+        "Damage: 2",
+        "Special Abilities:",
+        "Double Score",
+        "Power Up Spawns Incr."
+    ], 16, "Courier")
 ]
 
 # For the alien gun upgrades
 ALIEN_DESCRIPTIONS = [
-    Description("right", "Default\n\nLaser Speed: 13\nLaser Color: Red\nLaser Size: L\nLasers Per Round: 1\nDamage: 1\nPiercing: 2\nSpecial Abilities:\nNone", 16, "Courier"),
-    Description("right", "The Cooker\n\nLaser Speed: 15\nLaser Color: Orange\nLaser Size: M\nLasers Per Round: 1\nDamage: 1\nPiercing: 3\nSpecial Abilities:\nNone", 16, "Courier"),
-    Description("right", "Poison Dart Gun\n\nLaser Speed: 25\nLaser Color: Green\nLaser Size: L\nLasers Per Round: 2\nDamage: 2\nPiercing: 2\nSpecial Abilities:\nNone", 16, "Courier"),
-    Description("right", "Meteor Gun\n\nLaser Speed: 24\nLaser Color: Multicolor\nLaser Size: XL\nLasers Per Round: 1\nDamage: 3\nPiercing: 3\nSpecial Abilities:\nDouble Score", 16, "Courier"),
-    Description("right", "The Supernova\n\nLaser Speed: 30\nLaser Color: Multicolor\nLaser Size: XL\nLasers Per Round: 2\nDamage: 3\nPiercing: 4\nSpecial Abilities:\nDouble Score\nFaster Movement\nPower Up Spawns Incr.", 16, "Courier")
+    Description("left", [
+        "Default",
+        "",
+        "Laser Speed: 13",
+        "Laser Color: Red",
+        "Laser Size: L",
+        "Lasers Per Round: 1",
+        "Damage: 1",
+        "Piercing: 2",
+        "Special Abilities:",
+        "None"
+    ], 16, "Courier"),
+    Description("left", [
+        "The Cooker",
+        "",
+        "Laser Speed: 15",
+        "Laser Color: Orange",
+        "Laser Size: M",
+        "Lasers Per Round: 1",
+        "Damage: 1",
+        "Piercing: 3",
+        "Special Abilities:",
+        "None"
+    ], 16, "Courier"),
+    Description("left", [
+        "Poison Dart Gun",
+        "",
+        "Laser Speed: 25",
+        "Laser Color: Green",
+        "Laser Size: L",
+        "Lasers Per Round: 2",
+        "Damage: 2",
+        "Piercing: 2",
+        "Special Abilities:",
+        "None"
+    ], 16, "Courier"),
+    Description("left", [
+        "Meteor Gun",
+        "",
+        "Laser Speed: 24",
+        "Laser Color: Multicolor",
+        "Laser Size: XL",
+        "Lasers Per Round: 1",
+        "Damage: 3",
+        "Piercing: 3",
+        "Special Abilities:",
+        "Double Score"
+    ], 16, "Courier"),
+    Description("left", [
+        "The Supernova",
+        "",
+        "Laser Speed: 30",
+        "Laser Color: Multicolor",
+        "Laser Size: XL",
+        "Lasers Per Round: 2",
+        "Damage: 3",
+        "Piercing: 4",
+        "Special Abilities:",
+        "Double Score",
+        "Faster Movement",
+        "Power Up Spawns Incr."
+    ], 16, "Courier")
 ]
 
 # For the yellow power up upgrades
 YELLOW_POWER_UP_DESCRIPTIONS = [
-    Description("right", "Level 2\n\nSpeed Increase: 3x\nDuration: 20\nSpecial:\nNone", 16, "Courier"),
-    Description("right", "Level 3\n\nSpeed Increase: 3x\nDuration: 30\nSpecial:\nNone", 16, "Courier"),
-    Description("right", "Level 4\n\nSpeed Increase: 4x\nDuration: 45\nSpecial:\nNone", 16, "Courier"),
-    Description("right", "Level 5\n\nSpeed Increase: 4x\nDuration: 60\nSpecial:\nPlayer movement 1.5x", 16, "Courier"),
-    Description("right", "Max Level Reached!", 16, "Courier")
+    Description("left", [
+        "Level 2",
+        "",
+        "Speed Increase: 3x",
+        "Duration: 20",
+        "Special:",
+        "None"
+    ], 16, "Courier"),
+    Description("left", [
+        "Level 3",
+        "",
+        "Speed Increase: 3x",
+        "Duration: 30",
+        "Special:",
+        "None"
+    ], 16, "Courier"),
+    Description("left", [
+        "Level 4",
+        "",
+        "Speed Increase: 4x",
+        "Duration: 45",
+        "Special:",
+        "None"
+    ], 16, "Courier"),
+    Description("left", [
+        "Level 5",
+        "",
+        "Speed Increase: 4x",
+        "Duration: 60",
+        "Special:",
+        "Player movement 1.5x"
+    ], 16, "Courier"),
+    Description("left", [
+        "Max Level Reached!"
+    ], 16, "Courier")
 ]
 
 # For the blue power up upgrades
 BLUE_POWER_UP_DESCRIPTIONS = [
-    Description("right", "Level 2\n\nMultiplier: 3\nCoin Multiplier: 1\nDuration: 45", 16, "Courier"),
-    Description("right", "Level 3\n\nMultiplier: 3\nCoin Multiplier: 2\nDuration: 60", 16, "Courier"),
-    Description("right", "Level 4\n\nMultiplier: 4\nCoin Multiplier: 2\nDuration: 75", 16, "Courier"),
-    Description("right", "Level 5\n\nMultiplier: 5\nCoin Multiplier: 3\nDuration: 90", 16, "Courier"),
-    Description("right", "Max Level Reached!", 16, "Courier")
+    Description("left", [
+        "Level 2",
+        "",
+        "Multiplier: 3",
+        "Coin Multiplier: 1",
+        "Duration: 45"
+    ], 16, "Courier"),
+    Description("left", [
+        "Level 3",
+        "",
+        "Multiplier: 3",
+        "Coin Multiplier: 2",
+        "Duration: 60"
+    ], 16, "Courier"),
+    Description("left", [
+        "Level 4",
+        "",
+        "Multiplier: 4",
+        "Coin Multiplier: 2",
+        "Duration: 75"
+    ], 16, "Courier"),
+    Description("left", [
+        "Level 5",
+        "",
+        "Multiplier: 5",
+        "Coin Multiplier: 3",
+        "Duration: 90"
+    ], 16, "Courier"),
+    Description("left", [
+        "Max Level Reached!"
+    ], 16, "Courier")
 ]
 
 # For the green power up upgrades
 GREEN_POWER_UP_DESCRIPTIONS = [
-    Description("right", "Level 2\n\nDuration: 20", 16, "Courier"),
-    Description("right", "Level 3\n\nDuration: 25", 16, "Courier"),
-    Description("right", "Level 4\n\nDuration: 30", 16, "Courier"),
-    Description("right", "Level 5\n\nDuration: 40", 16, "Courier"),
-    Description("right", "Max Level Reached!", 16, "Courier")
+    Description("left", [
+        "Level 2",
+        "",
+        "Duration: 20"
+    ], 16, "Courier"),
+    Description("left", [
+        "Level 3",
+        "",
+        "Duration: 25"
+    ], 16, "Courier"),
+    Description("left", [
+        "Level 4",
+        "",
+        "Duration: 30"
+    ], 16, "Courier"),
+    Description("left", [
+        "Level 5",
+        "",
+        "Duration: 40"
+    ], 16, "Courier"),
+    Description("left", [
+        "Max Level Reached!"
+    ], 16, "Courier")
 ]
 
 # For the red power up upgrades
 RED_POWER_UP_DESCRIPTIONS = [
-    Description("right", "Level 2\n\nDuration: 20", 16, "Courier"),
-    Description("right", "Level 3\n\nDuration: 25", 16, "Courier"),
-    Description("right", "Level 4\n\nDuration: 30", 16, "Courier"),
-    Description("right", "Level 5\n\nDuration: 40", 16, "Courier"),
-    Description("right", "Max Level Reached!", 16, "Courier")
+    Description("left", [
+        "Level 2",
+        "",
+        "Duration: 20"
+    ], 16, "Courier"),
+    Description("left", [
+        "Level 3",
+        "",
+        "Duration: 25"
+    ], 16, "Courier"),
+    Description("left", [
+        "Level 4",
+        "",
+        "Duration: 30"
+    ], 16, "Courier"),
+    Description("left", [
+        "Level 5",
+        "",
+        "Duration: 40"
+    ], 16, "Courier"),
+    Description("left", [
+        "Max Level Reached!"
+    ], 16, "Courier")
 ]

@@ -1323,8 +1323,7 @@ def update_text():
                     bu.write_indicator(shop_config.red_power_up_level, scale_factor)
         if refresh_variables.refresh_panel == 1:
             for pa in panel_turtle:
-                pa.write_text(scale_factor)
-                pa.set_indicator(displayed, fullscreen)
+                pa.write_text(scale_factor, scale_factor_Y, fullscreen)
             refresh_variables.refresh_panel = 0
         for t in text_on_screen_list:
             if t.id == 1:

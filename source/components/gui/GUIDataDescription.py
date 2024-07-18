@@ -43,7 +43,7 @@ class Description:
             :type align: string
 
             :param text: The description text
-            :type text: string
+            :type text: list
 
             :param size: The font size
             :type size: int
@@ -88,6 +88,9 @@ class Description:
         """
 
         return self.text
+
+    def get_length(self):
+        return len(self.text)
 
     def get_size(self):
         """

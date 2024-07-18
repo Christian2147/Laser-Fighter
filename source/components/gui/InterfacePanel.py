@@ -56,17 +56,14 @@ class Panel:
         self.panel_text.color("white")
         # Ensure that the turtle does not draw lines on the screen while moving
         self.panel_text.penup()
-        if fullscreen == 1:
-            self.panel_text.goto(self.panel.xcor() + 120 * scale_factor_x, self.panel.ycor() - 8 * scale_factor_y)
-        else:
-            self.panel_text.goto(self.panel.xcor() + 120 * scale_factor_x, self.panel.ycor() - 28 * scale_factor_y)
+        self.panel_text.goto(self.panel.xcor() - 155 * scale_factor_x, self.panel.ycor() + 290 * scale_factor_y)
         self.panel_text.hideturtle()
 
         self.panel_indicator = turtle.Turtle()
         # Ensure that the turtle does not draw lines on the screen while moving
         self.panel_indicator.penup()
         if type == "Shop":
-            self.panel_indicator.goto(self.panel.xcor(), self.panel.ycor() + 205 * scale_factor_y)
+            self.panel_indicator.goto(self.panel.xcor(), self.panel.ycor() + 170 * scale_factor_y)
         self.panel_indicator.hideturtle()
 
         self.type = type
@@ -95,12 +92,9 @@ class Panel:
         self.panel.goto(450 * scale_factor_x, 0)
         self.panel.showturtle()
 
-        if fullscreen == 1:
-            self.panel_text.goto(self.panel.xcor() + 120 * scale_factor_x, self.panel.ycor() - 8 * scale_factor_y)
-        else:
-            self.panel_text.goto(self.panel.xcor() + 120 * scale_factor_x, self.panel.ycor() - 28 * scale_factor_y)
+        self.panel_text.goto(self.panel.xcor() - 155 * scale_factor_x, self.panel.ycor() + 290 * scale_factor_y)
 
-        self.panel_indicator.goto(self.panel.xcor(), self.panel.ycor() + 205 * scale_factor_y)
+        self.panel_indicator.goto(self.panel.xcor(), self.panel.ycor() + 170 * scale_factor_y)
 
         self.type = "Shop"
         self.catigory = "Welcome"
@@ -125,17 +119,19 @@ class Panel:
         self.panel_text.clear()
         self.panel_indicator.hideturtle()
 
-    def write_text(self, scale_factor):
+    def write_text(self, scale_factor, scale_factor_y, fullscreen):
         # Clears the existing text
         self.panel_text.clear()
 
         # Writes new text based on the panel type and id of the text
         if self.type == "Shop":
             if self.catigory == "Welcome":
-                self.panel_text.write("{}".format(MAIN_DESCRIPTION[self.id - 1].get_text()),
-                                        align=MAIN_DESCRIPTION[self.id - 1].get_align(),
-                                        font=(MAIN_DESCRIPTION[self.id - 1].get_font(),
-                                        int(MAIN_DESCRIPTION[self.id - 1].get_size() * scale_factor), "normal"))
+                for i in range(MAIN_DESCRIPTION[self.id - 1].get_length()):
+                    self.panel_text.write("{}".format(MAIN_DESCRIPTION[self.id - 1].get_text()[i]),
+                                            align=MAIN_DESCRIPTION[self.id - 1].get_align(),
+                                            font=(MAIN_DESCRIPTION[self.id - 1].get_font(),
+                                            int(MAIN_DESCRIPTION[self.id - 1].get_size() * scale_factor), "normal"))
+                    self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 36 * scale_factor_y)
             elif self.catigory == "Machine_Mode":
                 self.panel_text.write("{}".format(MACHINE_DESCRIPTIONS[self.id - 1].get_text()),
                                         align=MACHINE_DESCRIPTIONS[self.id - 1].get_align(),
@@ -182,16 +178,40 @@ class Panel:
                                         align=RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_align(),
                                         font=(RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_font(),
                                         int(RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_size() * scale_factor), "normal"))
+        self.set_indicator(fullscreen)
 
-    def set_indicator(self, id, fullscreen):
-        if id != 0:
-            if id == 1:
+    def set_indicator(self, fullscreen):
+        if self.catigory == "Welcome":
+            self.panel_indicator.hideturtle()
+        else:
+            if self.catigory == "Machine_Mode":
                 if fullscreen == 1:
                     self.panel_indicator.shape("Textures/Player/Player_Scaled.gif")
                 else:
                     self.panel_indicator.shape("Textures/Player/Player.gif")
-
-        if id == 0:
-            self.panel_indicator.hideturtle()
-        else:
+            elif self.catigory == "Alien_Mode":
+                if fullscreen == 1:
+                    self.panel_indicator.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
+                else:
+                    self.panel_indicator.shape("Textures/Gun/Player_Gun_Right.gif")
+            elif self.catigory == "Yellow_Power_Up":
+                if fullscreen == 1:
+                    self.panel_indicator.shape("Textures/Power_Ups/Yellow_Lightning_Power_Up_Scaled.gif")
+                else:
+                    self.panel_indicator.shape("Textures/Power_Ups/Yellow_Lightning_Power_Up.gif")
+            elif self.catigory == "Blue_Power_Up":
+                if fullscreen == 1:
+                    self.panel_indicator.shape("Textures/Power_Ups/Blue_Lightning_Power_Up_Scaled.gif")
+                else:
+                    self.panel_indicator.shape("Textures/Power_Ups/Blue_Lightning_Power_Up.gif")
+            elif self.catigory == "Green_Power_Up":
+                if fullscreen == 1:
+                    self.panel_indicator.shape("Textures/Power_Ups/Green_Lightning_Power_Up_Scaled.gif")
+                else:
+                    self.panel_indicator.shape("Textures/Power_Ups/Green_Lightning_Power_Up.gif")
+            elif self.catigory == "Red_Power_Up":
+                if fullscreen == 1:
+                    self.panel_indicator.shape("Textures/Power_Ups/Red_Lightning_Power_Up_Scaled.gif")
+                else:
+                    self.panel_indicator.shape("Textures/Power_Ups/Red_Lightning_Power_Up.gif")
             self.panel_indicator.showturtle()
