@@ -201,33 +201,45 @@ class Panel:
             self.panel_indicator.hideturtle()
         else:
             if self.catigory == "Machine_Mode":
-                if fullscreen == 1:
-                    self.panel_indicator.shape("Textures/Player/Player_Scaled.gif")
+                if self.id == 1:
+                    if fullscreen == 1:
+                        self.panel_indicator.shape("Textures/Interface/Display/Machine_Default_Display_Icon_Scaled.gif")
+                    else:
+                        self.panel_indicator.shape("Textures/Interface/Display/Machine_Default_Display_Icon.gif")
                 else:
-                    self.panel_indicator.shape("Textures/Player/Player.gif")
+                    if fullscreen == 1:
+                        self.panel_indicator.shape("Textures/Player/Player_Scaled.gif")
+                    else:
+                        self.panel_indicator.shape("Textures/Player/Player.gif")
             elif self.catigory == "Alien_Mode":
-                if fullscreen == 1:
-                    self.panel_indicator.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
+                if self.id == 1:
+                    if fullscreen == 1:
+                        self.panel_indicator.shape("Textures/Interface/Display/Alien_Default_Display_Icon_Scaled.gif")
+                    else:
+                        self.panel_indicator.shape("Textures/Interface/Display/Alien_Default_Display_Icon.gif")
                 else:
-                    self.panel_indicator.shape("Textures/Gun/Player_Gun_Right.gif")
+                    if fullscreen == 1:
+                        self.panel_indicator.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
+                    else:
+                        self.panel_indicator.shape("Textures/Gun/Player_Gun_Right.gif")
             elif self.catigory == "Yellow_Power_Up":
                 if fullscreen == 1:
-                    self.panel_indicator.shape("Textures/Power_Ups/Yellow_Lightning_Power_Up_Scaled.gif")
+                    self.panel_indicator.shape("Textures/Interface/Display/Yellow_Power_Up_Display_Icon_Scaled.gif")
                 else:
-                    self.panel_indicator.shape("Textures/Power_Ups/Yellow_Lightning_Power_Up.gif")
+                    self.panel_indicator.shape("Textures/Interface/Display/Yellow_Power_Up_Display_Icon.gif")
             elif self.catigory == "Blue_Power_Up":
                 if fullscreen == 1:
-                    self.panel_indicator.shape("Textures/Power_Ups/Blue_Lightning_Power_Up_Scaled.gif")
+                    self.panel_indicator.shape("Textures/Interface/Display/Blue_Power_Up_Display_Icon_Scaled.gif")
                 else:
-                    self.panel_indicator.shape("Textures/Power_Ups/Blue_Lightning_Power_Up.gif")
+                    self.panel_indicator.shape("Textures/Interface/Display/Blue_Power_Up_Display_Icon.gif")
             elif self.catigory == "Green_Power_Up":
                 if fullscreen == 1:
-                    self.panel_indicator.shape("Textures/Power_Ups/Green_Lightning_Power_Up_Scaled.gif")
+                    self.panel_indicator.shape("Textures/Interface/Display/Green_Power_Up_Display_Icon_Scaled.gif")
                 else:
-                    self.panel_indicator.shape("Textures/Power_Ups/Green_Lightning_Power_Up.gif")
+                    self.panel_indicator.shape("Textures/Interface/Display/Green_Power_Up_Display_Icon.gif")
             elif self.catigory == "Red_Power_Up":
                 if fullscreen == 1:
-                    self.panel_indicator.shape("Textures/Power_Ups/Red_Lightning_Power_Up_Scaled.gif")
+                    self.panel_indicator.shape("Textures/Interface/Display/Red_Power_Up_Display_Icon_Scaled.gif")
                 else:
-                    self.panel_indicator.shape("Textures/Power_Ups/Red_Lightning_Power_Up.gif")
+                    self.panel_indicator.shape("Textures/Interface/Display/Red_Power_Up_Display_Icon.gif")
             self.panel_indicator.showturtle()
