@@ -45,7 +45,7 @@ class Button:
             id (int): A unique identifier for the button to further determine and locate the button.
     """
 
-    def __init__(self, type, id, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, type, id, scale_factor_x, scale_factor_y, fullscreen, page="None"):
         """
             Creates a button object of the specified type and id and spawns it on the screen.
 
@@ -168,9 +168,9 @@ class Button:
         elif type == "Tab":
             if id == 1:
                 if fullscreen == 1:
-                    self.button_text.shape("Textures/Player/Player_Scaled.gif")
+                    self.button_text.shape("Textures/Interface/Icons/Tab/Machine_Mode_Tab_Icon_Scaled.gif")
                 else:
-                    self.button_text.shape("Textures/Player/Player.gif")
+                    self.button_text.shape("Textures/Interface/Icons/Tab/Machine_Mode_Tab_Icon.gif")
             elif id == 2:
                 if fullscreen == 1:
                     self.button_text.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
@@ -183,10 +183,37 @@ class Button:
                     self.button_text.shape("Textures/Power_Ups/Yellow_Lightning_Power_Up.gif")
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor())
         elif type == "Shop_Slot" or type == "Power_Up_Slot":
-            if fullscreen == 1:
-                self.button_text.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
-            else:
-                self.button_text.shape("Textures/Gun/Player_Gun_Right.gif")
+            if page == "Machine_Mode":
+                if fullscreen == 1:
+                    self.button_text.shape("Textures/Interface/Icons/Slot/Machine_Default_Slot_Icon_Scaled.gif")
+                else:
+                    self.button_text.shape("Textures/Interface/Icons/Slot/Machine_Default_Slot_Icon.gif")
+            elif page == "Alien_Mode":
+                if fullscreen == 1:
+                    self.button_text.shape("Textures/Interface/Icons/Slot/Alien_Default_Slot_Icon_Scaled.gif")
+                else:
+                    self.button_text.shape("Textures/Interface/Icons/Slot/Alien_Default_Slot_Icon.gif")
+            elif page == "Power_Ups":
+                if self.id == 1:
+                    if fullscreen == 1:
+                        self.button_text.shape("Textures/Interface/Icons/Slot/Yellow_Power_Up_Slot_Icon_Scaled.gif")
+                    else:
+                        self.button_text.shape("Textures/Interface/Icons/Slot/Yellow_Power_Up_Slot_Icon.gif")
+                elif self.id == 2:
+                    if fullscreen == 1:
+                        self.button_text.shape("Textures/Interface/Icons/Slot/Blue_Power_Up_Slot_Icon_Scaled.gif")
+                    else:
+                        self.button_text.shape("Textures/Interface/Icons/Slot/Blue_Power_Up_Slot_Icon.gif")
+                elif self.id == 3:
+                    if fullscreen == 1:
+                        self.button_text.shape("Textures/Interface/Icons/Slot/Green_Power_Up_Slot_Icon_Scaled.gif")
+                    else:
+                        self.button_text.shape("Textures/Interface/Icons/Slot/Green_Power_Up_Slot_Icon.gif")
+                elif self.id == 4:
+                    if fullscreen == 1:
+                        self.button_text.shape("Textures/Interface/Icons/Slot/Red_Power_Up_Slot_Icon_Scaled.gif")
+                    else:
+                        self.button_text.shape("Textures/Interface/Icons/Slot/Red_Power_Up_Slot_Icon.gif")
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
         elif type == "Regular_Settings_And_Controls":
             self.button_text.goto(315.5 * scale_factor_x, self.button_frame.ycor() - 22 * scale_factor_y)
@@ -378,9 +405,9 @@ class Button:
 
         if id == 1:
             if fullscreen == 1:
-                self.button_text.shape("Textures/Player/Player_Scaled.gif")
+                self.button_text.shape("Textures/Interface/Icons/Tab/Machine_Mode_Tab_Icon_Scaled.gif")
             else:
-                self.button_text.shape("Textures/Player/Player.gif")
+                self.button_text.shape("Textures/Interface/Icons/Tab/Machine_Mode_Tab_Icon.gif")
         elif id == 2:
             if fullscreen == 1:
                 self.button_text.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
@@ -398,21 +425,21 @@ class Button:
         self.type = "Tab"
         self.id = id
 
-    def reinstate_to_shop_slot(self, id, scale_factor_x, scale_factor_y, fullscreen):
-        self.reinstate_to_slot(id, scale_factor_x, scale_factor_y, fullscreen)
+    def reinstate_to_shop_slot(self, id, scale_factor_x, scale_factor_y, fullscreen, page):
+        self.reinstate_to_slot(id, scale_factor_x, scale_factor_y, fullscreen, page=page)
 
         # Set the type to "Shop Slot"
         self.type = "Shop_Slot"
         self.id = id
 
     def reinstate_to_power_up_slot(self, id, scale_factor_x, scale_factor_y, fullscreen):
-        self.reinstate_to_slot(id, scale_factor_x, scale_factor_y, fullscreen)
+        self.reinstate_to_slot(id, scale_factor_x, scale_factor_y, fullscreen, "Power_Ups")
 
         # Set the type to "Shop Slot"
         self.type = "Power_Up_Slot"
         self.id = id
 
-    def reinstate_to_slot(self, id, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate_to_slot(self, id, scale_factor_x, scale_factor_y, fullscreen, page="None"):
         """
             Reuses the existing button sprite to spawn a shop slot and place it in a location based on the id.
 
@@ -441,10 +468,37 @@ class Button:
             self.button_frame.goto((-427 + (170 * (id - 1 - 4))) * scale_factor_x, -94 * scale_factor_y)
         self.button_frame.showturtle()
 
-        if fullscreen == 1:
-            self.button_text.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
-        else:
-            self.button_text.shape("Textures/Gun/Player_Gun_Right.gif")
+        if page == "Machine_Mode":
+            if fullscreen == 1:
+                self.button_text.shape("Textures/Interface/Icons/Slot/Machine_Default_Slot_Icon_Scaled.gif")
+            else:
+                self.button_text.shape("Textures/Interface/Icons/Slot/Machine_Default_Slot_Icon.gif")
+        elif page == "Alien_Mode":
+            if fullscreen == 1:
+                self.button_text.shape("Textures/Interface/Icons/Slot/Alien_Default_Slot_Icon_Scaled.gif")
+            else:
+                self.button_text.shape("Textures/Interface/Icons/Slot/Alien_Default_Slot_Icon.gif")
+        elif page == "Power_Ups":
+            if self.id == 1:
+                if fullscreen == 1:
+                    self.button_text.shape("Textures/Interface/Icons/Slot/Yellow_Power_Up_Slot_Icon_Scaled.gif")
+                else:
+                    self.button_text.shape("Textures/Interface/Icons/Slot/Yellow_Power_Up_Slot_Icon.gif")
+            elif self.id == 2:
+                if fullscreen == 1:
+                    self.button_text.shape("Textures/Interface/Icons/Slot/Blue_Power_Up_Slot_Icon_Scaled.gif")
+                else:
+                    self.button_text.shape("Textures/Interface/Icons/Slot/Blue_Power_Up_Slot_Icon.gif")
+            elif self.id == 3:
+                if fullscreen == 1:
+                    self.button_text.shape("Textures/Interface/Icons/Slot/Green_Power_Up_Slot_Icon_Scaled.gif")
+                else:
+                    self.button_text.shape("Textures/Interface/Icons/Slot/Green_Power_Up_Slot_Icon.gif")
+            elif self.id == 4:
+                if fullscreen == 1:
+                    self.button_text.shape("Textures/Interface/Icons/Slot/Red_Power_Up_Slot_Icon_Scaled.gif")
+                else:
+                    self.button_text.shape("Textures/Interface/Icons/Slot/Red_Power_Up_Slot_Icon.gif")
         self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
         self.button_text.showturtle()
 

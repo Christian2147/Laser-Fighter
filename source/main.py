@@ -1541,11 +1541,15 @@ def spawn_buttons(type, id):
         :return: None
     """
 
+    global page
     global current_button_index
     # If a usable button sprite does not exist
     if len(all_button_list) <= len(buttons_on_screen_list):
         # Create a new button object
-        button = Button(type, id, scale_factor_X, scale_factor_Y, fullscreen)
+        if type != "Shop_Slot":
+            button = Button(type, id, scale_factor_X, scale_factor_Y, fullscreen)
+        else:
+            button = Button(type, id, scale_factor_X, scale_factor_Y, fullscreen, page=page)
         buttons_on_screen_list.append(button)
         current_button_index = current_button_index + 1
         all_button_list.append(button)
@@ -1591,7 +1595,7 @@ def spawn_buttons(type, id):
                     if type == "Settings_Toggle":
                         bu.reinstate_to_settings_toggle(id, scale_factor_X, scale_factor_Y, fullscreen)
                     elif type == "Shop_Slot":
-                        bu.reinstate_to_shop_slot(id, scale_factor_X, scale_factor_Y, fullscreen)
+                        bu.reinstate_to_shop_slot(id, scale_factor_X, scale_factor_Y, fullscreen, page)
                     elif type == "Power_Up_Slot":
                         bu.reinstate_to_power_up_slot(id, scale_factor_X, scale_factor_Y, fullscreen)
                     buttons_on_screen_list.append(bu)
@@ -1609,7 +1613,7 @@ def spawn_buttons(type, id):
                         if type == "Settings_Toggle":
                             bu.reinstate_to_settings_toggle(id, scale_factor_X, scale_factor_Y, fullscreen)
                         elif type == "Shop_Slot":
-                            bu.reinstate_to_shop_slot(id, scale_factor_X, scale_factor_Y, fullscreen)
+                            bu.reinstate_to_shop_slot(id, scale_factor_X, scale_factor_Y, fullscreen, page)
                         elif type == "Power_Up_Slot":
                             bu.reinstate_to_power_up_slot(id, scale_factor_X, scale_factor_Y, fullscreen)
                         buttons_on_screen_list.append(bu)
