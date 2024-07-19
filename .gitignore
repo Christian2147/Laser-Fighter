@@ -3,7 +3,7 @@ source/build/
 source/dist/
 source/main.spec
 
-# Ignore the build directory in the tools directory (These are compiled files which can be recreated when the program is packaged)
+# Ignore the build directories in the imagescaler directory (These are compiled files which can be recreated when the program is packaged)
 tools/imagescaler/build
 tools/imagescaler/dist
 tools/imagescaler/Main.spec

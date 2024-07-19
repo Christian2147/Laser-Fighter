@@ -13,15 +13,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: Main.py
+    Author: Christian Marinkovich
+    Date: 2024-07-19
+    Description:
+    Main file for the image scaler sub application.
+    This application is used to rescale textures in Laser Fighter. This is so that I do not have to manually rescale
+        them myself.
+"""
+
 import tkinter
 from tools.imagescaler.ImageScaler import ImageScalerApp
 
 
+# Main function defined
 def main():
     root = tkinter.Tk()
     app = ImageScalerApp(root)
     root.mainloop()
 
-
+# Program started
 if __name__ == "__main__":
     main()
