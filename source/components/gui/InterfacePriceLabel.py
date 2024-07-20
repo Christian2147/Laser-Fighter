@@ -17,7 +17,7 @@ import turtle
 
 
 class PriceLabel:
-    def __init__(self, x, y, fullscreen):
+    def __init__(self, id, x, y, fullscreen):
         self.price_label = turtle.Turtle()
         self.price_label.penup()
         if fullscreen == 1:
@@ -26,16 +26,23 @@ class PriceLabel:
             self.price_label.shape("Textures/Coins/Coin_Indicator.gif")
         self.price_label.goto(x, y)
 
+        self.id = id
+
     def __del__(self):
         self.price_label.clear()
         del self.price_label
 
-    def reinstate(self, x, y):
+    def reinstate(self, id, x, y):
         self.price_label.goto(x, y)
         self.price_label.showturtle()
 
+        self.id = id
+
     def get_price_label(self):
         return self.price_label
+
+    def get_id(self):
+        return self.id
 
     def remove(self):
         self.price_label.hideturtle()

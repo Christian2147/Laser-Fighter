@@ -115,6 +115,9 @@ class Panel:
     def get_panel_indicator(self):
         return self.panel_indicator
 
+    def get_panel_id(self):
+        return self.id
+
     def set_panel_text(self, new_catigory, new_id, scale_factor_x, scale_factor_y):
         self.catigory = new_catigory
         self.id = new_id
@@ -131,12 +134,18 @@ class Panel:
         self.panel_text.clear()
         self.panel_indicator.hideturtle()
 
-    def write_text(self, scale_factor, scale_factor_y, fullscreen):
+    def write_text(self, scale_factor, scale_factor_x, scale_factor_y, fullscreen):
         # Clears the existing text
         self.panel_text.clear()
 
         # Writes new text based on the panel type and id of the text
         if self.type == "Shop":
+            if self.catigory == "Welcome":
+                self.panel_text.goto(self.panel.xcor() - 155 * scale_factor_x, self.panel.ycor() + 290 * scale_factor_y)
+            elif self.catigory == "Alien_Mode":
+                self.panel_text.goto(self.panel.xcor() - 155 * scale_factor_x, self.panel.ycor() + 55 * scale_factor_y)
+            else:
+                self.panel_text.goto(self.panel.xcor() - 155 * scale_factor_x, self.panel.ycor() + 40 * scale_factor_y)
             if self.catigory == "Welcome":
                 for i in range(MAIN_DESCRIPTION[self.id - 1].get_length()):
                     self.panel_text.write("{}".format(MAIN_DESCRIPTION[self.id - 1].get_text()[i]),

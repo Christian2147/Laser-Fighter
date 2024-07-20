@@ -82,6 +82,7 @@ tick_update = 0
 screen_update = 0
 page_update = 0
 clickable = 0
+buy_button_pressed = 0
 
 # Initialize the update variables
 refresh_variables = Refresh()

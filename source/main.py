@@ -578,6 +578,7 @@ def slot_5_select(x, y):
 
 
 def execute_slot_function(current_page, slot_id):
+    global current_button_index
     global refresh_variables
     global price_displayed
     # Button sound is played
@@ -653,14 +654,109 @@ def execute_slot_function(current_page, slot_id):
                 if bu.get_type() == "Buy":
                     bu.remove()
                     buttons_on_screen_list.pop()
+                    current_button_index = current_button_index - 1
             spawn_buttons("Buy", 1)
         else:
             for bu in buttons_on_screen_list:
                 if bu.get_type() == "Buy":
                     bu.remove()
                     buttons_on_screen_list.pop()
+                    current_button_index = current_button_index - 1
     refresh_variables.refresh_panel = 1
     refresh_variables.refresh_button = 1
+
+
+def execute_buy_button(x, y):
+    global total_coins
+    global refresh_variables
+    global current_button_index
+    global current_text_index
+    global current_price_index
+    global price_displayed
+    global page
+    global buy_button_pressed
+    wn.onscreenclick(None)
+    if (x > 299 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -328 * scale_factor_Y) and (y < -212 * scale_factor_Y):
+        # Button sound is played
+        if button_sound == 1:
+            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+            sound.play()
+        if price_displayed > total_coins:
+            ctypes.windll.user32.MessageBoxW(0, "You do not have enough coins to purchase this item!", "Not Enough Coins!", 16)
+        else:
+            message_output = ctypes.windll.user32.MessageBoxW(0, "Are you sure you want to purchase this item for {} coins?".format(price_displayed), "Are you sure?", 4 + 32)
+            if message_output != 7:
+                # Coin sound is played
+                if button_sound == 1:
+                    sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
+                    sound.play()
+                total_coins = total_coins - price_displayed
+                config = configparser.ConfigParser()
+                config.read('Config/playerData.ini')
+                coins = list(config['Coins'])[0]
+                config['Coins'][coins] = str(total_coins)
+                with open('Config/playerData.ini', 'w') as configfile:
+                    config.write(configfile)
+                for pl in panel_turtle:
+                    current_slot = pl.get_panel_id()
+                if page == "Machine_Mode":
+                    shop_config.machine_slots_unlocked[current_slot - 1] = 1
+                    shop_config.machine_slot_selected = current_slot
+                    shop_config.save()
+                elif page == "Alien_Mode":
+                    shop_config.alien_slots_unlocked[current_slot - 1] = 1
+                    shop_config.alien_slot_selected = current_slot
+                    shop_config.save()
+                elif page == "Power_Ups":
+                    if current_slot == 1:
+                        shop_config.yellow_power_up_level = shop_config.yellow_power_up_level + 1
+                        if shop_config.yellow_power_up_level == 5:
+                            max_level = 1
+                        else:
+                            price_displayed = POWER_UP_PRICES[shop_config.yellow_power_up_level - 1]
+                            max_level = 0
+                    elif current_slot == 2:
+                        shop_config.blue_power_up_level = shop_config.blue_power_up_level + 1
+                        if shop_config.blue_power_up_level == 5:
+                            max_level = 1
+                        else:
+                            price_displayed = POWER_UP_PRICES[shop_config.blue_power_up_level - 1]
+                            max_level = 0
+                    elif current_slot == 3:
+                        shop_config.green_power_up_level = shop_config.green_power_up_level + 1
+                        if shop_config.green_power_up_level == 5:
+                            max_level = 1
+                        else:
+                            price_displayed = POWER_UP_PRICES[shop_config.green_power_up_level - 1]
+                            max_level = 0
+                    elif current_slot == 4:
+                        shop_config.red_power_up_level = shop_config.red_power_up_level + 1
+                        if shop_config.red_power_up_level == 5:
+                            max_level = 1
+                        else:
+                            price_displayed = POWER_UP_PRICES[shop_config.red_power_up_level - 1]
+                            max_level = 0
+                    shop_config.save()
+                if page != "Power_Ups" or max_level == 1:
+                    for bu in buttons_on_screen_list:
+                        if bu.get_type() == "Buy":
+                            bu.remove()
+                            buttons_on_screen_list.pop()
+                            current_button_index = current_button_index - 1
+                    for t in text_on_screen_list:
+                        if t.get_id() == current_slot + 3:
+                            t.remove()
+                            text_on_screen_list.remove(t)
+                            current_text_index = current_text_index - 1
+                    for pr in price_label_on_screen_list:
+                        if pr.get_id() == current_slot + 3:
+                            pr.remove()
+                refresh_variables.refresh_panel = 1
+                refresh_variables.refresh_text = 1
+                refresh_variables.refresh_button = 1
+                refresh_variables.refresh_indicator = 1
+                refresh_variables.move_slot_selector = 1
+                buy_button_pressed = 1
 
 
 """
@@ -1370,7 +1466,7 @@ def update_text():
             refresh_variables.refresh_button = 0
         if refresh_variables.refresh_panel == 1:
             for pa in panel_turtle:
-                pa.write_text(scale_factor, scale_factor_Y, fullscreen)
+                pa.write_text(scale_factor, scale_factor_X, scale_factor_Y, fullscreen)
             refresh_variables.refresh_panel = 0
         for t in text_on_screen_list:
             if t.id == 1:
@@ -1747,10 +1843,10 @@ def spawn_text_box(id, x, y, color):
                 break
 
 
-def spawn_price_label(x, y):
+def spawn_price_label(id, x, y):
     global current_price_index
     if len(all_price_label) <= len(price_label_on_screen_list):
-        price_label = PriceLabel(x, y, fullscreen)
+        price_label = PriceLabel(id, x, y, fullscreen)
         price_label_on_screen_list.append(price_label)
         current_price_index = current_price_index + 1
         all_price_label.append(price_label)
@@ -1759,7 +1855,7 @@ def spawn_price_label(x, y):
             if pl.get_price_label().isvisible():
                 continue
             else:
-                pl.reinstate(x, y)
+                pl.reinstate(id, x, y)
                 price_label_on_screen_list.append(pl)
                 current_price_index = current_price_index + 1
                 break
@@ -2437,6 +2533,7 @@ while True:
         refresh_variables.refresh_text = 1
         screen_update = 0
         page_update = 0
+        buy_button_pressed = 0
         print(len(wn.turtles()))
 
     # The Alien Mode background objects are created right when the game is launched.
@@ -3903,13 +4000,13 @@ while True:
                 for i in range(5):
                     spawn_buttons("Shop_Slot", i + 1)
 
-            if current_text_index == 3:
+            if current_text_index == 3 and buy_button_pressed == 0:
                 counter = 4
                 for bu in buttons_on_screen_list:
                     if bu.get_type() == "Shop_Slot":
                         if bu.get_indicator_toggled() == 1:
                             spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
-                            spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                            spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
 
             if current_selector_index == 1:
@@ -3957,18 +4054,21 @@ while True:
                         wn.onscreenclick(slot_4_select)
                     elif id == 5 and button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(slot_5_select)
+                elif bu.get_type() == "Buy":
+                    if button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(execute_buy_button)
         elif page == "Alien_Mode":
             if current_button_index == 4:
                 for i in range(5):
                     spawn_buttons("Shop_Slot", i + 1)
 
-            if current_text_index == 3:
+            if current_text_index == 3 and buy_button_pressed == 0:
                 counter = 4
                 for bu in buttons_on_screen_list:
                     if bu.get_type() == "Shop_Slot":
                         if bu.get_indicator_toggled() == 1:
                             spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
-                            spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                            spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
 
             if current_selector_index == 1:
@@ -4016,31 +4116,34 @@ while True:
                         wn.onscreenclick(slot_4_select)
                     elif id == 5 and button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(slot_5_select)
+                elif bu.get_type() == "Buy":
+                    if button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(execute_buy_button)
         elif page == "Power_Ups":
             if current_button_index == 4:
                 for i in range(4):
                     spawn_buttons("Power_Up_Slot", i + 1)
 
-            if current_text_index == 3:
+            if current_text_index == 3 and buy_button_pressed == 0:
                 counter = 4
                 for bu in buttons_on_screen_list:
                     if bu.get_type() == "Power_Up_Slot":
                         if bu.get_id() == 1:
                             if shop_config.yellow_power_up_level != 5 and shop_config.yellow_power_up_level != 0:
                                 spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
-                                spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         elif bu.get_id() == 2:
                             if shop_config.blue_power_up_level != 5 and shop_config.blue_power_up_level != 0:
                                 spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
-                                spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         elif bu.get_id() == 3:
                             if shop_config.green_power_up_level != 5 and shop_config.green_power_up_level != 0:
                                 spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
-                                spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         elif bu.get_id() == 4:
                             if shop_config.red_power_up_level != 5 and shop_config.red_power_up_level != 0:
                                 spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
-                                spawn_price_label(bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
 
             if refresh_variables.move_tab_selector == 1:
@@ -4074,6 +4177,9 @@ while True:
                         wn.onscreenclick(slot_3_select)
                     elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(slot_4_select)
+                elif bu.get_type() == "Buy":
+                    if button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(execute_buy_button)
 
         # Spawn the coin indicator
         if coin_indicator_index == 0:
@@ -4088,6 +4194,15 @@ while True:
         if refresh_variables.update_variables == 1:
             shop_config.load()
             refresh_variables.update_variables = 0
+
+        if buy_button_pressed == 1:
+            config = configparser.ConfigParser()
+            config.read('Config/playerData.ini')
+            coins = list(config['Coins'])[0]
+            config['Coins'][coins] = str(total_coins)
+            with open('Config/playerData.ini', 'w') as configfile:
+                config.write(configfile)
+            buy_button_pressed = 0
 
     """
          Code Below is for when Statistics Mode is turned on.
