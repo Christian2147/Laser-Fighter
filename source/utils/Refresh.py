@@ -16,7 +16,6 @@
 
 class Refresh:
     def __init__(self):
-        self.update_variables = 0
         self.refresh_button = 1
         self.refresh_indicator = 0
         self.refresh_text = 0
@@ -25,7 +24,6 @@ class Refresh:
         self.move_slot_selector = 0
 
     def __del__(self):
-        del self.update_variables
         del self.refresh_button
         del self.refresh_indicator
         del self.refresh_text
@@ -34,8 +32,7 @@ class Refresh:
         del self.move_slot_selector
 
     def __repr__(self):
-        return (f"MyClass(update_variables={self.update_variables}, "
-                f"refresh_button={self.refresh_button}, "
+        return (f"MyClass(refresh_button={self.refresh_button}, "
                 f"refresh_indicator={self.refresh_indicator}, "
                 f"refresh_text={self.refresh_text}, "
                 f"refresh_panel={self.refresh_panel}, "

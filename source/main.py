@@ -667,7 +667,6 @@ def execute_slot_function(current_page, slot_id):
 
 
 def execute_buy_button(x, y):
-    global total_coins
     global refresh_variables
     global current_button_index
     global current_text_index
@@ -681,7 +680,7 @@ def execute_buy_button(x, y):
         if button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
-        if price_displayed > total_coins:
+        if price_displayed > shop_config.total_coins:
             ctypes.windll.user32.MessageBoxW(0, "You do not have enough coins to purchase this item!", "Not Enough Coins!", 16)
         else:
             message_output = ctypes.windll.user32.MessageBoxW(0, "Are you sure you want to purchase this item for {} coins?".format(price_displayed), "Are you sure?", 4 + 32)
@@ -690,13 +689,8 @@ def execute_buy_button(x, y):
                 if button_sound == 1:
                     sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
                     sound.play()
-                total_coins = total_coins - price_displayed
-                config = configparser.ConfigParser()
-                config.read('Config/playerData.ini')
-                coins = list(config['Coins'])[0]
-                config['Coins'][coins] = str(total_coins)
-                with open('Config/playerData.ini', 'w') as configfile:
-                    config.write(configfile)
+                shop_config.total_coins = shop_config.total_coins - price_displayed
+                shop_config.save()
                 for pl in panel_turtle:
                     current_slot = pl.get_panel_id()
                 if page == "Machine_Mode":
@@ -1411,7 +1405,7 @@ def update_text():
                     else:
                         t.write("0", 24, "normal", scale_factor)
             elif t.id == 5:
-                t.write_left("{}".format(total_coins), 24, "normal", scale_factor)
+                t.write_left("{}".format(shop_config.total_coins), 24, "normal", scale_factor)
             elif t.id == 6:
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Alien_Mode":
@@ -1443,7 +1437,7 @@ def update_text():
                     else:
                         t.write("0", 24, "normal", scale_factor)
             elif t.id == 5:
-                t.write_left("{}".format(total_coins), 24, "normal", scale_factor)
+                t.write_left("{}".format(shop_config.total_coins), 24, "normal", scale_factor)
             elif t.id == 6:
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Shop":
@@ -1472,7 +1466,7 @@ def update_text():
             if t.id == 1:
                 t.write("Shop", 72, "bold", scale_factor)
             elif t.id == 2:
-                t.write_left("{}".format(total_coins), 24, "normal", scale_factor)
+                t.write_left("{}".format(shop_config.total_coins), 24, "normal", scale_factor)
             if refresh_variables.refresh_text == 1:
                 if page == "Machine_Mode":
                     if t.id == 3:
@@ -2778,23 +2772,20 @@ while True:
                     coin.remove()
                     # Increase the amount of coins based on the type of coin picked up
                     if coin.get_type() == "copper":
-                        total_coins = total_coins + 1
+                        shop_config.total_coins = shop_config.total_coins + 1
                         machine_coins_collected = machine_coins_collected + 1
                     elif coin.get_type() == "silver":
-                        total_coins = total_coins + 5
+                        shop_config.total_coins = shop_config.total_coins + 5
                         machine_coins_collected = machine_coins_collected + 5
                     elif coin.get_type() == "gold":
-                        total_coins = total_coins + 10
+                        shop_config.total_coins = shop_config.total_coins + 10
                         machine_coins_collected = machine_coins_collected + 10
                     elif coin.get_type() == "platinum":
-                        total_coins = total_coins + 25
+                        shop_config.total_coins = shop_config.total_coins + 25
                         machine_coins_collected = machine_coins_collected + 25
+                    shop_config.save()
                     config = configparser.ConfigParser()
                     config.read('Config/playerData.ini')
-                    coins = list(config['Coins'])[0]
-                    config['Coins'][coins] = str(total_coins)
-                    with open('Config/playerData.ini', 'w') as configfile:
-                        config.write(configfile)
                     coins = list(config['Statistics_Machine_Mode'])[8]
                     config['Statistics_Machine_Mode'][coins] = str(machine_coins_collected)
                     with open('Config/playerData.ini', 'w') as configfile:
@@ -3582,23 +3573,20 @@ while True:
                     coin.remove()
                     # Increase the amount of coins based on the type of coin picked up
                     if coin.get_type() == "copper":
-                        total_coins = total_coins + 1
+                        shop_config.total_coins = shop_config.total_coins + 1
                         alien_coins_collected = alien_coins_collected + 1
                     elif coin.get_type() == "silver":
-                        total_coins = total_coins + 5
+                        shop_config.total_coins = shop_config.total_coins + 5
                         alien_coins_collected = alien_coins_collected + 5
                     elif coin.get_type() == "gold":
-                        total_coins = total_coins + 10
+                        shop_config.total_coins = shop_config.total_coins + 10
                         alien_coins_collected = alien_coins_collected + 10
                     elif coin.get_type() == "platinum":
-                        total_coins = total_coins + 25
+                        shop_config.total_coins = shop_config.total_coins + 25
                         alien_coins_collected = alien_coins_collected + 25
+                    shop_config.save()
                     config = configparser.ConfigParser()
                     config.read('Config/playerData.ini')
-                    coins = list(config['Coins'])[0]
-                    config['Coins'][coins] = str(total_coins)
-                    with open('Config/playerData.ini', 'w') as configfile:
-                        config.write(configfile)
                     coins = list(config['Statistics_Alien_Mode'])[9]
                     config['Statistics_Alien_Mode'][coins] = str(alien_coins_collected)
                     with open('Config/playerData.ini', 'w') as configfile:
@@ -4190,19 +4178,6 @@ while True:
             if t.id == 1:
                 t.move(mode, scale_factor_X)
                 break
-
-        if refresh_variables.update_variables == 1:
-            shop_config.load()
-            refresh_variables.update_variables = 0
-
-        if buy_button_pressed == 1:
-            config = configparser.ConfigParser()
-            config.read('Config/playerData.ini')
-            coins = list(config['Coins'])[0]
-            config['Coins'][coins] = str(total_coins)
-            with open('Config/playerData.ini', 'w') as configfile:
-                config.write(configfile)
-            buy_button_pressed = 0
 
     """
          Code Below is for when Statistics Mode is turned on.

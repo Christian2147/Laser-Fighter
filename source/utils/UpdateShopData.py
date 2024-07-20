@@ -21,6 +21,7 @@ class ShopConfig:
         self.shop_config_file = 'Config/playerData.ini'
         self.config = configparser.ConfigParser()
 
+        self.total_coins = 0
         self.machine_slot_selected = 0
         self.alien_slot_selected = 0
         self.machine_slots_unlocked = []
@@ -37,6 +38,9 @@ class ShopConfig:
 
     def load(self):
         self.config.read(self.shop_config_file)
+
+        self.total_coins = self.config['Coins'].getint('coins')
+
         self.machine_slot_selected = self.config['Machine_Player_Enabled'].getint('type_enabled')
         self.alien_slot_selected = self.config['Alien_Mode_Gun_Enabled'].getint('type_enabled')
 
@@ -48,6 +52,8 @@ class ShopConfig:
         self.red_power_up_level = self.config['Power_Up_Levels'].getint('Red_Power_Up')
 
     def save(self):
+        self.config['Coins']['coins'] = str(self.total_coins)
+
         self.config['Machine_Player_Enabled']['type_enabled'] = str(self.machine_slot_selected)
         self.config['Alien_Mode_Gun_Enabled']['type_enabled'] = str(self.alien_slot_selected)
 
@@ -64,7 +70,8 @@ class ShopConfig:
             self.config.write(configfile)
 
     def __repr__(self):
-        return (f"PlayerConfig(machine_slot_selected={self.machine_slot_selected}, "
+        return (f"PlayerConfig(total_coins={self.total_coins}, "
+                f"machine_slot_selected={self.machine_slot_selected}, "
                 f"alien_slot_selected={self.alien_slot_selected}, "
                 f"machine_slots_unlocked={self.machine_slots_unlocked}, "
                 f"alien_slots_unlocked={self.alien_slots_unlocked}, "

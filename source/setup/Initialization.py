@@ -224,11 +224,6 @@ message_output = 0
 # Close Window setup
 quit_loop = 0
 
-# Extract the amount of coins the user has from the playerData ini file
-config = configparser.ConfigParser()
-config.read('config/playerData.ini')
-total_coins = config['Coins'].getint('Coins')
-
 # Extract the users statistics from the playerData ini file
 config = configparser.ConfigParser()
 config.read('config/playerData.ini')
