@@ -96,7 +96,7 @@ panel_turtle = []
 panel_index = 0
 
 # Which item is being displayed
-displayed = 0
+price_displayed = 0
 
 # Text Box setup
 all_text_list = []

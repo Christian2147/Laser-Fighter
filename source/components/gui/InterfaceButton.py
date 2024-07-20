@@ -29,7 +29,6 @@
 """
 
 import turtle
-import configparser
 
 
 class Button:
@@ -119,6 +118,13 @@ class Button:
                 self.button_frame.goto((-427 + (170 * (id - 1))) * scale_factor_x, 96 * scale_factor_y)
             elif 4 < id < 9:
                 self.button_frame.goto((-427 + (170 * (id - 1 - 4))) * scale_factor_x, -94 * scale_factor_y)
+        # For the "buy item" button on the side panel in the shop
+        elif type == "Buy":
+            if fullscreen == 1:
+                self.button_frame.shape("Textures/Buttons/Buy_Button_Scaled.gif")
+            else:
+                self.button_frame.shape("Textures/Buttons/Buy_Button.gif")
+            self.button_frame.goto(450 * scale_factor_x, -270 * scale_factor_y)
         # Standard buttons on the settings and controls screen
         elif type == "Regular_Settings_And_Controls":
             if fullscreen == 1:
@@ -215,6 +221,9 @@ class Button:
                     else:
                         self.button_text.shape("Textures/Interface/Icons/Slot/Red_Power_Up_Slot_Icon.gif")
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
+        elif type == "Buy":
+            self.button_text.goto(self.button_frame.xcor() - 80 * scale_factor_x, self.button_frame.ycor() + 10 * scale_factor_y)
+            self.button_text.color("yellow")
         elif type == "Regular_Settings_And_Controls":
             self.button_text.goto(315.5 * scale_factor_x, self.button_frame.ycor() - 22 * scale_factor_y)
         elif type == "Settings_Toggle" or type == "Controls_Toggle":
@@ -268,6 +277,16 @@ class Button:
 
             self.indicator = 1
             self.indicator_toggled = 0
+        elif type == "Buy":
+            self.button_indicator = turtle.Turtle()
+            self.button_indicator.penup()
+            if fullscreen == 1:
+                self.button_indicator.shape("Textures/Coins/Coin_Indicator_Scaled.gif")
+            else:
+                self.button_indicator.shape("Textures/Coins/Coin_Indicator.gif")
+            self.button_indicator.goto(self.button_frame.xcor() -125 * scale_factor_x, self.button_frame.ycor() - 28 * scale_factor_y)
+
+            self.indicator = 1
         else:
             self.indicator = 0
 
@@ -516,6 +535,31 @@ class Button:
         self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
         self.indicator_toggled = 0
 
+    def reinstate_to_buy(self, scale_factor_x, scale_factor_y, fullscreen):
+        if fullscreen == 1:
+            self.button_frame.shape("Textures/Buttons/Buy_Button_Scaled.gif")
+        else:
+            self.button_frame.shape("Textures/Buttons/Buy_Button.gif")
+        self.button_frame.goto(450 * scale_factor_x, -270 * scale_factor_y)
+        self.button_frame.showturtle()
+
+        self.button_text.goto(self.button_frame.xcor() - 80 * scale_factor_x, self.button_frame.ycor() + 10 * scale_factor_y)
+        self.button_text.color("yellow")
+
+        if self.indicator == 0:
+            self.button_indicator = turtle.Turtle()
+            self.button_indicator.penup()
+            self.indicator = 1
+        if fullscreen == 1:
+            self.button_indicator.shape("Textures/Coins/Coin_Indicator_Scaled.gif")
+        else:
+            self.button_indicator.shape("Textures/Coins/Coin_Indicator.gif")
+        self.button_indicator.goto(self.button_frame.xcor() - 125 * scale_factor_x, self.button_frame.ycor() - 28 * scale_factor_y)
+        self.button_indicator.showturtle()
+
+        self.type = "Buy"
+        self.id = 1
+
     def reinstate_to_regular_settings_and_controls(self, id, scale_factor_x, scale_factor_y, fullscreen):
         """
             Reuses the existing button sprite to spawn a standard settings and controls button based on the id.
@@ -713,6 +757,7 @@ class Button:
         self.button_frame.hideturtle()
         self.button_text.hideturtle()
         self.button_text.clear()
+        self.button_text.color("white")
         # If the button indicator exists, also remove it from the screen.
         if self.indicator == 1:
             self.button_indicator.hideturtle()
@@ -780,6 +825,13 @@ class Button:
                 self.button_text.write("Fullscreen:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
             elif self.id == 12:
                 self.button_text.write("VSync:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+
+    def write_buy(self, price, scale_factor, scale_factor_x, scale_factor_y):
+        self.button_text.clear()
+        self.button_text.goto(self.button_frame.xcor() - 80 * scale_factor_x, self.button_frame.ycor() + 10 * scale_factor_y)
+        self.button_text.write("Buy: ", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+        self.button_text.goto(self.button_frame.xcor() - 105 * scale_factor_x, self.button_frame.ycor() - 50 * scale_factor_y)
+        self.button_text.write("{}".format(price), align="left", font=("Courier", int(28 * scale_factor), "normal"))
 
     def write_control(self, go_right_key, go_left_key, shoot_key, jump_key, scale_factor):
         """
@@ -874,12 +926,15 @@ class Button:
                 self.button_indicator.clear()
                 self.button_indicator.write("Off", align="center", font=("Courier", int(28 * scale_factor), "bold"))
 
-    def toggle_indicator(self, check_value):
+    def toggle_indicator(self, check_value, scale_factor_y):
         if check_value == 0:
             self.button_indicator.showturtle()
+            self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
             self.indicator_toggled = 1
         else:
             self.button_indicator.hideturtle()
+            if self.type != "Power_Up_Slot":
+                self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor())
             self.indicator_toggled = 0
 
     def set_indicator_location(self, scale_factor_y):
@@ -1046,6 +1101,19 @@ class Button:
                         self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
+        elif self.type == "Buy":
+            if 939 * scale_factor_x < x < 1240 * scale_factor_x and 572 * scale_factor_y < y < 688 * scale_factor_y:
+                self.button_frame.color("yellow")
+                if fullscreen == 1:
+                    self.button_frame.shape("Textures/Buttons/Buy_Button_Highlighted_Scaled.gif")
+                else:
+                    self.button_frame.shape("Textures/Buttons/Buy_Button_Highlighted.gif")
+            else:
+                self.button_frame.color("white")
+                if fullscreen == 1:
+                    self.button_frame.shape("Textures/Buttons/Buy_Button_Scaled.gif")
+                else:
+                    self.button_frame.shape("Textures/Buttons/Buy_Button.gif")
         elif self.type == "Regular_Settings_And_Controls":
             if self.id == 1:
                 if 669 * scale_factor_x < x < 1240 * scale_factor_x and 614 * scale_factor_y < y < 675 * scale_factor_y:
