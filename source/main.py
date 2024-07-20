@@ -623,15 +623,42 @@ def execute_slot_function(current_page, slot_id):
         if slot_id == 1:
             for pa in panel_turtle:
                 pa.set_panel_text("Yellow_Power_Up", slot_id, scale_factor_X, scale_factor_Y)
+            if shop_config.yellow_power_up_level != 5:
+                price_displayed = POWER_UP_PRICES[shop_config.yellow_power_up_level - 1]
+            else:
+                price_displayed = 0
         elif slot_id == 2:
             for pa in panel_turtle:
                 pa.set_panel_text("Blue_Power_Up", slot_id, scale_factor_X, scale_factor_Y)
+            if shop_config.blue_power_up_level != 5:
+                price_displayed = POWER_UP_PRICES[shop_config.blue_power_up_level - 1]
+            else:
+                price_displayed = 0
         elif slot_id == 3:
             for pa in panel_turtle:
                 pa.set_panel_text("Green_Power_Up", slot_id, scale_factor_X, scale_factor_Y)
+            if shop_config.green_power_up_level != 5:
+                price_displayed = POWER_UP_PRICES[shop_config.green_power_up_level - 1]
+            else:
+                price_displayed = 0
         elif slot_id == 4:
             for pa in panel_turtle:
                 pa.set_panel_text("Red_Power_Up", slot_id, scale_factor_X, scale_factor_Y)
+            if shop_config.red_power_up_level != 5:
+                price_displayed = POWER_UP_PRICES[shop_config.red_power_up_level - 1]
+            else:
+                price_displayed = 0
+        if price_displayed != 0:
+            for bu in buttons_on_screen_list:
+                if bu.get_type() == "Buy":
+                    bu.remove()
+                    buttons_on_screen_list.pop()
+            spawn_buttons("Buy", 1)
+        else:
+            for bu in buttons_on_screen_list:
+                if bu.get_type() == "Buy":
+                    bu.remove()
+                    buttons_on_screen_list.pop()
     refresh_variables.refresh_panel = 1
     refresh_variables.refresh_button = 1
 
