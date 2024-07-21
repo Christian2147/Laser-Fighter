@@ -50,12 +50,12 @@ power_up_update = 0
 power_up_time = 0
 
 """
-Sprite variables and how they work:
-- "all" lists - permanently stores the turtles created throughout the entire lifetime of the application so that they
-    can be referenced and used again
-    - If for a type of sprite there is only one list, it is an "all" list (Like the power up indicators for example)
-- "current" lists - stores the turtles as long as they are visible on the screen or being actively used
-- "index" variables - used to access a specific slot in these lists
+    Sprite variables and how they work:
+    - "all" lists - permanently stores the turtles created throughout the entire lifetime of the application so that they
+        can be referenced and used again
+        - If for a type of sprite there is only one list, it is an "all" list (Like the power up indicators for example)
+    - "current" lists - stores the turtles as long as they are visible on the screen or being actively used
+    - "index" variables - used to access a specific slot in these lists
 """
 
 # Power Up setup
@@ -89,11 +89,6 @@ refresh_variables = Refresh()
 
 # Which item is being displayed
 price_displayed = 0
-
-# Price Label data
-all_price_label = []
-price_label_on_screen_list = []
-current_price_index = 0
 
 # Coin setup
 all_coins_list = []

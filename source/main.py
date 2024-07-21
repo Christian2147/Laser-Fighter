@@ -39,7 +39,6 @@ from setup.SpriteSetup import price_label
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
-from components.gui.InterfacePriceLabel import PriceLabel
 from components.ItemCoin import CoinIndicator
 from components.ItemPowerUp import PowerUp
 from components.ItemPowerUp import YellowIndicator
@@ -746,7 +745,7 @@ def execute_buy_button(x, y):
                             t.remove()
                             textbox.text_on_screen_list.remove(t)
                             textbox.current_text_index = textbox.current_text_index - 1
-                    for pr in price_label_on_screen_list:
+                    for pr in price_label.price_label_on_screen_list:
                         if pr.get_id() == current_slot + 3:
                             pr.remove()
                 refresh_variables.refresh_panel = 1
@@ -1677,24 +1676,6 @@ def update_text():
 """
 
 
-def spawn_price_label(id, x, y):
-    global current_price_index
-    if len(all_price_label) <= len(price_label_on_screen_list):
-        price_label = PriceLabel(id, x, y, fullscreen)
-        price_label_on_screen_list.append(price_label)
-        current_price_index = current_price_index + 1
-        all_price_label.append(price_label)
-    else:
-        for pl in all_price_label:
-            if pl.get_price_label().isvisible():
-                continue
-            else:
-                pl.reinstate(id, x, y)
-                price_label_on_screen_list.append(pl)
-                current_price_index = current_price_index + 1
-                break
-
-
 def spawn_coin_indicator():
     """
         Spawn a coin indicator at the top of the screen.
@@ -2332,10 +2313,10 @@ while True:
             t.remove()
         textbox.text_on_screen_list.clear()
         textbox.current_text_index = 0
-        for pl in price_label_on_screen_list:
+        for pl in price_label.price_label_on_screen_list:
             pl.remove()
-        price_label_on_screen_list.clear()
-        current_price_index = 0
+        price_label.price_label_on_screen_list.clear()
+        price_label.current_price_index = 0
         for s in selector.selectors_on_screen_list:
             s.remove()
         selector.selectors_on_screen_list.clear()
@@ -3813,7 +3794,7 @@ while True:
                     if bu.get_type() == "Shop_Slot":
                         if bu.get_indicator_toggled() == 1:
                             textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
-                            spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                            price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
 
             if selector.current_selector_index == 1:
@@ -3875,7 +3856,7 @@ while True:
                     if bu.get_type() == "Shop_Slot":
                         if bu.get_indicator_toggled() == 1:
                             textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
-                            spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                            price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
 
             if selector.current_selector_index == 1:
@@ -3938,19 +3919,19 @@ while True:
                         if bu.get_id() == 1:
                             if shop_config.yellow_power_up_level != 5 and shop_config.yellow_power_up_level != 0:
                                 textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
-                                spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         elif bu.get_id() == 2:
                             if shop_config.blue_power_up_level != 5 and shop_config.blue_power_up_level != 0:
                                 textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
-                                spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         elif bu.get_id() == 3:
                             if shop_config.green_power_up_level != 5 and shop_config.green_power_up_level != 0:
                                 textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
-                                spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         elif bu.get_id() == 4:
                             if shop_config.red_power_up_level != 5 and shop_config.red_power_up_level != 0:
                                 textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
-                                spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
 
             if refresh_variables.move_tab_selector == 1:

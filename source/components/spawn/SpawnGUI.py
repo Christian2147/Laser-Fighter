@@ -89,12 +89,10 @@ class SpawnSelector:
 
 
 class SpawnPriceLabel:
-    def __init__(self, fullscreen):
+    def __init__(self):
         self.all_price_label = []
         self.price_label_on_screen_list = []
         self.current_price_index = 0
-
-        self.fullscreen = fullscreen
 
     def __del__(self):
         del self.all_price_label
@@ -103,7 +101,7 @@ class SpawnPriceLabel:
 
     def spawn_price_label(self, id, x, y):
         if len(self.all_price_label) <= len(self.price_label_on_screen_list):
-            price_label = PriceLabel(id, x, y, self.fullscreen)
+            price_label = PriceLabel(id, x, y)
             self.price_label_on_screen_list.append(price_label)
             self.current_price_index = self.current_price_index + 1
             self.all_price_label.append(price_label)

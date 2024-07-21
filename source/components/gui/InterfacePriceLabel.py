@@ -14,16 +14,14 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import turtle
+from setup.TextureSetup import COIN_INDICATOR_TEXTURE
 
 
 class PriceLabel:
-    def __init__(self, id, x, y, fullscreen):
+    def __init__(self, id, x, y):
         self.price_label = turtle.Turtle()
         self.price_label.penup()
-        if fullscreen == 1:
-            self.price_label.shape("Textures/Coins/Coin_Indicator_Scaled.gif")
-        else:
-            self.price_label.shape("Textures/Coins/Coin_Indicator.gif")
+        self.price_label.shape(COIN_INDICATOR_TEXTURE)
         self.price_label.goto(x, y)
 
         self.id = id
