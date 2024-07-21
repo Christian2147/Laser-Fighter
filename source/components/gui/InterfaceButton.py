@@ -29,6 +29,20 @@
 """
 
 import turtle
+from setup.TextureSetup import TITLE_SCREEN_BUTTON_TEXTURE
+from setup.TextureSetup import TITLE_SCREEN_BUTTON_HIGHLIGHTED_TEXTURE
+from setup.TextureSetup import TITLE_SCREEN_BUTTON_SMALL_TEXTURE
+from setup.TextureSetup import TITLE_SCREEN_BUTTON_SMALL_HIGHLIGHTED_TEXTURE
+from setup.TextureSetup import SETTINGS_AND_CONTROLS_BUTTON_TEXTURE
+from setup.TextureSetup import SETTINGS_AND_CONTROLS_BUTTON_HIGHLIGHTED_TEXTURE
+from setup.TextureSetup import MAIN_MENU_BUTTON_MAIN_TEXTURE
+from setup.TextureSetup import MAIN_MENU_BUTTON_MAIN_HIGHLIGHTED_TEXTURE
+from setup.TextureSetup import TAB_TEXTURE
+from setup.TextureSetup import TAB_HIGHLIGHTED_TEXTURE
+from setup.TextureSetup import INVENTORY_SLOT_FRAME_TEXTURE
+from setup.TextureSetup import INVENTORY_SLOT_FRAME_HIGHLIGHTED_TEXTURE
+from setup.TextureSetup import BUY_BUTTON_TEXTURE
+from setup.TextureSetup import BUY_BUTTON_HIGHLIGHTED_TEXTURE
 
 
 class Button:
