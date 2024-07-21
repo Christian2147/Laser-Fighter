@@ -25,6 +25,11 @@ from components.spawn.SpawnGUI import SpawnPriceLabel
 from components.spawn.SpawnBackgroundObjects import SpawnSun
 from components.spawn.SpawnBackgroundObjects import SpawnEarth
 from components.spawn.SpawnBackgroundObjects import SpawnBackgroundObjects
+from components.spawn.SpawnPowerUp import SpawnPowerUp
+from components.spawn.SpawnPowerUp import SpawnYellowPowerUpIndicator
+from components.spawn.SpawnPowerUp import SpawnBluePowerUpIndicator
+from components.spawn.SpawnPowerUp import SpawnExtraPowerUpIndicator
+
 
 button = SpawnButton(scale_factor, scale_factor_X, scale_factor_Y)
 
@@ -42,3 +47,10 @@ earth = SpawnEarth(scale_factor_X, scale_factor_Y)
 
 background_objects = SpawnBackgroundObjects(scale_factor_X, scale_factor_Y)
 
+power_up = SpawnPowerUp(scale_factor_X, scale_factor_Y, fullscreen)
+
+yellow_power_up_indicator = SpawnYellowPowerUpIndicator(scale_factor_X, scale_factor_Y, fullscreen)
+
+blue_power_up_indicator = SpawnBluePowerUpIndicator(scale_factor_X, scale_factor_Y, fullscreen)
+
+extra_power_up_indicator = SpawnExtraPowerUpIndicator(scale_factor_X, scale_factor_Y, fullscreen)
