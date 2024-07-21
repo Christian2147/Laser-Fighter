@@ -17,11 +17,12 @@ from components.gui.InterfaceButton import Button
 
 
 class SpawnButton:
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor, scale_factor_x, scale_factor_y, fullscreen):
         self.all_button_list = []
         self.buttons_on_screen_list = []
         self.current_button_index = 0
 
+        self.scale_factor = scale_factor
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
         self.fullscreen = fullscreen
@@ -48,9 +49,9 @@ class SpawnButton:
         if len(self.all_button_list) <= len(self.buttons_on_screen_list):
             # Create a new button object
             if type != "Shop_Slot":
-                button = Button(type, id, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                button = Button(type, id, self.scale_factor, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
             else:
-                button = Button(type, id, self.scale_factor_x, self.scale_factor_y, self.fullscreen, page=page)
+                button = Button(type, id, self.scale_factor, self.scale_factor_x, self.scale_factor_y, self.fullscreen, page=page)
             self.buttons_on_screen_list.append(button)
             self.current_button_index = self.current_button_index + 1
             self.all_button_list.append(button)

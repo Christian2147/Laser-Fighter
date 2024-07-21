@@ -1367,7 +1367,7 @@ def update_text():
     if mode == "Title_Mode":
         if refresh_variables.refresh_button == 1 or refresh_variables.refresh_button == 2:
             for bu in button.buttons_on_screen_list:
-                bu.write_lines(scale_factor)
+                bu.write_lines()
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 2
         elif refresh_variables.refresh_button == 2:
@@ -1382,7 +1382,7 @@ def update_text():
     elif mode == "Machine_Mode":
         if refresh_variables.refresh_button == 1:
             for bu in button.buttons_on_screen_list:
-                bu.write_lines(scale_factor)
+                bu.write_lines()
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
         for t in text_on_screen_list:
@@ -1413,7 +1413,7 @@ def update_text():
     elif mode == "Alien_Mode":
         if refresh_variables.refresh_button == 1:
             for bu in button.buttons_on_screen_list:
-                bu.write_lines(scale_factor)
+                bu.write_lines()
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
         for t in text_on_screen_list:
@@ -1446,18 +1446,18 @@ def update_text():
         if refresh_variables.refresh_button == 1:
             for bu in button.buttons_on_screen_list:
                 if bu.get_type() != "Shop_Slot" and bu.get_type() != "Buy":
-                    bu.write_lines(scale_factor)
+                    bu.write_lines()
                 if bu.get_type() == "Power_Up_Slot":
                     if bu.get_id() == 1:
-                        bu.write_indicator(shop_config.yellow_power_up_level, scale_factor)
+                        bu.write_indicator(shop_config.yellow_power_up_level)
                     elif bu.get_id() == 2:
-                        bu.write_indicator(shop_config.blue_power_up_level, scale_factor)
+                        bu.write_indicator(shop_config.blue_power_up_level)
                     elif bu.get_id() == 3:
-                        bu.write_indicator(shop_config.green_power_up_level, scale_factor)
+                        bu.write_indicator(shop_config.green_power_up_level)
                     elif bu.get_id() == 4:
-                        bu.write_indicator(shop_config.red_power_up_level, scale_factor)
+                        bu.write_indicator(shop_config.red_power_up_level)
                 if bu.get_type() == "Buy":
-                    bu.write_buy(price_displayed, scale_factor)
+                    bu.write_buy(price_displayed)
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
         if refresh_variables.refresh_panel == 1:
@@ -1536,7 +1536,7 @@ def update_text():
     elif mode == "Stats":
         if refresh_variables.refresh_button == 1:
             for bu in button.buttons_on_screen_list:
-                bu.write_lines(scale_factor)
+                bu.write_lines()
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
         for t in text_on_screen_list:
@@ -1595,33 +1595,33 @@ def update_text():
     elif mode == "Settings":
         for bu in button.buttons_on_screen_list:
             if refresh_variables.refresh_button == 1:
-                bu.write_lines(scale_factor)
+                bu.write_lines()
             if refresh_variables.refresh_indicator == 1 or refresh_variables.refresh_indicator == 2:
                 if bu.type == "Settings_Toggle":
                     if bu.id == 1:
-                        bu.write_indicator(button_sound, scale_factor)
+                        bu.write_indicator(button_sound)
                     elif bu.id == 2:
-                        bu.write_indicator(player_shooting_sound, scale_factor)
+                        bu.write_indicator(player_shooting_sound)
                     elif bu.id == 3:
-                        bu.write_indicator(enemy_shooting_sound, scale_factor)
+                        bu.write_indicator(enemy_shooting_sound)
                     elif bu.id == 4:
-                        bu.write_indicator(player_death_sound, scale_factor)
+                        bu.write_indicator(player_death_sound)
                     elif bu.id == 5:
-                        bu.write_indicator(enemy_death_sound, scale_factor)
+                        bu.write_indicator(enemy_death_sound)
                     elif bu.id == 6:
-                        bu.write_indicator(player_hit_sound, scale_factor)
+                        bu.write_indicator(player_hit_sound)
                     elif bu.id == 7:
-                        bu.write_indicator(enemy_hit_sound, scale_factor)
+                        bu.write_indicator(enemy_hit_sound)
                     elif bu.id == 8:
-                        bu.write_indicator(power_up_pickup_sound, scale_factor)
+                        bu.write_indicator(power_up_pickup_sound)
                     elif bu.id == 9:
-                        bu.write_indicator(power_up_spawn_sound, scale_factor)
+                        bu.write_indicator(power_up_spawn_sound)
                     elif bu.id == 10:
-                        bu.write_indicator(coin_pickup_sound, scale_factor)
+                        bu.write_indicator(coin_pickup_sound)
                     elif bu.id == 11:
-                        bu.write_fullscreen_indicator(fullscreen, fullscreen_toggled, scale_factor)
+                        bu.write_fullscreen_indicator(fullscreen, fullscreen_toggled)
                     elif bu.id == 12:
-                        bu.write_indicator(vsync, scale_factor)
+                        bu.write_indicator(vsync)
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
         if refresh_variables.refresh_indicator == 2:
@@ -1637,9 +1637,9 @@ def update_text():
         if refresh_variables.refresh_button == 1 or refresh_variables.refresh_button == 2:
             for bu in button.buttons_on_screen_list:
                 if bu.type != "Controls_Toggle":
-                    bu.write_lines(scale_factor)
+                    bu.write_lines()
                 else:
-                    bu.write_control(go_right_key, go_left_key, shoot_key, jump_key, scale_factor)
+                    bu.write_control(go_right_key, go_left_key, shoot_key, jump_key)
                     if bu.id == 1:
                         if go_right_key_alert == 1:
                             bu.update_controls_text_color(bu.id)
@@ -3924,15 +3924,15 @@ while True:
             for bu in button.buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
                     if bu.get_id() == 1:
-                        bu.toggle_indicator(shop_config.machine_slots_unlocked[0], scale_factor_Y)
+                        bu.toggle_indicator(shop_config.machine_slots_unlocked[0])
                     elif bu.get_id() == 2:
-                        bu.toggle_indicator(shop_config.machine_slots_unlocked[1], scale_factor_Y)
+                        bu.toggle_indicator(shop_config.machine_slots_unlocked[1])
                     elif bu.get_id() == 3:
-                        bu.toggle_indicator(shop_config.machine_slots_unlocked[2], scale_factor_Y)
+                        bu.toggle_indicator(shop_config.machine_slots_unlocked[2])
                     elif bu.get_id() == 4:
-                        bu.toggle_indicator(shop_config.machine_slots_unlocked[3], scale_factor_Y)
+                        bu.toggle_indicator(shop_config.machine_slots_unlocked[3])
                     elif bu.get_id() == 5:
-                        bu.toggle_indicator(shop_config.machine_slots_unlocked[4], scale_factor_Y)
+                        bu.toggle_indicator(shop_config.machine_slots_unlocked[4])
 
             for bu in button.buttons_on_screen_list:
                 button_color, button_type, id = bu.click_button()
@@ -3986,15 +3986,15 @@ while True:
             for bu in button.buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
                     if bu.get_id() == 1:
-                        bu.toggle_indicator(shop_config.alien_slots_unlocked[0], scale_factor_Y)
+                        bu.toggle_indicator(shop_config.alien_slots_unlocked[0])
                     elif bu.get_id() == 2:
-                        bu.toggle_indicator(shop_config.alien_slots_unlocked[1], scale_factor_Y)
+                        bu.toggle_indicator(shop_config.alien_slots_unlocked[1])
                     elif bu.get_id() == 3:
-                        bu.toggle_indicator(shop_config.alien_slots_unlocked[2], scale_factor_Y)
+                        bu.toggle_indicator(shop_config.alien_slots_unlocked[2])
                     elif bu.get_id() == 4:
-                        bu.toggle_indicator(shop_config.alien_slots_unlocked[3], scale_factor_Y)
+                        bu.toggle_indicator(shop_config.alien_slots_unlocked[3])
                     elif bu.get_id() == 5:
-                        bu.toggle_indicator(shop_config.alien_slots_unlocked[4], scale_factor_Y)
+                        bu.toggle_indicator(shop_config.alien_slots_unlocked[4])
 
             for bu in button.buttons_on_screen_list:
                 button_color, button_type, id = bu.click_button()
@@ -4050,14 +4050,14 @@ while True:
             for bu in button.buttons_on_screen_list:
                 if bu.get_type() == "Power_Up_Slot":
                     if bu.get_id() == 1:
-                        bu.toggle_indicator(shop_config.yellow_power_up_level, scale_factor_Y)
+                        bu.toggle_indicator(shop_config.yellow_power_up_level)
                     elif bu.get_id() == 2:
-                        bu.toggle_indicator(shop_config.blue_power_up_level, scale_factor_Y)
+                        bu.toggle_indicator(shop_config.blue_power_up_level)
                     elif bu.get_id() == 3:
-                        bu.toggle_indicator(shop_config.green_power_up_level, scale_factor_Y)
+                        bu.toggle_indicator(shop_config.green_power_up_level)
                     elif bu.get_id() == 4:
-                        bu.toggle_indicator(shop_config.red_power_up_level, scale_factor_Y)
-                    bu.set_indicator_location(scale_factor_Y)
+                        bu.toggle_indicator(shop_config.red_power_up_level)
+                    bu.set_indicator_location()
 
             for bu in button.buttons_on_screen_list:
                 button_color, button_type, id = bu.click_button()

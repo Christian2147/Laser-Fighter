@@ -44,7 +44,7 @@ class Button:
             id (int): A unique identifier for the button to further determine and locate the button.
     """
 
-    def __init__(self, type, id, scale_factor_x, scale_factor_y, fullscreen, page="None"):
+    def __init__(self, type, id, scale_factor, scale_factor_x, scale_factor_y, fullscreen, page="None"):
         """
             Creates a button object of the specified type and id and spawns it on the screen.
 
@@ -293,6 +293,7 @@ class Button:
         self.type = type
         self.id = id
 
+        self.scale_factor = scale_factor
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
         self.fullscreen = fullscreen
@@ -704,12 +705,9 @@ class Button:
             self.button_indicator.hideturtle()
             self.button_indicator.clear()
 
-    def write_lines(self, scale_factor):
+    def write_lines(self):
         """
             Writes the text for all the regular buttons on the screen and then updates the screen with that text.
-
-            :param scale_factor: The scale factor for fullscreen mode
-            :type scale_factor: float
 
             :return: None
         """
@@ -720,61 +718,61 @@ class Button:
         # Writes new text based on the button type and id
         if self.type == "Title":
             if self.id == 1:
-                self.button_text.write("Machine Mode", align="center", font=("Courier", int(30 * scale_factor), "normal"))
+                self.button_text.write("Machine Mode", align="center", font=("Courier", int(30 * self.scale_factor), "normal"))
             elif self.id == 2:
-                self.button_text.write("Alien Mode", align="center", font=("Courier", int(30 * scale_factor), "normal"))
+                self.button_text.write("Alien Mode", align="center", font=("Courier", int(30 * self.scale_factor), "normal"))
             elif self.id == 3:
-                self.button_text.write("Coin Shop", align="center", font=("Courier", int(30 * scale_factor), "normal"))
+                self.button_text.write("Coin Shop", align="center", font=("Courier", int(30 * self.scale_factor), "normal"))
             elif self.id == 4:
-                self.button_text.write("Exit", align="center", font=("Courier", int(30 * scale_factor), "normal"))
+                self.button_text.write("Exit", align="center", font=("Courier", int(30 * self.scale_factor), "normal"))
         elif self.type == "Title_Small":
             if self.id == 1:
-                self.button_text.write("Settings", align="center",  font=("Courier", int(30 * scale_factor), "normal"))
+                self.button_text.write("Settings", align="center",  font=("Courier", int(30 * self.scale_factor), "normal"))
             elif self.id == 2:
-                self.button_text.write("Stats", align="center",  font=("Courier", int(30 * scale_factor), "normal"))
+                self.button_text.write("Stats", align="center",  font=("Courier", int(30 * self.scale_factor), "normal"))
         elif self.type == "Game":
-            self.button_text.write("Main Menu", align="center", font=("Courier", int(24 * scale_factor), "normal"))
+            self.button_text.write("Main Menu", align="center", font=("Courier", int(24 * self.scale_factor), "normal"))
         elif self.type == "Regular_Settings_And_Controls":
             if self.id == 1:
-                self.button_text.write("Main Menu", align="center", font=("Courier", int(28 * scale_factor), "bold"))
+                self.button_text.write("Main Menu", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
             elif self.id == 2:
-                self.button_text.write("Controls", align="center", font=("Courier", int(28 * scale_factor), "bold"))
+                self.button_text.write("Controls", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
             elif self.id == 3:
-                self.button_text.write("Settings", align="center", font=("Courier", int(28 * scale_factor), "bold"))
+                self.button_text.write("Settings", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
         elif self.type == "Settings_Toggle":
             if self.id == 1:
-                self.button_text.write("Button Sound:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+                self.button_text.write("Button Sound:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
             elif self.id == 2:
-                self.button_text.write("Player Shooting Sound:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+                self.button_text.write("Player Shooting Sound:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
             elif self.id == 3:
-                self.button_text.write("Enemy Shooting Sound:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+                self.button_text.write("Enemy Shooting Sound:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
             elif self.id == 4:
-                self.button_text.write("Player Death Sound:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+                self.button_text.write("Player Death Sound:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
             elif self.id == 5:
-                self.button_text.write("Enemy Death Sound:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+                self.button_text.write("Enemy Death Sound:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
             elif self.id == 6:
-                self.button_text.write("Player Hit Sound:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+                self.button_text.write("Player Hit Sound:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
             elif self.id == 7:
-                self.button_text.write("Enemy Hit Sound:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+                self.button_text.write("Enemy Hit Sound:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
             elif self.id == 8:
-                self.button_text.write("Power Up Pickup Sound:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+                self.button_text.write("Power Up Pickup Sound:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
             elif self.id == 9:
-                self.button_text.write("Power Up Spawn Sound:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+                self.button_text.write("Power Up Spawn Sound:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
             elif self.id == 10:
-                self.button_text.write("Coin Pick Up Sound:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+                self.button_text.write("Coin Pick Up Sound:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
             elif self.id == 11:
-                self.button_text.write("Fullscreen:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+                self.button_text.write("Fullscreen:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
             elif self.id == 12:
-                self.button_text.write("VSync:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+                self.button_text.write("VSync:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
 
-    def write_buy(self, price, scale_factor):
+    def write_buy(self, price):
         self.button_text.clear()
         self.button_text.goto(self.button_frame.xcor() - 80 * self.scale_factor_x, self.button_frame.ycor() + 10 * self.scale_factor_y)
-        self.button_text.write("Buy: ", align="center", font=("Courier", int(28 * scale_factor), "normal"))
+        self.button_text.write("Buy: ", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
         self.button_text.goto(self.button_frame.xcor() - 105 * self.scale_factor_x, self.button_frame.ycor() - 50 * self.scale_factor_y)
-        self.button_text.write("{}".format(price), align="left", font=("Courier", int(28 * scale_factor), "normal"))
+        self.button_text.write("{}".format(price), align="left", font=("Courier", int(28 * self.scale_factor), "normal"))
 
-    def write_control(self, go_right_key, go_left_key, shoot_key, jump_key, scale_factor):
+    def write_control(self, go_right_key, go_left_key, shoot_key, jump_key):
         """
             Writes the text and indicators for the control toggle buttons and then updates the screen with that text.
 
@@ -790,9 +788,6 @@ class Button:
             :param jump_key: Stores the current keybind for jumping
             :type jump_key: string
 
-            :param scale_factor: The scale factor for fullscreen mode
-            :type scale_factor: float
-
             :return: None
         """
 
@@ -800,15 +795,15 @@ class Button:
         self.button_text.clear()
         # Writes new text based on the button id
         if self.id == 1:
-            self.button_text.write("Go Right: " + go_right_key, align="center", font=("Courier", int(28 * scale_factor), "normal"))
+            self.button_text.write("Go Right: " + go_right_key, align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
         elif self.id == 2:
-            self.button_text.write("Go Left: " + go_left_key, align="center", font=("Courier", int(28 * scale_factor), "normal"))
+            self.button_text.write("Go Left: " + go_left_key, align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
         elif self.id == 3:
-            self.button_text.write("Shoot: " + shoot_key, align="center", font=("Courier", int(28 * scale_factor), "normal"))
+            self.button_text.write("Shoot: " + shoot_key, align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
         elif self.id == 4:
-            self.button_text.write("Jump: " + jump_key, align="center", font=("Courier", int(28 * scale_factor), "normal"))
+            self.button_text.write("Jump: " + jump_key, align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
 
-    def write_indicator(self, setting, scale_factor):
+    def write_indicator(self, setting):
         """
             Writes the text for the button indicators tied to the settings toggle buttons.
 
@@ -825,17 +820,17 @@ class Button:
             if setting == 1:
                 self.button_indicator.color("green")
                 self.button_indicator.clear()
-                self.button_indicator.write("On", align="center", font=("Courier", int(28 * scale_factor), "bold"))
+                self.button_indicator.write("On", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
             else:
                 self.button_indicator.color("red")
                 self.button_indicator.clear()
-                self.button_indicator.write("Off", align="center", font=("Courier", int(28 * scale_factor), "bold"))
+                self.button_indicator.write("Off", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
         elif self.type == "Power_Up_Slot":
             if setting != 0:
                 self.button_indicator.clear()
-                self.button_indicator.write("Level {}".format(setting), align="center", font=("Courier", int(18 * scale_factor), "normal"))
+                self.button_indicator.write("Level {}".format(setting), align="center", font=("Courier", int(18 * self.scale_factor), "normal"))
 
-    def write_fullscreen_indicator(self, setting, fullscreen_toggled, scale_factor):
+    def write_fullscreen_indicator(self, setting, fullscreen_toggled):
         """
             Writes the text for the fullscreen toggle button indicator specifically since it requires extra steps.
 
@@ -845,9 +840,6 @@ class Button:
             :param fullscreen_toggled: Determines if a switch to the toggle has been made or not.
             :type fullscreen_toggled: int
 
-            :param scale_factor: The scale factor for fullscreen mode
-            :type scale_factor: float
-
             :return: None
         """
 
@@ -855,22 +847,22 @@ class Button:
             # Display "RST" in yellow for the indicator if an in-game switch has been made
             self.button_indicator.color("yellow")
             self.button_indicator.clear()
-            self.button_indicator.write("RST", align="center", font=("Courier", int(28 * scale_factor), "bold"))
+            self.button_indicator.write("RST", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
         else:
             # No in game switch has been made, display the indicator like normal
             if setting == 1:
                 self.button_indicator.color("green")
                 self.button_indicator.clear()
-                self.button_indicator.write("On", align="center", font=("Courier", int(28 * scale_factor), "bold"))
+                self.button_indicator.write("On", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
             else:
                 self.button_indicator.color("red")
                 self.button_indicator.clear()
-                self.button_indicator.write("Off", align="center", font=("Courier", int(28 * scale_factor), "bold"))
+                self.button_indicator.write("Off", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
 
-    def toggle_indicator(self, check_value, scale_factor_y):
+    def toggle_indicator(self, check_value):
         if check_value == 0:
             self.button_indicator.showturtle()
-            self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
+            self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
             self.indicator_toggled = 1
         else:
             self.button_indicator.hideturtle()
@@ -878,11 +870,11 @@ class Button:
                 self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor())
             self.indicator_toggled = 0
 
-    def set_indicator_location(self, scale_factor_y):
+    def set_indicator_location(self):
         if self.indicator_toggled == 1:
-            self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
+            self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
         else:
-            self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() - 45 * scale_factor_y)
+            self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() - 45 * self.scale_factor_y)
 
     def update_highlight(self, x, y):
         """
