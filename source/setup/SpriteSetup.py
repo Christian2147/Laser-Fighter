@@ -22,6 +22,9 @@ from components.spawn.SpawnTextBox import SpawnTextbox
 from components.spawn.SpawnGUI import SpawnPanel
 from components.spawn.SpawnGUI import SpawnSelector
 from components.spawn.SpawnGUI import SpawnPriceLabel
+from components.spawn.SpawnBackgroundObjects import SpawnSun
+from components.spawn.SpawnBackgroundObjects import SpawnEarth
+from components.spawn.SpawnBackgroundObjects import SpawnBackgroundObjects
 
 button = SpawnButton(scale_factor, scale_factor_X, scale_factor_Y)
 
@@ -32,3 +35,10 @@ panel = SpawnPanel(scale_factor, scale_factor_X, scale_factor_Y)
 selector = SpawnSelector(scale_factor_X, scale_factor_Y)
 
 price_label = SpawnPriceLabel()
+
+sun = SpawnSun(scale_factor_X, scale_factor_Y, fullscreen)
+
+earth = SpawnEarth(scale_factor_X, scale_factor_Y, fullscreen)
+
+#background_objects = SpawnBackgroundObjects(scale_factor_X, scale_factor_Y, fullscreen)
+

@@ -36,6 +36,9 @@ from setup.SpriteSetup import textbox
 from setup.SpriteSetup import panel
 from setup.SpriteSetup import selector
 from setup.SpriteSetup import price_label
+from setup.SpriteSetup import earth
+from setup.SpriteSetup import sun
+#from setup.SpriteSetup import background_objects
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
