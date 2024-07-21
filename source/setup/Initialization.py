@@ -88,9 +88,10 @@ buy_button_pressed = 0
 refresh_variables = Refresh()
 
 # Button setup
-all_button_list = []
-buttons_on_screen_list = []
-current_button_index = 0
+#all_button_list = []
+#buttons_on_screen_list = []
+#current_button_index = 0
+#button = SpawnButton()
 
 # Panel setup
 panel_turtle = []

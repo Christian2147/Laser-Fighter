@@ -293,6 +293,10 @@ class Button:
         self.type = type
         self.id = id
 
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+        self.fullscreen = fullscreen
+
     def __del__(self):
         """
             Cleans up the sprite from memory once the program has terminated
@@ -305,135 +309,108 @@ class Button:
         del self.button_frame
         del self.button_text
 
-    def reinstate_to_title(self, id, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate_to_title(self, id):
         """
             Reuses the existing button sprite to spawn a title screen button based on the id.
 
             :param id: A unique identifier for the button
             :type id: int
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        if fullscreen == 1:
+        if self.fullscreen == 1:
             self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Scaled.gif")
         else:
             self.button_frame.shape("Textures/Buttons/Title_Screen_Button.gif")
-        self.button_frame.shapesize(3.5 * scale_factor_y, 25 * scale_factor_x)
+        self.button_frame.shapesize(3.5 * self.scale_factor_y, 25 * self.scale_factor_x)
         if id == 1:
-            self.button_frame.goto(0, 85 * scale_factor_y)
+            self.button_frame.goto(0, 85 * self.scale_factor_y)
         elif id == 2:
-            self.button_frame.goto(0, -5 * scale_factor_y)
+            self.button_frame.goto(0, -5 * self.scale_factor_y)
         elif id == 3:
-            self.button_frame.goto(0, -95 * scale_factor_y)
+            self.button_frame.goto(0, -95 * self.scale_factor_y)
         elif id == 4:
-            self.button_frame.goto(0, -275 * scale_factor_y)
+            self.button_frame.goto(0, -275 * self.scale_factor_y)
         self.button_frame.color("white")
         self.button_frame.showturtle()
 
         self.button_text.color("white")
-        self.button_text.goto(0, self.button_frame.ycor() - 22 * scale_factor_y)
+        self.button_text.goto(0, self.button_frame.ycor() - 22 * self.scale_factor_y)
 
         # Set the type to "Title"
         self.type = "Title"
         self.id = id
 
-    def reinstate_to_title_small(self, id, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate_to_title_small(self, id):
         """
             Reuses the existing button sprite to spawn a small title screen button based on the id.
 
             :param id: A unique identifier for the button
             :type id: int
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        if fullscreen == 1:
+        if self.fullscreen == 1:
             self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Scaled.gif")
         else:
             self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small.gif")
         if id == 1:
-            self.button_frame.goto(-130 * scale_factor_x, -185 * scale_factor_y)
+            self.button_frame.goto(-130 * self.scale_factor_x, -185 * self.scale_factor_y)
         elif id == 2:
-            self.button_frame.goto(130 * scale_factor_x, -185 * scale_factor_y)
+            self.button_frame.goto(130 * self.scale_factor_x, -185 * self.scale_factor_y)
         self.button_frame.showturtle()
 
         self.button_text.color("white")
-        self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() - 22 * scale_factor_y)
+        self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() - 22 * self.scale_factor_y)
 
         # Set the type to "Title Small"
         self.type = "Title_Small"
         self.id = id
 
-    def reinstate_to_game(self, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate_to_game(self):
         """
             Reuses the existing button sprite to spawn a game screen main menu button.
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
 
-        if fullscreen == 1:
+        if self.fullscreen == 1:
             self.button_frame.shape("Textures/Buttons/Main_Menu_Button_Main_Scaled.gif")
         else:
             self.button_frame.shape("Textures/Buttons/Main_Menu_Button_Main.gif")
-        self.button_frame.goto(-537 * scale_factor_x, 339 * scale_factor_y)
+        self.button_frame.goto(-537 * self.scale_factor_x, 339 * self.scale_factor_y)
         self.button_frame.showturtle()
 
         self.button_text.color("white")
-        self.button_text.goto(-537 * scale_factor_x, 320 * scale_factor_y)
+        self.button_text.goto(-537 * self.scale_factor_x, 320 * self.scale_factor_y)
 
         # Set the type to "Game"
         self.type = "Game"
         self.id = 1
 
-    def reinstate_to_tab(self, id, scale_factor_x, scale_factor_y, fullscreen):
-        if fullscreen == 1:
+    def reinstate_to_tab(self, id):
+        if self.fullscreen == 1:
             self.button_frame.shape("Textures/Buttons/Tab_Scaled.gif")
         else:
             self.button_frame.shape("Textures/Buttons/Tab.gif")
         if id < 5:
-            self.button_frame.goto(-602.5 * scale_factor_x, (150 - (120 * (id - 1))) * scale_factor_y)
+            self.button_frame.goto(-602.5 * self.scale_factor_x, (150 - (120 * (id - 1))) * self.scale_factor_y)
         self.button_frame.showturtle()
 
         if id == 1:
-            if fullscreen == 1:
+            if self.fullscreen == 1:
                 self.button_text.shape("Textures/Interface/Icons/Tab/Machine_Mode_Tab_Icon_Scaled.gif")
             else:
                 self.button_text.shape("Textures/Interface/Icons/Tab/Machine_Mode_Tab_Icon.gif")
         elif id == 2:
-            if fullscreen == 1:
+            if self.fullscreen == 1:
                 self.button_text.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
             else:
                 self.button_text.shape("Textures/Gun/Player_Gun_Right.gif")
         elif id == 3:
-            if fullscreen == 1:
+            if self.fullscreen == 1:
                 self.button_text.shape("Textures/Power_Ups/Yellow_Lightning_Power_Up_Scaled.gif")
             else:
                 self.button_text.shape("Textures/Power_Ups/Yellow_Lightning_Power_Up.gif")
@@ -444,81 +421,72 @@ class Button:
         self.type = "Tab"
         self.id = id
 
-    def reinstate_to_shop_slot(self, id, scale_factor_x, scale_factor_y, fullscreen, page):
-        self.reinstate_to_slot(id, scale_factor_x, scale_factor_y, fullscreen, page=page)
+    def reinstate_to_shop_slot(self, id, page):
+        self.reinstate_to_slot(id, page=page)
 
         # Set the type to "Shop Slot"
         self.type = "Shop_Slot"
         self.id = id
 
-    def reinstate_to_power_up_slot(self, id, scale_factor_x, scale_factor_y, fullscreen):
-        self.reinstate_to_slot(id, scale_factor_x, scale_factor_y, fullscreen, "Power_Ups")
+    def reinstate_to_power_up_slot(self, id):
+        self.reinstate_to_slot(id, "Power_Ups")
 
         # Set the type to "Shop Slot"
         self.type = "Power_Up_Slot"
         self.id = id
 
-    def reinstate_to_slot(self, id, scale_factor_x, scale_factor_y, fullscreen, page="None"):
+    def reinstate_to_slot(self, id, page="None"):
         """
             Reuses the existing button sprite to spawn a shop slot and place it in a location based on the id.
 
             :param id: A unique identifier for the shop slots location
             :type id: int
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        if fullscreen == 1:
+        if self.fullscreen == 1:
             self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Scaled.gif")
         else:
             self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
         if id < 5:
-            self.button_frame.goto((-427 + (170 * (id - 1))) * scale_factor_x, 96 * scale_factor_y)
+            self.button_frame.goto((-427 + (170 * (id - 1))) * self.scale_factor_x, 96 * self.scale_factor_y)
         elif 4 < id < 9:
-            self.button_frame.goto((-427 + (170 * (id - 1 - 4))) * scale_factor_x, -94 * scale_factor_y)
+            self.button_frame.goto((-427 + (170 * (id - 1 - 4))) * self.scale_factor_x, -94 * self.scale_factor_y)
         self.button_frame.showturtle()
 
         if page == "Machine_Mode":
-            if fullscreen == 1:
+            if self.fullscreen == 1:
                 self.button_text.shape("Textures/Interface/Icons/Slot/Machine_Default_Slot_Icon_Scaled.gif")
             else:
                 self.button_text.shape("Textures/Interface/Icons/Slot/Machine_Default_Slot_Icon.gif")
         elif page == "Alien_Mode":
-            if fullscreen == 1:
+            if self.fullscreen == 1:
                 self.button_text.shape("Textures/Interface/Icons/Slot/Alien_Default_Slot_Icon_Scaled.gif")
             else:
                 self.button_text.shape("Textures/Interface/Icons/Slot/Alien_Default_Slot_Icon.gif")
         elif page == "Power_Ups":
             if self.id == 1:
-                if fullscreen == 1:
+                if self.fullscreen == 1:
                     self.button_text.shape("Textures/Interface/Icons/Slot/Yellow_Power_Up_Slot_Icon_Scaled.gif")
                 else:
                     self.button_text.shape("Textures/Interface/Icons/Slot/Yellow_Power_Up_Slot_Icon.gif")
             elif self.id == 2:
-                if fullscreen == 1:
+                if self.fullscreen == 1:
                     self.button_text.shape("Textures/Interface/Icons/Slot/Blue_Power_Up_Slot_Icon_Scaled.gif")
                 else:
                     self.button_text.shape("Textures/Interface/Icons/Slot/Blue_Power_Up_Slot_Icon.gif")
             elif self.id == 3:
-                if fullscreen == 1:
+                if self.fullscreen == 1:
                     self.button_text.shape("Textures/Interface/Icons/Slot/Green_Power_Up_Slot_Icon_Scaled.gif")
                 else:
                     self.button_text.shape("Textures/Interface/Icons/Slot/Green_Power_Up_Slot_Icon.gif")
             elif self.id == 4:
-                if fullscreen == 1:
+                if self.fullscreen == 1:
                     self.button_text.shape("Textures/Interface/Icons/Slot/Red_Power_Up_Slot_Icon_Scaled.gif")
                 else:
                     self.button_text.shape("Textures/Interface/Icons/Slot/Red_Power_Up_Slot_Icon.gif")
-        self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
+        self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
         self.button_text.showturtle()
 
         # If the button indicator does not already exist, create one
@@ -527,114 +495,96 @@ class Button:
             # Ensure that the turtle does not draw lines on the screen while moving
             self.button_indicator.penup()
             self.indicator = 1
-        if fullscreen == 1:
+        if self.fullscreen == 1:
             self.button_indicator.shape("Textures/GUI/Locked_Scaled.gif")
         else:
             self.button_indicator.shape("Textures/GUI/Locked.gif")
         self.button_indicator.color("white")
-        self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
+        self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
         self.indicator_toggled = 0
 
-    def reinstate_to_buy(self, scale_factor_x, scale_factor_y, fullscreen):
-        if fullscreen == 1:
+    def reinstate_to_buy(self):
+        if self.fullscreen == 1:
             self.button_frame.shape("Textures/Buttons/Buy_Button_Scaled.gif")
         else:
             self.button_frame.shape("Textures/Buttons/Buy_Button.gif")
-        self.button_frame.goto(450 * scale_factor_x, -270 * scale_factor_y)
+        self.button_frame.goto(450 * self.scale_factor_x, -270 * self.scale_factor_y)
         self.button_frame.showturtle()
 
-        self.button_text.goto(self.button_frame.xcor() - 80 * scale_factor_x, self.button_frame.ycor() + 10 * scale_factor_y)
+        self.button_text.goto(self.button_frame.xcor() - 80 * self.scale_factor_x, self.button_frame.ycor() + 10 * self.scale_factor_y)
         self.button_text.color("yellow")
 
         if self.indicator == 0:
             self.button_indicator = turtle.Turtle()
             self.button_indicator.penup()
             self.indicator = 1
-        if fullscreen == 1:
+        if self.fullscreen == 1:
             self.button_indicator.shape("Textures/Coins/Coin_Indicator_Scaled.gif")
         else:
             self.button_indicator.shape("Textures/Coins/Coin_Indicator.gif")
-        self.button_indicator.goto(self.button_frame.xcor() - 125 * scale_factor_x, self.button_frame.ycor() - 28 * scale_factor_y)
+        self.button_indicator.goto(self.button_frame.xcor() - 125 * self.scale_factor_x, self.button_frame.ycor() - 28 * self.scale_factor_y)
         self.button_indicator.showturtle()
 
         self.type = "Buy"
         self.id = 1
 
-    def reinstate_to_regular_settings_and_controls(self, id, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate_to_regular_settings_and_controls(self, id):
         """
             Reuses the existing button sprite to spawn a standard settings and controls button based on the id.
 
             :param id: A unique identifier for the button
             :type id: int
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        if fullscreen == 1:
+        if self.fullscreen == 1:
             self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
         else:
             self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
         if id == 1:
-            self.button_frame.goto(315.5 * scale_factor_x, -285 * scale_factor_y)
+            self.button_frame.goto(315.5 * self.scale_factor_x, -285 * self.scale_factor_y)
         elif id == 2 or id == 3:
-            self.button_frame.goto(315.5 * scale_factor_x, -205 * scale_factor_y)
+            self.button_frame.goto(315.5 * self.scale_factor_x, -205 * self.scale_factor_y)
         self.button_frame.showturtle()
 
         self.button_text.color("white")
-        self.button_text.goto(315.5 * scale_factor_x, self.button_frame.ycor() - 22 * scale_factor_y)
+        self.button_text.goto(315.5 * self.scale_factor_x, self.button_frame.ycor() - 22 * self.scale_factor_y)
 
         # Set the type to "Regular Settings And Controls"
         self.type = "Regular_Settings_And_Controls"
         self.id = id
 
-    def reinstate_to_settings_toggle(self, id, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate_to_settings_toggle(self, id):
         """
             Reuses the existing button sprite to spawn a settings toggle button based on the id.
 
             :param id: A unique identifier for the button
             :type id: int
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        if fullscreen == 1:
+        if self.fullscreen == 1:
             self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
         else:
             self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
         if id < 8:
-            self.button_frame.goto(-325 * scale_factor_x, (195 - (80 * (id - 1))) * scale_factor_y)
+            self.button_frame.goto(-325 * self.scale_factor_x, (195 - (80 * (id - 1))) * self.scale_factor_y)
         elif id == 8:
-            self.button_frame.goto(315.5 * scale_factor_x, 195 * scale_factor_y)
+            self.button_frame.goto(315.5 * self.scale_factor_x, 195 * self.scale_factor_y)
         elif id == 9:
-            self.button_frame.goto(315.5 * scale_factor_x, 115 * scale_factor_y)
+            self.button_frame.goto(315.5 * self.scale_factor_x, 115 * self.scale_factor_y)
         elif id == 10:
-            self.button_frame.goto(315.5 * scale_factor_x, 35 * scale_factor_y)
+            self.button_frame.goto(315.5 * self.scale_factor_x, 35 * self.scale_factor_y)
         elif id == 11:
-            self.button_frame.goto(315.5 * scale_factor_x, -45 * scale_factor_y)
+            self.button_frame.goto(315.5 * self.scale_factor_x, -45 * self.scale_factor_y)
         elif id == 12:
-            self.button_frame.goto(315.5 * scale_factor_x, -125 * scale_factor_y)
+            self.button_frame.goto(315.5 * self.scale_factor_x, -125 * self.scale_factor_y)
         self.button_frame.showturtle()
 
         self.button_text.color("white")
-        self.button_text.goto(self.button_frame.xcor() - 30 * scale_factor_x, self.button_frame.ycor() - 22 * scale_factor_y)
+        self.button_text.goto(self.button_frame.xcor() - 30 * self.scale_factor_x, self.button_frame.ycor() - 22 * self.scale_factor_y)
 
         # If the button indicator does not already exist, create one
         if self.indicator == 0:
@@ -644,62 +594,53 @@ class Button:
             self.indicator = 1
 
         if id == 1:
-            self.button_indicator.goto(-177 * scale_factor_x, 173 * scale_factor_y)
+            self.button_indicator.goto(-177 * self.scale_factor_x, 173 * self.scale_factor_y)
         elif id == 2:
-            self.button_indicator.goto(-79 * scale_factor_x, 93 * scale_factor_y)
+            self.button_indicator.goto(-79 * self.scale_factor_x, 93 * self.scale_factor_y)
         elif id == 3:
-            self.button_indicator.goto(-88 * scale_factor_x, 13 * scale_factor_y)
+            self.button_indicator.goto(-88 * self.scale_factor_x, 13 * self.scale_factor_y)
         elif id == 4:
-            self.button_indicator.goto(-111 * scale_factor_x, -67 * scale_factor_y)
+            self.button_indicator.goto(-111 * self.scale_factor_x, -67 * self.scale_factor_y)
         elif id == 5:
-            self.button_indicator.goto(-121 * scale_factor_x, -147 * scale_factor_y)
+            self.button_indicator.goto(-121 * self.scale_factor_x, -147 * self.scale_factor_y)
         elif id == 6:
-            self.button_indicator.goto(-132 * scale_factor_x, -227 * scale_factor_y)
+            self.button_indicator.goto(-132 * self.scale_factor_x, -227 * self.scale_factor_y)
         elif id == 7:
-            self.button_indicator.goto(-143 * scale_factor_x, -307 * scale_factor_y)
+            self.button_indicator.goto(-143 * self.scale_factor_x, -307 * self.scale_factor_y)
         elif id == 8:
-            self.button_indicator.goto(561.5 * scale_factor_x, 173 * scale_factor_y)
+            self.button_indicator.goto(561.5 * self.scale_factor_x, 173 * self.scale_factor_y)
         elif id == 9:
-            self.button_indicator.goto(552.5 * scale_factor_x, 93 * scale_factor_y)
+            self.button_indicator.goto(552.5 * self.scale_factor_x, 93 * self.scale_factor_y)
         elif id == 10:
-            self.button_indicator.goto(530.5 * scale_factor_x, 13 * scale_factor_y)
+            self.button_indicator.goto(530.5 * self.scale_factor_x, 13 * self.scale_factor_y)
         elif id == 11:
-            self.button_indicator.goto(440.5 * scale_factor_x, -67 * scale_factor_y)
+            self.button_indicator.goto(440.5 * self.scale_factor_x, -67 * self.scale_factor_y)
         elif id == 12:
-            self.button_indicator.goto(384.5 * scale_factor_x, -147 * scale_factor_y)
+            self.button_indicator.goto(384.5 * self.scale_factor_x, -147 * self.scale_factor_y)
 
         # Set the type to "Settings_Toggle"
         self.type = "Settings_Toggle"
         self.id = id
 
-    def reinstate_to_controls_toggle(self, id, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate_to_controls_toggle(self, id):
         """
             Reuses the existing button sprite to spawn a controls toggle button based on the id.
 
             :param id: A unique identifier for the button
             :type id: int
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        if fullscreen == 1:
+        if self.fullscreen == 1:
             self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
         else:
             self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
-        self.button_frame.goto(-325 * scale_factor_x, (195 - (80 * (id - 1))) * scale_factor_y)
+        self.button_frame.goto(-325 * self.scale_factor_x, (195 - (80 * (id - 1))) * self.scale_factor_y)
         self.button_frame.showturtle()
 
         self.button_text.color("white")
-        self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() - 22 * scale_factor_y)
+        self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() - 22 * self.scale_factor_y)
 
         # Set the type to "Controls_Toggle"
         self.type = "Controls_Toggle"
@@ -826,11 +767,11 @@ class Button:
             elif self.id == 12:
                 self.button_text.write("VSync:", align="center", font=("Courier", int(28 * scale_factor), "normal"))
 
-    def write_buy(self, price, scale_factor, scale_factor_x, scale_factor_y):
+    def write_buy(self, price, scale_factor):
         self.button_text.clear()
-        self.button_text.goto(self.button_frame.xcor() - 80 * scale_factor_x, self.button_frame.ycor() + 10 * scale_factor_y)
+        self.button_text.goto(self.button_frame.xcor() - 80 * self.scale_factor_x, self.button_frame.ycor() + 10 * self.scale_factor_y)
         self.button_text.write("Buy: ", align="center", font=("Courier", int(28 * scale_factor), "normal"))
-        self.button_text.goto(self.button_frame.xcor() - 105 * scale_factor_x, self.button_frame.ycor() - 50 * scale_factor_y)
+        self.button_text.goto(self.button_frame.xcor() - 105 * self.scale_factor_x, self.button_frame.ycor() - 50 * self.scale_factor_y)
         self.button_text.write("{}".format(price), align="left", font=("Courier", int(28 * scale_factor), "normal"))
 
     def write_control(self, go_right_key, go_left_key, shoot_key, jump_key, scale_factor):
@@ -943,7 +884,7 @@ class Button:
         else:
             self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() - 45 * scale_factor_y)
 
-    def update_highlight(self, x, y, scale_factor_x, scale_factor_y, fullscreen):
+    def update_highlight(self, x, y):
         """
             Used to change the color of the buttons text when the user decides to hover their mouse over the area
                 that the  button takes up.
@@ -954,324 +895,315 @@ class Button:
             :param y: The current y-coordinate of the cursor
             :type y: int
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
         if self.type == "Title":
             if self.id == 1:
-                if 388 * scale_factor_x < x < 890 * scale_factor_x and 239 * scale_factor_y < y < 311 * scale_factor_y:
+                if 388 * self.scale_factor_x < x < 890 * self.scale_factor_x and 239 * self.scale_factor_y < y < 311 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button.gif")
             elif self.id == 2:
-                if 388 * scale_factor_x < x < 890 * scale_factor_x and 329 * scale_factor_y < y < 401 * scale_factor_y:
+                if 388 * self.scale_factor_x < x < 890 * self.scale_factor_x and 329 * self.scale_factor_y < y < 401 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button.gif")
             elif self.id == 3:
-                if 388 * scale_factor_x < x < 890 * scale_factor_x and 419 * scale_factor_y < y < 491 * scale_factor_y:
+                if 388 * self.scale_factor_x < x < 890 * self.scale_factor_x and 419 * self.scale_factor_y < y < 491 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button.gif")
             elif self.id == 4:
-                if 388 * scale_factor_x < x < 890 * scale_factor_x and 599 * scale_factor_y < y < 671 * scale_factor_y:
+                if 388 * self.scale_factor_x < x < 890 * self.scale_factor_x and 599 * self.scale_factor_y < y < 671 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button.gif")
         elif self.type == "Title_Small":
             if self.id == 1:
-                if 388 * scale_factor_x < x < 630 * scale_factor_x and 509 * scale_factor_y < y < 581 * scale_factor_y:
+                if 388 * self.scale_factor_x < x < 630 * self.scale_factor_x and 509 * self.scale_factor_y < y < 581 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small.gif")
             elif self.id == 2:
-                if 648 * scale_factor_x < x < 890 * scale_factor_x and 509 * scale_factor_y < y < 581 * scale_factor_y:
+                if 648 * self.scale_factor_x < x < 890 * self.scale_factor_x and 509 * self.scale_factor_y < y < 581 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Title_Screen_Button_Small.gif")
         elif self.type == "Game":
-            if 6 * scale_factor_x < x < 197 * scale_factor_x and 5 * scale_factor_y < y < 37 * scale_factor_y:
+            if 6 * self.scale_factor_x < x < 197 * self.scale_factor_x and 5 * self.scale_factor_y < y < 37 * self.scale_factor_y:
                 self.button_frame.color("yellow")
-                if fullscreen == 1:
+                if self.fullscreen == 1:
                     self.button_frame.shape("Textures/Buttons/Main_Menu_Button_Main_Highlighted_Scaled.gif")
                 else:
                     self.button_frame.shape("Textures/Buttons/Main_Menu_Button_Main_Highlighted.gif")
                 return 1
             else:
                 self.button_frame.color("white")
-                if fullscreen == 1:
+                if self.fullscreen == 1:
                     self.button_frame.shape("Textures/Buttons/Main_Menu_Button_Main_Scaled.gif")
                 else:
                     self.button_frame.shape("Textures/Buttons/Main_Menu_Button_Main.gif")
                 return 0
         elif self.type == "Tab":
-            if 0 * scale_factor_x < x < 75 * scale_factor_x and (159 + (120 * (self.id - 1))) * scale_factor_y < y < (259 + (120 * (self.id - 1))) * scale_factor_y:
+            if 0 * self.scale_factor_x < x < 75 * self.scale_factor_x and (159 + (120 * (self.id - 1))) * self.scale_factor_y < y < (259 + (120 * (self.id - 1))) * self.scale_factor_y:
                 self.button_frame.color("yellow")
-                if fullscreen == 1:
+                if self.fullscreen == 1:
                     self.button_frame.shape("Textures/Buttons/Tab_Highlighted_Scaled.gif")
                 else:
                     self.button_frame.shape("Textures/Buttons/Tab_Highlighted.gif")
             else:
                 self.button_frame.color("white")
-                if fullscreen == 1:
+                if self.fullscreen == 1:
                     self.button_frame.shape("Textures/Buttons/Tab_Scaled.gif")
                 else:
                     self.button_frame.shape("Textures/Buttons/Tab.gif")
         elif self.type == "Shop_Slot" or self.type == "Power_Up_Slot":
             if self.id < 5:
-                if (137 + (170 * (self.id - 1))) * scale_factor_x < x < (288 + (170 * (self.id - 1))) * scale_factor_x and 178 * scale_factor_y < y < 349 * scale_factor_y:
+                if (137 + (170 * (self.id - 1))) * self.scale_factor_x < x < (288 + (170 * (self.id - 1))) * self.scale_factor_x and 178 * self.scale_factor_y < y < 349 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
             elif 4 < self.id < 9:
-                if (137 + (170 * (self.id - 1 - 4))) * scale_factor_x < x < (288 + (170 * (self.id - 1 - 4))) * scale_factor_x and 368 * scale_factor_y < y < 539 * scale_factor_y:
+                if (137 + (170 * (self.id - 1 - 4))) * self.scale_factor_x < x < (288 + (170 * (self.id - 1 - 4))) * self.scale_factor_x and 368 * self.scale_factor_y < y < 539 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Highlighted.gif")
                 else:
                     self.button_frame.color("White")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Inventory_Slot_Frame.gif")
         elif self.type == "Buy":
-            if 939 * scale_factor_x < x < 1240 * scale_factor_x and 572 * scale_factor_y < y < 688 * scale_factor_y:
+            if 939 * self.scale_factor_x < x < 1240 * self.scale_factor_x and 572 * self.scale_factor_y < y < 688 * self.scale_factor_y:
                 self.button_frame.color("yellow")
-                if fullscreen == 1:
+                if self.fullscreen == 1:
                     self.button_frame.shape("Textures/Buttons/Buy_Button_Highlighted_Scaled.gif")
                 else:
                     self.button_frame.shape("Textures/Buttons/Buy_Button_Highlighted.gif")
             else:
                 self.button_frame.color("white")
-                if fullscreen == 1:
+                if self.fullscreen == 1:
                     self.button_frame.shape("Textures/Buttons/Buy_Button_Scaled.gif")
                 else:
                     self.button_frame.shape("Textures/Buttons/Buy_Button.gif")
         elif self.type == "Regular_Settings_And_Controls":
             if self.id == 1:
-                if 669 * scale_factor_x < x < 1240 * scale_factor_x and 614 * scale_factor_y < y < 675 * scale_factor_y:
+                if 669 * self.scale_factor_x < x < 1240 * self.scale_factor_x and 614 * self.scale_factor_y < y < 675 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                     return 1
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
                     return 0
             elif self.id == 2 or self.id == 3:
-                if 669 * scale_factor_x < x < 1240 * scale_factor_x and 534 * scale_factor_y < y < 595 * scale_factor_y:
+                if 669 * self.scale_factor_x < x < 1240 * self.scale_factor_x and 534 * self.scale_factor_y < y < 595 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
         elif self.type == "Settings_Toggle":
             if self.id < 8:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and (134 + (80 * (self.id - 1))) * scale_factor_y < y < (195 + (80 * (self.id - 1))) * scale_factor_y:
+                if 28 * self.scale_factor_x < x < 599 * self.scale_factor_x and (134 + (80 * (self.id - 1))) * self.scale_factor_y < y < (195 + (80 * (self.id - 1))) * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 8:
-                if 671 * scale_factor_x < x < 1243 * scale_factor_x and 134 * scale_factor_y < y < 195 * scale_factor_y:
+                if 671 * self.scale_factor_x < x < 1243 * self.scale_factor_x and 134 * self.scale_factor_y < y < 195 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 9:
-                if 671 * scale_factor_x < x < 1243 * scale_factor_x and 214 * scale_factor_y < y < 275 * scale_factor_y:
+                if 671 * self.scale_factor_x < x < 1243 * self.scale_factor_x and 214 * self.scale_factor_y < y < 275 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 10:
-                if 671 * scale_factor_x < x < 1243 * scale_factor_x and 294 * scale_factor_y < y < 355 * scale_factor_y:
+                if 671 * self.scale_factor_x < x < 1243 * self.scale_factor_x and 294 * self.scale_factor_y < y < 355 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 11:
-                if 671 * scale_factor_x < x < 1243 * scale_factor_x and 374 * scale_factor_y < y < 435 * scale_factor_y:
+                if 671 * self.scale_factor_x < x < 1243 * self.scale_factor_x and 374 * self.scale_factor_y < y < 435 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 12:
-                if 671 * scale_factor_x < x < 1243 * scale_factor_x and 454 * scale_factor_y < y < 515 * scale_factor_y:
+                if 671 * self.scale_factor_x < x < 1243 * self.scale_factor_x and 454 * self.scale_factor_y < y < 515 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
         elif self.type == "Controls_Toggle":
             if self.id == 1:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and 134 * scale_factor_y < y < 195 * scale_factor_y:
+                if 28 * self.scale_factor_x < x < 599 * self.scale_factor_x and 134 * self.scale_factor_y < y < 195 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 2:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and 214 * scale_factor_y < y < 275 * scale_factor_y:
+                if 28 * self.scale_factor_x < x < 599 * self.scale_factor_x and 214 * self.scale_factor_y < y < 275 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 3:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and 294 * scale_factor_y < y < 355 * scale_factor_y:
+                if 28 * self.scale_factor_x < x < 599 * self.scale_factor_x and 294 * self.scale_factor_y < y < 355 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")
             elif self.id == 4:
-                if 28 * scale_factor_x < x < 599 * scale_factor_x and 374 * scale_factor_y < y < 435 * scale_factor_y:
+                if 28 * self.scale_factor_x < x < 599 * self.scale_factor_x and 374 * self.scale_factor_y < y < 435 * self.scale_factor_y:
                     self.button_frame.color("yellow")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Highlighted.gif")
                 else:
                     self.button_frame.color("white")
-                    if fullscreen == 1:
+                    if self.fullscreen == 1:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button_Scaled.gif")
                     else:
                         self.button_frame.shape("Textures/Buttons/Settings_And_Controls_Button.gif")

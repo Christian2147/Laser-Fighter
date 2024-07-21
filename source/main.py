@@ -31,6 +31,7 @@ import time
 import random
 from setup.Initialization import *
 from setup.ScreenSetup import *
+from setup.SpriteSetup import button
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
@@ -578,7 +579,8 @@ def slot_5_select(x, y):
 
 
 def execute_slot_function(current_page, slot_id):
-    global current_button_index
+    #global current_button_index
+    global button
     global refresh_variables
     global price_displayed
     # Button sound is played
@@ -593,32 +595,32 @@ def execute_slot_function(current_page, slot_id):
                 shop_config.machine_slot_selected = slot_id
                 shop_config.save()
                 refresh_variables.move_slot_selector = 1
-                for bu in buttons_on_screen_list:
+                for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Buy":
                         bu.remove()
-                        buttons_on_screen_list.pop()
+                        button.buttons_on_screen_list.pop()
             else:
-                for bu in buttons_on_screen_list:
+                for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Buy":
                         bu.remove()
-                        buttons_on_screen_list.pop()
-                spawn_buttons("Buy", 1)
+                        button.buttons_on_screen_list.pop()
+                button.spawn_button("Buy", 1)
                 price_displayed = MACHINE_PRICES[slot_id - 1]
         elif current_page == "Alien_Mode":
             if shop_config.alien_slots_unlocked[slot_id - 1] == 1:
                 shop_config.alien_slot_selected = slot_id
                 shop_config.save()
                 refresh_variables.move_slot_selector = 1
-                for bu in buttons_on_screen_list:
+                for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Buy":
                         bu.remove()
-                        buttons_on_screen_list.pop()
+                        button.buttons_on_screen_list.pop()
             else:
-                for bu in buttons_on_screen_list:
+                for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Buy":
                         bu.remove()
-                        buttons_on_screen_list.pop()
-                spawn_buttons("Buy", 1)
+                        button.buttons_on_screen_list.pop()
+                button.spawn_button("Buy", 1)
                 price_displayed = ALIEN_PRICES[slot_id - 1]
     else:
         if slot_id == 1:
@@ -650,25 +652,26 @@ def execute_slot_function(current_page, slot_id):
             else:
                 price_displayed = 0
         if price_displayed != 0:
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 if bu.get_type() == "Buy":
                     bu.remove()
-                    buttons_on_screen_list.pop()
-                    current_button_index = current_button_index - 1
-            spawn_buttons("Buy", 1)
+                    button.buttons_on_screen_list.pop()
+                    button.current_button_index = button.current_button_index - 1
+            button.spawn_button("Buy", 1)
         else:
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 if bu.get_type() == "Buy":
                     bu.remove()
-                    buttons_on_screen_list.pop()
-                    current_button_index = current_button_index - 1
+                    button.buttons_on_screen_list.pop()
+                    button.current_button_index = button.current_button_index - 1
     refresh_variables.refresh_panel = 1
     refresh_variables.refresh_button = 1
 
 
 def execute_buy_button(x, y):
     global refresh_variables
-    global current_button_index
+    global button
+    #global current_button_index
     global current_text_index
     global current_price_index
     global price_displayed
@@ -732,11 +735,11 @@ def execute_buy_button(x, y):
                             max_level = 0
                     shop_config.save()
                 if page != "Power_Ups" or max_level == 1:
-                    for bu in buttons_on_screen_list:
+                    for bu in button.buttons_on_screen_list:
                         if bu.get_type() == "Buy":
                             bu.remove()
-                            buttons_on_screen_list.pop()
-                            current_button_index = current_button_index - 1
+                            button.buttons_on_screen_list.pop()
+                            button.current_button_index = button.current_button_index - 1
                     for t in text_on_screen_list:
                         if t.get_id() == current_slot + 3:
                             t.remove()
@@ -1324,29 +1327,29 @@ def position(event):
     a, b = event.x, event.y
     # Update button text as needed
     if mode == "Title_Mode":
-        for bu in buttons_on_screen_list:
-            bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+        for bu in button.buttons_on_screen_list:
+            bu.update_highlight(a, b)
     if mode == "Machine_Mode" or mode == "Alien_Mode" or mode == "Stats" or mode == "Shop":
-        for bu in buttons_on_screen_list:
-            button_update = bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+        for bu in button.buttons_on_screen_list:
+            button_update = bu.update_highlight(a, b)
     if mode == "Settings":
-        for bu in buttons_on_screen_list:
+        for bu in button.buttons_on_screen_list:
             if bu.type == "Regular_Settings_And_Controls":
                 if id == 1:
-                    button_update = bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+                    button_update = bu.update_highlight(a, b)
                 else:
-                    bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+                    bu.update_highlight(a, b)
             else:
-                bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+                bu.update_highlight(a, b)
     if mode == "Controls":
-        for bu in buttons_on_screen_list:
+        for bu in button.buttons_on_screen_list:
             if bu.type == "Regular_Settings_And_Controls":
                 if id == 1:
-                    button_update = bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+                    button_update = bu.update_highlight(a, b)
                 else:
-                    bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+                    bu.update_highlight(a, b)
             elif bu.type == "Controls_Toggle":
-                bu.update_highlight(a, b, scale_factor_X, scale_factor_Y, fullscreen)
+                bu.update_highlight(a, b)
 
 
 def update_text():
@@ -1364,7 +1367,7 @@ def update_text():
     # Update based on the current mode
     if mode == "Title_Mode":
         if refresh_variables.refresh_button == 1 or refresh_variables.refresh_button == 2:
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 bu.write_lines(scale_factor)
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 2
@@ -1379,7 +1382,7 @@ def update_text():
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Machine_Mode":
         if refresh_variables.refresh_button == 1:
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 bu.write_lines(scale_factor)
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
@@ -1410,7 +1413,7 @@ def update_text():
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Alien_Mode":
         if refresh_variables.refresh_button == 1:
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 bu.write_lines(scale_factor)
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
@@ -1442,7 +1445,7 @@ def update_text():
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Shop":
         if refresh_variables.refresh_button == 1:
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 if bu.get_type() != "Shop_Slot" and bu.get_type() != "Buy":
                     bu.write_lines(scale_factor)
                 if bu.get_type() == "Power_Up_Slot":
@@ -1455,7 +1458,7 @@ def update_text():
                     elif bu.get_id() == 4:
                         bu.write_indicator(shop_config.red_power_up_level, scale_factor)
                 if bu.get_type() == "Buy":
-                    bu.write_buy(price_displayed, scale_factor, scale_factor_X, scale_factor_Y)
+                    bu.write_buy(price_displayed, scale_factor)
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
         if refresh_variables.refresh_panel == 1:
@@ -1533,7 +1536,7 @@ def update_text():
             refresh_variables.refresh_text = 0
     elif mode == "Stats":
         if refresh_variables.refresh_button == 1:
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 bu.write_lines(scale_factor)
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
@@ -1591,7 +1594,7 @@ def update_text():
             if t.id == 25:
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Settings":
-        for bu in buttons_on_screen_list:
+        for bu in button.buttons_on_screen_list:
             if refresh_variables.refresh_button == 1:
                 bu.write_lines(scale_factor)
             if refresh_variables.refresh_indicator == 1 or refresh_variables.refresh_indicator == 2:
@@ -1633,7 +1636,7 @@ def update_text():
                 t.write("God Mode Is On!", 24, "normal", scale_factor)
     elif mode == "Controls":
         if refresh_variables.refresh_button == 1 or refresh_variables.refresh_button == 2:
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 if bu.type != "Controls_Toggle":
                     bu.write_lines(scale_factor)
                 else:
@@ -1672,103 +1675,6 @@ def update_text():
 """
     The next functions are for spawning sprites on the screen
 """
-
-
-def spawn_buttons(type, id):
-    """
-        Spawns a button on the screen using the button class.
-
-        :param type: The type of button to create
-        :type type: string
-
-        :param id: The id of the button to create
-        :type id: int
-
-        :return: None
-    """
-
-    global page
-    global current_button_index
-    # If a usable button sprite does not exist
-    if len(all_button_list) <= len(buttons_on_screen_list):
-        # Create a new button object
-        if type != "Shop_Slot":
-            button = Button(type, id, scale_factor_X, scale_factor_Y, fullscreen)
-        else:
-            button = Button(type, id, scale_factor_X, scale_factor_Y, fullscreen, page=page)
-        buttons_on_screen_list.append(button)
-        current_button_index = current_button_index + 1
-        all_button_list.append(button)
-    # If a usable button sprite does exist
-    else:
-        # If the button to create does not need a button indicator
-        if type != "Settings_Toggle" and type != "Shop_Slot" and type != "Power_Up_Slot" and type != "Buy":
-            # Reinstate the button like normal
-            # Go throguh all the button sprites
-            for bu in all_button_list:
-                # If the current sprite is already in use
-                if bu.get_button_frame().isvisible():
-                    continue
-                # If the current sprite is free and ready to be used
-                else:
-                    # Reinstate the button to the correct type and id
-                    if type == "Title":
-                        bu.reinstate_to_title(id, scale_factor_X, scale_factor_Y, fullscreen)
-                    elif type == "Title_Small":
-                        bu.reinstate_to_title_small(id, scale_factor_X, scale_factor_Y, fullscreen)
-                    elif type == "Game":
-                        bu.reinstate_to_game(scale_factor_X, scale_factor_Y, fullscreen)
-                    elif type == "Tab":
-                        bu.reinstate_to_tab(id, scale_factor_X, scale_factor_Y, fullscreen)
-                    elif type == "Regular_Settings_And_Controls":
-                        bu.reinstate_to_regular_settings_and_controls(id, scale_factor_X, scale_factor_Y, fullscreen)
-                    elif type == "Controls_Toggle":
-                        bu.reinstate_to_controls_toggle(id, scale_factor_X, scale_factor_Y, fullscreen)
-                    # Add it to the screen
-                    buttons_on_screen_list.append(bu)
-                    current_button_index = current_button_index + 1
-                    break
-        # If the button to create does need a button indicator
-        else:
-            found = 0
-            # Go through all the button sprites
-            for bu in all_button_list:
-                # First check if one can be found with a button indicator
-                if bu.get_button_frame().isvisible() or bu.indicator == 0:
-                    continue
-                # If found, reinstate that one
-                else:
-                    if type == "Settings_Toggle":
-                        bu.reinstate_to_settings_toggle(id, scale_factor_X, scale_factor_Y, fullscreen)
-                    elif type == "Shop_Slot":
-                        bu.reinstate_to_shop_slot(id, scale_factor_X, scale_factor_Y, fullscreen, page)
-                    elif type == "Power_Up_Slot":
-                        bu.reinstate_to_power_up_slot(id, scale_factor_X, scale_factor_Y, fullscreen)
-                    elif type == "Buy":
-                        bu.reinstate_to_buy(scale_factor_X, scale_factor_Y, fullscreen)
-                    buttons_on_screen_list.append(bu)
-                    current_button_index = current_button_index + 1
-                    found = 1
-                    break
-            # If not found
-            if found == 0:
-                # Find any available button sprite
-                for bu in all_button_list:
-                    if bu.get_button_frame().isvisible():
-                        continue
-                    else:
-                        # Reinstate it and add the button indicator
-                        if type == "Settings_Toggle":
-                            bu.reinstate_to_settings_toggle(id, scale_factor_X, scale_factor_Y, fullscreen)
-                        elif type == "Shop_Slot":
-                            bu.reinstate_to_shop_slot(id, scale_factor_X, scale_factor_Y, fullscreen, page)
-                        elif type == "Power_Up_Slot":
-                            bu.reinstate_to_power_up_slot(id, scale_factor_X, scale_factor_Y, fullscreen)
-                        elif type == "Buy":
-                            bu.reinstate_to_buy(scale_factor_X, scale_factor_Y, fullscreen)
-                        buttons_on_screen_list.append(bu)
-                        current_button_index = current_button_index + 1
-                        break
 
 
 def spawn_panel():
@@ -2500,10 +2406,10 @@ while True:
     if screen_update == 1:
         # Things that need to be updated between screens are updated here
         # Old button and text box sprites are removed
-        for bu in buttons_on_screen_list:
+        for bu in button.buttons_on_screen_list:
             bu.remove()
-        buttons_on_screen_list.clear()
-        current_button_index = 0
+        button.buttons_on_screen_list.clear()
+        button.current_button_index = 0
         if page_update != 1:
             for pa in panel_turtle:
                 pa.remove()
@@ -2583,11 +2489,11 @@ while True:
         coin_pickup_delay = 0
 
         # Spawn the title mode buttons
-        if current_button_index == 0:
+        if button.current_button_index == 0:
             for i in range(4):
-                spawn_buttons("Title", i + 1)
+                button.spawn_button("Title", i + 1)
             for i in range(2):
-                spawn_buttons("Title_Small", i + 1)
+                button.spawn_button("Title_Small", i + 1)
 
         # Spawn the title mode text (Like title and bversion number in the bottom corner)
         if current_text_index == 0:
@@ -2600,7 +2506,7 @@ while True:
                 t.move(mode, scale_factor_X)
 
         # detect if the buttons have been clicked
-        for bu in buttons_on_screen_list:
+        for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Title":
                 # If the mouse is hovering over the valid button
@@ -2625,11 +2531,11 @@ while True:
 
     if mode == "Machine_Mode":
         # Create the in game main menu button
-        if current_button_index == 0:
-            spawn_buttons("Game", 1)
+        if button.current_button_index == 0:
+            button.spawn_button("Game", 1)
 
         # Check if the main menu button has been clicked or not
-        for bu in buttons_on_screen_list:
+        for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
                 wn.onscreenclick(launch_title_mode)
@@ -3254,11 +3160,11 @@ while True:
 
     if mode == "Alien_Mode":
         # Create the in game main menu button
-        if current_button_index == 0:
-            spawn_buttons("Game", 1)
+        if button.current_button_index == 0:
+            button.spawn_button("Game", 1)
 
         # Check if the main menu button has been clicked or not
-        for bu in buttons_on_screen_list:
+        for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
                 wn.onscreenclick(launch_title_mode)
@@ -3953,18 +3859,18 @@ while True:
             spawn_panel()
 
         # Create Main Menu button
-        if current_button_index == 0:
-            spawn_buttons("Game", 1)
+        if button.current_button_index == 0:
+            button.spawn_button("Game", 1)
             for i in range(3):
-                spawn_buttons("Tab", i + 1)
+                button.spawn_button("Tab", i + 1)
 
         # Check if the main menu button has been clicked or not
-        for bu in buttons_on_screen_list:
+        for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
                 wn.onscreenclick(launch_title_mode)
 
-        for bu in buttons_on_screen_list:
+        for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Tab":
                 if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
@@ -3984,13 +3890,13 @@ while True:
             spawn_selector("Tab")
 
         if page == "Machine_Mode":
-            if current_button_index == 4:
+            if button.current_button_index == 4:
                 for i in range(5):
-                    spawn_buttons("Shop_Slot", i + 1)
+                    button.spawn_button("Shop_Slot", i + 1, page)
 
             if current_text_index == 3 and buy_button_pressed == 0:
                 counter = 4
-                for bu in buttons_on_screen_list:
+                for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Shop_Slot":
                         if bu.get_indicator_toggled() == 1:
                             spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
@@ -4003,7 +3909,7 @@ while True:
             if refresh_variables.move_tab_selector == 1:
                 for s in selectors_on_screen_list:
                     if s.get_type() == "Tab":
-                        for bu in buttons_on_screen_list:
+                        for bu in button.buttons_on_screen_list:
                             if bu.get_type() == "Tab" and bu.get_id() == 1:
                                 s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
                                 refresh_variables.move_tab_selector = 0
@@ -4011,12 +3917,12 @@ while True:
             if refresh_variables.move_slot_selector == 1:
                 for s in selectors_on_screen_list:
                     if s.get_type() == "Slot":
-                        for bu in buttons_on_screen_list:
+                        for bu in button.buttons_on_screen_list:
                             if bu.get_type() == "Shop_Slot" and bu.get_id() == shop_config.machine_slot_selected:
                                 s.new_select(bu.get_button_frame().xcor(), bu.get_button_frame().ycor())
                                 refresh_variables.move_slot_selector = 0
 
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
                     if bu.get_id() == 1:
                         bu.toggle_indicator(shop_config.machine_slots_unlocked[0], scale_factor_Y)
@@ -4029,7 +3935,7 @@ while True:
                     elif bu.get_id() == 5:
                         bu.toggle_indicator(shop_config.machine_slots_unlocked[4], scale_factor_Y)
 
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 button_color, button_type, id = bu.click_button()
                 if bu.get_type() == "Shop_Slot":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
@@ -4046,13 +3952,13 @@ while True:
                     if button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(execute_buy_button)
         elif page == "Alien_Mode":
-            if current_button_index == 4:
+            if button.current_button_index == 4:
                 for i in range(5):
-                    spawn_buttons("Shop_Slot", i + 1)
+                    button.spawn_button("Shop_Slot", i + 1, page)
 
             if current_text_index == 3 and buy_button_pressed == 0:
                 counter = 4
-                for bu in buttons_on_screen_list:
+                for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Shop_Slot":
                         if bu.get_indicator_toggled() == 1:
                             spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
@@ -4065,7 +3971,7 @@ while True:
             if refresh_variables.move_tab_selector == 1:
                 for s in selectors_on_screen_list:
                     if s.get_type() == "Tab":
-                        for bu in buttons_on_screen_list:
+                        for bu in button.buttons_on_screen_list:
                             if bu.get_type() == "Tab" and bu.get_id() == 2:
                                 s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
                                 refresh_variables.move_tab_selector = 0
@@ -4073,12 +3979,12 @@ while True:
             if refresh_variables.move_slot_selector == 1:
                 for s in selectors_on_screen_list:
                     if s.get_type() == "Slot":
-                        for bu in buttons_on_screen_list:
+                        for bu in button.buttons_on_screen_list:
                             if bu.get_type() == "Shop_Slot" and bu.get_id() == shop_config.alien_slot_selected:
                                 s.new_select(bu.get_button_frame().xcor(), bu.get_button_frame().ycor())
                                 refresh_variables.move_slot_selector = 0
 
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 if bu.get_type() == "Shop_Slot":
                     if bu.get_id() == 1:
                         bu.toggle_indicator(shop_config.alien_slots_unlocked[0], scale_factor_Y)
@@ -4091,7 +3997,7 @@ while True:
                     elif bu.get_id() == 5:
                         bu.toggle_indicator(shop_config.alien_slots_unlocked[4], scale_factor_Y)
 
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 button_color, button_type, id = bu.click_button()
                 if bu.get_type() == "Shop_Slot":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
@@ -4108,13 +4014,13 @@ while True:
                     if button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(execute_buy_button)
         elif page == "Power_Ups":
-            if current_button_index == 4:
+            if button.current_button_index == 4:
                 for i in range(4):
-                    spawn_buttons("Power_Up_Slot", i + 1)
+                    button.spawn_button("Power_Up_Slot", i + 1)
 
             if current_text_index == 3 and buy_button_pressed == 0:
                 counter = 4
-                for bu in buttons_on_screen_list:
+                for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Power_Up_Slot":
                         if bu.get_id() == 1:
                             if shop_config.yellow_power_up_level != 5 and shop_config.yellow_power_up_level != 0:
@@ -4137,12 +4043,12 @@ while True:
             if refresh_variables.move_tab_selector == 1:
                 for s in selectors_on_screen_list:
                     if s.get_type() == "Tab":
-                        for bu in buttons_on_screen_list:
+                        for bu in button.buttons_on_screen_list:
                             if bu.get_type() == "Tab" and bu.get_id() == 3:
                                 s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
                                 refresh_variables.move_tab_selector = 0
 
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 if bu.get_type() == "Power_Up_Slot":
                     if bu.get_id() == 1:
                         bu.toggle_indicator(shop_config.yellow_power_up_level, scale_factor_Y)
@@ -4154,7 +4060,7 @@ while True:
                         bu.toggle_indicator(shop_config.red_power_up_level, scale_factor_Y)
                     bu.set_indicator_location(scale_factor_Y)
 
-            for bu in buttons_on_screen_list:
+            for bu in button.buttons_on_screen_list:
                 button_color, button_type, id = bu.click_button()
                 if bu.get_type() == "Power_Up_Slot":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
@@ -4185,11 +4091,11 @@ while True:
 
     if mode == "Stats":
         # Create Main Menu button
-        if current_button_index == 0:
-            spawn_buttons("Game", 1)
+        if button.current_button_index == 0:
+            button.spawn_button("Game", 1)
 
         # Check if the button has been clicked
-        for bu in buttons_on_screen_list:
+        for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
                 wn.onscreenclick(launch_title_mode)
@@ -4218,14 +4124,14 @@ while True:
 
     if mode == "Settings":
         # Create all the screen buttons, including the toggle buttons
-        if current_button_index == 0:
+        if button.current_button_index == 0:
             for i in range(2):
-                spawn_buttons("Regular_Settings_And_Controls", i + 1)
+                button.spawn_button("Regular_Settings_And_Controls", i + 1)
             for i in range(12):
-                spawn_buttons("Settings_Toggle", i + 1)
+                button.spawn_button("Settings_Toggle", i + 1)
 
         # Check if each of the buttons has been clicked
-        for bu in buttons_on_screen_list:
+        for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Regular_Settings_And_Controls":
                 if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
@@ -4332,14 +4238,14 @@ while True:
 
     if mode == "Controls":
         # Create all the buttons for the screen, including the toggle buttons.
-        if current_button_index == 0:
-            spawn_buttons("Regular_Settings_And_Controls", 1)
-            spawn_buttons("Regular_Settings_And_Controls", 3)
+        if button.current_button_index == 0:
+            button.spawn_button("Regular_Settings_And_Controls", 1)
+            button.spawn_button("Regular_Settings_And_Controls", 3)
             for i in range(4):
-                spawn_buttons("Controls_Toggle", i + 1)
+                button.spawn_button("Controls_Toggle", i + 1)
 
         # Check if any of the buttons have been clicked
-        for bu in buttons_on_screen_list:
+        for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Regular_Settings_And_Controls":
                 if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
