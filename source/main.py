@@ -35,7 +35,6 @@ from setup.SpriteSetup import button
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
-from components.gui.InterfaceButton import Button
 from components.gui.InterfacePanel import Panel
 from components.gui.InterfaceTextBox import Text
 from components.gui.InterfaceSelect import Selector
