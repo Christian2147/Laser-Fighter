@@ -106,13 +106,6 @@ boss_update_value = 0
 boss_hit_value = 0
 boss_index = 0
 
-# Human setup
-all_human = []
-current_human = []
-current_human_index = 0
-human_hit_value = 0
-human_update_value = 0
-
 # Small Alien setup
 all_small_aliens = []
 small_aliens = []

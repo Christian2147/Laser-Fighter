@@ -31,6 +31,7 @@ from components.spawn.SpawnPowerUp import SpawnBluePowerUpIndicator
 from components.spawn.SpawnPowerUp import SpawnExtraPowerUpIndicator
 from components.spawn.SpawnCoin import SpawnCoinIndicator
 from components.spawn.SpawnPlayer import SpawnMachinePlayer
+from components.spawn.SpawnPlayer import SpawnHumanPlayer
 
 
 button = SpawnButton(scale_factor, scale_factor_X, scale_factor_Y)
@@ -60,3 +61,5 @@ extra_power_up_indicator = SpawnExtraPowerUpIndicator(scale_factor_X, scale_fact
 coin_indicator = SpawnCoinIndicator(scale_factor_X, scale_factor_Y)
 
 machine_player = SpawnMachinePlayer(scale_factor_X, scale_factor_Y)
+
+human_player = SpawnHumanPlayer(scale_factor_X, scale_factor_Y)

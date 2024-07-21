@@ -56,3 +56,44 @@ class SpawnMachinePlayer:
                     self.current_player.append(p)
                     self.current_player_index = self.current_player_index + 1
                     break
+
+
+class SpawnHumanPlayer:
+    def __init__(self, scale_factor_x, scale_factor_y):
+        self.all_human = []
+        self.current_human = []
+        self.current_human_index = 0
+        self.human_hit_value = 0
+        self.human_update_value = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        del self.all_human
+        del self.current_human
+        del self.current_human_index
+        del self.human_hit_value
+        del self.human_update_value
+
+    def spawn_human_player(self, god_mode):
+        """
+            Spawn the human player on the screen.
+
+            :return: None
+        """
+
+        if len(self.all_human) <= len(self.current_human):
+            human = Human(god_mode, self.scale_factor_x, self.scale_factor_y)
+            self.current_human.append(human)
+            self.current_human_index = self.current_human_index + 1
+            self.all_human.append(human)
+        else:
+            for h in self.all_human:
+                if h.get_player().isvisible():
+                    continue
+                else:
+                    h.reinstate(god_mode)
+                    self.current_human.append(h)
+                    self.current_human_index = self.current_human_index + 1
+                    break

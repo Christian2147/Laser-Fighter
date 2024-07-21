@@ -45,10 +45,10 @@ from setup.SpriteSetup import blue_power_up_indicator
 from setup.SpriteSetup import extra_power_up_indicator
 from setup.SpriteSetup import coin_indicator
 from setup.SpriteSetup import machine_player
+from setup.SpriteSetup import human_player
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
-from components.player.HumanPlayer import Human
 from components.enemy.MachineBlueMachine import BlueMachine
 from components.enemy.MachineYellowMachine import YellowMachine
 from components.enemy.MachineRedMachine import RedMachine
@@ -76,9 +76,9 @@ def go_right():
             p.set_direction_right()
         move()
     if mode == "Alien_Mode":
-        for h in current_human:
+        for h in human_player.current_human:
             # Prepares the human player to move right
-            h.go_right(scale_factor_X, scale_factor_Y)
+            h.go_right()
 
 
 def go_left():
@@ -94,9 +94,9 @@ def go_left():
             p.set_direction_left()
         move()
     if mode == "Alien_Mode":
-        for h in current_human:
+        for h in human_player.current_human:
             # Prepares the human player to move left
-            h.go_left(scale_factor_X, scale_factor_Y)
+            h.go_left()
 
 
 def move():
@@ -122,9 +122,9 @@ def jump():
     if mode == "Alien_Mode":
         # The global keyword is used for parameters that are to simply be accessed globally.
         global jumps
-        for h in current_human:
+        for h in human_player.current_human:
             # Prepare the player for a jump
-            h.jump(scale_factor_X)
+            h.jump()
             # If the jump can successfully be preformed given the circumstances required to preform it
             if god_mode == 0 and h.do_jump == 1:
                 # Update the game statistics to show that the player has jumped
@@ -170,11 +170,11 @@ def shoot():
                     with open('Config/playerData.ini', 'w') as configfile:
                         config.write(configfile)
     if mode == "Alien_Mode":
-        for h in current_human:
+        for h in human_player.current_human:
             # If the laser is not currently flying across the screen and if the player is not in the process of dying
             if h.shoot_update == 0 and h.death_animation == 0 and h.direction != 0:
                 # Fire the laser
-                h.shoot(player_shooting_sound, scale_factor_X, scale_factor_Y)
+                h.shoot(player_shooting_sound)
                 # Change "got_hit" for the UFO back to 0 since this is a new laser being fired
                 for u in ufos:
                     u.set_got_hit(0)
@@ -1789,30 +1789,6 @@ def spawn_boss():
                 break
 
 
-def spawn_human_player():
-    """
-        Spawn the human player on the screen.
-
-        :return: None
-    """
-
-    global current_human_index
-    if len(all_human) <= len(current_human):
-        human = Human(god_mode, scale_factor_X, scale_factor_Y, fullscreen)
-        current_human.append(human)
-        current_human_index = current_human_index + 1
-        all_human.append(human)
-    else:
-        for h in all_human:
-            if h.get_player().isvisible():
-                continue
-            else:
-                h.reinstate(god_mode, scale_factor_X, scale_factor_Y, fullscreen)
-                current_human.append(h)
-                current_human_index = current_human_index + 1
-                break
-
-
 def spawn_small_alien(id):
     """
         Spawn a small alien with the given id on the screen.
@@ -2817,8 +2793,8 @@ while True:
         if background_objects.background_objects_index == 0:
             background_objects.spawn_background_objects()
         # Spawn the human player
-        if current_human_index == 0:
-            spawn_human_player()
+        if human_player.current_human_index == 0:
+            human_player.spawn_human_player(god_mode)
         # Spawn three small aliens to start out
         if small_alien_index == 0:
             for i in range(3):
@@ -2910,7 +2886,7 @@ while True:
                         pu.spawn(power_up_spawn_sound)
 
         # Check if the player has picked up a power up or not
-        for h in current_human:
+        for h in human_player.current_human:
             for pu in power_up.current_power_ups:
                 # If a power up is visible
                 if pu.get_power_up().isvisible():
@@ -3025,36 +3001,36 @@ while True:
             s.update_position()
 
         # Check if a right movement of the player needs to be executed
-        for h in current_human:
-            h.execute_right_movement(scale_factor_X, scale_factor_Y)
+        for h in human_player.current_human:
+            h.execute_right_movement()
 
         # Update the time variable used to create the walking right animation
         right_update = time.perf_counter()
         right_update = round(right_update, 1)
 
         # Cherck if a left movement of the player needs to be executed
-        for h in current_human:
-            h.execute_left_movement(scale_factor_X, scale_factor_Y)
+        for h in human_player.current_human:
+            h.execute_left_movement()
 
         # Update the time variable used to create the walking left animation
         left_update = time.perf_counter()
         left_update = round(left_update, 1)
 
         # Check if a player jump needs to be executed
-        for h in current_human:
-            h.execute_jump(scale_factor_X, scale_factor_Y)
+        for h in human_player.current_human:
+            h.execute_jump()
 
         # Check if the players laser needs to be shot
-        for h in current_human:
-            laser_update = h.execute_shoot(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active(), laser_update, scale_factor_X)
+        for h in human_player.current_human:
+            laser_update = h.execute_shoot(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active(), laser_update)
 
         # Execute the walking animation for the player
-        for h in current_human:
-            h.set_player_texture(right_update, left_update, fullscreen)
-            h.set_gun_texture(fullscreen)
+        for h in human_player.current_human:
+            h.set_player_texture(right_update, left_update)
+            h.set_gun_texture()
 
         # Update the directions that each of the aliens are facing
-        for h in current_human:
+        for h in human_player.current_human:
             for sa in small_aliens:
                 sa.set_alien_direction(h.get_player().xcor())
 
@@ -3100,7 +3076,7 @@ while True:
         # Detects if the players has picked up a coin
         hit_coin = 0
         for coin in coins_on_screen_list:
-            for h in current_human:
+            for h in human_player.current_human:
                 # If the player picks up a coin
                 if (h.get_laser().isvisible() and h.get_laser().distance(coin.get_coin()) < 55 * scale_factor) or h.get_player().distance(coin.get_coin()) < 55 * scale_factor:
                     coin.remove()
@@ -3132,7 +3108,7 @@ while True:
                 hit_coin = hit_coin + 1
 
         # Alien Killer
-        for h in current_human:
+        for h in human_player.current_human:
             current_small_alien_update_value_index = 0
             for sa in small_aliens:
                 # If the player laser hits a small alien that is visible and not dying
@@ -3322,12 +3298,12 @@ while True:
                             laser_update = laser_update + 1
 
         # Player Killer
-        for h in current_human:
+        for h in human_player.current_human:
             # If the death animation has already started
-            if human_update_value != 0:
+            if human_player.human_update_value != 0:
                 # Keep going with the players death animation
-                h.kill_player(player_death_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                human_update_value = human_update_value + 1
+                h.kill_player(player_death_sound)
+                human_player.human_update_value = human_player.human_update_value + 1
                 if h.get_death_iterator() == 2:
                     # Update the stats if god mode is off
                     if god_mode == 0:
@@ -3347,47 +3323,47 @@ while True:
                     score = 0
                 # Check if the death animation has finished
                 if h.get_death_iterator() == 0:
-                    human_update_value = 0
+                    human_player.human_update_value = 0
             # If the death animation is not ongoing
             else:
                 # For every alien, check if the alien got close enough to hit the player
                 for sa in small_aliens:
                     if sa.get_small_alien().distance(h.get_player()) < 70 * scale_factor:
                         # The players health also has to be 1
-                        if h.health == 1 and h.hit_delay == 0 and sa.get_small_alien().xcor() - 12.5 * scale_factor_X < h.get_player().xcor() < sa.get_small_alien().xcor() + 12.5 * scale_factor_X and human_update_value == 0 and sa.get_death_animation() == 0 and god_mode == 0:
+                        if h.health == 1 and h.hit_delay == 0 and sa.get_small_alien().xcor() - 12.5 * scale_factor_X < h.get_player().xcor() < sa.get_small_alien().xcor() + 12.5 * scale_factor_X and human_player.human_update_value == 0 and sa.get_death_animation() == 0 and god_mode == 0:
                             # Then, kill the player
-                            h.kill_player(player_death_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                            human_update_value = human_update_value + 1
+                            h.kill_player(player_death_sound)
+                            human_player.human_update_value = human_player.human_update_value + 1
 
                 for ma in medium_aliens:
                     if ma.get_medium_alien().distance(h.get_player()) < 100 * scale_factor:
-                        if h.health == 1 and h.hit_delay == 0 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and human_update_value == 0 and ma.get_death_animation() == 0 and god_mode == 0:
-                            h.kill_player(player_death_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                            human_update_value = human_update_value + 1
+                        if h.health == 1 and h.hit_delay == 0 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and human_player.human_update_value == 0 and ma.get_death_animation() == 0 and god_mode == 0:
+                            h.kill_player(player_death_sound)
+                            human_player.human_update_value = human_player.human_update_value + 1
 
                 for la in large_aliens:
                     if la.get_large_alien().distance(h.get_player()) < 160 * scale_factor:
-                        if h.health == 1 and h.hit_delay == 0 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and human_update_value == 0 and la.get_death_animation() == 0 and god_mode == 0:
-                            h.kill_player(player_death_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                            human_update_value = human_update_value + 1
+                        if h.health == 1 and h.hit_delay == 0 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and la.get_death_animation() == 0 and god_mode == 0:
+                            h.kill_player(player_death_sound)
+                            human_player.human_update_value = human_player.human_update_value + 1
 
                 for u in ufos:
                     if u.get_ufo().distance(h.get_player()) < 53 * scale_factor:
-                        if h.health == 1 and h.hit_delay == 0 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and human_update_value == 0 and u.get_ufo().isvisible() and u.get_death_animation() == 0 and god_mode == 0:
-                            h.kill_player(player_death_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                            human_update_value = human_update_value + 1
+                        if h.health == 1 and h.hit_delay == 0 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and u.get_ufo().isvisible() and u.get_death_animation() == 0 and god_mode == 0:
+                            h.kill_player(player_death_sound)
+                            human_player.human_update_value = human_player.human_update_value + 1
 
                     if u.get_ufo_laser().distance(h.get_player()) < 25 * scale_factor:
-                        if h.health == 1 and h.hit_delay == 0 and u.get_ufo_laser().isvisible() and god_mode == 0 and human_update_value == 0:
-                            h.kill_player(player_death_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                            human_update_value = human_update_value + 1
+                        if h.health == 1 and h.hit_delay == 0 and u.get_ufo_laser().isvisible() and god_mode == 0 and human_player.human_update_value == 0:
+                            h.kill_player(player_death_sound)
+                            human_player.human_update_value = human_player.human_update_value + 1
 
             # If the player has more than 1 health, only deal 1 health owrth of damage
             # If the hit delay is ongoing
-            if human_hit_value != 0:
+            if human_player.human_hit_value != 0:
                 # keep it going
-                h.hit_player(player_hit_sound, fullscreen)
-                human_hit_value = human_hit_value + 1
+                h.hit_player(player_hit_sound)
+                human_player.human_hit_value = human_player.human_hit_value + 1
                 # Update the stats
                 if h.get_hit_delay() == 2:
                     damage_taken = damage_taken + 1
@@ -3398,7 +3374,7 @@ while True:
                     with open('Config/playerData.ini', 'w') as configfile:
                         config.write(configfile)
                 if h.get_hit_delay() == 0:
-                    human_hit_value = 0
+                    human_player.human_hit_value = 0
             # If there is no hit delay
             else:
                 # For every alien, check if the alien got close enough to hit the player
@@ -3407,32 +3383,32 @@ while True:
                         # If the players health is greater than 1
                         if h.get_health() > 1 and sa.get_small_alien().xcor() - 12.5 * scale_factor_X < h.get_player().xcor() < sa.get_small_alien().xcor() + 12.5 * scale_factor_X and sa.get_death_animation() == 0 and h.get_hit_delay() == 0 and god_mode == 0:
                             # Hit the player
-                            h.hit_player(player_hit_sound, fullscreen)
-                            human_hit_value = human_hit_value + 1
+                            h.hit_player(player_hit_sound)
+                            human_player.human_hit_value = human_player.human_hit_value + 1
 
                 for ma in medium_aliens:
                     if ma.get_medium_alien().distance(h.get_player()) < 100 * scale_factor:
                         if h.get_health() > 1 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and ma.get_death_animation() == 0 and h.get_hit_delay() == 0 and god_mode == 0:
-                            h.hit_player(player_hit_sound, fullscreen)
-                            human_hit_value = human_hit_value + 1
+                            h.hit_player(player_hit_sound)
+                            human_player.human_hit_value = human_player.human_hit_value + 1
 
                 for la in large_aliens:
                     if la.get_large_alien().distance(h.get_player()) < 160 * scale_factor:
                         if h.get_health() > 1 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and la.get_death_animation() == 0 and h.get_hit_delay() == 0 and god_mode == 0:
-                            h.hit_player(player_hit_sound, fullscreen)
-                            human_hit_value = human_hit_value + 1
+                            h.hit_player(player_hit_sound)
+                            human_player.human_hit_value = human_player.human_hit_value + 1
 
                 for u in ufos:
                     # For the UFo, the player can get hurt by both touching the UFO and getting hit by the UFOs laser
                     if u.get_ufo().distance(h.get_player()) < 53 * scale_factor:
                         if h.get_health() > 1 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and u.get_ufo().isvisible() and u.get_death_animation() == 0 and h.get_hit_delay() == 0 and god_mode == 0:
-                            h.hit_player(player_hit_sound, fullscreen)
-                            human_hit_value = human_hit_value + 1
+                            h.hit_player(player_hit_sound)
+                            human_player.human_hit_value = human_player.human_hit_value + 1
 
                     if u.get_ufo_laser().distance(h.get_player()) < 25 * scale_factor:
                         if h.get_health() > 1 and u.get_ufo_laser().isvisible() and god_mode == 0:
-                            h.hit_player(player_hit_sound, fullscreen)
-                            human_hit_value = human_hit_value + 1
+                            h.hit_player(player_hit_sound)
+                            human_player.human_hit_value = human_player.human_hit_value + 1
     # If Alien Mode is toggled off
     else:
         # Remove all the Alien Mode exclusive sprites from the screen
@@ -3445,12 +3421,12 @@ while True:
         for bo in background_objects.background_objects_turtle:
             bo.remove()
         background_objects.background_objects_index = 0
-        for h in current_human:
-            h.remove(scale_factor_Y)
-        current_human.clear()
-        current_human_index = 0
-        human_update_value = 0
-        human_hit_value = 0
+        for h in human_player.current_human:
+            h.remove()
+        human_player.current_human.clear()
+        human_player.current_human_index = 0
+        human_player.human_update_value = 0
+        human_player.human_hit_value = 0
         laser_update = 0
         for small_alien in small_aliens:
             small_alien.remove()

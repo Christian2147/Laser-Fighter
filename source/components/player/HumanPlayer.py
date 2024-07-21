@@ -29,6 +29,26 @@ import turtle
 import pygame
 import math
 import time
+from setup.TextureSetup import HUMAN_STILL_RIGHT_TEXTURE
+from setup.TextureSetup import HUMAN_STILL_LEFT_TEXTURE
+from setup.TextureSetup import HUMAN_WALKING_RIGHT_TEXTURE
+from setup.TextureSetup import HUMAN_WALKING_LEFT_TEXTURE
+from setup.TextureSetup import OXYGEN_TANK_TEXTURE
+from setup.TextureSetup import PLAYER_GUN_RIGHT_TEXTURE
+from setup.TextureSetup import PLAYER_GUN_LEFT_TEXTURE
+from setup.TextureSetup import PLAYER_HEAD_LASER_TEXTURE
+from setup.TextureSetup import PLAYER_DEATH_1_TEXTURE
+from setup.TextureSetup import PLAYER_DEATH_2_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_1010_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_910_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_810_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_710_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_610_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_510_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_410_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_310_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_210_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_110_TEXTURE
 
 
 class Human:
@@ -78,7 +98,7 @@ class Human:
                 direction (To make sure it stays consistent with frame rate)
     """
 
-    def __init__(self, god_mode, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, god_mode, scale_factor_x, scale_factor_y):
         """
             Creates a human object and spawns it on the screen
 
@@ -90,16 +110,10 @@ class Human:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.player = turtle.Turtle()
-        if fullscreen == 1:
-            self.player.shape("Textures/Player/Player_Head_Still_Right_Scaled.gif")
-        else:
-            self.player.shape("Textures/Player/Player_Head_Still_Right.gif")
+        self.player.shape(HUMAN_STILL_RIGHT_TEXTURE)
         self.player.shapesize(4 * scale_factor_y, 2 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.player.penup()
@@ -107,10 +121,7 @@ class Human:
         self.player.direction = "stop"
 
         self.oxygen_tank = turtle.Turtle()
-        if fullscreen == 1:
-            self.oxygen_tank.shape("Textures/Other/Oxygen_Tank_Scaled.gif")
-        else:
-            self.oxygen_tank.shape("Textures/Other/Oxygen_Tank.gif")
+        self.oxygen_tank.shape(OXYGEN_TANK_TEXTURE)
         self.oxygen_tank.shapesize(1.5 * scale_factor_y, 0.75 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.oxygen_tank.penup()
@@ -118,10 +129,7 @@ class Human:
         self.oxygen_tank.direction = "stop"
 
         self.gun = turtle.Turtle()
-        if fullscreen == 1:
-            self.gun.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
-        else:
-            self.gun.shape("Textures/Gun/Player_Gun_Right.gif")
+        self.gun.shape(PLAYER_GUN_RIGHT_TEXTURE)
         self.gun.shapesize(0.67 * scale_factor_y, 2 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.gun.penup()
@@ -130,20 +138,14 @@ class Human:
         self.gun.hideturtle()
 
         self.laser = turtle.Turtle()
-        if fullscreen == 1:
-            self.laser.shape("Textures/Lasers/Player_Head_Laser_Scaled.gif")
-        else:
-            self.laser.shape("Textures/Lasers/Player_Head_Laser.gif")
+        self.laser.shape(PLAYER_HEAD_LASER_TEXTURE)
         self.laser.shapesize(0.33 * scale_factor_y, 2 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.laser.penup()
         self.laser.goto(self.gun.xcor(), self.gun.ycor())
 
         self.health_bar = turtle.Turtle()
-        if fullscreen == 1:
-            self.health_bar.shape("Textures/Health_Bars/HealthBar_10.10_Scaled.gif")
-        else:
-            self.health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
+        self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
         self.health_bar.shapesize(1 * scale_factor_y, 1 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.health_bar.penup()
@@ -181,6 +183,9 @@ class Human:
         self.walk_start_time = 0
         self.gun_start_time = 0
 
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
     def __del__(self):
         """
             Cleans up the sprite from memory once the program has terminated
@@ -199,52 +204,34 @@ class Human:
         del self.laser
         del self.health_bar
 
-    def reinstate(self, god_mode, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate(self, god_mode):
         """
             Reuses the existing sprite to spawn a human player on the screen
 
             :param god_mode: The variable that determines if god mode is toggled on or off
             :type god_mode: int
 
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        if fullscreen == 1:
-            self.player.shape("Textures/Player/Player_Head_Still_Right_Scaled.gif")
-        else:
-            self.player.shape("Textures/Player/Player_Head_Still_Right.gif")
-        self.player.goto(0, -141 * scale_factor_y)
+        self.player.shape(HUMAN_STILL_RIGHT_TEXTURE)
+        self.player.goto(0, -141 * self.scale_factor_y)
         self.player.direction = "stop"
         self.player.showturtle()
 
-        if fullscreen == 1:
-            self.oxygen_tank.shape("Textures/Other/Oxygen_Tank_Scaled.gif")
-        else:
-            self.oxygen_tank.shape("Textures/Other/Oxygen_Tank.gif")
-        self.oxygen_tank.goto(self.player.xcor() - 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
+        self.oxygen_tank.shape(OXYGEN_TANK_TEXTURE)
+        self.oxygen_tank.goto(self.player.xcor() - 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
         self.oxygen_tank.direction = "stop"
         self.oxygen_tank.showturtle()
 
-        if fullscreen == 1:
-            self.gun.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
-        else:
-            self.gun.shape("Textures/Gun/Player_Gun_Right.gif")
-        self.gun.goto(self.player.xcor(), self.player.ycor() + 12 * scale_factor_y)
+        self.gun.shape(PLAYER_GUN_RIGHT_TEXTURE)
+        self.gun.goto(self.player.xcor(), self.player.ycor() + 12 * self.scale_factor_y)
         self.gun.direction = "stop"
 
         self.laser.goto(self.gun.xcor(), self.gun.ycor())
         self.laser.showturtle()
 
-        if fullscreen == 1:
-            self.health_bar.shape("Textures/Health_Bars/HealthBar_10.10_Scaled.gif")
-        else:
-            self.health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
+        self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
         # If god mode is off, show the health bar
         if god_mode == 0:
             self.health_bar.showturtle()
@@ -319,7 +306,7 @@ class Human:
 
         return self.health
 
-    def remove(self, scale_factor_y):
+    def remove(self):
         """
             Removes the human player sprite form the screen and resets its attributes.
 
@@ -331,7 +318,7 @@ class Human:
         self.gun.hideturtle()
         self.laser.hideturtle()
         self.health_bar.hideturtle()
-        self.current_velocity = 23.84848 * scale_factor_y
+        self.current_velocity = 23.84848 * self.scale_factor_y
         self.death_animation = 0
         self.death_iterator = 0
         self.health = 10
@@ -358,68 +345,53 @@ class Human:
         self.walk_start_time = 0
         self.gun_start_time = 0
 
-    def go_right(self, scale_factor_x, scale_factor_y):
+    def go_right(self):
         """
             Sets the players direction to right and initializes the players rightward movement
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
 
             :return: None
         """
 
         # If the player is not already moving, jumping, dying, or off the screen
-        if self.move_update == 0 and self.jump_update == 0 and self.player.xcor() < 640 * scale_factor_x and self.death_animation == 0 and self.move_right != 1:
+        if self.move_update == 0 and self.jump_update == 0 and self.player.xcor() < 640 * self.scale_factor_x and self.death_animation == 0 and self.move_right != 1:
             self.move_left = 0
             # Set the direction to right
             self.player.direction = "right"
             self.gun.direction = "right"
             self.direction = 1
             self.gun_direction = 1
-            self.gun.goto(self.player.xcor() + 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+            self.gun.goto(self.player.xcor() + 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
             self.gun.showturtle()
             # Mark the starting point
             self.Start_X = self.player.xcor()
             self.move_right = 1
             self.move_start_time = time.time()
 
-    def go_left(self, scale_factor_x, scale_factor_y):
+    def go_left(self):
         """
             Sets the players direction to left and initializes the players leftward movement
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
 
             :return: None
         """
 
         # If the player is not already moving, jumping, dying, or off the screen
-        if self.move_update == 0 and self.jump_update == 0 and self.player.xcor() > -640 * scale_factor_x and self.death_animation == 0 and self.move_left != 1:
+        if self.move_update == 0 and self.jump_update == 0 and self.player.xcor() > -640 * self.scale_factor_x and self.death_animation == 0 and self.move_left != 1:
             self.move_right = 0
             # Set the direction to left
             self.player.direction = "left"
             self.gun.direction = "left"
             self.direction = 2
             self.gun_direction = 2
-            self.gun.goto(self.player.xcor() - 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+            self.gun.goto(self.player.xcor() - 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
             self.gun.showturtle()
             # Mark the starting point
             self.Start_X = self.player.xcor()
             self.move_left = 1
             self.move_start_time = time.time()
 
-    def jump(self, scale_factor_x):
+    def jump(self):
         """
             Prepares the player to preform a jump in the given direction
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
 
             :return: None
         """
@@ -427,25 +399,19 @@ class Human:
         # If the player is not already jumping and is facing a direction
         if self.jump_update == 0 and self.direction != 0 and self.do_jump == 0:
             # If the player is not going out of bounds
-            if (self.direction == 1 and self.player.xcor() < 640 * scale_factor_x) or (self.direction == 2 and self.player.xcor() > -640 * scale_factor_x):
+            if (self.direction == 1 and self.player.xcor() < 640 * self.scale_factor_x) or (self.direction == 2 and self.player.xcor() > -640 * self.scale_factor_x):
                 # Prepare the player for a jump
                 self.Start_Y = self.player.ycor()
                 self.Start_X = self.player.xcor()
                 self.do_jump = 1
                 self.jump_start_time = time.time()
 
-    def shoot(self, shooting_sound, scale_factor_x, scale_factor_y):
+    def shoot(self, shooting_sound):
         """
             Fires a laser from the players gun in the given direction that will fly across the screen
 
             :param shooting_sound: Variable that determines if the player shooting sound is toggled on or off
             :type shooting_sound: int
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
 
             :return: None
         """
@@ -454,8 +420,8 @@ class Human:
         if self.direction == 1:
             # Shoot to the right
             self.laser_direction = 1
-            self.laser.setx(self.gun.xcor() + 30 * scale_factor_x)
-            self.laser.sety(self.gun.ycor() + 5 * scale_factor_y)
+            self.laser.setx(self.gun.xcor() + 30 * self.scale_factor_x)
+            self.laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
             if shooting_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
                 sound.play()
@@ -464,22 +430,16 @@ class Human:
         elif self.direction == 2:
             # Shoot to the left
             self.laser_direction = 2
-            self.laser.setx(self.gun.xcor() - 30 * scale_factor_x)
-            self.laser.sety(self.gun.ycor() + 5 * scale_factor_y)
+            self.laser.setx(self.gun.xcor() - 30 * self.scale_factor_x)
+            self.laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
             if shooting_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
                 sound.play()
             self.laser_start_time = time.time()
 
-    def execute_right_movement(self, scale_factor_x, scale_factor_y):
+    def execute_right_movement(self):
         """
             Move the player to the right 100 units in 0.012 seconds
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
 
             :return: None
         """
@@ -491,12 +451,12 @@ class Human:
             elapsed_time = current_time - self.move_start_time
             if elapsed_time >= 0.012:
                 self.move_update = 1
-                if self.player.xcor() < (self.Start_X + 100 * scale_factor_x):
+                if self.player.xcor() < (self.Start_X + 100 * self.scale_factor_x):
                     # Calculate the delta movement and add it as additional movement required
-                    delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                    self.player.setx(self.player.xcor() + 4 * scale_factor_x + delta_movement)
-                    self.oxygen_tank.goto(self.player.xcor() - 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                    self.gun.goto(self.player.xcor() + 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+                    delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                    self.player.setx(self.player.xcor() + 4 * self.scale_factor_x + delta_movement)
+                    self.oxygen_tank.goto(self.player.xcor() - 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
+                    self.gun.goto(self.player.xcor() + 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
                     self.moving_right = 1
                 else:
                     # Once finished, reset the movement variables
@@ -505,15 +465,9 @@ class Human:
                 self.move_update = 0
                 self.move_start_time = time.time()
 
-    def execute_left_movement(self, scale_factor_x, scale_factor_y):
+    def execute_left_movement(self):
         """
             Move the player to the left 100 units in 0.012 seconds
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
 
             :return: None
         """
@@ -525,12 +479,12 @@ class Human:
             elapsed_time = current_time - self.move_start_time
             if elapsed_time >= 0.012:
                 self.move_update = 1
-                if self.player.xcor() > (self.Start_X - 100 * scale_factor_x):
+                if self.player.xcor() > (self.Start_X - 100 * self.scale_factor_x):
                     # Calculate the delta movement and add it as additional movement required
-                    delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                    self.player.setx(self.player.xcor() - 4 * scale_factor_x - delta_movement)
-                    self.oxygen_tank.goto(self.player.xcor() + 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                    self.gun.goto(self.player.xcor() - 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+                    delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                    self.player.setx(self.player.xcor() - 4 * self.scale_factor_x - delta_movement)
+                    self.oxygen_tank.goto(self.player.xcor() + 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
+                    self.gun.goto(self.player.xcor() - 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
                     self.moving_left = 1
                 else:
                     # Once finished, reset the movement variables
@@ -539,21 +493,9 @@ class Human:
                 self.move_update = 0
                 self.move_start_time = time.time()
 
-    def execute_jump(self, scale_factor_x, scale_factor_y):
+    def execute_jump(self):
         """
             Executes the jump movement of the player in the specified direction based on the variable "direction"
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
-            :param vsync: The variable that determines if VSync is on or off
-            :type vsync: int
 
             :return: None
         """
@@ -581,9 +523,9 @@ class Human:
                         self.gun_direction = 1
                         # Move the player
                         self.player.sety(self.player.ycor() + self.current_velocity)
-                        self.player.setx(self.player.xcor() + 7 * scale_factor_x)
-                        self.oxygen_tank.goto(self.player.xcor() - 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                        self.gun.goto(self.player.xcor() + 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+                        self.player.setx(self.player.xcor() + 7 * self.scale_factor_x)
+                        self.oxygen_tank.goto(self.player.xcor() - 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
+                        self.gun.goto(self.player.xcor() + 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
                         self.jump_start_time = time.time()
                         # Finding the new velocity:
                         # If the highest point has not been reached yet
@@ -591,7 +533,7 @@ class Human:
                             # Find the new velocity using the real world physics formula vf^2 = vi^2 + 2adx where
                             #   a is the force of gravity on the moon in real life and dx is the distance between the
                             #   starting point and the current player position
-                            velocity_squared = self.initial_velocity ** 2 + 2 * (-1.625 * scale_factor_y) * abs(self.player.ycor() - self.Start_Y)
+                            velocity_squared = self.initial_velocity ** 2 + 2 * (-1.625 * self.scale_factor_y) * abs(self.player.ycor() - self.Start_Y)
                             # Make sure there is no divide by zero error
                             if velocity_squared > 0:
                                 self.current_velocity = math.sqrt(velocity_squared)
@@ -601,7 +543,7 @@ class Human:
                         elif self.player.ycor() > self.Start_Y and self.current_velocity <= 0:
                             # Use the same formula as before, but acceleration is increasing this time (because the
                             #   player is moving down)
-                            self.current_velocity = math.sqrt(2 * (1.625 * scale_factor_y) * (self.Start_Y + 175 * scale_factor_y) - self.player.ycor())
+                            self.current_velocity = math.sqrt(2 * (1.625 * self.scale_factor_y) * (self.Start_Y + 175 * self.scale_factor_y) - self.player.ycor())
                             self.current_velocity = 0 - self.current_velocity
                         # The jump is finished
                         else:
@@ -609,10 +551,10 @@ class Human:
                             self.jump_update = 0
                             self.jump_direction = 0
                             self.do_jump = 0
-                            self.current_velocity = 23.84848 * scale_factor_y
-                            self.player.sety(-141 * scale_factor_y)
-                            self.oxygen_tank.goto(self.player.xcor() - 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                            self.gun.goto(self.player.xcor() + 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+                            self.current_velocity = 23.84848 * self.scale_factor_y
+                            self.player.sety(-141 * self.scale_factor_y)
+                            self.oxygen_tank.goto(self.player.xcor() - 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
+                            self.gun.goto(self.player.xcor() + 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
                             break
             # If the direction is left
             elif (self.direction == 2 and self.jump_direction == 0) or (self.jump_direction == 2):
@@ -630,9 +572,9 @@ class Human:
                         self.gun_direction = 2
                         # Move the player
                         self.player.sety(self.player.ycor() + self.current_velocity)
-                        self.player.setx(self.player.xcor() - 7 * scale_factor_x)
-                        self.oxygen_tank.goto(self.player.xcor() + 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                        self.gun.goto(self.player.xcor() - 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+                        self.player.setx(self.player.xcor() - 7 * self.scale_factor_x)
+                        self.oxygen_tank.goto(self.player.xcor() + 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
+                        self.gun.goto(self.player.xcor() - 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
                         self.jump_start_time = time.time()
                         # Finding the new velocity:
                         # If the highest point has not been reached yet
@@ -640,7 +582,7 @@ class Human:
                             # Find the new velocity using the real world physics formula vf^2 = vi^2 + 2adx where
                             #   a is the force of gravity on the moon in real life and dx is the distance between the
                             #   starting point and the current player position
-                            velocity_squared = self.initial_velocity ** 2 + 2 * (-1.625 * scale_factor_y) * abs(self.player.ycor() - self.Start_Y)
+                            velocity_squared = self.initial_velocity ** 2 + 2 * (-1.625 * self.scale_factor_y) * abs(self.player.ycor() - self.Start_Y)
                             if velocity_squared > 0:
                                 self.current_velocity = math.sqrt(velocity_squared)
                             else:
@@ -649,7 +591,7 @@ class Human:
                         elif self.player.ycor() > self.Start_Y and self.current_velocity <= 0:
                             # Use the same formula as before, but acceleration is increasing this time (because the
                             #   player is moving down)
-                            self.current_velocity = math.sqrt(2 * (1.625 * scale_factor_y) * (self.Start_Y + 175 * scale_factor_y) - self.player.ycor())
+                            self.current_velocity = math.sqrt(2 * (1.625 * self.scale_factor_y) * (self.Start_Y + 175 * self.scale_factor_y) - self.player.ycor())
                             self.current_velocity = 0 - self.current_velocity
                         # The jump is finished
                         else:
@@ -657,13 +599,13 @@ class Human:
                             self.jump_update = 0
                             self.jump_direction = 0
                             self.do_jump = 0
-                            self.current_velocity = 23.84848 * scale_factor_y
-                            self.player.sety(-141 * scale_factor_y)
-                            self.oxygen_tank.goto(self.player.xcor() + 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                            self.gun.goto(self.player.xcor() - 20 * scale_factor_x, self.player.ycor() + 12 * scale_factor_y)
+                            self.current_velocity = 23.84848 * self.scale_factor_y
+                            self.player.sety(-141 * self.scale_factor_y)
+                            self.oxygen_tank.goto(self.player.xcor() + 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
+                            self.gun.goto(self.player.xcor() - 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
                             break
 
-    def execute_shoot(self, yellow_power_up, laser_update, scale_factor_x):
+    def execute_shoot(self, yellow_power_up, laser_update):
         """
             Move thr laser across the screen in the specified direction after it has been shot
 
@@ -674,16 +616,13 @@ class Human:
                 has already pierced through (2 maximum)
             :type laser_update: int
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
             :return: laser_update: Determines if the laser should disappear based on how many enemies it
                 has already pierced through (2 maximum)
             :type: int
         """
 
         # If the direction is right
-        if -1080 * scale_factor_x < self.laser.xcor() < 1080 * scale_factor_x and self.laser_direction == 1:
+        if -1080 * self.scale_factor_x < self.laser.xcor() < 1080 * self.scale_factor_x and self.laser_direction == 1:
             self.shoot_update = 1
             if laser_update == 0 or laser_update == 1:
                 self.laser.showturtle()
@@ -696,14 +635,14 @@ class Human:
                     # Calculate the delta movement
                     # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
-                    delta_movement = 32 * scale_factor_x * ((elapsed_time - 0.01) / 0.01)
-                    self.laser.setx(self.laser.xcor() + 32 * scale_factor_x + delta_movement)
+                    delta_movement = 32 * self.scale_factor_x * ((elapsed_time - 0.01) / 0.01)
+                    self.laser.setx(self.laser.xcor() + 32 * self.scale_factor_x + delta_movement)
                 else:
-                    delta_movement = 13 * scale_factor_x * ((elapsed_time - 0.01) / 0.01)
-                    self.laser.setx(self.laser.xcor() + 13 * scale_factor_x + delta_movement)
+                    delta_movement = 13 * self.scale_factor_x * ((elapsed_time - 0.01) / 0.01)
+                    self.laser.setx(self.laser.xcor() + 13 * self.scale_factor_x + delta_movement)
                 self.laser_start_time = time.time()
         # If the direction is left
-        elif -1080 * scale_factor_x < self.laser.xcor() < 1080 * scale_factor_x and self.laser_direction == 2:
+        elif -1080 * self.scale_factor_x < self.laser.xcor() < 1080 * self.scale_factor_x and self.laser_direction == 2:
             self.shoot_update = 1
             if laser_update == 0 or laser_update == 1:
                 self.laser.showturtle()
@@ -713,11 +652,11 @@ class Human:
             # Move the laser every 0.01 seconds
             if elapsed_time >= 0.01:
                 if yellow_power_up == 1:
-                    delta_movement = 32 * scale_factor_x * ((elapsed_time - 0.01) / 0.01)
-                    self.laser.setx(self.laser.xcor() - 32 * scale_factor_x - delta_movement)
+                    delta_movement = 32 * self.scale_factor_x * ((elapsed_time - 0.01) / 0.01)
+                    self.laser.setx(self.laser.xcor() - 32 * self.scale_factor_x - delta_movement)
                 else:
-                    delta_movement = 13 * scale_factor_x * ((elapsed_time - 0.01) / 0.01)
-                    self.laser.setx(self.laser.xcor() - 13 * scale_factor_x - delta_movement)
+                    delta_movement = 13 * self.scale_factor_x * ((elapsed_time - 0.01) / 0.01)
+                    self.laser.setx(self.laser.xcor() - 13 * self.scale_factor_x - delta_movement)
                 self.laser_start_time = time.time()
         # If the laser has finished moving
         else:
@@ -727,7 +666,7 @@ class Human:
             self.laser.hideturtle()
         return laser_update
 
-    def set_player_texture(self, right_update, left_update, fullscreen):
+    def set_player_texture(self, right_update, left_update):
         """
             Sets the players texture based on the players direction and creates a walking animation when the
                 player is walking.
@@ -737,9 +676,6 @@ class Human:
 
             :param left_update: Used to update the walking left animation correctly
             :type left_update: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -752,36 +688,21 @@ class Human:
             if self.direction == 1 and self.death_animation == 0:
                 # Make the player face and walk right
                 if (self.moving_right == 1 and right_update % 0.5 != 0) or self.jump_update == 1:
-                    if fullscreen == 1:
-                        self.player.shape("Textures/Player/Player_Head_Walking_Right_Scaled.gif")
-                    else:
-                        self.player.shape("Textures/Player/Player_Head_Walking_Right.gif")
+                    self.player.shape(HUMAN_WALKING_RIGHT_TEXTURE)
                 else:
-                    if fullscreen == 1:
-                        self.player.shape("Textures/Player/Player_Head_Still_Right_Scaled.gif")
-                    else:
-                        self.player.shape("Textures/Player/Player_Head_Still_Right.gif")
+                    self.player.shape(HUMAN_STILL_RIGHT_TEXTURE)
             # If the players direction is left
             elif self.direction == 2 and self.death_animation == 0:
                 # Make the player face and walk left
                 if (self.moving_left == 1 and left_update % 0.5 != 0) or self.jump_update == 1:
-                    if fullscreen == 1:
-                        self.player.shape("Textures/Player/Player_Head_Walking_Left_Scaled.gif")
-                    else:
-                        self.player.shape("Textures/Player/Player_Head_Walking_Left.gif")
+                    self.player.shape(HUMAN_WALKING_LEFT_TEXTURE)
                 else:
-                    if fullscreen == 1:
-                        self.player.shape("Textures/Player/Player_Head_Still_Left_Scaled.gif")
-                    else:
-                        self.player.shape("Textures/Player/Player_Head_Still_Left.gif")
+                    self.player.shape(HUMAN_STILL_LEFT_TEXTURE)
             self.walk_start_time = time.time()
 
-    def set_gun_texture(self, fullscreen):
+    def set_gun_texture(self):
         """
             Sets the player guns texture based on the direction that the player is facing
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -792,34 +713,19 @@ class Human:
         if elapsed_time >= 0.005:
             # If the players direction is right, make the gun face right
             if self.gun_direction == 1:
-                if fullscreen == 1:
-                    self.gun.shape("Textures/Gun/Player_Gun_Right_Scaled.gif")
-                else:
-                    self.gun.shape("Textures/Gun/Player_Gun_Right.gif")
+                self.gun.shape(PLAYER_GUN_RIGHT_TEXTURE)
             # If the players direction is left, make the gun face left
             elif self.gun_direction == 2:
-                if fullscreen == 1:
-                    self.gun.shape("Textures/Gun/Player_Gun_Left_Scaled.gif")
-                else:
-                    self.gun.shape("Textures/Gun/Player_Gun_Left.gif")
+                self.gun.shape(PLAYER_GUN_LEFT_TEXTURE)
             self.gun_start_time = time.time()
 
-    def kill_player(self, death_sound, scale_factor_x, scale_factor_y, fullscreen):
+    def kill_player(self, death_sound):
         """
             Kills the human player and plays the human players death animation. After that, it spawns the player back
                 at thecenter and resets the game.
 
             :param death_sound: Determines if the death sound for the player is toggled on or off
             :type death_sound: int
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -836,10 +742,7 @@ class Human:
                 self.death_iterator = 3
             elif self.death_iterator == 3:
                 # Change the players texture to the second frame of the explosion
-                if fullscreen == 1:
-                    self.player.shape("Textures/Explosions/Player_Death_2_Scaled.gif")
-                else:
-                    self.player.shape("Textures/Explosions/Player_Death_2.gif")
+                self.player.shape(PLAYER_DEATH_2_TEXTURE)
                 self.death_iterator = self.death_iterator + 0.125
                 self.kill_start_time = time.time()
             elif 3 < self.death_iterator < 5:
@@ -854,20 +757,14 @@ class Human:
             elif self.death_iterator == 6:
                 # Reset the players health to 10
                 self.health = 10
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.10_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
+                self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
                 # Move the player back to the center of the screen
-                self.player.goto(0, -141 * scale_factor_y)
-                self.oxygen_tank.goto(self.player.xcor() - 30.5 * scale_factor_x, self.player.ycor() + 11 * scale_factor_y)
-                self.gun.goto(self.player.xcor(), self.player.ycor() + 12 * scale_factor_y)
+                self.player.goto(0, -141 * self.scale_factor_y)
+                self.oxygen_tank.goto(self.player.xcor() - 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
+                self.gun.goto(self.player.xcor(), self.player.ycor() + 12 * self.scale_factor_y)
                 self.oxygen_tank.showturtle()
                 # Reset the players texture and all related variables
-                if fullscreen == 1:
-                    self.player.shape("Textures/Player/Player_Head_Still_Right_Scaled.gif")
-                else:
-                    self.player.shape("Textures/Player/Player_Head_Still_Right.gif")
+                self.player.shape(HUMAN_STILL_RIGHT_TEXTURE)
                 self.player.direction = "stop"
                 self.direction = 0
                 self.death_iterator = 0
@@ -875,7 +772,7 @@ class Human:
                 self.do_jump = 0
                 self.jump_update = 0
                 self.jump_direction = 0
-                self.current_velocity = 23.84848 * scale_factor_y
+                self.current_velocity = 23.84848 * self.scale_factor_y
                 self.moving_left = 0
                 self.moving_right = 0
                 self.move_left = 0
@@ -886,10 +783,7 @@ class Human:
             # The players health goes down to 0
             self.health = 0
             # Set the players texture to the first frame of the explosion
-            if fullscreen == 1:
-                self.player.shape("Textures/Explosions/Player_Death_1_Scaled.gif")
-            else:
-                self.player.shape("Textures/Explosions/Player_Death_1.gif")
+            self.player.shape(PLAYER_DEATH_1_TEXTURE)
             if death_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Player_Death_Sound.wav")
                 sound.play()
@@ -900,15 +794,12 @@ class Human:
             self.kill_start_time = time.time()
             return
 
-    def hit_player(self, hit_sound, fullscreen):
+    def hit_player(self, hit_sound):
         """
             Makes the human player take "one hit" of damage and creates a hit delay before the player can be hit again
 
             :param hit_sound: Determines if the player hit sound is toggled on or off
             :type hit_sound: int
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -933,50 +824,23 @@ class Human:
         if self.hit_delay == 1:
             # Update the players health bar
             if self.health == 9:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.9_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.9.gif")
+                self.health_bar.shape(HEALTH_BAR_910_TEXTURE)
             elif self.health == 8:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.8_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.8.gif")
+                self.health_bar.shape(HEALTH_BAR_810_TEXTURE)
             elif self.health == 7:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.7_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.7.gif")
+                self.health_bar.shape(HEALTH_BAR_710_TEXTURE)
             elif self.health == 6:
-                if fullscreen:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.6_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.6.gif")
+                self.health_bar.shape(HEALTH_BAR_610_TEXTURE)
             elif self.health == 5:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.5_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.5.gif")
+                self.health_bar.shape(HEALTH_BAR_510_TEXTURE)
             elif self.health == 4:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.4_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.4.gif")
+                self.health_bar.shape(HEALTH_BAR_410_TEXTURE)
             elif self.health == 3:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.3_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.3.gif")
+                self.health_bar.shape(HEALTH_BAR_310_TEXTURE)
             elif self.health == 2:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.2_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.2.gif")
+                self.health_bar.shape(HEALTH_BAR_210_TEXTURE)
             elif self.health == 1:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.1_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.1.gif")
+                self.health_bar.shape(HEALTH_BAR_110_TEXTURE)
             self.hit_delay = self.hit_delay + 1
             self.hit_start_time = time.time()
             return
