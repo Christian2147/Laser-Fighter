@@ -12,3 +12,47 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+from components.player.MachinePlayer import Player
+from components.player.HumanPlayer import Human
+
+
+class SpawnMachinePlayer:
+    def __init__(self, scale_factor_x, scale_factor_y):
+        self.all_player = []
+        self.current_player = []
+        self.current_player_index = 0
+        self.player_hit_value = 0
+        self.player_update_value = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        del self.all_player
+        del self.current_player
+        del self.current_player_index
+        del self.player_hit_value
+        del self.player_update_value
+
+    def spawn_machine_player(self, god_mode):
+        """
+            Spawn the Machine Mode player on the screen.
+
+            :return: None
+        """
+
+        if len(self.all_player) <= len(self.current_player):
+            player = Player(god_mode, self.scale_factor_x, self.scale_factor_y)
+            self.current_player.append(player)
+            self.current_player_index = self.current_player_index + 1
+            self.all_player.append(player)
+        else:
+            for p in self.all_player:
+                if p.get_player().isvisible():
+                    continue
+                else:
+                    p.reinstate(god_mode)
+                    self.current_player.append(p)
+                    self.current_player_index = self.current_player_index + 1
+                    break

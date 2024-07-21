@@ -27,6 +27,20 @@
 import turtle
 import pygame
 import time
+from setup.TextureSetup import MACHINE_PLAYER_TEXTURE
+from setup.TextureSetup import MACHINE_PLAYER_LASER_TEXTURE
+from setup.TextureSetup import EXPLOSION_1_TEXTURE
+from setup.TextureSetup import EXPLOSION_2_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_1010_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_910_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_810_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_710_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_610_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_510_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_410_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_310_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_210_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_110_TEXTURE
 
 
 class Player:
@@ -51,7 +65,7 @@ class Player:
                 delay is constant)
     """
 
-    def __init__(self, god_mode, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, god_mode, scale_factor_x, scale_factor_y):
         """
             Creates a player object and spawns it on the screen
 
@@ -63,26 +77,17 @@ class Player:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.player = turtle.Turtle()
-        if fullscreen == 1:
-            self.player.shape("Textures/Player/Player_Scaled.gif")
-        else:
-            self.player.shape("Textures/Player/Player.gif")
+        self.player.shape(MACHINE_PLAYER_TEXTURE)
         self.player.shapesize(5, 2)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.player.penup()
         self.player.goto(0, -300 * scale_factor_y)
 
         self.laser = turtle.Turtle()
-        if fullscreen == 1:
-            self.laser.shape("Textures/Lasers/Player_Laser_Scaled.gif")
-        else:
-            self.laser.shape("Textures/Lasers/Player_Laser.gif")
+        self.laser.shape(MACHINE_PLAYER_LASER_TEXTURE)
         self.laser.direction = "down"
         # Ensure that the turtle does not draw lines on the screen while moving
         self.laser.penup()
@@ -91,10 +96,7 @@ class Player:
         self.laser.hideturtle()
 
         self.health_bar = turtle.Turtle()
-        if fullscreen == 1:
-            self.health_bar.shape("Textures/Health_Bars/HealthBar_10.10_Scaled.gif")
-        else:
-            self.health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
+        self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.health_bar.penup()
         self.health_bar.shapesize(1, 1)
@@ -113,6 +115,9 @@ class Player:
         self.kill_start_time = 0
         self.hit_start_time = 0
 
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
     def __del__(self):
         """
             Cleans up the sprite from memory once the program has terminated
@@ -127,31 +132,22 @@ class Player:
         del self.laser
         del self.health_bar
 
-    def reinstate(self, god_mode, scale_factor_y, fullscreen):
+    def reinstate(self, god_mode):
         """
             Reuses the existing sprite to spawn a player on the screen
 
             :param god_mode: The variable that determines if god mode is toggled on or off
             :type god_mode: int
 
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        self.player.goto(0, -300 * scale_factor_y)
+        self.player.goto(0, -300 * self.scale_factor_y)
         self.player.direction = "stop"
         self.player.showturtle()
-        self.laser.goto(0, 360 * scale_factor_y)
+        self.laser.goto(0, 360 * self.scale_factor_y)
         self.laser.direction = "down"
-        if fullscreen == 1:
-            self.health_bar.shape("Textures/Health_Bars/HealthBar_10.10_Scaled.gif")
-        else:
-            self.health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
+        self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
         if god_mode == 0:
             self.health_bar.showturtle()
 
@@ -286,28 +282,25 @@ class Player:
         self.player.direction = "right"
         self.direction = 2
 
-    def move_player(self, scale_factor_x):
+    def move_player(self):
         """
             Moves the player in the direction specified by the "direction" variable
 
             :return: None
         """
 
-        if self.direction == 1 and self.player.xcor() > -620 * scale_factor_x and self.death_animation == 0:
-            self.player.setx(self.player.xcor() - 30 * scale_factor_x)
+        if self.direction == 1 and self.player.xcor() > -620 * self.scale_factor_x and self.death_animation == 0:
+            self.player.setx(self.player.xcor() - 30 * self.scale_factor_x)
 
-        if self.direction == 2 and self.player.xcor() < 620 * scale_factor_x and self.death_animation == 0:
-            self.player.setx(self.player.xcor() + 30 * scale_factor_x)
+        if self.direction == 2 and self.player.xcor() < 620 * self.scale_factor_x and self.death_animation == 0:
+            self.player.setx(self.player.xcor() + 30 * self.scale_factor_x)
 
-    def fire(self, shooting_sound, scale_factor_y):
+    def fire(self, shooting_sound):
         """
             Fires the players laser by resetting it to its original position
 
             :param shooting_sound: Determines if the player shooting sound is toggled on or off
             :type shooting_sound: int
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
 
             :return: None
         """
@@ -318,19 +311,16 @@ class Player:
             sound.play()
         # Moves the laser back to the player to be fired
         self.laser.setx(self.player.xcor())
-        self.laser.sety(self.player.ycor() + 120 * scale_factor_y)
+        self.laser.sety(self.player.ycor() + 120 * self.scale_factor_y)
         self.laser_start_time = time.time()
         self.laser_has_attacked = 0
 
-    def shoot(self, yellow_power_up, scale_factor_y):
+    def shoot(self, yellow_power_up):
         """
             Moves the player's laser across the screen after it is fired
 
             :param yellow_power_up: Determines if the yellow power up is currently active or not
             :type yellow_power_up: int
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
 
             :return: None
         """
@@ -340,7 +330,7 @@ class Player:
             self.laser.hideturtle()
 
         # While the laser is still in the frame of the screen
-        if self.laser.ycor() < 360 * scale_factor_y:
+        if self.laser.ycor() < 360 * self.scale_factor_y:
             # Keep moving it 14.5 or 43.5 units every 0.015 seconds
             current_time = time.time()
             elapsed_time = current_time - self.laser_start_time
@@ -349,29 +339,23 @@ class Player:
                     # Calculate the delta movement
                     # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
-                    delta_movement = 14.5 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                    self.laser.sety(self.laser.ycor() + 14.5 * scale_factor_y + delta_movement)
+                    delta_movement = 14.5 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                    self.laser.sety(self.laser.ycor() + 14.5 * self.scale_factor_y + delta_movement)
                 elif yellow_power_up == 1:
-                    delta_movement = 43.5 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                    self.laser.sety(self.laser.ycor() + 43.5 * scale_factor_y + delta_movement)
+                    delta_movement = 43.5 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                    self.laser.sety(self.laser.ycor() + 43.5 * self.scale_factor_y + delta_movement)
                 self.laser_start_time = time.time()
         else:
             self.laser.hideturtle()
             self.laser_start_time = 0
 
-    def kill_player(self, death_sound, scale_factor_y, fullscreen):
+    def kill_player(self, death_sound):
         """
             Kills the player and plays the players death animation. After that, it spawns the player back at the
                 center and resets the game.
 
             :param death_sound: Determines if the death sound for the player is toggled on or off
             :type death_sound: int
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -394,10 +378,7 @@ class Player:
 
         # Resets the players health back to 10
         if self.update == 3.5:
-            if fullscreen == 1:
-                self.health_bar.shape("Textures/Health_Bars/HealthBar_10.10_Scaled.gif")
-            else:
-                self.health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
+            self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
             self.health_bar_indicator = 10
             self.update = 4
             self.kill_start_time = time.time()
@@ -406,11 +387,8 @@ class Player:
         # Respawns the player at the origin
         if self.update == 3:
             self.player.hideturtle()
-            if fullscreen == 1:
-                self.player.shape("Textures/Player/Player_Scaled.gif")
-            else:
-                self.player.shape("Textures/Player/Player.gif")
-            self.player.goto(0, -300 * scale_factor_y)
+            self.player.shape(MACHINE_PLAYER_TEXTURE)
+            self.player.goto(0, -300 * self.scale_factor_y)
             self.update = 3.5
 
         # Wait 0.15 seconds
@@ -423,10 +401,7 @@ class Player:
 
         # Changes the players texture to the second frame of the explosion
         if 1.0 <= self.update <= 1.1:
-            if fullscreen == 1:
-                self.player.shape("Textures/Explosions/Explosion2_Scaled.gif")
-            else:
-                self.player.shape("Textures/Explosions/Explosion2.gif")
+            self.player.shape(EXPLOSION_2_TEXTURE)
             self.update = 1.5
             self.kill_start_time = time.time()
 
@@ -451,22 +426,16 @@ class Player:
                 sound = pygame.mixer.Sound("Sound/Explosion3.wav")
                 sound.play()
             # Sets the players texture to the first frame of the explosion
-            if fullscreen == 1:
-                self.player.shape("Textures/Explosions/Explosion1_Scaled.gif")
-            else:
-                self.player.shape("Textures/Explosions/Explosion1.gif")
+            self.player.shape(EXPLOSION_1_TEXTURE)
             self.update = 0.5
             self.kill_start_time = time.time()
 
-    def hit_player(self, hit_sound, fullscreen):
+    def hit_player(self, hit_sound):
         """
             Makes the player take "one hit" of damage and creates a hit delay before the player can be hit again
 
             :param hit_sound: Determines if the player hit sound is toggled on or off
             :type hit_sound: int
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -494,50 +463,23 @@ class Player:
         if self.hit_delay == 0 and no_hit == 0 and self.update == 0:
             # Decrease the players health by 1
             if self.health_bar_indicator == 10:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.9_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.9.gif")
+                self.health_bar.shape(HEALTH_BAR_910_TEXTURE)
             elif self.health_bar_indicator == 9:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.8_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.8.gif")
+                self.health_bar.shape(HEALTH_BAR_810_TEXTURE)
             elif self.health_bar_indicator == 8:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.7_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.7.gif")
+                self.health_bar.shape(HEALTH_BAR_710_TEXTURE)
             elif self.health_bar_indicator == 7:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.6_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.6.gif")
+                self.health_bar.shape(HEALTH_BAR_610_TEXTURE)
             elif self.health_bar_indicator == 6:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.5_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.5.gif")
+                self.health_bar.shape(HEALTH_BAR_510_TEXTURE)
             elif self.health_bar_indicator == 5:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.4_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.4.gif")
+                self.health_bar.shape(HEALTH_BAR_410_TEXTURE)
             elif self.health_bar_indicator == 4:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.3_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.3.gif")
+                self.health_bar.shape(HEALTH_BAR_310_TEXTURE)
             elif self.health_bar_indicator == 3:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.2_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.2.gif")
+                self.health_bar.shape(HEALTH_BAR_210_TEXTURE)
             elif self.health_bar_indicator == 2:
-                if fullscreen == 1:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.1_Scaled.gif")
-                else:
-                    self.health_bar.shape("Textures/Health_Bars/HealthBar_10.1.gif")
+                self.health_bar.shape(HEALTH_BAR_110_TEXTURE)
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Explosion4.wav")
                 sound.play()

@@ -80,17 +80,6 @@ coins_on_screen_list = []
 current_coin_index = 0
 coin_pickup_delay = 0
 
-# Coin Indicator setup
-#coin_indicator_turtle = []
-#coin_indicator_index = 0
-
-# Machine Player setup
-all_player = []
-current_player = []
-current_player_index = 0
-player_hit_value = 0
-player_update_value = 0
-
 # Blue Machine setup
 all_blue_machines = []
 blue_machines = []

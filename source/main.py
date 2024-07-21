@@ -44,10 +44,10 @@ from setup.SpriteSetup import yellow_power_up_indicator
 from setup.SpriteSetup import blue_power_up_indicator
 from setup.SpriteSetup import extra_power_up_indicator
 from setup.SpriteSetup import coin_indicator
+from setup.SpriteSetup import machine_player
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
-from components.player.MachinePlayer import Player
 from components.player.HumanPlayer import Human
 from components.enemy.MachineBlueMachine import BlueMachine
 from components.enemy.MachineYellowMachine import YellowMachine
@@ -71,7 +71,7 @@ def go_right():
     """
 
     if mode == "Machine_Mode":
-        for p in current_player:
+        for p in machine_player.current_player:
             # The machine player is prepared to move right and faces right
             p.set_direction_right()
         move()
@@ -89,7 +89,7 @@ def go_left():
     """
 
     if mode == "Machine_Mode":
-        for p in current_player:
+        for p in machine_player.current_player:
             # The machine player is prepared to move left and faces left
             p.set_direction_left()
         move()
@@ -108,8 +108,8 @@ def move():
 
     # Player is moved in its current facing direction when this function is activated.
     if mode == "Machine_Mode":
-        for p in current_player:
-            p.move_player(scale_factor_X)
+        for p in machine_player.current_player:
+            p.move_player()
 
 
 def jump():
@@ -155,11 +155,11 @@ def shoot():
     global classic_lasers_fired
     global alien_lasers_fired
     if mode == "Machine_Mode":
-        for p in current_player:
+        for p in machine_player.current_player:
             # If the laser is not currently moving across the screen and if the player is not dying
             if p.get_laser().ycor() > 359 * scale_factor_Y and p.get_death_animation() == 0:
                 # The laser is fired
-                p.fire(player_shooting_sound, scale_factor_Y)
+                p.fire(player_shooting_sound)
                 # Update the game statistics
                 if god_mode == 0:
                     classic_lasers_fired = classic_lasers_fired + 1
@@ -1676,30 +1676,6 @@ def update_text():
 """
 
 
-def spawn_machine_player():
-    """
-        Spawn the Machine Mode player on the screen.
-
-        :return: None
-    """
-
-    global current_player_index
-    if len(all_player) <= len(current_player):
-        player = Player(god_mode, scale_factor_X, scale_factor_Y, fullscreen)
-        current_player.append(player)
-        current_player_index = current_player_index + 1
-        all_player.append(player)
-    else:
-        for p in all_player:
-            if p.get_player().isvisible():
-                continue
-            else:
-                p.reinstate(god_mode, scale_factor_Y, fullscreen)
-                current_player.append(p)
-                current_player_index = current_player_index + 1
-                break
-
-
 def spawn_blue_machine(id):
     """
         Spawn a blue machine with the given id on the screen.
@@ -2233,16 +2209,16 @@ while True:
                     config.write(configfile)
 
         # Spawn the player
-        if current_player_index == 0:
-            spawn_machine_player()
+        if machine_player.current_player_index == 0:
+            machine_player.spawn_machine_player(god_mode)
         # Spawn 3 blue machines to start the game
         if blue_machine_index == 0:
             for i in range(3):
                 spawn_blue_machine(i + 1)
 
         # Used to shoot the players laser
-        for p in current_player:
-            p.shoot(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active(), scale_factor_Y)
+        for p in machine_player.current_player:
+            p.shoot(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active())
 
         # Spawn Machine enemies based on the players score
         # At its peak, there will be 5 blue machines, 5 yellow machines, 5 red machines, and 1 machine boss attacking
@@ -2323,7 +2299,7 @@ while True:
         # Detects if the players has picked up a coin
         hit_coin = 0
         for coin in coins_on_screen_list:
-            for p in current_player:
+            for p in machine_player.current_player:
                 # If the player picks up a coin
                 if p.get_laser().isvisible() and p.get_laser().distance(coin.get_coin()) < 55 * scale_factor and coin_pickup_delay == 0:
                     coin.remove()
@@ -2355,7 +2331,7 @@ while True:
                 hit_coin = hit_coin + 1
 
         # Enemy Killer
-        for p in current_player:
+        for p in machine_player.current_player:
             current_blue_update_value_index = 0
             for bm in blue_machines:
                 # If the player laser hits a blue machine that is visible and not dying
@@ -2512,12 +2488,12 @@ while True:
                         p.set_laser_has_attacked(1)
 
         # Player Killer
-        for p in current_player:
+        for p in machine_player.current_player:
             # If the death animation has already started
-            if player_update_value != 0:
+            if machine_player.player_update_value != 0:
                 # Keep going with the player death animation if it has started
-                p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
-                player_update_value = player_update_value + 1
+                p.kill_player(player_death_sound)
+                machine_player.player_update_value = machine_player.player_update_value + 1
                 if p.get_player_death_update() == 0.6:
                     # Reset the initial and staying blue machines death count
                     for bm in blue_machines:
@@ -2538,7 +2514,7 @@ while True:
                             config.write(configfile)
                 # Check if the death animation is finished
                 if p.get_player_death_update() == 0:
-                    player_update_value = 0
+                    machine_player.player_update_value = 0
             # If the death animation is not ongoing
             else:
                 # For every enemy, check if the enemies laser has hit the player
@@ -2548,42 +2524,42 @@ while True:
                             bm.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
                                 # If so kill the player and set the score down to 0 to reset the game
-                                p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
+                                p.kill_player(player_death_sound)
                                 score = 0
-                                player_update_value = player_update_value + 1
+                                machine_player.player_update_value = machine_player.player_update_value + 1
 
                 for ym in yellow_machines:
                     if ym.get_yellow_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if ym.get_yellow_machine_laser().isvisible() and -30 * scale_factor_X < (ym.get_yellow_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             ym.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
-                                p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
+                                p.kill_player(player_death_sound)
                                 score = 0
-                                player_update_value = player_update_value + 1
+                                machine_player.player_update_value = machine_player.player_update_value + 1
 
                 for rm in red_machines:
                     if rm.get_red_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if rm.get_red_machine_laser().isvisible() and -30 * scale_factor_X < (rm.get_red_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             rm.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
-                                p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
+                                p.kill_player(player_death_sound)
                                 score = 0
-                                player_update_value = player_update_value + 1
+                                machine_player.player_update_value = machine_player.player_update_value + 1
 
                 for b in boss:
                     if b.get_boss_laser().distance(p.get_player()) < 125 * scale_factor:
                         if b.get_boss_laser().isvisible() and -30 * scale_factor_X < (b.get_boss_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             b.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
-                                p.kill_player(player_death_sound, scale_factor_Y, fullscreen)
+                                p.kill_player(player_death_sound)
                                 score = 0
-                                player_update_value = player_update_value + 1
+                                machine_player.player_update_value = machine_player.player_update_value + 1
 
             # If the player has more than 1 health, only deal 1 health of damage
             # If the hit delay is ongoing
-            if player_hit_value != 0:
-                p.hit_player(player_hit_sound, fullscreen)
-                player_hit_value = player_hit_value + 1
+            if machine_player.player_hit_value != 0:
+                p.hit_player(player_hit_sound)
+                machine_player.player_hit_value = machine_player.player_hit_value + 1
                 # Update the stats
                 if p.get_hit_delay() == 2:
                     machine_damage_taken = machine_damage_taken + 1
@@ -2594,7 +2570,7 @@ while True:
                     with open('Config/playerData.ini', 'w') as configfile:
                         config.write(configfile)
                 if p.get_hit_delay() == 0:
-                    player_hit_value = 0
+                    machine_player.player_hit_value = 0
             # If there is no hit delay
             else:
                 # Check if the lasers of any enemies have hit the player
@@ -2604,32 +2580,32 @@ while True:
                             bm.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
                                 # Hit the player
-                                p.hit_player(player_hit_sound, fullscreen)
-                                player_hit_value = player_hit_value + 1
+                                p.hit_player(player_hit_sound)
+                                machine_player.player_hit_value = machine_player.player_hit_value + 1
 
                 for ym in yellow_machines:
                     if ym.get_yellow_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if ym.get_yellow_machine_laser().isvisible() and -30 * scale_factor_X < (ym.get_yellow_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             ym.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
-                                p.hit_player(player_hit_sound, fullscreen)
-                                player_hit_value = player_hit_value + 1
+                                p.hit_player(player_hit_sound)
+                                machine_player.player_hit_value = machine_player.player_hit_value + 1
 
                 for rm in red_machines:
                     if rm.get_red_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if rm.get_red_machine_laser().isvisible() and -30 * scale_factor_X < (rm.get_red_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             rm.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
-                                p.hit_player(player_hit_sound, fullscreen)
-                                player_hit_value = player_hit_value + 1
+                                p.hit_player(player_hit_sound)
+                                machine_player.player_hit_value = machine_player.player_hit_value + 1
 
                 for b in boss:
                     if b.get_boss_laser().distance(p.get_player()) < 125 * scale_factor:
                         if b.get_boss_laser().isvisible() and -30 * scale_factor_X < (b.get_boss_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             b.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
-                                p.hit_player(player_hit_sound, fullscreen)
-                                player_hit_value = player_hit_value + 1
+                                p.hit_player(player_hit_sound)
+                                machine_player.player_hit_value = machine_player.player_hit_value + 1
 
         # Function for the float effect of the machine enemies
         # This float effect was added to create the illusion that the enemies are flying through outer space at
@@ -2648,7 +2624,7 @@ while True:
 
         # For the enemy movement
         # If the machine enemy has been killed enough times, it will start moving along the x-axis
-        for p in current_player:
+        for p in machine_player.current_player:
             for bm in blue_machines:
                 bm.move_enemy(p.get_death_animation(), scale_factor_X)
 
@@ -2719,7 +2695,7 @@ while True:
                         pu.spawn(power_up_spawn_sound)
 
         # Check if the player has picked up a power up or not
-        for p in current_player:
+        for p in machine_player.current_player:
             for pu in power_up.current_power_ups:
                 # If a power up is visible
                 if pu.get_power_up().isvisible():
@@ -2777,10 +2753,10 @@ while True:
     # If Machine Mode is toggled off
     else:
         # Remove all the Machine Mode sprites from the screen
-        for p in current_player:
+        for p in machine_player.current_player:
             p.remove()
-        current_player.clear()
-        current_player_index = 0
+        machine_player.current_player.clear()
+        machine_player.current_player_index = 0
         player_update_value = 0
         for bm in blue_machines:
             bm.remove()
