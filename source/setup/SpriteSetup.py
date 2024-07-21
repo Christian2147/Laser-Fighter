@@ -18,5 +18,8 @@ from setup.ScreenSetup import scale_factor_X
 from setup.ScreenSetup import scale_factor_Y
 from setup.ScreenSetup import fullscreen
 from components.spawn.SpawnButton import SpawnButton
+from components.spawn.SpawnTextBox import SpawnTextbox
 
 button = SpawnButton(scale_factor, scale_factor_X, scale_factor_Y)
+
+textbox = SpawnTextbox(scale_factor, scale_factor_X)

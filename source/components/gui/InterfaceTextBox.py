@@ -39,7 +39,7 @@ class Text:
             in_use (int): Determines whether a text box object is currently on the screen or not
     """
 
-    def __init__(self, id, x, y, color):
+    def __init__(self, id, x, y, color, scale_factor, scale_factor_x):
         """
             Creates a text box object on the screen
 
@@ -68,6 +68,9 @@ class Text:
         self.movement_activated = 0
         self.id = id
         self.in_use = 1
+
+        self.scale_factor = scale_factor
+        self.scale_factor_x = scale_factor_x
 
     def __del__(self):
         """
@@ -128,7 +131,7 @@ class Text:
         self.in_use = 0
         self.movement_activated = 0
 
-    def write(self, text, size, type, scale_factor):
+    def write(self, text, size, type):
         """
             Writes the given text on the text box object and displays it on the screen.
 
@@ -141,16 +144,13 @@ class Text:
             :param type: The type of text to be written (bold, underlines, normal, italic)
             :type type: string
 
-            :param scale_factor: The scale factor for fullscreen mode
-            :type scale_factor: float
-
             :return: None
         """
 
         self.text_box.clear()
-        self.text_box.write(text, align="center", font=("Courier", int(size * scale_factor), type))
+        self.text_box.write(text, align="center", font=("Courier", int(size * self.scale_factor), type))
 
-    def write_left(self, text, size, type, scale_factor):
+    def write_left(self, text, size, type):
         """
             Writes the given text on the text box object and aligns it to the left then displays it on the screen.
 
@@ -163,18 +163,15 @@ class Text:
             :param type: The type of text to be written (bold, underlines, normal, italic)
             :type type: string
 
-            :param scale_factor: The scale factor for fullscreen mode
-            :type scale_factor: float
-
             :return: None
         """
 
         self.text_box.clear()
-        self.text_box.write(text, align="left", font=("Courier", int(size * scale_factor), type))
+        self.text_box.write(text, align="left", font=("Courier", int(size * self.scale_factor), type))
 
-    def write_right(self, text, size, type, scale_factor):
+    def write_right(self, text, size, type):
         self.text_box.clear()
-        self.text_box.write(text, align="right", font=("Courier", int(size * scale_factor), type))
+        self.text_box.write(text, align="right", font=("Courier", int(size * self.scale_factor), type))
 
     def set_color(self, color):
         """
@@ -188,12 +185,9 @@ class Text:
 
         self.text_box.color(color)
 
-    def move(self, mode, scale_factor_x):
+    def move(self, mode):
         """
             Moves the text side to side on the screen (Used for screen titles)
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
 
             :return: None
         """
@@ -208,20 +202,20 @@ class Text:
         if elapsed_time >= 0.02:
             if mode == "Shop":
                 # Text box reaches the left limit
-                if self.text_box.xcor() < -195 * scale_factor_x:
+                if self.text_box.xcor() < -195 * self.scale_factor_x:
                     # Move right
                     self.moving = 1
                 # Text box reaches the right limit
-                if self.text_box.xcor() > 45 * scale_factor_x:
+                if self.text_box.xcor() > 45 * self.scale_factor_x:
                     # Move left
                     self.moving = -1
             else:
                 # Text box reaches the left limit
-                if self.text_box.xcor() < -120 * scale_factor_x:
+                if self.text_box.xcor() < -120 * self.scale_factor_x:
                     # Move right
                     self.moving = 1
                 # Text box reaches the right limit
-                if self.text_box.xcor() > 120 * scale_factor_x:
+                if self.text_box.xcor() > 120 * self.scale_factor_x:
                     # Move left
                     self.moving = -1
             # Move 5 units each timed iteration
@@ -229,9 +223,9 @@ class Text:
                 # Calculate the delta movement
                 # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                 # Done to ensure the game speed stays the same regardless of frame rate
-                delta_movement = 5 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                self.text_box.setx(self.text_box.xcor() + 5 * scale_factor_x + delta_movement)
+                delta_movement = 5 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                self.text_box.setx(self.text_box.xcor() + 5 * self.scale_factor_x + delta_movement)
             if self.moving == -1:
-                delta_movement = 5 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                self.text_box.setx(self.text_box.xcor() - 5 * scale_factor_x - delta_movement)
+                delta_movement = 5 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                self.text_box.setx(self.text_box.xcor() - 5 * self.scale_factor_x - delta_movement)
             self.start_time = time.time()

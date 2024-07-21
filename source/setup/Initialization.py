@@ -94,11 +94,6 @@ panel_index = 0
 # Which item is being displayed
 price_displayed = 0
 
-# Text Box setup
-all_text_list = []
-text_on_screen_list = []
-current_text_index = 0
-
 # Price Label data
 all_price_label = []
 price_label_on_screen_list = []

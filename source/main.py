@@ -32,11 +32,11 @@ import random
 from setup.Initialization import *
 from setup.ScreenSetup import *
 from setup.SpriteSetup import button
+from setup.SpriteSetup import textbox
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
 from components.gui.InterfacePanel import Panel
-from components.gui.InterfaceTextBox import Text
 from components.gui.InterfaceSelect import Selector
 from components.gui.InterfacePriceLabel import PriceLabel
 from components.ItemCoin import CoinIndicator
@@ -670,8 +670,9 @@ def execute_slot_function(current_page, slot_id):
 def execute_buy_button(x, y):
     global refresh_variables
     global button
+    global textbox
     #global current_button_index
-    global current_text_index
+    #global current_text_index
     global current_price_index
     global price_displayed
     global page
@@ -739,11 +740,11 @@ def execute_buy_button(x, y):
                             bu.remove()
                             button.buttons_on_screen_list.pop()
                             button.current_button_index = button.current_button_index - 1
-                    for t in text_on_screen_list:
+                    for t in textbox.text_on_screen_list:
                         if t.get_id() == current_slot + 3:
                             t.remove()
-                            text_on_screen_list.remove(t)
-                            current_text_index = current_text_index - 1
+                            textbox.text_on_screen_list.remove(t)
+                            textbox.current_text_index = textbox.current_text_index - 1
                     for pr in price_label_on_screen_list:
                         if pr.get_id() == current_slot + 3:
                             pr.remove()
@@ -1372,76 +1373,75 @@ def update_text():
             refresh_variables.refresh_button = 2
         elif refresh_variables.refresh_button == 2:
             refresh_variables.refresh_button = 0
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.write("Laser Fighter", 72, "bold", scale_factor)
+                t.write("Laser Fighter", 72, "bold")
             elif t.id == 2:
-                t.write("Beta 1.1.0b", 24, "normal", scale_factor)
+                t.write("Beta 1.1.0b", 24, "normal")
             elif t.id == 3:
-                t.write("God Mode Is On!", 24, "normal", scale_factor)
+                t.write("God Mode Is On!", 24, "normal")
     elif mode == "Machine_Mode":
         if refresh_variables.refresh_button == 1:
             for bu in button.buttons_on_screen_list:
                 bu.write_lines()
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.write("Score: {}  High Score: {}".format(score, high_score_machine_war), 24, "normal", scale_factor)
+                t.write("Score: {}  High Score: {}".format(score, high_score_machine_war), 24, "normal")
             elif t.id == 2:
                 for yi in yellow_power_up_indicator_turtle:
                     if yi.get_power_up_active() == 1:
-                        t.write("{}".format(yi.get_power_up_timer()), 24, "normal", scale_factor)
+                        t.write("{}".format(yi.get_power_up_timer()), 24, "normal")
                     else:
-                        t.write("0", 24, "normal", scale_factor)
+                        t.write("0", 24, "normal")
             elif t.id == 3:
                 for bi in blue_power_up_indicator_turtle:
                     if bi.get_power_up_active() == 1:
-                        t.write("{}".format(bi.get_power_up_timer()), 24, "normal", scale_factor)
+                        t.write("{}".format(bi.get_power_up_timer()), 24, "normal")
                     else:
-                        t.write("0", 24, "normal", scale_factor)
+                        t.write("0", 24, "normal")
             elif t.id == 4:
                 for ei in extra_power_up_indicator_turtle:
                     if ei.get_power_up_active() == 1:
-                        t.write("{}".format(ei.get_power_up_timer()), 24, "normal", scale_factor)
+                        t.write("{}".format(ei.get_power_up_timer()), 24, "normal")
                     else:
-                        t.write("0", 24, "normal", scale_factor)
+                        t.write("0", 24, "normal")
             elif t.id == 5:
-                t.write_left("{}".format(shop_config.total_coins), 24, "normal", scale_factor)
+                t.write_left("{}".format(shop_config.total_coins), 24, "normal")
             elif t.id == 6:
-                t.write("God Mode Is On!", 24, "normal", scale_factor)
+                t.write("God Mode Is On!", 24, "normal")
     elif mode == "Alien_Mode":
         if refresh_variables.refresh_button == 1:
             for bu in button.buttons_on_screen_list:
                 bu.write_lines()
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.write("Score: {}  High Score: {}".format(score, high_score_alien_mode), 24, "normal",
-                        scale_factor)
+                t.write("Score: {}  High Score: {}".format(score, high_score_alien_mode), 24, "normal")
             elif t.id == 2:
                 for yi in yellow_power_up_indicator_turtle:
                     if yi.get_power_up_active() == 1:
-                        t.write("{}".format(yi.get_power_up_timer()), 24, "normal", scale_factor)
+                        t.write("{}".format(yi.get_power_up_timer()), 24, "normal")
                     else:
-                        t.write("0", 24, "normal", scale_factor)
+                        t.write("0", 24, "normal")
             elif t.id == 3:
                 for bi in blue_power_up_indicator_turtle:
                     if bi.get_power_up_active() == 1:
-                        t.write("{}".format(bi.get_power_up_timer()), 24, "normal", scale_factor)
+                        t.write("{}".format(bi.get_power_up_timer()), 24, "normal")
                     else:
-                        t.write("0", 24, "normal", scale_factor)
+                        t.write("0", 24, "normal")
             elif t.id == 4:
                 for ei in extra_power_up_indicator_turtle:
                     if ei.get_power_up_active() == 1:
-                        t.write("{}".format(ei.get_power_up_timer()), 24, "normal", scale_factor)
+                        t.write("{}".format(ei.get_power_up_timer()), 24, "normal")
                     else:
-                        t.write("0", 24, "normal", scale_factor)
+                        t.write("0", 24, "normal")
             elif t.id == 5:
-                t.write_left("{}".format(shop_config.total_coins), 24, "normal", scale_factor)
+                t.write_left("{}".format(shop_config.total_coins), 24, "normal")
             elif t.id == 6:
-                t.write("God Mode Is On!", 24, "normal", scale_factor)
+                t.write("God Mode Is On!", 24, "normal")
     elif mode == "Shop":
         if refresh_variables.refresh_button == 1:
             for bu in button.buttons_on_screen_list:
@@ -1464,73 +1464,73 @@ def update_text():
             for pa in panel_turtle:
                 pa.write_text(scale_factor, scale_factor_X, scale_factor_Y, fullscreen)
             refresh_variables.refresh_panel = 0
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.write("Shop", 72, "bold", scale_factor)
+                t.write("Shop", 72, "bold")
             elif t.id == 2:
-                t.write_left("{}".format(shop_config.total_coins), 24, "normal", scale_factor)
+                t.write_left("{}".format(shop_config.total_coins), 24, "normal")
             if refresh_variables.refresh_text == 1:
                 if page == "Machine_Mode":
                     if t.id == 3:
-                        t.write_left("Machine Mode", 36, "bold", scale_factor)
+                        t.write_left("Machine Mode", 36, "bold")
                     elif t.id == 5:
-                        t.write_left(" 5000", 22, "normal", scale_factor)
+                        t.write_left(" 5000", 22, "normal")
                     elif t.id == 6:
-                        t.write_left(" 15000", 22, "normal", scale_factor)
+                        t.write_left(" 15000", 22, "normal")
                     elif t.id == 7:
-                        t.write_left(" 40000", 22, "normal", scale_factor)
+                        t.write_left(" 40000", 22, "normal")
                     elif t.id == 8:
-                        t.write_left(" 100000", 22, "normal", scale_factor)
+                        t.write_left(" 100000", 22, "normal")
                 elif page == "Alien_Mode":
                     if t.id == 3:
-                        t.write_left("Alien Mode", 36, "bold", scale_factor)
+                        t.write_left("Alien Mode", 36, "bold")
                     elif t.id == 5:
-                        t.write_left(" 5000", 22, "normal", scale_factor)
+                        t.write_left(" 5000", 22, "normal")
                     elif t.id == 6:
-                        t.write_left(" 15000", 22, "normal", scale_factor)
+                        t.write_left(" 15000", 22, "normal")
                     elif t.id == 7:
-                        t.write_left(" 40000", 22, "normal", scale_factor)
+                        t.write_left(" 40000", 22, "normal")
                     elif t.id == 8:
-                        t.write_left(" 100000", 22, "normal", scale_factor)
+                        t.write_left(" 100000", 22, "normal")
                 elif page == "Power_Ups":
                     if t.id == 3:
-                        t.write_left("Power Ups", 36, "bold", scale_factor)
+                        t.write_left("Power Ups", 36, "bold")
                     elif t.id == 4:
                         if shop_config.yellow_power_up_level == 1:
-                            t.write_left(" 1000", 22, "normal", scale_factor)
+                            t.write_left(" 1000", 22, "normal")
                         elif shop_config.yellow_power_up_level == 2:
-                            t.write_left(" 5000", 22, "normal", scale_factor)
+                            t.write_left(" 5000", 22, "normal")
                         elif shop_config.yellow_power_up_level == 3:
-                            t.write_left(" 15000", 22, "normal", scale_factor)
+                            t.write_left(" 15000", 22, "normal")
                         elif shop_config.yellow_power_up_level == 4:
-                            t.write_left(" 30000", 22, "normal", scale_factor)
+                            t.write_left(" 30000", 22, "normal")
                     elif t.id == 5:
                         if shop_config.blue_power_up_level == 1:
-                            t.write_left(" 1000", 22, "normal", scale_factor)
+                            t.write_left(" 1000", 22, "normal")
                         elif shop_config.blue_power_up_level == 2:
-                            t.write_left(" 5000", 22, "normal", scale_factor)
+                            t.write_left(" 5000", 22, "normal")
                         elif shop_config.blue_power_up_level == 3:
-                            t.write_left(" 15000", 22, "normal", scale_factor)
+                            t.write_left(" 15000", 22, "normal")
                         elif shop_config.blue_power_up_level == 4:
-                            t.write_left(" 30000", 22, "normal", scale_factor)
+                            t.write_left(" 30000", 22, "normal")
                     elif t.id == 6:
                         if shop_config.green_power_up_level == 1:
-                            t.write_left(" 1000", 22, "normal", scale_factor)
+                            t.write_left(" 1000", 22, "normal")
                         elif shop_config.green_power_up_level == 2:
-                            t.write_left(" 5000", 22, "normal", scale_factor)
+                            t.write_left(" 5000", 22, "normal")
                         elif shop_config.green_power_up_level == 3:
-                            t.write_left(" 15000", 22, "normal", scale_factor)
+                            t.write_left(" 15000", 22, "normal")
                         elif shop_config.green_power_up_level == 4:
-                            t.write_left(" 30000", 22, "normal", scale_factor)
+                            t.write_left(" 30000", 22, "normal")
                     elif t.id == 7:
                         if shop_config.red_power_up_level == 1:
-                            t.write_left(" 1000", 22, "normal", scale_factor)
+                            t.write_left(" 1000", 22, "normal")
                         elif shop_config.red_power_up_level == 2:
-                            t.write_left(" 5000", 22, "normal", scale_factor)
+                            t.write_left(" 5000", 22, "normal")
                         elif shop_config.red_power_up_level == 3:
-                            t.write_left(" 15000", 22, "normal", scale_factor)
+                            t.write_left(" 15000", 22, "normal")
                         elif shop_config.red_power_up_level == 4:
-                            t.write_left(" 30000", 22, "normal", scale_factor)
+                            t.write_left(" 30000", 22, "normal")
         if refresh_variables.refresh_text == 1:
             refresh_variables.refresh_text = 0
     elif mode == "Stats":
@@ -1539,59 +1539,59 @@ def update_text():
                 bu.write_lines()
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.write("Statistics", 72, "bold", scale_factor)
+                t.write("Statistics", 72, "bold")
             if refresh_variables.refresh_text == 1:
                 if t.id == 2:
-                    t.write("Machine Mode", 48, "bold", scale_factor)
+                    t.write("Machine Mode", 48, "bold")
                 elif t.id == 3:
-                    t.write("Alien Mode", 48, "bold", scale_factor)
+                    t.write("Alien Mode", 48, "bold")
                 elif t.id == 4:
-                    t.write("High Score: {}".format(high_score_machine_war), 24, "normal", scale_factor)
+                    t.write("High Score: {}".format(high_score_machine_war), 24, "normal")
                 elif t.id == 5:
-                    t.write("Bosses Killed: {}".format(bosses_killed), 24, "normal", scale_factor)
+                    t.write("Bosses Killed: {}".format(bosses_killed), 24, "normal")
                 elif t.id == 6:
-                    t.write("Red Bots Killed: {}".format(red_bots_killed), 24, "normal", scale_factor)
+                    t.write("Red Bots Killed: {}".format(red_bots_killed), 24, "normal")
                 elif t.id == 7:
-                    t.write("Yellow Bots Killed: {}".format(yellow_bots_killed), 24, "normal", scale_factor)
+                    t.write("Yellow Bots Killed: {}".format(yellow_bots_killed), 24, "normal")
                 elif t.id == 8:
-                    t.write("Blue Bots Killed: {}".format(blue_bots_killed), 24, "normal", scale_factor)
+                    t.write("Blue Bots Killed: {}".format(blue_bots_killed), 24, "normal")
                 elif t.id == 9:
-                    t.write("Deaths: {}".format(classic_deaths), 24, "normal", scale_factor)
+                    t.write("Deaths: {}".format(classic_deaths), 24, "normal")
                 elif t.id == 10:
-                    t.write("Damage Taken: {}".format(machine_damage_taken), 24, "normal", scale_factor)
+                    t.write("Damage Taken: {}".format(machine_damage_taken), 24, "normal")
                 elif t.id == 11:
-                    t.write("Lasers Fired: {}".format(classic_lasers_fired), 24, "normal", scale_factor)
+                    t.write("Lasers Fired: {}".format(classic_lasers_fired), 24, "normal")
                 elif t.id == 12:
-                    t.write("Power Ups Picked Up: {}".format(classic_power_ups_picked_up), 24, "normal", scale_factor)
+                    t.write("Power Ups Picked Up: {}".format(classic_power_ups_picked_up), 24, "normal")
                 elif t.id == 13:
-                    t.write("Coins Collected: {}".format(machine_coins_collected), 24, "normal", scale_factor)
+                    t.write("Coins Collected: {}".format(machine_coins_collected), 24, "normal")
                 elif t.id == 14:
-                    t.write("High Score: {}".format(high_score_alien_mode), 24, "normal", scale_factor)
+                    t.write("High Score: {}".format(high_score_alien_mode), 24, "normal")
                 elif t.id == 15:
-                    t.write("UFOs Killed: {}".format(ufos_killed), 24, "normal", scale_factor)
+                    t.write("UFOs Killed: {}".format(ufos_killed), 24, "normal")
                 elif t.id == 16:
-                    t.write("Big Aliens Killed: {}".format(big_aliens_killed), 24, "normal", scale_factor)
+                    t.write("Big Aliens Killed: {}".format(big_aliens_killed), 24, "normal")
                 elif t.id == 17:
-                    t.write("Medium Aliens Killed: {}".format(medium_aliens_killed), 24, "normal", scale_factor)
+                    t.write("Medium Aliens Killed: {}".format(medium_aliens_killed), 24, "normal")
                 elif t.id == 18:
-                    t.write("Small Aliens Killed: {}".format(small_aliens_killed), 24, "normal", scale_factor)
+                    t.write("Small Aliens Killed: {}".format(small_aliens_killed), 24, "normal")
                 elif t.id == 19:
-                    t.write("Deaths: {}".format(alien_deaths), 24, "normal", scale_factor)
+                    t.write("Deaths: {}".format(alien_deaths), 24, "normal")
                 elif t.id == 20:
-                    t.write("Damage Taken: {}".format(damage_taken), 24, "normal", scale_factor)
+                    t.write("Damage Taken: {}".format(damage_taken), 24, "normal")
                 elif t.id == 21:
-                    t.write("Lasers Fired: {}".format(alien_lasers_fired), 24, "normal", scale_factor)
+                    t.write("Lasers Fired: {}".format(alien_lasers_fired), 24, "normal")
                 elif t.id == 22:
-                    t.write("Jumps: {}".format(jumps), 24, "normal", scale_factor)
+                    t.write("Jumps: {}".format(jumps), 24, "normal")
                 elif t.id == 23:
-                    t.write("Power Ups Picked Up: {}".format(alien_power_ups_picked_up), 24, "normal", scale_factor)
+                    t.write("Power Ups Picked Up: {}".format(alien_power_ups_picked_up), 24, "normal")
                 elif t.id == 24:
-                    t.write("Coins Collected: {}".format(alien_coins_collected), 24, "normal", scale_factor)
+                    t.write("Coins Collected: {}".format(alien_coins_collected), 24, "normal")
                     refresh_variables.refresh_text = 0
             if t.id == 25:
-                t.write("God Mode Is On!", 24, "normal", scale_factor)
+                t.write("God Mode Is On!", 24, "normal")
     elif mode == "Settings":
         for bu in button.buttons_on_screen_list:
             if refresh_variables.refresh_button == 1:
@@ -1628,11 +1628,11 @@ def update_text():
             refresh_variables.refresh_indicator = 0
         elif refresh_variables.refresh_indicator == 1:
             refresh_variables.refresh_indicator = 2
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.write("Settings", 72, "bold", scale_factor)
+                t.write("Settings", 72, "bold")
             elif t.id == 2:
-                t.write("God Mode Is On!", 24, "normal", scale_factor)
+                t.write("God Mode Is On!", 24, "normal")
     elif mode == "Controls":
         if refresh_variables.refresh_button == 1 or refresh_variables.refresh_button == 2:
             for bu in button.buttons_on_screen_list:
@@ -1664,11 +1664,11 @@ def update_text():
             refresh_variables.refresh_button = 2
         elif refresh_variables.refresh_button == 2:
             refresh_variables.refresh_button = 0
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.write("Controls", 72, "bold", scale_factor)
+                t.write("Controls", 72, "bold")
             elif t.id == 2:
-                t.write("God Mode Is On!", 24, "normal", scale_factor)
+                t.write("God Mode Is On!", 24, "normal")
 
 
 """
@@ -1699,47 +1699,6 @@ def spawn_panel():
                 if mode == "Shop":
                     pa.reinstate_to_shop(scale_factor_X, scale_factor_Y, fullscreen)
                 panel_index = panel_index + 1
-
-
-def spawn_text_box(id, x, y, color):
-    """
-        Spawn a textbox on the screen with the given coordinates.
-
-        :param id: The unique identifier for the textbox
-        :type id: int
-
-        :param x: The x-coordinate of the text box
-        :type x: float
-
-        :param y: The y-coordinate of the text box
-        :type y: float
-
-        :param color: The color of the text in the text box.
-        :type color: string
-
-        :return: None
-    """
-
-    # All spawn functions have this same procedure to check for existing sprites to use
-    # This is done because the turtle module makes it impossible to actually fully get rid of a turtle while the
-    #   program is running.
-    # In order to maintain performance, all turtle sprites are reused as often as possible.
-    # This is why a global list exists for every type of sprite in the game.
-    global current_text_index
-    if len(all_text_list) <= len(text_on_screen_list):
-        text_box = Text(id, x, y, color)
-        text_on_screen_list.append(text_box)
-        current_text_index = current_text_index + 1
-        all_text_list.append(text_box)
-    else:
-        for t in all_text_list:
-            if t.in_use == 1:
-                continue
-            else:
-                t.reinstate(id, x, y, color)
-                text_on_screen_list.append(t)
-                current_text_index = current_text_index + 1
-                break
 
 
 def spawn_price_label(id, x, y):
@@ -2413,11 +2372,11 @@ while True:
             for pa in panel_turtle:
                 pa.remove()
             panel_index = 0
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             t.get_text_box().clear()
             t.remove()
-        text_on_screen_list.clear()
-        current_text_index = 0
+        textbox.text_on_screen_list.clear()
+        textbox.current_text_index = 0
         for pl in price_label_on_screen_list:
             pl.remove()
         price_label_on_screen_list.clear()
@@ -2495,14 +2454,14 @@ while True:
                 button.spawn_button("Title_Small", i + 1)
 
         # Spawn the title mode text (Like title and bversion number in the bottom corner)
-        if current_text_index == 0:
-            spawn_text_box(1, 0, 155 * scale_factor_Y, "red")
-            spawn_text_box(2, 510 * scale_factor_X, -347 * scale_factor_Y, "white")
+        if textbox.current_text_index == 0:
+            textbox.spawn_text_box(1, 0, 155 * scale_factor_Y, "red")
+            textbox.spawn_text_box(2, 510 * scale_factor_X, -347 * scale_factor_Y, "white")
             if god_mode == 1:
-                spawn_text_box(3, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
-        for t in text_on_screen_list:
+                textbox.spawn_text_box(3, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
+        for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.move(mode, scale_factor_X)
+                t.move(mode)
 
         # detect if the buttons have been clicked
         for bu in button.buttons_on_screen_list:
@@ -2543,14 +2502,14 @@ while True:
         # This includes the power up timers
         # The power up timers are created as just ordinary text boxes with the correct colors
         # This is done to ensure turtle are being reused
-        if current_text_index == 0:
-            spawn_text_box(1, 0, 320 * scale_factor_Y, "white")
-            spawn_text_box(2, -65 * scale_factor_X, 278 * scale_factor_Y, "#737000")
-            spawn_text_box(3, 10 * scale_factor_X, 278 * scale_factor_Y, "#00001A")
-            spawn_text_box(4, 80 * scale_factor_X, 278 * scale_factor_Y, "#001C00")
-            spawn_text_box(5, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
+        if textbox.current_text_index == 0:
+            textbox.spawn_text_box(1, 0, 320 * scale_factor_Y, "white")
+            textbox.spawn_text_box(2, -65 * scale_factor_X, 278 * scale_factor_Y, "#737000")
+            textbox.spawn_text_box(3, 10 * scale_factor_X, 278 * scale_factor_Y, "#00001A")
+            textbox.spawn_text_box(4, 80 * scale_factor_X, 278 * scale_factor_Y, "#001C00")
+            textbox.spawn_text_box(5, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
             if god_mode == 1:
-                spawn_text_box(6, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
+                textbox.spawn_text_box(6, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Spawn the coin indicator
         if coin_indicator_index == 0:
@@ -3010,7 +2969,7 @@ while True:
                 b.move_boss(p.get_death_animation(), scale_factor_X, scale_factor_Y)
 
         # Check if the power ups are active or not
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             # If they are, activate the power up timers
             if t.id == 2:
                 if yellow_power_up_indicator_turtle[0].get_power_up_active() == 1:
@@ -3172,14 +3131,14 @@ while True:
         # This includes the power up timers
         # The power up timers are created as just ordinary text boxes with the correct colors
         # This is done to ensure turtle are being reused
-        if current_text_index == 0:
-            spawn_text_box(1, 0, 320 * scale_factor_Y, "white")
-            spawn_text_box(2, -65 * scale_factor_X, 278 * scale_factor_Y, "#737000")
-            spawn_text_box(3, 10 * scale_factor_X, 278 * scale_factor_Y, "#00001A")
-            spawn_text_box(4, 80 * scale_factor_X, 278 * scale_factor_Y, "#300000")
-            spawn_text_box(5, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
+        if textbox.current_text_index == 0:
+            textbox.spawn_text_box(1, 0, 320 * scale_factor_Y, "white")
+            textbox.spawn_text_box(2, -65 * scale_factor_X, 278 * scale_factor_Y, "#737000")
+            textbox.spawn_text_box(3, 10 * scale_factor_X, 278 * scale_factor_Y, "#00001A")
+            textbox.spawn_text_box(4, 80 * scale_factor_X, 278 * scale_factor_Y, "#300000")
+            textbox.spawn_text_box(5, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
             if god_mode == 1:
-                spawn_text_box(6, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
+                textbox.spawn_text_box(6, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Spawn all of the Alien Mode background objects
         if sun_index == 0:
@@ -3225,7 +3184,7 @@ while True:
                     config.write(configfile)
 
         # Check if the power ups are active or not
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             # If they are, activate the power up timers
             if t.id == 2:
                 if yellow_power_up_indicator_turtle[0].get_power_up_active() == 1:
@@ -3880,10 +3839,10 @@ while True:
                     wn.onscreenclick(display_power_up_page)
 
         # Spawn all the necessary standalone text
-        if current_text_index == 0:
-            spawn_text_box(1, -75 * scale_factor_X, 240 * scale_factor_Y, "red")
-            spawn_text_box(2, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
-            spawn_text_box(3, -500 * scale_factor_X, 190 * scale_factor_Y, "#ff5349")
+        if textbox.current_text_index == 0:
+            textbox.spawn_text_box(1, -75 * scale_factor_X, 240 * scale_factor_Y, "red")
+            textbox.spawn_text_box(2, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
+            textbox.spawn_text_box(3, -500 * scale_factor_X, 190 * scale_factor_Y, "#ff5349")
 
         if current_selector_index == 0:
             spawn_selector("Tab")
@@ -3893,12 +3852,12 @@ while True:
                 for i in range(5):
                     button.spawn_button("Shop_Slot", i + 1, page)
 
-            if current_text_index == 3 and buy_button_pressed == 0:
+            if textbox.current_text_index == 3 and buy_button_pressed == 0:
                 counter = 4
                 for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Shop_Slot":
                         if bu.get_indicator_toggled() == 1:
-                            spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                            textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                             spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
 
@@ -3955,12 +3914,12 @@ while True:
                 for i in range(5):
                     button.spawn_button("Shop_Slot", i + 1, page)
 
-            if current_text_index == 3 and buy_button_pressed == 0:
+            if textbox.current_text_index == 3 and buy_button_pressed == 0:
                 counter = 4
                 for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Shop_Slot":
                         if bu.get_indicator_toggled() == 1:
-                            spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                            textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                             spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
 
@@ -4017,25 +3976,25 @@ while True:
                 for i in range(4):
                     button.spawn_button("Power_Up_Slot", i + 1)
 
-            if current_text_index == 3 and buy_button_pressed == 0:
+            if textbox.current_text_index == 3 and buy_button_pressed == 0:
                 counter = 4
                 for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Power_Up_Slot":
                         if bu.get_id() == 1:
                             if shop_config.yellow_power_up_level != 5 and shop_config.yellow_power_up_level != 0:
-                                spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                                textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                                 spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         elif bu.get_id() == 2:
                             if shop_config.blue_power_up_level != 5 and shop_config.blue_power_up_level != 0:
-                                spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                                textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                                 spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         elif bu.get_id() == 3:
                             if shop_config.green_power_up_level != 5 and shop_config.green_power_up_level != 0:
-                                spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                                textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                                 spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         elif bu.get_id() == 4:
                             if shop_config.red_power_up_level != 5 and shop_config.red_power_up_level != 0:
-                                spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                                textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                                 spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
 
@@ -4079,9 +4038,9 @@ while True:
             spawn_coin_indicator()
 
         # Move the title text back and fourth across the screen as needed
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.move(mode, scale_factor_X)
+                t.move(mode)
                 break
 
     """
@@ -4100,21 +4059,21 @@ while True:
                 wn.onscreenclick(launch_title_mode)
 
         # Create the statistics text
-        if current_text_index == 0:
-            spawn_text_box(1, 0, 240 * scale_factor_Y, "red")
-            spawn_text_box(2, -320 * scale_factor_X, 140 * scale_factor_Y, "#ff5349")
-            spawn_text_box(3, 320 * scale_factor_X, 140 * scale_factor_Y, "#ff5349")
+        if textbox.current_text_index == 0:
+            textbox.spawn_text_box(1, 0, 240 * scale_factor_Y, "red")
+            textbox.spawn_text_box(2, -320 * scale_factor_X, 140 * scale_factor_Y, "#ff5349")
+            textbox.spawn_text_box(3, 320 * scale_factor_X, 140 * scale_factor_Y, "#ff5349")
             for i in range(10):
-                spawn_text_box(i + 4, -320 * scale_factor_X, (90 - (i * 40)) * scale_factor_Y, "white")
+                textbox.spawn_text_box(i + 4, -320 * scale_factor_X, (90 - (i * 40)) * scale_factor_Y, "white")
             for i in range(11):
-                spawn_text_box(13 + i + 1, 320 * scale_factor_X, (90 - (i * 40)) * scale_factor_Y, "white")
+                textbox.spawn_text_box(13 + i + 1, 320 * scale_factor_X, (90 - (i * 40)) * scale_factor_Y, "white")
             if god_mode == 1:
-                spawn_text_box(25, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
+                textbox.spawn_text_box(25, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Move the title text back and fourth across the screen as needed
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.move(mode, scale_factor_X)
+                t.move(mode)
                 break
 
     """
@@ -4165,15 +4124,15 @@ while True:
                     wn.onscreenclick(toggle_vsync)
 
         # Create all additional text boxes
-        if current_text_index == 0:
-            spawn_text_box(1, 0, 240 * scale_factor_Y, "red")
+        if textbox.current_text_index == 0:
+            textbox.spawn_text_box(1, 0, 240 * scale_factor_Y, "red")
             if god_mode == 1:
-                spawn_text_box(2, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
+                textbox.spawn_text_box(2, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Move the title text left and right across the screen
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.move(mode, scale_factor_X)
+                t.move(mode)
                 break
 
         # Settings Data Updates
@@ -4263,15 +4222,15 @@ while True:
                     wn.onscreenclick(change_jump_key)
 
         # Create any additional text boxes
-        if current_text_index == 0:
-            spawn_text_box(1, 0, 240 * scale_factor_Y, "red")
+        if textbox.current_text_index == 0:
+            textbox.spawn_text_box(1, 0, 240 * scale_factor_Y, "red")
             if god_mode == 1:
-                spawn_text_box(2, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
+                textbox.spawn_text_box(2, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Move the title text left and right across the screen
-        for t in text_on_screen_list:
+        for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.move(mode, scale_factor_X)
+                t.move(mode)
                 break
 
         # Control Setting Conflict Updates
