@@ -38,7 +38,7 @@ from setup.SpriteSetup import selector
 from setup.SpriteSetup import price_label
 from setup.SpriteSetup import earth
 from setup.SpriteSetup import sun
-#from setup.SpriteSetup import background_objects
+from setup.SpriteSetup import background_objects
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
@@ -57,9 +57,6 @@ from components.enemy.AlienSmallAlien import SmallAlien
 from components.enemy.AlienMediumAlien import MediumAlien
 from components.enemy.AlienLargeAlien import LargeAlien
 from components.enemy.AlienUFO import UFO
-from components.EffectBackgroundEffect import Earth
-from components.EffectBackgroundEffect import Sun
-from components.EffectBackgroundEffect import BackgroundObjects
 
 """
     The functions below are for the player controls.
@@ -1994,71 +1991,6 @@ def spawn_boss():
                 break
 
 
-def spawn_sun():
-    """
-        Spawn the sun in the background.
-
-        :return: None
-    """
-
-    global sun_index
-    if len(sun_turtle) == 0:
-        sun = Sun(scale_factor_X, scale_factor_Y, fullscreen)
-        sun_turtle.append(sun)
-        sun_index = sun_index + 1
-    else:
-        for s in sun_turtle:
-            if s.get_sun().isvisible():
-                continue
-            else:
-                s.reinstate()
-                sun_index = sun_index + 1
-
-
-def spawn_earth():
-    """
-        Spawn the Earth in the background.
-
-        :return: None
-    """
-
-    global earth_index
-    if len(earth_turtle) == 0:
-        earth = Earth(scale_factor_X, scale_factor_Y, fullscreen)
-        earth_turtle.append(earth)
-        earth_index = earth_index + 1
-    else:
-        for e in earth_turtle:
-            if e.get_earth().isvisible():
-                continue
-            else:
-                e.reinstate()
-                earth_turtle.append(e)
-                earth_index = earth_index + 1
-
-
-def spawn_background_objects():
-    """
-        Spawn the Alien Mode background objects.
-
-        :return: None
-    """
-
-    global background_objects_index
-    if len(background_objects) == 0:
-        background_object = BackgroundObjects(scale_factor_X, scale_factor_Y, fullscreen)
-        background_objects.append(background_object)
-        background_objects_index = background_objects_index + 1
-    else:
-        for bo in background_objects:
-            if bo.get_ground().isvisible():
-                continue
-            else:
-                bo.reinstate()
-                background_objects.append(bo)
-                background_objects_index = background_objects_index + 1
-
-
 def spawn_human_player():
     """
         Spawn the human player on the screen.
@@ -2336,17 +2268,17 @@ while True:
     # The Alien Mode background objects are created right when the game is launched.
     # This is done to make sure that they are truely in the background and that nothing lies behind these sprites.
     # Since turtle does not allow a way to push a turtle in front of another turtle, this is the only way to do this.
-    if len(background_objects) == 0:
-        spawn_background_objects()
-        for bo in background_objects:
+    if len(background_objects.background_objects_turtle) == 0:
+        background_objects.spawn_background_objects()
+        for bo in background_objects.background_objects_turtle:
             bo.remove()
-        background_objects_index = 0
+        background_objects.background_objects_index = 0
 
-    if len(sun_turtle) == 0:
-        spawn_sun()
-        for s in sun_turtle:
+    if len(sun.sun_turtle) == 0:
+        sun.spawn_sun()
+        for s in sun.sun_turtle:
             s.remove()
-        sun_index = 0
+        sun.sun_index = 0
 
     """
         When Title Mode is on
@@ -3080,12 +3012,12 @@ while True:
                 textbox.spawn_text_box(6, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Spawn all of the Alien Mode background objects
-        if sun_index == 0:
-            spawn_sun()
-        if earth_index == 0:
-            spawn_earth()
-        if background_objects_index == 0:
-            spawn_background_objects()
+        if sun.sun_index == 0:
+            sun.spawn_sun()
+        if earth.earth_index == 0:
+            earth.spawn_earth()
+        if background_objects.background_objects_index == 0:
+            background_objects.spawn_background_objects()
         # Spawn the human player
         if current_human_index == 0:
             spawn_human_player()
@@ -3291,8 +3223,8 @@ while True:
             ufo_hit_value = 0
 
         # Move the sun along the ellipse
-        for s in sun_turtle:
-            s.update_position(scale_factor_X, scale_factor_Y)
+        for s in sun.sun_turtle:
+            s.update_position()
 
         # Check if a right movement of the player needs to be executed
         for h in current_human:
@@ -3706,15 +3638,15 @@ while True:
     # If Alien Mode is toggled off
     else:
         # Remove all the Alien Mode exclusive sprites from the screen
-        for s in sun_turtle:
+        for s in sun.sun_turtle:
             s.remove()
-        sun_index = 0
-        for e in earth_turtle:
+        sun.sun_index = 0
+        for e in earth.earth_turtle:
             e.remove()
-        earth_index = 0
-        for bo in background_objects:
+        earth.earth_index = 0
+        for bo in background_objects.background_objects_turtle:
             bo.remove()
-        background_objects_index = 0
+        background_objects.background_objects_index = 0
         for h in current_human:
             h.remove(scale_factor_Y)
         current_human.clear()

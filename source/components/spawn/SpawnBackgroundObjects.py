@@ -19,13 +19,12 @@ from components.EffectBackgroundEffect import BackgroundObjects
 
 
 class SpawnSun:
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         self.sun_turtle = []
         self.sun_index = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
-        self.fullscreen = fullscreen
 
     def __del__(self):
         del self.sun_turtle
@@ -39,7 +38,7 @@ class SpawnSun:
         """
 
         if len(self.sun_turtle) == 0:
-            sun = Sun(self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+            sun = Sun(self.scale_factor_x, self.scale_factor_y)
             self.sun_turtle.append(sun)
             self.sun_index = self.sun_index + 1
         else:
@@ -52,13 +51,12 @@ class SpawnSun:
 
 
 class SpawnEarth:
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         self.earth_turtle = []
         self.earth_index = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
-        self.fullscreen = fullscreen
 
     def __del__(self):
         del self.earth_turtle
@@ -72,7 +70,7 @@ class SpawnEarth:
         """
 
         if len(self.earth_turtle) == 0:
-            earth = Earth(self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+            earth = Earth(self.scale_factor_x, self.scale_factor_y)
             self.earth_turtle.append(earth)
             self.earth_index = self.earth_index + 1
         else:
@@ -86,13 +84,12 @@ class SpawnEarth:
 
 
 class SpawnBackgroundObjects:
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         self.background_objects_turtle = []
         self.background_objects_index = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
-        self.fullscreen = fullscreen
 
     def __del__(self):
         del self.background_objects_turtle
@@ -106,7 +103,7 @@ class SpawnBackgroundObjects:
         """
 
         if len(self.background_objects_turtle) == 0:
-            background_object = BackgroundObjects(self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+            background_object = BackgroundObjects(self.scale_factor_x, self.scale_factor_y)
             self.background_objects_turtle.append(background_object)
             self.background_objects_index = self.background_objects_index + 1
         else:

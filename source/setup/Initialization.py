@@ -134,18 +134,6 @@ boss_update_value = 0
 boss_hit_value = 0
 boss_index = 0
 
-# Earth Object setup
-earth_turtle = []
-earth_index = 0
-
-# Sun Object setup
-sun_turtle = []
-sun_index = 0
-
-# Background Object setup
-background_objects = []
-background_objects_index = 0
-
 # Human setup
 all_human = []
 current_human = []

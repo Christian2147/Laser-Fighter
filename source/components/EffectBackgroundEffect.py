@@ -25,6 +25,10 @@
 import turtle
 import math
 import time
+from setup.TextureSetup import EARTH_TEXTURE
+from setup.TextureSetup import SUN_TEXTURE
+from setup.TextureSetup import SPACE_SHIP_TEXTURE
+from setup.TextureSetup import GROUND_TEXTURE
 
 
 class Earth:
@@ -35,7 +39,7 @@ class Earth:
             earth (turtle.Turtle()): The Earth sprite
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         """
             Creates an Earth sprite and spawns it on the screen
 
@@ -44,20 +48,17 @@ class Earth:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.earth = turtle.Turtle()
-        if fullscreen == 1:
-            self.earth.shape("Textures/Background/Earth_Scaled.gif")
-        else:
-            self.earth.shape("Textures/Background/Earth.gif")
+        self.earth.shape(EARTH_TEXTURE)
         self.earth.shapesize(3 * scale_factor_y, 3 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.earth.penup()
         self.earth.goto(0, 150)
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
 
     def __del__(self):
         """
@@ -112,7 +113,7 @@ class Sun:
                 regardless of frame rate)
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         """
             Creates a Sun sprite and spawns it on the screen
 
@@ -121,16 +122,10 @@ class Sun:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.sun = turtle.Turtle()
-        if fullscreen == 1:
-            self.sun.shape("Textures/Background/Sun_Scaled.gif")
-        else:
-            self.sun.shape("Textures/Background/Sun.gif")
+        self.sun.shape(SUN_TEXTURE)
         self.sun.shapesize(4 * scale_factor_y, 4 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.sun.penup()
@@ -145,6 +140,9 @@ class Sun:
         self.y_coordinate = 350 * math.sin(math.radians(self.angle)) - 150
 
         self.sun.goto(self.x_coordinate * scale_factor_x, self.y_coordinate * scale_factor_y)
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
 
     def __del__(self):
         """
@@ -185,15 +183,9 @@ class Sun:
         self.sun.hideturtle()
         self.movement_activated = 0
 
-    def update_position(self, scale_factor_x, scale_factor_y):
+    def update_position(self):
         """
             Updates the suns position over a given interval of time on its elliptical path across the screen.
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
 
             :return: None
         """
@@ -219,7 +211,7 @@ class Sun:
             self.y_coordinate = 350 * math.sin(math.radians(self.angle)) - 150
 
             # Move the sun to this new location
-            self.sun.goto(self.x_coordinate * scale_factor_x, self.y_coordinate * scale_factor_y)
+            self.sun.goto(self.x_coordinate * self.scale_factor_x, self.y_coordinate * self.scale_factor_y)
             self.start_time = time.time()
 
 
@@ -233,7 +225,7 @@ class BackgroundObjects:
             ship (turtle.Turtle()): The player's ship sprite
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         """
             Creates the ground level background sprites and spawns them on the screen
 
@@ -242,17 +234,11 @@ class BackgroundObjects:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         # Ground is created
         self.ground = turtle.Turtle()
-        if fullscreen == 1:
-            self.ground.shape("Textures/Ground/Ground_Scaled.gif")
-        else:
-            self.ground.shape("Textures/Ground/Ground.gif")
+        self.ground.shape(GROUND_TEXTURE)
         self.ground.shapesize(22.5 * scale_factor_y, 80 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.ground.penup()
@@ -260,14 +246,14 @@ class BackgroundObjects:
 
         # The players ship is created
         self.ship = turtle.Turtle()
-        if fullscreen == 1:
-            self.ship.shape("Textures/Background/Space_Ship_Scaled.gif")
-        else:
-            self.ship.shape("Textures/Background/Space_Ship.gif")
+        self.ship.shape(SPACE_SHIP_TEXTURE)
         self.ship.shapesize(3 * scale_factor_y, 6 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.ship.penup()
         self.ship.goto(0, -116 * scale_factor_y)
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
 
     def __del__(self):
         """

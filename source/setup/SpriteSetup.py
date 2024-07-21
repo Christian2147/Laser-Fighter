@@ -36,9 +36,9 @@ selector = SpawnSelector(scale_factor_X, scale_factor_Y)
 
 price_label = SpawnPriceLabel()
 
-sun = SpawnSun(scale_factor_X, scale_factor_Y, fullscreen)
+sun = SpawnSun(scale_factor_X, scale_factor_Y)
 
-earth = SpawnEarth(scale_factor_X, scale_factor_Y, fullscreen)
+earth = SpawnEarth(scale_factor_X, scale_factor_Y)
 
-#background_objects = SpawnBackgroundObjects(scale_factor_X, scale_factor_Y, fullscreen)
+background_objects = SpawnBackgroundObjects(scale_factor_X, scale_factor_Y)
 
