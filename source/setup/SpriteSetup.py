@@ -19,4 +19,4 @@ from setup.ScreenSetup import scale_factor_Y
 from setup.ScreenSetup import fullscreen
 from components.spawn.SpawnButton import SpawnButton
 
-button = SpawnButton(scale_factor, scale_factor_X, scale_factor_Y, fullscreen)
+button = SpawnButton(scale_factor, scale_factor_X, scale_factor_Y)
