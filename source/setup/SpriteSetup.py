@@ -32,6 +32,10 @@ from components.spawn.SpawnPowerUp import SpawnExtraPowerUpIndicator
 from components.spawn.SpawnCoin import SpawnCoinIndicator
 from components.spawn.SpawnPlayer import SpawnMachinePlayer
 from components.spawn.SpawnPlayer import SpawnHumanPlayer
+from components.spawn.SpawnMachine import SpawnBlueMachine
+from components.spawn.SpawnMachine import SpawnYellowMachine
+from components.spawn.SpawnMachine import SpawnRedMachine
+from components.spawn.SpawnMachine import SpawnMachineBoss
 
 
 button = SpawnButton(scale_factor, scale_factor_X, scale_factor_Y)
@@ -63,3 +67,11 @@ coin_indicator = SpawnCoinIndicator(scale_factor_X, scale_factor_Y)
 machine_player = SpawnMachinePlayer(scale_factor_X, scale_factor_Y)
 
 human_player = SpawnHumanPlayer(scale_factor_X, scale_factor_Y)
+
+blue_machine = SpawnBlueMachine(scale_factor_X, scale_factor_Y)
+
+yellow_machine = SpawnYellowMachine(scale_factor_X, scale_factor_Y)
+
+red_machine = SpawnRedMachine(scale_factor_X, scale_factor_Y)
+
+machine_boss = SpawnMachineBoss(scale_factor_X, scale_factor_Y)
