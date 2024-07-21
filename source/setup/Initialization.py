@@ -87,10 +87,6 @@ buy_button_pressed = 0
 # Initialize the update variables
 refresh_variables = Refresh()
 
-# Panel setup
-panel_turtle = []
-panel_index = 0
-
 # Which item is being displayed
 price_displayed = 0
 

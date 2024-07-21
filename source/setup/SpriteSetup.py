@@ -19,7 +19,16 @@ from setup.ScreenSetup import scale_factor_Y
 from setup.ScreenSetup import fullscreen
 from components.spawn.SpawnButton import SpawnButton
 from components.spawn.SpawnTextBox import SpawnTextbox
+from components.spawn.SpawnGUI import SpawnPanel
+from components.spawn.SpawnGUI import SpawnSelector
+from components.spawn.SpawnGUI import SpawnPriceLabel
 
 button = SpawnButton(scale_factor, scale_factor_X, scale_factor_Y)
 
 textbox = SpawnTextbox(scale_factor, scale_factor_X)
+
+panel = SpawnPanel(scale_factor, scale_factor_X, scale_factor_Y)
+
+selector = SpawnSelector(scale_factor_X, scale_factor_Y, fullscreen)
+
+price_label = SpawnPriceLabel(fullscreen)

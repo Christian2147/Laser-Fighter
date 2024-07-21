@@ -33,10 +33,12 @@ from setup.Initialization import *
 from setup.ScreenSetup import *
 from setup.SpriteSetup import button
 from setup.SpriteSetup import textbox
+from setup.SpriteSetup import panel
+from setup.SpriteSetup import selector
+from setup.SpriteSetup import price_label
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
-from components.gui.InterfacePanel import Panel
 from components.gui.InterfaceSelect import Selector
 from components.gui.InterfacePriceLabel import PriceLabel
 from components.ItemCoin import CoinIndicator
@@ -587,8 +589,8 @@ def execute_slot_function(current_page, slot_id):
         sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
         sound.play()
     if current_page != "Power_Ups":
-        for pa in panel_turtle:
-            pa.set_panel_text(current_page, slot_id, scale_factor_X, scale_factor_Y)
+        for pa in panel.panel_turtle:
+            pa.set_panel_text(current_page, slot_id)
         if current_page == "Machine_Mode":
             if shop_config.machine_slots_unlocked[slot_id - 1] == 1:
                 shop_config.machine_slot_selected = slot_id
@@ -623,29 +625,29 @@ def execute_slot_function(current_page, slot_id):
                 price_displayed = ALIEN_PRICES[slot_id - 1]
     else:
         if slot_id == 1:
-            for pa in panel_turtle:
-                pa.set_panel_text("Yellow_Power_Up", slot_id, scale_factor_X, scale_factor_Y)
+            for pa in panel.panel_turtle:
+                pa.set_panel_text("Yellow_Power_Up", slot_id)
             if shop_config.yellow_power_up_level != 5:
                 price_displayed = POWER_UP_PRICES[shop_config.yellow_power_up_level - 1]
             else:
                 price_displayed = 0
         elif slot_id == 2:
-            for pa in panel_turtle:
-                pa.set_panel_text("Blue_Power_Up", slot_id, scale_factor_X, scale_factor_Y)
+            for pa in panel.panel_turtle:
+                pa.set_panel_text("Blue_Power_Up", slot_id)
             if shop_config.blue_power_up_level != 5:
                 price_displayed = POWER_UP_PRICES[shop_config.blue_power_up_level - 1]
             else:
                 price_displayed = 0
         elif slot_id == 3:
-            for pa in panel_turtle:
-                pa.set_panel_text("Green_Power_Up", slot_id, scale_factor_X, scale_factor_Y)
+            for pa in panel.panel_turtle:
+                pa.set_panel_text("Green_Power_Up", slot_id)
             if shop_config.green_power_up_level != 5:
                 price_displayed = POWER_UP_PRICES[shop_config.green_power_up_level - 1]
             else:
                 price_displayed = 0
         elif slot_id == 4:
-            for pa in panel_turtle:
-                pa.set_panel_text("Red_Power_Up", slot_id, scale_factor_X, scale_factor_Y)
+            for pa in panel.panel_turtle:
+                pa.set_panel_text("Red_Power_Up", slot_id)
             if shop_config.red_power_up_level != 5:
                 price_displayed = POWER_UP_PRICES[shop_config.red_power_up_level - 1]
             else:
@@ -694,7 +696,7 @@ def execute_buy_button(x, y):
                     sound.play()
                 shop_config.total_coins = shop_config.total_coins - price_displayed
                 shop_config.save()
-                for pl in panel_turtle:
+                for pl in panel.panel_turtle:
                     current_slot = pl.get_panel_id()
                 if page == "Machine_Mode":
                     shop_config.machine_slots_unlocked[current_slot - 1] = 1
@@ -1461,8 +1463,8 @@ def update_text():
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
         if refresh_variables.refresh_panel == 1:
-            for pa in panel_turtle:
-                pa.write_text(scale_factor, scale_factor_X, scale_factor_Y, fullscreen)
+            for pa in panel.panel_turtle:
+                pa.write_text()
             refresh_variables.refresh_panel = 0
         for t in textbox.text_on_screen_list:
             if t.id == 1:
@@ -1674,31 +1676,6 @@ def update_text():
 """
     The next functions are for spawning sprites on the screen
 """
-
-
-def spawn_panel():
-    """
-        Spawn a panel on the screen with the correct type based on what screen the player is on.
-
-        :return: None
-    """
-
-    global mode
-    global panel_index
-    # If the panel sprite does not exist
-    if len(panel_turtle) == 0:
-        panel = Panel(mode, scale_factor_X, scale_factor_Y, fullscreen)
-        panel_turtle.append(panel)
-        panel_index = panel_index + 1
-    # If it does exist, just reinstate the existing one
-    else:
-        for pa in panel_turtle:
-            if pa.get_panel_frame().isvisible():
-                continue
-            else:
-                if mode == "Shop":
-                    pa.reinstate_to_shop(scale_factor_X, scale_factor_Y, fullscreen)
-                panel_index = panel_index + 1
 
 
 def spawn_price_label(id, x, y):
@@ -2369,9 +2346,9 @@ while True:
         button.buttons_on_screen_list.clear()
         button.current_button_index = 0
         if page_update != 1:
-            for pa in panel_turtle:
+            for pa in panel.panel_turtle:
                 pa.remove()
-            panel_index = 0
+            panel.panel_index = 0
         for t in textbox.text_on_screen_list:
             t.get_text_box().clear()
             t.remove()
@@ -3813,8 +3790,8 @@ while True:
 
     if mode == "Shop":
         # Create the side panel
-        if panel_index == 0:
-            spawn_panel()
+        if panel.panel_index == 0:
+            panel.spawn_panel(mode)
 
         # Create Main Menu button
         if button.current_button_index == 0:
