@@ -39,14 +39,14 @@ from setup.SpriteSetup import price_label
 from setup.SpriteSetup import earth
 from setup.SpriteSetup import sun
 from setup.SpriteSetup import background_objects
+from setup.SpriteSetup import power_up
+from setup.SpriteSetup import yellow_power_up_indicator
+from setup.SpriteSetup import blue_power_up_indicator
+from setup.SpriteSetup import extra_power_up_indicator
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
 from components.ItemCoin import CoinIndicator
-from components.ItemPowerUp import PowerUp
-from components.ItemPowerUp import YellowIndicator
-from components.ItemPowerUp import BlueIndicator
-from components.ItemPowerUp import ExtraIndicator
 from components.player.MachinePlayer import Player
 from components.player.HumanPlayer import Human
 from components.enemy.MachineBlueMachine import BlueMachine
@@ -1390,19 +1390,19 @@ def update_text():
             if t.id == 1:
                 t.write("Score: {}  High Score: {}".format(score, high_score_machine_war), 24, "normal")
             elif t.id == 2:
-                for yi in yellow_power_up_indicator_turtle:
+                for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
                     if yi.get_power_up_active() == 1:
                         t.write("{}".format(yi.get_power_up_timer()), 24, "normal")
                     else:
                         t.write("0", 24, "normal")
             elif t.id == 3:
-                for bi in blue_power_up_indicator_turtle:
+                for bi in blue_power_up_indicator.blue_power_up_indicator_turtle:
                     if bi.get_power_up_active() == 1:
                         t.write("{}".format(bi.get_power_up_timer()), 24, "normal")
                     else:
                         t.write("0", 24, "normal")
             elif t.id == 4:
-                for ei in extra_power_up_indicator_turtle:
+                for ei in extra_power_up_indicator.extra_power_up_indicator_turtle:
                     if ei.get_power_up_active() == 1:
                         t.write("{}".format(ei.get_power_up_timer()), 24, "normal")
                     else:
@@ -1421,19 +1421,19 @@ def update_text():
             if t.id == 1:
                 t.write("Score: {}  High Score: {}".format(score, high_score_alien_mode), 24, "normal")
             elif t.id == 2:
-                for yi in yellow_power_up_indicator_turtle:
+                for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
                     if yi.get_power_up_active() == 1:
                         t.write("{}".format(yi.get_power_up_timer()), 24, "normal")
                     else:
                         t.write("0", 24, "normal")
             elif t.id == 3:
-                for bi in blue_power_up_indicator_turtle:
+                for bi in blue_power_up_indicator.blue_power_up_indicator_turtle:
                     if bi.get_power_up_active() == 1:
                         t.write("{}".format(bi.get_power_up_timer()), 24, "normal")
                     else:
                         t.write("0", 24, "normal")
             elif t.id == 4:
-                for ei in extra_power_up_indicator_turtle:
+                for ei in extra_power_up_indicator.extra_power_up_indicator_turtle:
                     if ei.get_power_up_active() == 1:
                         t.write("{}".format(ei.get_power_up_timer()), 24, "normal")
                     else:
@@ -1695,163 +1695,6 @@ def spawn_coin_indicator():
             else:
                 ci.reinstate()
                 coin_indicator_index = coin_indicator_index + 1
-
-
-def spawn_yellow_power_up_indicator():
-    """
-        Spawn a yellow power up indicator at the top of the screen.
-
-        :return: None
-    """
-
-    global yellow_power_up_indicator_index
-    if len(yellow_power_up_indicator_turtle) == 0:
-        yellow_power_up_indicator = YellowIndicator(scale_factor_X, scale_factor_Y, fullscreen)
-        yellow_power_up_indicator_turtle.append(yellow_power_up_indicator)
-        yellow_power_up_indicator_index = yellow_power_up_indicator_index + 1
-    else:
-        for yi in yellow_power_up_indicator_turtle:
-            if yi.get_yellow_power_up_indicator().isvisible():
-                continue
-            else:
-                yi.reinstate(fullscreen)
-                yellow_power_up_indicator_index = yellow_power_up_indicator_index + 1
-                break
-
-
-def spawn_blue_power_up_indicator():
-    """
-        Spawn a blue power up indicator at the top of the screen.
-
-        :return: None
-    """
-
-    global blue_power_up_indicator_index
-    if len(blue_power_up_indicator_turtle) == 0:
-        blue_power_up_indicator = BlueIndicator(scale_factor_X, scale_factor_Y, fullscreen)
-        blue_power_up_indicator_turtle.append(blue_power_up_indicator)
-        blue_power_up_indicator_index = blue_power_up_indicator_index + 1
-    else:
-        for bi in blue_power_up_indicator_turtle:
-            if bi.get_blue_power_up_indicator().isvisible():
-                continue
-            else:
-                bi.reinstate(fullscreen)
-                blue_power_up_indicator_index = blue_power_up_indicator_index + 1
-                break
-
-
-def spawn_extra_power_up_indiciator():
-    """
-        Spawn an extra power up indicator at the top of the screen.
-
-        :return: None
-    """
-
-    global mode
-    global extra_power_up_indicator_index
-    if len(extra_power_up_indicator_turtle) == 0:
-        # The id depends on the current mode the user is in (Whether it will be green or blue)
-        if mode == "Machine_Mode":
-            extra_power_up_indicator = ExtraIndicator(1, scale_factor_X, scale_factor_Y, fullscreen)
-        elif mode == "Alien_Mode":
-            extra_power_up_indicator = ExtraIndicator(2, scale_factor_X, scale_factor_Y, fullscreen)
-        extra_power_up_indicator_turtle.append(extra_power_up_indicator)
-        extra_power_up_indicator_index = extra_power_up_indicator_index + 1
-    else:
-        for ei in extra_power_up_indicator_turtle:
-            if ei.get_extra_power_up_indicator().isvisible():
-                continue
-            else:
-                if mode == "Machine_Mode":
-                    ei.reinstate(1, fullscreen)
-                elif mode == "Alien_Mode":
-                    ei.reinstate(2, fullscreen)
-                extra_power_up_indicator_index = extra_power_up_indicator_index + 1
-                break
-
-
-def spawn_power_up(type):
-    """
-        Spawn a power up on the screen.
-        The type of power up depends on the parameter "type".
-        What height it spawns at depends on the current mode the user is in.
-
-        :param type: Determines which type of power up spawns
-        :type type: int
-
-        :return: None
-    """
-
-    global mode
-    global power_up_index
-    if len(all_power_ups) <= len(current_power_ups):
-        if type == 1:
-            if mode == "Machine_Mode":
-                power_up = PowerUp(1, 1, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-            elif mode == "Alien_Mode":
-                power_up = PowerUp(1, 2, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-            power_up_index[0] = 1
-            current_power_ups.append(power_up)
-            all_power_ups.append(power_up)
-        elif type == 2:
-            if mode == "Machine_Mode":
-                power_up = PowerUp(2, 1, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-            elif mode == "Alien_Mode":
-                power_up = PowerUp(2, 2, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-            power_up_index[1] = 1
-            current_power_ups.append(power_up)
-            all_power_ups.append(power_up)
-        elif type == 3:
-            if mode == "Machine_Mode":
-                power_up = PowerUp(3, 1, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-            elif mode == "Alien_Mode":
-                power_up = PowerUp(3, 2, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-            power_up_index[2] = 1
-            current_power_ups.append(power_up)
-            all_power_ups.append(power_up)
-        else:
-            if mode == "Machine_Mode":
-                power_up = PowerUp(4, 1, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-            elif mode == "Alien_Mode":
-                power_up = PowerUp(4, 2, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-            power_up_index[3] = 1
-            current_power_ups.append(power_up)
-            all_power_ups.append(power_up)
-    else:
-        for pu in all_power_ups:
-            if pu.get_power_up().isvisible():
-                continue
-            else:
-                if type == 1:
-                    if mode == "Machine_Mode":
-                        pu.reinstate(1, 1, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                    elif mode == "Alien_Mode":
-                        pu.reinstate(1, 2, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                    power_up_index[0] = 1
-                    current_power_ups.append(pu)
-                elif type == 2:
-                    if mode == "Machine_Mode":
-                        pu.reinstate(2, 1, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                    elif mode == "Alien_Mode":
-                        pu.reinstate(2, 2, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                    power_up_index[1] = 1
-                    current_power_ups.append(pu)
-                elif type == 3:
-                    if mode == "Machine_Mode":
-                        pu.reinstate(3, 1, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                    elif mode == "Alien_Mode":
-                        pu.reinstate(3, 2, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                    power_up_index[2] = 1
-                    current_power_ups.append(pu)
-                else:
-                    if mode == "Machine_Mode":
-                        pu.reinstate(4, 1, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                    elif mode == "Alien_Mode":
-                        pu.reinstate(4, 2, power_up_spawn_sound, scale_factor_X, scale_factor_Y, fullscreen)
-                    power_up_index[3] = 1
-                    current_power_ups.append(pu)
-                break
 
 
 def spawn_machine_player():
@@ -2286,13 +2129,13 @@ while True:
 
     if mode == "Title_Mode":
         # Remove and reset all power ups
-        for pu in current_power_ups:
+        for pu in power_up.current_power_ups:
             pu.remove()
-        current_power_ups.clear()
-        power_up_index[0] = 0
-        power_up_index[1] = 0
-        power_up_index[2] = 0
-        power_up_index[3] = 0
+        power_up.current_power_ups.clear()
+        power_up.power_up_index[0] = 0
+        power_up.power_up_index[1] = 0
+        power_up.power_up_index[2] = 0
+        power_up.power_up_index[3] = 0
 
         # Remove the coin indicator
         for ci in coin_indicator_turtle:
@@ -2300,15 +2143,15 @@ while True:
         coin_indicator_index = 0
 
         # Remove the power up indicators
-        for yi in yellow_power_up_indicator_turtle:
+        for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
             yi.remove()
-        yellow_power_up_indicator_index = 0
-        for bi in blue_power_up_indicator_turtle:
+        yellow_power_up_indicator.yellow_power_up_indicator_index = 0
+        for bi in blue_power_up_indicator.blue_power_up_indicator_turtle:
             bi.remove()
-        blue_power_up_indicator_index = 0
-        for ei in extra_power_up_indicator_turtle:
+        blue_power_up_indicator.blue_power_up_indicator_index = 0
+        for ei in extra_power_up_indicator.extra_power_up_indicator_turtle:
             ei.remove()
-        extra_power_up_indicator_index = 0
+        extra_power_up_indicator.extra_power_up_indicator_index = 0
 
         # Remove all the coins on the screen
         for coin in coins_on_screen_list:
@@ -2387,16 +2230,16 @@ while True:
             spawn_coin_indicator()
 
         # Spawn the yellow power up indicator
-        if yellow_power_up_indicator_index == 0:
-            spawn_yellow_power_up_indicator()
+        if yellow_power_up_indicator.yellow_power_up_indicator_index == 0:
+            yellow_power_up_indicator.spawn_yellow_power_up_indicator()
 
         # Spawn the blue power up indicator
-        if blue_power_up_indicator_index == 0:
-            spawn_blue_power_up_indicator()
+        if blue_power_up_indicator.blue_power_up_indicator_index == 0:
+            blue_power_up_indicator.spawn_blue_power_up_indicator()
 
         # Spawn the green power up indicator
-        if extra_power_up_indicator_index == 0:
-            spawn_extra_power_up_indiciator()
+        if extra_power_up_indicator.extra_power_up_indicator_index == 0:
+            extra_power_up_indicator.spawn_extra_power_up_indiciator(mode)
 
         # Check if the players score is greater than the current high score
         if god_mode == 0:
@@ -2420,7 +2263,7 @@ while True:
 
         # Used to shoot the players laser
         for p in current_player:
-            p.shoot(yellow_power_up_indicator_turtle[0].get_power_up_active(), scale_factor_Y)
+            p.shoot(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active(), scale_factor_Y)
 
         # Spawn Machine enemies based on the players score
         # At its peak, there will be 5 blue machines, 5 yellow machines, 5 red machines, and 1 machine boss attacking
@@ -2487,16 +2330,16 @@ while True:
 
         # Run the functions to shoot the lasers for each of the enemies
         for blue_machine in blue_machines:
-            blue_machine.shoot_laser(extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
+            blue_machine.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
 
         for yellow_machine in yellow_machines:
-            yellow_machine.shoot_laser(extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
+            yellow_machine.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
 
         for red_machine in red_machines:
-            red_machine.shoot_laser(extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
+            red_machine.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
 
         for b in boss:
-            b.shoot_laser(extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
+            b.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
 
         # Detects if the players has picked up a coin
         hit_coin = 0
@@ -2551,7 +2394,7 @@ while True:
                     if blue_machines_update_values[current_blue_update_value_index] == 1:
                         # Increase the players score
                         # When the blue power up is active, the score increases are doubled (This is universal)
-                        if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 2
                         else:
                             score = score + 1
@@ -2581,7 +2424,7 @@ while True:
                     if ym.get_update_value() == 3:
                         coin_pickup_delay = 1
                     if yellow_machines_update_values[current_yellow_update_value_index] == 1:
-                        if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 4
                         else:
                             score = score + 2
@@ -2609,7 +2452,7 @@ while True:
                     if rm.get_update_value() == 3:
                         coin_pickup_delay = 1
                     if red_machines_update_values[current_red_update_value_index] == 1:
-                        if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 10
                         else:
                             score = score + 5
@@ -2634,7 +2477,7 @@ while True:
                         red_machines_hit_values[current_red_hit_value_index] = 0
                     if red_machines_hit_values[current_red_hit_value_index] == 1:
                         # Increase the players score for hitting the red machine
-                        if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 2
                         else:
                             score = score + 1
@@ -2653,7 +2496,7 @@ while True:
                     if b.get_update_value() == 3:
                         coin_pickup_delay = 1
                     if boss_update_value == 1:
-                        if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 100
                         else:
                             score = score + 50
@@ -2678,12 +2521,12 @@ while True:
                         # This means that the total points you can get from killing
                         #   one boss is 60 (120 with blue power up)
                         if b.health_bar == 9:
-                            if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                 score = score + 4
                             else:
                                 score = score + 2
                         else:
-                            if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                 score = score + 2
                             else:
                                 score = score + 1
@@ -2843,69 +2686,69 @@ while True:
         for t in textbox.text_on_screen_list:
             # If they are, activate the power up timers
             if t.id == 2:
-                if yellow_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                if yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1:
                     t.set_color("yellow")
                 else:
                     t.set_color("#737000")
             elif t.id == 3:
-                if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                     t.set_color("#02CCFE")
                 else:
                     t.set_color("#00004A")
             elif t.id == 4:
-                if extra_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 1:
                     t.set_color("#65FE08")
                 else:
                     t.set_color("#001C00")
 
         # Activate the power up indicators if the power ups become active
-        for yi in yellow_power_up_indicator_turtle:
-            yi.set_texture(fullscreen)
+        for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
+            yi.set_texture()
 
-        for bi in blue_power_up_indicator_turtle:
-            bi.set_texture(fullscreen)
+        for bi in blue_power_up_indicator.blue_power_up_indicator_turtle:
+            bi.set_texture()
 
-        for ei in extra_power_up_indicator_turtle:
-            ei.set_texture(fullscreen)
+        for ei in extra_power_up_indicator.extra_power_up_indicator_turtle:
+            ei.set_texture()
 
         # If the RNG hits the 1/200, then spawn the power ups
         # 1 for yellow power up
-        if power_up_update == 1 and yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
-            if power_up_index[0] == 0:
-                spawn_power_up(1)
+        if power_up_update == 1 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
+            if power_up.power_up_index[0] == 0:
+                power_up.spawn_power_up(1, mode, power_up_spawn_sound)
             else:
-                for pu in current_power_ups:
+                for pu in power_up.current_power_ups:
                     if pu.get_type() == 1:
                         pu.spawn(power_up_spawn_sound)
 
         # 50 for blue power up
-        if power_up_update == 50 and blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
-            if power_up_index[1] == 0:
-                spawn_power_up(2)
+        if power_up_update == 50 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
+            if power_up.power_up_index[1] == 0:
+                power_up.spawn_power_up(2, mode, power_up_spawn_sound)
             else:
-                for pu in current_power_ups:
+                for pu in power_up.current_power_ups:
                     if pu.get_type() == 2:
                         pu.spawn(power_up_spawn_sound)
 
         # 100 for the extra power up
-        if power_up_update == 100 and extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-            if power_up_index[2] == 0:
-                spawn_power_up(3)
+        if power_up_update == 100 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+            if power_up.power_up_index[2] == 0:
+                power_up.spawn_power_up(3, mode, power_up_spawn_sound)
             else:
-                for pu in current_power_ups:
+                for pu in power_up.current_power_ups:
                     if pu.get_type() == 3:
                         pu.spawn(power_up_spawn_sound)
 
         # Check if the player has picked up a power up or not
         for p in current_player:
-            for pu in current_power_ups:
+            for pu in power_up.current_power_ups:
                 # If a power up is visible
                 if pu.get_power_up().isvisible():
                     # Check its type (1 = yellow, 2 = blue, and 3 = green)
                     # If the player runs to the power up
-                    if pu.type == 1 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                    if pu.type == 1 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
                         # Pick it up
-                        pu.pick_up(power_up_pickup_sound, scale_factor_X, scale_factor_Y)
+                        pu.pick_up(power_up_pickup_sound)
                         # Update the stats
                         if god_mode == 0:
                             classic_power_ups_picked_up = classic_power_ups_picked_up + 1
@@ -2916,10 +2759,10 @@ while True:
                             with open('Config/playerData.ini', 'w') as configfile:
                                 config.write(configfile)
                         # Activate the specified power up (In this case yellow)
-                        yellow_power_up_indicator_turtle[0].set_power_up_active(1)
+                        yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].set_power_up_active(1)
 
-                    if pu.type == 2 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                        pu.pick_up(power_up_pickup_sound, scale_factor_X, scale_factor_Y)
+                    if pu.type == 2 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        pu.pick_up(power_up_pickup_sound)
                         if god_mode == 0:
                             classic_power_ups_picked_up = classic_power_ups_picked_up + 1
                             config = configparser.ConfigParser()
@@ -2928,10 +2771,10 @@ while True:
                             config['Statistics_Machine_Mode'][statistic_to_update] = str(classic_power_ups_picked_up)
                             with open('Config/playerData.ini', 'w') as configfile:
                                 config.write(configfile)
-                        blue_power_up_indicator_turtle[0].set_power_up_active(1)
+                        blue_power_up_indicator.blue_power_up_indicator_turtle[0].set_power_up_active(1)
 
-                    if pu.type == 3 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                        pu.pick_up(power_up_pickup_sound, scale_factor_X, scale_factor_Y)
+                    if pu.type == 3 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        pu.pick_up(power_up_pickup_sound)
                         if god_mode == 0:
                             classic_power_ups_picked_up = classic_power_ups_picked_up + 1
                             config = configparser.ConfigParser()
@@ -2940,16 +2783,16 @@ while True:
                             config['Statistics_Machine_Mode'][statistic_to_update] = str(classic_power_ups_picked_up)
                             with open('Config/playerData.ini', 'w') as configfile:
                                 config.write(configfile)
-                        extra_power_up_indicator_turtle[0].set_power_up_active(1)
+                        extra_power_up_indicator.extra_power_up_indicator_turtle[0].set_power_up_active(1)
 
         # If the power ups are active, run their timers through these functions
-        for yi in yellow_power_up_indicator_turtle:
+        for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
             yi.set_timer()
 
-        for bi in blue_power_up_indicator_turtle:
+        for bi in blue_power_up_indicator.blue_power_up_indicator_turtle:
             bi.set_timer()
 
-        for ei in extra_power_up_indicator_turtle:
+        for ei in extra_power_up_indicator.extra_power_up_indicator_turtle:
             ei.set_timer()
 
     # If Machine Mode is toggled off
@@ -3031,16 +2874,16 @@ while True:
             spawn_coin_indicator()
 
         # Spawn the yellow power up indicator
-        if yellow_power_up_indicator_index == 0:
-            spawn_yellow_power_up_indicator()
+        if yellow_power_up_indicator.yellow_power_up_indicator_index == 0:
+            yellow_power_up_indicator.spawn_yellow_power_up_indicator()
 
         # Spawn the blue power up indicator
-        if blue_power_up_indicator_index == 0:
-            spawn_blue_power_up_indicator()
+        if blue_power_up_indicator.blue_power_up_indicator_index == 0:
+            blue_power_up_indicator.spawn_blue_power_up_indicator()
 
         # Spawn the red power up indicator
-        if extra_power_up_indicator_index == 0:
-            spawn_extra_power_up_indiciator()
+        if extra_power_up_indicator.extra_power_up_indicator_index == 0:
+            extra_power_up_indicator.spawn_extra_power_up_indiciator(mode)
 
         # Check if the players score is greater than the current high score
         if god_mode == 0:
@@ -3058,69 +2901,69 @@ while True:
         for t in textbox.text_on_screen_list:
             # If they are, activate the power up timers
             if t.id == 2:
-                if yellow_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                if yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1:
                     t.set_color("yellow")
                 else:
                     t.set_color("#737000")
             elif t.id == 3:
-                if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                     t.set_color("#02CCFE")
                 else:
                     t.set_color("#00004A")
             elif t.id == 4:
-                if extra_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 1:
                     t.set_color("#FF0000")
                 else:
                     t.set_color("#300000")
 
         # Activate the power up indicators if the power ups become active
-        for yi in yellow_power_up_indicator_turtle:
-            yi.set_texture(fullscreen)
+        for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
+            yi.set_texture()
 
-        for bi in blue_power_up_indicator_turtle:
-            bi.set_texture(fullscreen)
+        for bi in blue_power_up_indicator.blue_power_up_indicator_turtle:
+            bi.set_texture()
 
-        for ei in extra_power_up_indicator_turtle:
-            ei.set_texture(fullscreen)
+        for ei in extra_power_up_indicator.extra_power_up_indicator_turtle:
+            ei.set_texture()
 
         # If the RNG hits the 1/200, then spawn the power ups
         # 1 for yellow power up
-        if power_up_update == 1 and yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
-            if power_up_index[0] == 0:
-                spawn_power_up(1)
+        if power_up_update == 1 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
+            if power_up.power_up_index[0] == 0:
+                power_up.spawn_power_up(1, mode, power_up_spawn_sound)
             else:
-                for pu in current_power_ups:
+                for pu in power_up.current_power_ups:
                     if pu.get_type() == 1:
                         pu.spawn(power_up_spawn_sound)
 
         # 50 for blue power up
-        if power_up_update == 50 and blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
-            if power_up_index[1] == 0:
-                spawn_power_up(2)
+        if power_up_update == 50 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
+            if power_up.power_up_index[1] == 0:
+                power_up.spawn_power_up(2, mode, power_up_spawn_sound)
             else:
-                for pu in current_power_ups:
+                for pu in power_up.current_power_ups:
                     if pu.get_type() == 2:
                         pu.spawn(power_up_spawn_sound)
 
         # 100 for the extra power up
-        if power_up_update == 100 and extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-            if power_up_index[3] == 0:
-                spawn_power_up(4)
+        if power_up_update == 100 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+            if power_up.power_up_index[3] == 0:
+                power_up.spawn_power_up(4, mode, power_up_spawn_sound)
             else:
-                for pu in current_power_ups:
+                for pu in power_up.current_power_ups:
                     if pu.get_type() == 4:
                         pu.spawn(power_up_spawn_sound)
 
         # Check if the player has picked up a power up or not
         for h in current_human:
-            for pu in current_power_ups:
+            for pu in power_up.current_power_ups:
                 # If a power up is visible
                 if pu.get_power_up().isvisible():
                     # Check its type (1 = yellow, 2 = blue, and 3 = green)
                     # If the player runs to the power up
-                    if pu.type == 1 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                    if pu.type == 1 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
                         # Pick it up
-                        pu.pick_up(power_up_pickup_sound, scale_factor_X, scale_factor_Y)
+                        pu.pick_up(power_up_pickup_sound)
                         # Update the stats
                         if god_mode == 0:
                             alien_power_ups_picked_up = alien_power_ups_picked_up + 1
@@ -3131,10 +2974,10 @@ while True:
                             with open('Config/playerData.ini', 'w') as configfile:
                                 config.write(configfile)
                         # Activate the specified power up (In this case yellow)
-                        yellow_power_up_indicator_turtle[0].set_power_up_active(1)
+                        yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].set_power_up_active(1)
 
-                    if pu.type == 2 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                        pu.pick_up(power_up_pickup_sound, scale_factor_X, scale_factor_Y)
+                    if pu.type == 2 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        pu.pick_up(power_up_pickup_sound)
                         if god_mode == 0:
                             alien_power_ups_picked_up = alien_power_ups_picked_up + 1
                             config = configparser.ConfigParser()
@@ -3143,10 +2986,10 @@ while True:
                             config['Statistics_Alien_Mode'][statistic_to_update] = str(alien_power_ups_picked_up)
                             with open('Config/playerData.ini', 'w') as configfile:
                                 config.write(configfile)
-                        blue_power_up_indicator_turtle[0].set_power_up_active(1)
+                        blue_power_up_indicator.blue_power_up_indicator_turtle[0].set_power_up_active(1)
 
-                    if pu.type == 4 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                        pu.pick_up(power_up_pickup_sound, scale_factor_X, scale_factor_Y)
+                    if pu.type == 4 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        pu.pick_up(power_up_pickup_sound)
                         if god_mode == 0:
                             alien_power_ups_picked_up = alien_power_ups_picked_up + 1
                             config = configparser.ConfigParser()
@@ -3155,16 +2998,16 @@ while True:
                             config['Statistics_Alien_Mode'][statistic_to_update] = str(alien_power_ups_picked_up)
                             with open('Config/playerData.ini', 'w') as configfile:
                                 config.write(configfile)
-                        extra_power_up_indicator_turtle[0].set_power_up_active(1)
+                        extra_power_up_indicator.extra_power_up_indicator_turtle[0].set_power_up_active(1)
 
         # If the power ups are active, run their timers through these functions
-        for yi in yellow_power_up_indicator_turtle:
+        for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
             yi.set_timer()
 
-        for bi in blue_power_up_indicator_turtle:
+        for bi in blue_power_up_indicator.blue_power_up_indicator_turtle:
             bi.set_timer()
 
-        for ei in extra_power_up_indicator_turtle:
+        for ei in extra_power_up_indicator.extra_power_up_indicator_turtle:
             ei.set_timer()
 
         # Spawn aliens based on the players score
@@ -3248,7 +3091,7 @@ while True:
 
         # Check if the players laser needs to be shot
         for h in current_human:
-            laser_update = h.execute_shoot(yellow_power_up_indicator_turtle[0].get_power_up_active(), laser_update, scale_factor_X)
+            laser_update = h.execute_shoot(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active(), laser_update, scale_factor_X)
 
         # Execute the walking animation for the player
         for h in current_human:
@@ -3339,7 +3182,7 @@ while True:
             for sa in small_aliens:
                 # If the player laser hits a small alien that is visible and not dying
                 if (sa.get_small_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(sa.get_small_alien()) < 53 * scale_factor and (
-                        (sa.get_small_alien().xcor() - 26 * scale_factor_X < h.get_laser().xcor() < sa.get_small_alien().xcor() + 26 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and
+                        (sa.get_small_alien().xcor() - 26 * scale_factor_X < h.get_laser().xcor() < sa.get_small_alien().xcor() + 26 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and
                         small_aliens_kill_values[current_small_alien_update_value_index] == 0) or small_aliens_kill_values[current_small_alien_update_value_index] != 0:
                     # Kill the alien
                     sa.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
@@ -3350,7 +3193,7 @@ while True:
                     if sa.get_death_animation() == 1:
                         # Increase the players score
                         # When the blue power up is active, the score increases are doubled (This is universal)
-                        if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 2
                         else:
                             score = score + 1
@@ -3365,7 +3208,7 @@ while True:
                                 config.write(configfile)
                         # Confirm that the players laser has attacked and count it as an enemy pierced
                         h.get_laser().hideturtle()
-                        if extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             laser_update = laser_update + 1
                 current_small_alien_update_value_index = current_small_alien_update_value_index + 1
 
@@ -3374,7 +3217,7 @@ while True:
             for ma in medium_aliens:
                 # If the player laser hits a medium alien that is visible and not dying and has 1 health
                 if (ma.get_medium_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(ma.get_medium_alien()) < 72 * scale_factor and (
-                        (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.health == 1 and ma.hit_delay == 0 and
+                        (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.health == 1 and ma.hit_delay == 0 and
                         medium_aliens_kill_values[current_medium_alien_update_value_index] == 0) or medium_aliens_kill_values[current_medium_alien_update_value_index] != 0:
                     # Same procedure as before
                     ma.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
@@ -3382,7 +3225,7 @@ while True:
                     if ma.get_death_animation() == 0:
                         medium_aliens_kill_values[current_medium_alien_update_value_index] = 0
                     if ma.get_death_animation() == 1:
-                        if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 4
                         else:
                             score = score + 2
@@ -3395,13 +3238,13 @@ while True:
                             with open('Config/playerData.ini', 'w') as configfile:
                                 config.write(configfile)
                         h.get_laser().hideturtle()
-                        if extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             laser_update = laser_update + 1
                 current_medium_alien_update_value_index = current_medium_alien_update_value_index + 1
 
                 # If the player laser hits a medium alien that is visible and not dying and has health > 1
                 if (ma.get_medium_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(ma.get_medium_alien()) < 72 * scale_factor and (
-                        (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.get_medium_alien_health() == 2 and
+                        (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.get_medium_alien_health() == 2 and
                         medium_aliens_hit_values[current_medium_alien_hit_value_index] == 0) or medium_aliens_hit_values[current_medium_alien_hit_value_index] != 0:
                     # Deal one damage to the medium alien
                     ma.hit_alien(enemy_hit_sound, fullscreen)
@@ -3411,13 +3254,13 @@ while True:
                         medium_aliens_hit_values[current_medium_alien_hit_value_index] = 0
                     if ma.get_hit_delay() == 1:
                         # Increase the players score for hitting the medium alien
-                        if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 2
                         else:
                             score = score + 1
                         # Confirm that the players laser has attacked and count it as an enemy pierced
                         h.get_laser().hideturtle()
-                        if extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             laser_update = laser_update + 1
                 current_medium_alien_hit_value_index = current_medium_alien_hit_value_index + 1
 
@@ -3426,14 +3269,14 @@ while True:
             for la in large_aliens:
                 # If the player laser hits a large alien that is visible and not dying and has 1 health
                 if (la.get_large_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(la.get_large_alien()) < 112 * scale_factor and (
-                        (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and la.health == 1 and la.hit_delay == 0 and
+                        (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and la.health == 1 and la.hit_delay == 0 and
                         large_aliens_kill_values[current_large_alien_update_value_index] == 0) or large_aliens_kill_values[current_large_alien_update_value_index] != 0:
                     la.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
                     large_aliens_kill_values[current_large_alien_update_value_index] = large_aliens_kill_values[current_large_alien_update_value_index] + 1
                     if la.get_death_animation() == 0:
                         large_aliens_kill_values[current_large_alien_update_value_index] = 0
                     if la.get_death_animation() == 1:
-                        if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 8
                         else:
                             score = score + 4
@@ -3446,13 +3289,13 @@ while True:
                             with open('Config/playerData.ini', 'w') as configfile:
                                 config.write(configfile)
                         h.get_laser().hideturtle()
-                        if extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             laser_update = laser_update + 1
                 current_large_alien_update_value_index = current_large_alien_update_value_index + 1
 
                 # If the player laser hits a medium alien that is visible and not dying and has health > 1
                 if (la.get_large_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(la.get_large_alien()) < 112 * scale_factor and (
-                        (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and (la.get_large_alien_health() == 2 or la.get_large_alien_health() == 3) and
+                        (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and (la.get_large_alien_health() == 2 or la.get_large_alien_health() == 3) and
                         large_aliens_hit_values[current_large_alien_hit_value_index] == 0) or large_aliens_hit_values[current_large_alien_hit_value_index] != 0:
                     # Same procedure as before
                     la.hit_alien(enemy_hit_sound, fullscreen)
@@ -3460,12 +3303,12 @@ while True:
                     if la.get_hit_delay() == 0:
                         large_aliens_hit_values[current_large_alien_hit_value_index] = 0
                     if la.get_hit_delay() == 1:
-                        if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 2
                         else:
                             score = score + 1
                         h.get_laser().hideturtle()
-                        if extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             laser_update = laser_update + 1
                 current_large_alien_hit_value_index = current_large_alien_hit_value_index + 1
 
@@ -3479,7 +3322,7 @@ while True:
                     if u.get_death_animation() == 0:
                         ufo_kill_value = 0
                     if u.get_death_animation() == 1:
-                        if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 100
                         else:
                             score = score + 50
@@ -3492,7 +3335,7 @@ while True:
                             with open('Config/playerData.ini', 'w') as configfile:
                                 config.write(configfile)
                         h.get_laser().hideturtle()
-                        if extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             laser_update = laser_update + 1
 
                 # If the player laser hits the UFO that is visible and not dying and has health > 1
@@ -3505,22 +3348,22 @@ while True:
                         ufo_hit_value = 0
                     if u.get_hit_delay() == 1:
                         if u.get_ufo_health() == 2 or u.get_ufo_health() == 1:
-                            if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                 score = score + 6
                             else:
                                 score = score + 3
                         elif u.get_ufo_health() == 5 or u.get_ufo_health() == 4 or u.get_ufo_health() == 3:
-                            if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                 score = score + 4
                             else:
                                 score = score + 2
                         else:
-                            if blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                 score = score + 2
                             else:
                                 score = score + 1
                         h.get_laser().hideturtle()
-                        if extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             laser_update = laser_update + 1
 
         # Player Killer

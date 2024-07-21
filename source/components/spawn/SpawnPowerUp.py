@@ -20,14 +20,13 @@ from components.ItemPowerUp import ExtraIndicator
 
 
 class SpawnPowerUp:
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         self.all_power_ups = []
         self.current_power_ups = []
         self.power_up_index = [0, 0, 0, 0]
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
-        self.fullscreen = fullscreen
 
     def __del__(self):
         del self.all_power_ups
@@ -49,33 +48,33 @@ class SpawnPowerUp:
         if len(self.all_power_ups) <= len(self.current_power_ups):
             if type == 1:
                 if mode == "Machine_Mode":
-                    power_up = PowerUp(1, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                    power_up = PowerUp(1, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
                 elif mode == "Alien_Mode":
-                    power_up = PowerUp(1, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                    power_up = PowerUp(1, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[0] = 1
                 self.current_power_ups.append(power_up)
                 self.all_power_ups.append(power_up)
             elif type == 2:
                 if mode == "Machine_Mode":
-                    power_up = PowerUp(2, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                    power_up = PowerUp(2, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
                 elif mode == "Alien_Mode":
-                    power_up = PowerUp(2, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                    power_up = PowerUp(2, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[1] = 1
                 self.current_power_ups.append(power_up)
                 self.all_power_ups.append(power_up)
             elif type == 3:
                 if mode == "Machine_Mode":
-                    power_up = PowerUp(3, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                    power_up = PowerUp(3, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
                 elif mode == "Alien_Mode":
-                    power_up = PowerUp(3, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                    power_up = PowerUp(3, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[2] = 1
                 self.current_power_ups.append(power_up)
                 self.all_power_ups.append(power_up)
             else:
                 if mode == "Machine_Mode":
-                    power_up = PowerUp(4, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                    power_up = PowerUp(4, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
                 elif mode == "Alien_Mode":
-                    power_up = PowerUp(4, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                    power_up = PowerUp(4, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[3] = 1
                 self.current_power_ups.append(power_up)
                 self.all_power_ups.append(power_up)
@@ -86,43 +85,42 @@ class SpawnPowerUp:
                 else:
                     if type == 1:
                         if mode == "Machine_Mode":
-                            pu.reinstate(1, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                            pu.reinstate(1, 1, power_up_spawn_sound)
                         elif mode == "Alien_Mode":
-                            pu.reinstate(1, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                            pu.reinstate(1, 2, power_up_spawn_sound)
                         self.power_up_index[0] = 1
                         self.current_power_ups.append(pu)
                     elif type == 2:
                         if mode == "Machine_Mode":
-                            pu.reinstate(2, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                            pu.reinstate(2, 1, power_up_spawn_sound)
                         elif mode == "Alien_Mode":
-                            pu.reinstate(2, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                            pu.reinstate(2, 2, power_up_spawn_sound)
                         self.power_up_index[1] = 1
                         self.current_power_ups.append(pu)
                     elif type == 3:
                         if mode == "Machine_Mode":
-                            pu.reinstate(3, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                            pu.reinstate(3, 1, power_up_spawn_sound)
                         elif mode == "Alien_Mode":
-                            pu.reinstate(3, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                            pu.reinstate(3, 2, power_up_spawn_sound)
                         self.power_up_index[2] = 1
                         self.current_power_ups.append(pu)
                     else:
                         if mode == "Machine_Mode":
-                            pu.reinstate(4, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                            pu.reinstate(4, 1, power_up_spawn_sound)
                         elif mode == "Alien_Mode":
-                            pu.reinstate(4, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                            pu.reinstate(4, 2, power_up_spawn_sound)
                         self.power_up_index[3] = 1
                         self.current_power_ups.append(pu)
                     break
 
 
 class SpawnYellowPowerUpIndicator:
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         self.yellow_power_up_indicator_turtle = []
         self.yellow_power_up_indicator_index = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
-        self.fullscreen = fullscreen
 
     def __del__(self):
         del self.yellow_power_up_indicator_turtle
@@ -136,7 +134,7 @@ class SpawnYellowPowerUpIndicator:
         """
 
         if len(self.yellow_power_up_indicator_turtle) == 0:
-            yellow_power_up_indicator = YellowIndicator(self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+            yellow_power_up_indicator = YellowIndicator(self.scale_factor_x, self.scale_factor_y)
             self.yellow_power_up_indicator_turtle.append(yellow_power_up_indicator)
             self.yellow_power_up_indicator_index = self.yellow_power_up_indicator_index + 1
         else:
@@ -144,19 +142,18 @@ class SpawnYellowPowerUpIndicator:
                 if yi.get_yellow_power_up_indicator().isvisible():
                     continue
                 else:
-                    yi.reinstate(self.fullscreen)
+                    yi.reinstate()
                     self.yellow_power_up_indicator_index = self.yellow_power_up_indicator_index + 1
                     break
 
 
 class SpawnBluePowerUpIndicator:
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         self.blue_power_up_indicator_turtle = []
         self.blue_power_up_indicator_index = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
-        self.fullscreen = fullscreen
 
     def __del__(self):
         del self.blue_power_up_indicator_turtle
@@ -170,7 +167,7 @@ class SpawnBluePowerUpIndicator:
         """
 
         if len(self.blue_power_up_indicator_turtle) == 0:
-            blue_power_up_indicator = BlueIndicator(self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+            blue_power_up_indicator = BlueIndicator(self.scale_factor_x, self.scale_factor_y)
             self.blue_power_up_indicator_turtle.append(blue_power_up_indicator)
             self.blue_power_up_indicator_index = self.blue_power_up_indicator_index + 1
         else:
@@ -178,19 +175,18 @@ class SpawnBluePowerUpIndicator:
                 if bi.get_blue_power_up_indicator().isvisible():
                     continue
                 else:
-                    bi.reinstate(self.fullscreen)
+                    bi.reinstate()
                     self.blue_power_up_indicator_index = self.blue_power_up_indicator_index + 1
                     break
 
 
 class SpawnExtraPowerUpIndicator:
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         self.extra_power_up_indicator_turtle = []
         self.extra_power_up_indicator_index = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
-        self.fullscreen = fullscreen
 
     def __del__(self):
         del self.extra_power_up_indicator_turtle
@@ -206,9 +202,9 @@ class SpawnExtraPowerUpIndicator:
         if len(self.extra_power_up_indicator_turtle) == 0:
             # The id depends on the current mode the user is in (Whether it will be green or blue)
             if mode == "Machine_Mode":
-                extra_power_up_indicator = ExtraIndicator(1, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                extra_power_up_indicator = ExtraIndicator(1, self.scale_factor_x, self.scale_factor_y)
             elif mode == "Alien_Mode":
-                extra_power_up_indicator = ExtraIndicator(2, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                extra_power_up_indicator = ExtraIndicator(2, self.scale_factor_x, self.scale_factor_y)
             self.extra_power_up_indicator_turtle.append(extra_power_up_indicator)
             self.extra_power_up_indicator_index = self.extra_power_up_indicator_index + 1
         else:
@@ -217,8 +213,8 @@ class SpawnExtraPowerUpIndicator:
                     continue
                 else:
                     if mode == "Machine_Mode":
-                        ei.reinstate(1, self.fullscreen)
+                        ei.reinstate(1)
                     elif mode == "Alien_Mode":
-                        ei.reinstate(2, self.fullscreen)
+                        ei.reinstate(2)
                     self.extra_power_up_indicator_index = self.extra_power_up_indicator_index + 1
                     break

@@ -58,23 +58,6 @@ power_up_time = 0
     - "index" variables - used to access a specific slot in these lists
 """
 
-# Power Up setup
-all_power_ups = []
-current_power_ups = []
-power_up_index = [0, 0, 0, 0]
-
-# Yellow Power Up Indicator setup
-yellow_power_up_indicator_turtle = []
-yellow_power_up_indicator_index = 0
-
-# Blue Power Up Indicator setup
-blue_power_up_indicator_turtle = []
-blue_power_up_indicator_index = 0
-
-# Red/Green Power Up Indicator setup
-extra_power_up_indicator_turtle = []
-extra_power_up_indicator_index = 0
-
 # Refreshing when VSync is off
 tick_update = 0
 

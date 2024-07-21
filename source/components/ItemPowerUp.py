@@ -28,6 +28,18 @@ import turtle
 import random
 import time
 import pygame
+from setup.TextureSetup import YELLOW_LIGHTNING_POWER_UP_TEXTURE
+from setup.TextureSetup import BLUE_LIGHTNING_POWER_UP_TEXTURE
+from setup.TextureSetup import GREEN_LIGHTNING_POWER_UP_TEXTURE
+from setup.TextureSetup import RED_LIGHTNING_POWER_UP_TEXTURE
+from setup.TextureSetup import YELLOW_POWER_UP_INDICATOR_ON_TEXTURE
+from setup.TextureSetup import YELLOW_POWER_UP_INDICATOR_OFF_TEXTURE
+from setup.TextureSetup import BLUE_POWER_UP_INDICATOR_ON_TEXTURE
+from setup.TextureSetup import BLUE_POWER_UP_INDICATOR_OFF_TEXTURE
+from setup.TextureSetup import GREEN_POWER_UP_INDICATOR_ON_TEXTURE
+from setup.TextureSetup import GREEN_POWER_UP_INDICATOR_OFF_TEXTURE
+from setup.TextureSetup import RED_POWER_UP_INDICATOR_ON_TEXTURE
+from setup.TextureSetup import RED_POWER_UP_INDICATOR_OFF_TEXTURE
 
 
 class PowerUp:
@@ -41,7 +53,7 @@ class PowerUp:
             mode (int): Determines the current mode of the game (Machine mode or Alien mode)
     """
 
-    def __init__(self, type, mode, spawn_sound, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, type, mode, spawn_sound, scale_factor_x, scale_factor_y):
         """
             Creates a power up object of the given type and spawn it at a random place on the screen.
 
@@ -59,36 +71,21 @@ class PowerUp:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.power_up = turtle.Turtle()
         # Type 1 = yellow power up
         if type == 1:
-            if fullscreen == 1:
-                self.power_up.shape("Textures/Power_Ups/Yellow_Lightning_Power_Up_Scaled.gif")
-            else:
-                self.power_up.shape("Textures/Power_Ups/Yellow_Lightning_Power_Up.gif")
+            self.power_up.shape(YELLOW_LIGHTNING_POWER_UP_TEXTURE)
         # Type 2 = blue power up
         elif type == 2:
-            if fullscreen == 1:
-                self.power_up.shape("Textures/Power_Ups/Blue_Lightning_Power_Up_Scaled.gif")
-            else:
-                self.power_up.shape("Textures/Power_Ups/Blue_Lightning_Power_Up.gif")
+            self.power_up.shape(BLUE_LIGHTNING_POWER_UP_TEXTURE)
         # Type 3 = green power up
         elif type == 3:
-            if fullscreen == 1:
-                self.power_up.shape("Textures/Power_Ups/Green_Lightning_Power_Up_Scaled.gif")
-            else:
-                self.power_up.shape("Textures/Power_Ups/Green_Lightning_Power_Up.gif")
+            self.power_up.shape(GREEN_LIGHTNING_POWER_UP_TEXTURE)
         # Type 4 = red power up
         elif type == 4:
-            if fullscreen == 1:
-                self.power_up.shape("Textures/Power_Ups/Red_Lightning_Power_Up_Scaled.gif")
-            else:
-                self.power_up.shape("Textures/Power_Ups/Red_Lightning_Power_Up.gif")
+            self.power_up.shape(RED_LIGHTNING_POWER_UP_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.power_up.penup()
         self.power_up.shapesize(2 * scale_factor_y, 2 * scale_factor_x)
@@ -104,6 +101,9 @@ class PowerUp:
         self.type = type
         self.mode = mode
 
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
     def __del__(self):
         """
             Cleans up the sprite from memory once the program has terminated
@@ -114,7 +114,7 @@ class PowerUp:
         self.power_up.clear()
         del self.power_up
 
-    def reinstate(self, type, mode, spawn_sound, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate(self, type, mode, spawn_sound):
         """
             Reuses the existing sprite to spawn a power up on the screen with the correct type
 
@@ -127,47 +127,26 @@ class PowerUp:
             :param spawn_sound: Determines if the power up spawn sound is toggled on or off.
             :type spawn_sound: int
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
         # Type 1 = yellow power up
         if type == 1:
-            if fullscreen == 1:
-                self.power_up.shape("Textures/Power_Ups/Yellow_Lightning_Power_Up_Scaled.gif")
-            else:
-                self.power_up.shape("Textures/Power_Ups/Yellow_Lightning_Power_Up.gif")
+            self.power_up.shape(YELLOW_LIGHTNING_POWER_UP_TEXTURE)
         # Type 2 = blue power up
         elif type == 2:
-            if fullscreen == 1:
-                self.power_up.shape("Textures/Power_Ups/Blue_Lightning_Power_Up_Scaled.gif")
-            else:
-                self.power_up.shape("Textures/Power_Ups/Blue_Lightning_Power_Up.gif")
+            self.power_up.shape(BLUE_LIGHTNING_POWER_UP_TEXTURE)
         # Type 3 = green power up
         elif type == 3:
-            if fullscreen == 1:
-                self.power_up.shape("Textures/Power_Ups/Green_Lightning_Power_Up_Scaled.gif")
-            else:
-                self.power_up.shape("Textures/Power_Ups/Green_Lightning_Power_Up.gif")
+            self.power_up.shape(GREEN_LIGHTNING_POWER_UP_TEXTURE)
         # Type 4 = red power up
         elif type == 4:
-            if fullscreen == 1:
-                self.power_up.shape("Textures/Power_Ups/Red_Lightning_Power_Up_Scaled.gif")
-            else:
-                self.power_up.shape("Textures/Power_Ups/Red_Lightning_Power_Up.gif")
+            self.power_up.shape(RED_LIGHTNING_POWER_UP_TEXTURE)
         # Spawn in a random location on the x-axis (y axis depends on the mode of the game)
         if mode == 1:
-            self.power_up.goto(random.randint(int(-620 * scale_factor_x), int(620 * scale_factor_x)), -300 * scale_factor_y)
+            self.power_up.goto(random.randint(int(-620 * self.scale_factor_x), int(620 * self.scale_factor_x)), -300 * self.scale_factor_y)
         elif mode == 2:
-            self.power_up.goto(random.randint(int(-620 * scale_factor_x), int(620 * scale_factor_x)), -150 * scale_factor_y)
+            self.power_up.goto(random.randint(int(-620 * self.scale_factor_x), int(620 * self.scale_factor_x)), -150 * self.scale_factor_y)
         if spawn_sound == 1:
             sound = pygame.mixer.Sound("Sound/Power_Up_Spawn_Sound.wav")
             sound.play()
@@ -224,18 +203,12 @@ class PowerUp:
                 sound = pygame.mixer.Sound("Sound/Power_Up_Spawn_Sound.wav")
                 sound.play()
 
-    def pick_up(self, pickup_sound, scale_factor_x, scale_factor_y):
+    def pick_up(self, pickup_sound):
         """
             Causes the current power up to be picked up when the player gets close enough to it.
 
             :param pickup_sound: Determines if the power up pickup sound is toggeled on or off
             :type pickup_sound: int
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
 
             :return: None
         """
@@ -243,9 +216,9 @@ class PowerUp:
         # Make the power up disappear and move it to a new random location on the screen
         self.power_up.hideturtle()
         if self.mode == 1:
-            self.power_up.goto(random.randint(int(-620 * scale_factor_x), int(620 * scale_factor_x)), -300 * scale_factor_y)
+            self.power_up.goto(random.randint(int(-620 * self.scale_factor_x), int(620 * self.scale_factor_x)), -300 * self.scale_factor_y)
         elif self.mode == 2:
-            self.power_up.goto(random.randint(int(-620 * scale_factor_x), int(620 * scale_factor_x)), -150 * scale_factor_y)
+            self.power_up.goto(random.randint(int(-620 * self.scale_factor_x), int(620 * self.scale_factor_x)), -150 * self.scale_factor_y)
         if pickup_sound == 1:
             sound = pygame.mixer.Sound("Sound/Power_Up_Pickup_Sound.wav")
             sound.play()
@@ -266,7 +239,7 @@ class YellowIndicator:
             time_value (int): The amount of seconds left before the power up deactivates (0 when it is not active)
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         """
             Create a yellow power up indicator object and spawns it at the top of the screen.
 
@@ -275,17 +248,11 @@ class YellowIndicator:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.power_up_indicator = turtle.Turtle()
         self.power_up_indicator.color("#737000")
-        if fullscreen == 1:
-            self.power_up_indicator.shape("Textures/Power_Ups/Yellow_Power_Up_Indicator_Off_Scaled.gif")
-        else:
-            self.power_up_indicator.shape("Textures/Power_Ups/Yellow_Power_Up_Indicator_Off.gif")
+        self.power_up_indicator.shape(YELLOW_POWER_UP_INDICATOR_OFF_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.power_up_indicator.penup()
         self.power_up_indicator.goto(-95 * scale_factor_x, 300 * scale_factor_y)
@@ -294,6 +261,9 @@ class YellowIndicator:
         self.activate_time = 0
         self.current_time = 0
         self.time_value = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
 
     def __del__(self):
         """
@@ -305,21 +275,15 @@ class YellowIndicator:
         self.power_up_indicator.clear()
         del self.power_up_indicator
 
-    def reinstate(self, fullscreen):
+    def reinstate(self):
         """
             Reuses the existing indicator sprite to spawn a yellow power up indicator at the top of the screen.
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
 
         self.power_up_indicator.color("#737000")
-        if fullscreen == 1:
-            self.power_up_indicator.shape("Textures/Power_Ups/Yellow_Power_Up_Indicator_Off_Scaled.gif")
-        else:
-            self.power_up_indicator.shape("Textures/Power_Ups/Yellow_Power_Up_Indicator_Off.gif")
+        self.power_up_indicator.shape(YELLOW_POWER_UP_INDICATOR_OFF_TEXTURE)
         self.power_up_indicator.showturtle()
 
     def get_yellow_power_up_indicator(self):
@@ -378,26 +342,17 @@ class YellowIndicator:
         self.current_time = 0
         self.time_value = 0
 
-    def set_texture(self, fullscreen):
+    def set_texture(self):
         """
             Makes the yellow power up indicator lit or unlit depending on if the yellow power up is active or not.
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
 
         if self.yellow_power_up_active == 1:
-            if fullscreen == 1:
-                self.power_up_indicator.shape("Textures/Power_Ups/Yellow_Power_Up_Indicator_On_Scaled.gif")
-            else:
-                self.power_up_indicator.shape("Textures/Power_Ups/Yellow_Power_Up_Indicator_On.gif")
+            self.power_up_indicator.shape(YELLOW_POWER_UP_INDICATOR_ON_TEXTURE)
         else:
-            if fullscreen == 1:
-                self.power_up_indicator.shape("Textures/Power_Ups/Yellow_Power_Up_Indicator_Off_Scaled.gif")
-            else:
-                self.power_up_indicator.shape("Textures/Power_Ups/Yellow_Power_Up_Indicator_Off.gif")
+            self.power_up_indicator.shape(YELLOW_POWER_UP_INDICATOR_OFF_TEXTURE)
 
     def set_timer(self):
         """
@@ -441,7 +396,7 @@ class BlueIndicator:
             time_value (int): The amount of seconds left before the power up deactivates (0 when it is not active)
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         """
             Create a blue power up indicator object and spawns it at the top of the screen.
 
@@ -450,17 +405,11 @@ class BlueIndicator:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.power_up_indicator = turtle.Turtle()
         self.power_up_indicator.color("#00004A")
-        if fullscreen == 1:
-            self.power_up_indicator.shape("Textures/Power_Ups/Blue_Power_Up_Indicator_Off_Scaled.gif")
-        else:
-            self.power_up_indicator.shape("Textures/Power_Ups/Blue_Power_Up_Indicator_Off.gif")
+        self.power_up_indicator.shape(BLUE_POWER_UP_INDICATOR_OFF_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.power_up_indicator.penup()
         self.power_up_indicator.goto(-20 * scale_factor_x, 300 * scale_factor_y)
@@ -469,6 +418,9 @@ class BlueIndicator:
         self.activate_time = 0
         self.current_time = 0
         self.time_value = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
 
     def __del__(self):
         """
@@ -480,21 +432,15 @@ class BlueIndicator:
         self.power_up_indicator.clear()
         del self.power_up_indicator
 
-    def reinstate(self, fullscreen):
+    def reinstate(self):
         """
             Reuses the existing indicator sprite to spawn a blue power up indicator at the top of the screen.
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
 
         self.power_up_indicator.color("#00004A")
-        if fullscreen == 1:
-            self.power_up_indicator.shape("Textures/Power_Ups/Blue_Power_Up_Indicator_Off_Scaled.gif")
-        else:
-            self.power_up_indicator.shape("Textures/Power_Ups/Blue_Power_Up_Indicator_Off.gif")
+        self.power_up_indicator.shape(BLUE_POWER_UP_INDICATOR_OFF_TEXTURE)
         self.power_up_indicator.showturtle()
 
     def get_blue_power_up_indicator(self):
@@ -553,26 +499,17 @@ class BlueIndicator:
         self.current_time = 0
         self.time_value = 0
 
-    def set_texture(self, fullscreen):
+    def set_texture(self):
         """
             Makes the blue power up indicator lit or unlit depending on if the blue power up is active or not.
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
 
         if self.blue_power_up_active == 1:
-            if fullscreen == 1:
-                self.power_up_indicator.shape("Textures/Power_Ups/Blue_Power_Up_Indicator_On_Scaled.gif")
-            else:
-                self.power_up_indicator.shape("Textures/Power_Ups/Blue_Power_Up_Indicator_On.gif")
+            self.power_up_indicator.shape(BLUE_POWER_UP_INDICATOR_ON_TEXTURE)
         else:
-            if fullscreen == 1:
-                self.power_up_indicator.shape("Textures/Power_Ups/Blue_Power_Up_Indicator_Off_Scaled.gif")
-            else:
-                self.power_up_indicator.shape("Textures/Power_Ups/Blue_Power_Up_Indicator_Off.gif")
+            self.power_up_indicator.shape(BLUE_POWER_UP_INDICATOR_OFF_TEXTURE)
 
     def set_timer(self):
         """
@@ -617,7 +554,7 @@ class ExtraIndicator:
             time_value (int): The amount of seconds left before the power up deactivates (0 when it is not active)
     """
 
-    def __init__(self, mode, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, mode, scale_factor_x, scale_factor_y):
         """
             Create a third power up indicator object and spawns it at the top of the screen.
 
@@ -626,24 +563,15 @@ class ExtraIndicator:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.power_up_indicator = turtle.Turtle()
         self.power_up_indicator.color("#001C00")
         # The color depends on the mode (Machine Mode = green and Alien Mode = red)
         if mode == 1:
-            if fullscreen == 1:
-                self.power_up_indicator.shape("Textures/Power_Ups/Green_Power_Up_Indicator_Off_Scaled.gif")
-            else:
-                self.power_up_indicator.shape("Textures/Power_Ups/Green_Power_Up_Indicator_Off.gif")
+            self.power_up_indicator.shape(GREEN_POWER_UP_INDICATOR_OFF_TEXTURE)
         else:
-            if fullscreen == 1:
-                self.power_up_indicator.shape("Textures/Power_Ups/Red_Power_Up_Indicator_Off_Scaled.gif")
-            else:
-                self.power_up_indicator.shape("Textures/Power_Ups/Red_Power_Up_Indicator_Off.gif")
+            self.power_up_indicator.shape(RED_POWER_UP_INDICATOR_OFF_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.power_up_indicator.penup()
         self.power_up_indicator.goto(50 * scale_factor_x, 300 * scale_factor_y)
@@ -653,6 +581,9 @@ class ExtraIndicator:
         self.current_time = 0
         self.time_value = 0
         self.mode = mode
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
 
     def __del__(self):
         """
@@ -664,12 +595,9 @@ class ExtraIndicator:
         self.power_up_indicator.clear()
         del self.power_up_indicator
 
-    def reinstate(self, mode, fullscreen):
+    def reinstate(self, mode):
         """
             Reuses the existing indicator sprite to spawn a third power up indicator at the top of the screen.
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -677,15 +605,9 @@ class ExtraIndicator:
         self.power_up_indicator.color("#001C00")
         # The color depends on the mode (Machine Mode = green and Alien Mode = red)
         if mode == 1:
-            if fullscreen == 1:
-                self.power_up_indicator.shape("Textures/Power_Ups/Green_Power_Up_Indicator_Off_Scaled.gif")
-            else:
-                self.power_up_indicator.shape("Textures/Power_Ups/Green_Power_Up_Indicator_Off.gif")
+            self.power_up_indicator.shape(GREEN_POWER_UP_INDICATOR_OFF_TEXTURE)
         else:
-            if fullscreen == 1:
-                self.power_up_indicator.shape("Textures/Power_Ups/Red_Power_Up_Indicator_Off_Scaled.gif")
-            else:
-                self.power_up_indicator.shape("Textures/Power_Ups/Red_Power_Up_Indicator_Off.gif")
+            self.power_up_indicator.shape(RED_POWER_UP_INDICATOR_OFF_TEXTURE)
         self.power_up_indicator.showturtle()
 
         self.mode = mode
@@ -746,12 +668,9 @@ class ExtraIndicator:
         self.current_time = 0
         self.time_value = 0
 
-    def set_texture(self, fullscreen):
+    def set_texture(self):
         """
             Makes the extra power up indicator lit or unlit depending on if the extra power up is active or not.
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -760,28 +679,16 @@ class ExtraIndicator:
         if self.mode == 1:
             # Make the extra power up indicator green
             if self.extra_power_up_active == 1:
-                if fullscreen == 1:
-                    self.power_up_indicator.shape("Textures/Power_Ups/Green_Power_Up_Indicator_On_Scaled.gif")
-                else:
-                    self.power_up_indicator.shape("Textures/Power_Ups/Green_Power_Up_Indicator_On.gif")
+                self.power_up_indicator.shape(GREEN_POWER_UP_INDICATOR_ON_TEXTURE)
             else:
-                if fullscreen == 1:
-                    self.power_up_indicator.shape("Textures/Power_Ups/Green_Power_Up_Indicator_Off_Scaled.gif")
-                else:
-                    self.power_up_indicator.shape("Textures/Power_Ups/Green_Power_Up_Indicator_Off.gif")
+                self.power_up_indicator.shape(GREEN_POWER_UP_INDICATOR_OFF_TEXTURE)
         # If the mode is Alien mode
         else:
             # Make the extra power up indicator red
             if self.extra_power_up_active == 1:
-                if fullscreen == 1:
-                    self.power_up_indicator.shape("Textures/Power_Ups/Red_Power_Up_Indicator_On_Scaled.gif")
-                else:
-                    self.power_up_indicator.shape("Textures/Power_Ups/Red_Power_Up_Indicator_On.gif")
+                self.power_up_indicator.shape(RED_POWER_UP_INDICATOR_ON_TEXTURE)
             else:
-                if fullscreen == 1:
-                    self.power_up_indicator.shape("Textures/Power_Ups/Red_Power_Up_Indicator_Off_Scaled.gif")
-                else:
-                    self.power_up_indicator.shape("Textures/Power_Ups/Red_Power_Up_Indicator_Off.gif")
+                self.power_up_indicator.shape(RED_POWER_UP_INDICATOR_OFF_TEXTURE)
 
     def set_timer(self):
         """
