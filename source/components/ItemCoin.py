@@ -22,6 +22,7 @@
 """
 
 import turtle
+from setup.TextureSetup import COIN_INDICATOR_TEXTURE
 
 
 class Coin:
@@ -226,7 +227,7 @@ class CoinIndicator:
             coin_indicator(turtle.Turtle()): The coin_indicator sprite
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         """
             Creates and places the coin counter sprite on the screen
 
@@ -235,16 +236,10 @@ class CoinIndicator:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.coin_indicator = turtle.Turtle()
-        if fullscreen == 1:
-            self.coin_indicator.shape("Textures/Coins/Coin_Indicator_Scaled.gif")
-        else:
-            self.coin_indicator.shape("Textures/Coins/Coin_Indicator.gif")
+        self.coin_indicator.shape(COIN_INDICATOR_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.coin_indicator.penup()
         self.coin_indicator.goto(-617 * scale_factor_x, 300 * scale_factor_y)

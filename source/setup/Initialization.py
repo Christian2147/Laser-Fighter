@@ -81,8 +81,8 @@ current_coin_index = 0
 coin_pickup_delay = 0
 
 # Coin Indicator setup
-coin_indicator_turtle = []
-coin_indicator_index = 0
+#coin_indicator_turtle = []
+#coin_indicator_index = 0
 
 # Machine Player setup
 all_player = []

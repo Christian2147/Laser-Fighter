@@ -43,10 +43,10 @@ from setup.SpriteSetup import power_up
 from setup.SpriteSetup import yellow_power_up_indicator
 from setup.SpriteSetup import blue_power_up_indicator
 from setup.SpriteSetup import extra_power_up_indicator
+from setup.SpriteSetup import coin_indicator
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
-from components.ItemCoin import CoinIndicator
 from components.player.MachinePlayer import Player
 from components.player.HumanPlayer import Human
 from components.enemy.MachineBlueMachine import BlueMachine
@@ -1676,27 +1676,6 @@ def update_text():
 """
 
 
-def spawn_coin_indicator():
-    """
-        Spawn a coin indicator at the top of the screen.
-
-        :return: None
-    """
-
-    global coin_indicator_index
-    if len(coin_indicator_turtle) == 0:
-        coin_ind = CoinIndicator(scale_factor_X, scale_factor_Y, fullscreen)
-        coin_indicator_turtle.append(coin_ind)
-        coin_indicator_index = coin_indicator_index + 1
-    else:
-        for ci in coin_indicator_turtle:
-            if ci.get_coin_indicator().isvisible():
-                continue
-            else:
-                ci.reinstate()
-                coin_indicator_index = coin_indicator_index + 1
-
-
 def spawn_machine_player():
     """
         Spawn the Machine Mode player on the screen.
@@ -2138,9 +2117,9 @@ while True:
         power_up.power_up_index[3] = 0
 
         # Remove the coin indicator
-        for ci in coin_indicator_turtle:
+        for ci in coin_indicator.coin_indicator_turtle:
             ci.remove()
-        coin_indicator_index = 0
+        coin_indicator.coin_indicator_index = 0
 
         # Remove the power up indicators
         for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
@@ -2226,8 +2205,8 @@ while True:
                 textbox.spawn_text_box(6, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Spawn the coin indicator
-        if coin_indicator_index == 0:
-            spawn_coin_indicator()
+        if coin_indicator.coin_indicator_index == 0:
+            coin_indicator.spawn_coin_indicator()
 
         # Spawn the yellow power up indicator
         if yellow_power_up_indicator.yellow_power_up_indicator_index == 0:
@@ -2870,8 +2849,8 @@ while True:
                 spawn_small_alien(i + 1)
 
         # Spawn the coin indicator
-        if coin_indicator_index == 0:
-            spawn_coin_indicator()
+        if coin_indicator.coin_indicator_index == 0:
+            coin_indicator.spawn_coin_indicator()
 
         # Spawn the yellow power up indicator
         if yellow_power_up_indicator.yellow_power_up_indicator_index == 0:
@@ -3748,8 +3727,8 @@ while True:
                         wn.onscreenclick(execute_buy_button)
 
         # Spawn the coin indicator
-        if coin_indicator_index == 0:
-            spawn_coin_indicator()
+        if coin_indicator.coin_indicator_index == 0:
+            coin_indicator.spawn_coin_indicator()
 
         # Move the title text back and fourth across the screen as needed
         for t in textbox.text_on_screen_list:

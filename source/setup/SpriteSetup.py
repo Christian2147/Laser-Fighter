@@ -29,6 +29,7 @@ from components.spawn.SpawnPowerUp import SpawnPowerUp
 from components.spawn.SpawnPowerUp import SpawnYellowPowerUpIndicator
 from components.spawn.SpawnPowerUp import SpawnBluePowerUpIndicator
 from components.spawn.SpawnPowerUp import SpawnExtraPowerUpIndicator
+from components.spawn.SpawnCoin import SpawnCoinIndicator
 
 
 button = SpawnButton(scale_factor, scale_factor_X, scale_factor_Y)
@@ -54,3 +55,5 @@ yellow_power_up_indicator = SpawnYellowPowerUpIndicator(scale_factor_X, scale_fa
 blue_power_up_indicator = SpawnBluePowerUpIndicator(scale_factor_X, scale_factor_Y)
 
 extra_power_up_indicator = SpawnExtraPowerUpIndicator(scale_factor_X, scale_factor_Y)
+
+coin_indicator = SpawnCoinIndicator(scale_factor_X, scale_factor_Y)
