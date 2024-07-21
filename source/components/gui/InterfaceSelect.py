@@ -14,48 +14,41 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import turtle
+from setup.TextureSetup import SLOT_SELECTOR_TEXTURE
+from setup.TextureSetup import TAB_SELECTOR_TEXTURE
 
 
 class Selector:
-    def __init__(self, type, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, type, scale_factor_x, scale_factor_y):
         self.selector = turtle.Turtle()
         self.selector.penup()
         if type == "Tab":
-            if fullscreen == 1:
-                self.selector.shape("Textures/GUI/Tab_Selector_Scaled.gif")
-            else:
-                self.selector.shape("Textures/GUI/Tab_Selector.gif")
+            self.selector.shape(TAB_SELECTOR_TEXTURE)
             self.selector.goto(-603.5 * scale_factor_x, 150 * scale_factor_y)
         else:
-            if fullscreen == 1:
-                self.selector.shape("Textures/GUI/Slot_Selector_Scaled.gif")
-            else:
-                self.selector.shape("Textures/GUI/Slot_Selector.gif")
+            self.selector.shape(SLOT_SELECTOR_TEXTURE)
             self.selector.goto(-427 * scale_factor_x, 95.5 * scale_factor_y)
 
         self.type = type
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
 
     def __del__(self):
         self.selector.clear()
         del self.selector
         del self.type
 
-    def reinstate_to_tab(self, scale_factor_x, scale_factor_y, fullscreen):
-        if fullscreen == 1:
-            self.selector.shape("Textures/GUI/Tab_Selector_Scaled.gif")
-        else:
-            self.selector.shape("Textures/GUI/Tab_Selector.gif")
-        self.selector.goto(-603.5 * scale_factor_x, 150 * scale_factor_y)
+    def reinstate_to_tab(self):
+        self.selector.shape(TAB_SELECTOR_TEXTURE)
+        self.selector.goto(-603.5 * self.scale_factor_x, 150 * self.scale_factor_y)
         self.selector.showturtle()
 
         self.type = "Tab"
 
-    def reinstate_to_slot(self, scale_factor_x, scale_factor_y, fullscreen):
-        if fullscreen == 1:
-            self.selector.shape("Textures/GUI/Slot_Selector_Scaled.gif")
-        else:
-            self.selector.shape("Textures/GUI/Slot_Selector.gif")
-        self.selector.goto(-427 * scale_factor_x, 95.5 * scale_factor_y)
+    def reinstate_to_slot(self):
+        self.selector.shape(SLOT_SELECTOR_TEXTURE)
+        self.selector.goto(-427 * self.scale_factor_x, 95.5 * self.scale_factor_y)
         self.selector.showturtle()
 
         self.type = "Slot"

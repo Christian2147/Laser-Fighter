@@ -55,14 +55,13 @@ class SpawnPanel:
 
 
 class SpawnSelector:
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         self.all_selector = []
         self.selectors_on_screen_list = []
         self.current_selector_index = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
-        self.fullscreen = fullscreen
 
     def __del__(self):
         del self.all_selector
@@ -71,7 +70,7 @@ class SpawnSelector:
 
     def spawn_selector(self, type):
         if len(self.all_selector) <= len(self.selectors_on_screen_list):
-            selector = Selector(type, self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+            selector = Selector(type, self.scale_factor_x, self.scale_factor_y)
             self.selectors_on_screen_list.append(selector)
             self.current_selector_index = self.current_selector_index + 1
             self.all_selector.append(selector)
@@ -81,9 +80,9 @@ class SpawnSelector:
                     continue
                 else:
                     if type == "Tab":
-                        s.reinstate_to_tab(self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                        s.reinstate_to_tab()
                     elif type == "Slot":
-                        s.reinstate_to_slot(self.scale_factor_x, self.scale_factor_y, self.fullscreen)
+                        s.reinstate_to_slot()
                     self.selectors_on_screen_list.append(s)
                     self.current_selector_index = self.current_selector_index + 1
                     break

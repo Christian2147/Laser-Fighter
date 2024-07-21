@@ -39,7 +39,6 @@ from setup.SpriteSetup import price_label
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
-from components.gui.InterfaceSelect import Selector
 from components.gui.InterfacePriceLabel import PriceLabel
 from components.ItemCoin import CoinIndicator
 from components.ItemPowerUp import PowerUp
@@ -1696,27 +1695,6 @@ def spawn_price_label(id, x, y):
                 break
 
 
-def spawn_selector(type):
-    global current_selector_index
-    if len(all_selector) <= len(selectors_on_screen_list):
-        selector = Selector(type, scale_factor_X, scale_factor_Y, fullscreen)
-        selectors_on_screen_list.append(selector)
-        current_selector_index = current_selector_index + 1
-        all_selector.append(selector)
-    else:
-        for s in all_selector:
-            if s.get_selector().isvisible():
-                continue
-            else:
-                if type == "Tab":
-                    s.reinstate_to_tab(scale_factor_X, scale_factor_Y, fullscreen)
-                elif type == "Slot":
-                    s.reinstate_to_slot(scale_factor_X, scale_factor_Y, fullscreen)
-                selectors_on_screen_list.append(s)
-                current_selector_index = current_selector_index + 1
-                break
-
-
 def spawn_coin_indicator():
     """
         Spawn a coin indicator at the top of the screen.
@@ -2358,10 +2336,10 @@ while True:
             pl.remove()
         price_label_on_screen_list.clear()
         current_price_index = 0
-        for s in selectors_on_screen_list:
+        for s in selector.selectors_on_screen_list:
             s.remove()
-        selectors_on_screen_list.clear()
-        current_selector_index = 0
+        selector.selectors_on_screen_list.clear()
+        selector.current_selector_index = 0
         score = 0
         refresh_variables.refresh_button = 1
         refresh_variables.refresh_indicator = 1
@@ -3821,8 +3799,8 @@ while True:
             textbox.spawn_text_box(2, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
             textbox.spawn_text_box(3, -500 * scale_factor_X, 190 * scale_factor_Y, "#ff5349")
 
-        if current_selector_index == 0:
-            spawn_selector("Tab")
+        if selector.current_selector_index == 0:
+            selector.spawn_selector("Tab")
 
         if page == "Machine_Mode":
             if button.current_button_index == 4:
@@ -3838,11 +3816,11 @@ while True:
                             spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
 
-            if current_selector_index == 1:
-                spawn_selector("Slot")
+            if selector.current_selector_index == 1:
+                selector.spawn_selector("Slot")
 
             if refresh_variables.move_tab_selector == 1:
-                for s in selectors_on_screen_list:
+                for s in selector.selectors_on_screen_list:
                     if s.get_type() == "Tab":
                         for bu in button.buttons_on_screen_list:
                             if bu.get_type() == "Tab" and bu.get_id() == 1:
@@ -3850,7 +3828,7 @@ while True:
                                 refresh_variables.move_tab_selector = 0
 
             if refresh_variables.move_slot_selector == 1:
-                for s in selectors_on_screen_list:
+                for s in selector.selectors_on_screen_list:
                     if s.get_type() == "Slot":
                         for bu in button.buttons_on_screen_list:
                             if bu.get_type() == "Shop_Slot" and bu.get_id() == shop_config.machine_slot_selected:
@@ -3900,11 +3878,11 @@ while True:
                             spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                         counter = counter + 1
 
-            if current_selector_index == 1:
-                spawn_selector("Slot")
+            if selector.current_selector_index == 1:
+                selector.spawn_selector("Slot")
 
             if refresh_variables.move_tab_selector == 1:
-                for s in selectors_on_screen_list:
+                for s in selector.selectors_on_screen_list:
                     if s.get_type() == "Tab":
                         for bu in button.buttons_on_screen_list:
                             if bu.get_type() == "Tab" and bu.get_id() == 2:
@@ -3912,7 +3890,7 @@ while True:
                                 refresh_variables.move_tab_selector = 0
 
             if refresh_variables.move_slot_selector == 1:
-                for s in selectors_on_screen_list:
+                for s in selector.selectors_on_screen_list:
                     if s.get_type() == "Slot":
                         for bu in button.buttons_on_screen_list:
                             if bu.get_type() == "Shop_Slot" and bu.get_id() == shop_config.alien_slot_selected:
@@ -3976,7 +3954,7 @@ while True:
                         counter = counter + 1
 
             if refresh_variables.move_tab_selector == 1:
-                for s in selectors_on_screen_list:
+                for s in selector.selectors_on_screen_list:
                     if s.get_type() == "Tab":
                         for bu in button.buttons_on_screen_list:
                             if bu.get_type() == "Tab" and bu.get_id() == 3:

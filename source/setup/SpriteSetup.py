@@ -29,6 +29,6 @@ textbox = SpawnTextbox(scale_factor, scale_factor_X)
 
 panel = SpawnPanel(scale_factor, scale_factor_X, scale_factor_Y)
 
-selector = SpawnSelector(scale_factor_X, scale_factor_Y, fullscreen)
+selector = SpawnSelector(scale_factor_X, scale_factor_Y)
 
 price_label = SpawnPriceLabel(fullscreen)
