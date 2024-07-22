@@ -64,13 +64,6 @@ refresh_variables = Refresh()
 # Which item is being displayed
 price_displayed = 0
 
-# Coin setup
-all_coins_list = []
-all_coins_index = 0
-coins_on_screen_list = []
-current_coin_index = 0
-coin_pickup_delay = 0
-
 # Walking Animation in Alien Mode
 right_update = 0
 left_update = 0

@@ -28,6 +28,7 @@ from components.spawn.SpawnPowerUp import SpawnPowerUp
 from components.spawn.SpawnPowerUp import SpawnYellowPowerUpIndicator
 from components.spawn.SpawnPowerUp import SpawnBluePowerUpIndicator
 from components.spawn.SpawnPowerUp import SpawnExtraPowerUpIndicator
+from components.spawn.SpawnCoin import SpawnCoin
 from components.spawn.SpawnCoin import SpawnCoinIndicator
 from components.spawn.SpawnPlayer import SpawnMachinePlayer
 from components.spawn.SpawnPlayer import SpawnHumanPlayer
@@ -65,6 +66,8 @@ blue_power_up_indicator = SpawnBluePowerUpIndicator(scale_factor_X, scale_factor
 
 extra_power_up_indicator = SpawnExtraPowerUpIndicator(scale_factor_X, scale_factor_Y)
 
+coin = SpawnCoin()
+
 coin_indicator = SpawnCoinIndicator(scale_factor_X, scale_factor_Y)
 
 machine_player = SpawnMachinePlayer(scale_factor_X, scale_factor_Y)
@@ -86,4 +89,3 @@ medium_alien = SpawnMediumAlien(scale_factor_X, scale_factor_Y)
 large_alien = SpawnLargeAlien(scale_factor_X, scale_factor_Y)
 
 ufo = SpawnUFO(scale_factor_X, scale_factor_Y)
-

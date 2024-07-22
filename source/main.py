@@ -43,6 +43,7 @@ from setup.SpriteSetup import power_up
 from setup.SpriteSetup import yellow_power_up_indicator
 from setup.SpriteSetup import blue_power_up_indicator
 from setup.SpriteSetup import extra_power_up_indicator
+from setup.SpriteSetup import coin
 from setup.SpriteSetup import coin_indicator
 from setup.SpriteSetup import machine_player
 from setup.SpriteSetup import human_player
@@ -1852,11 +1853,11 @@ while True:
         extra_power_up_indicator.extra_power_up_indicator_index = 0
 
         # Remove all the coins on the screen
-        for coin in coins_on_screen_list:
-            coin.remove()
-        coins_on_screen_list.clear()
-        current_coin_index = 0
-        coin_pickup_delay = 0
+        for c in coin.coins_on_screen_list:
+            c.remove()
+        coin.coins_on_screen_list.clear()
+        coin.current_coin_index = 0
+        coin.coin_pickup_delay = 0
 
         # Spawn the title mode buttons
         if button.current_button_index == 0:
@@ -2024,7 +2025,7 @@ while True:
             machine_boss.boss_index = 0
             machine_boss.boss_update_value = 0
             machine_boss.boss_hit_value = 0
-            coin_pickup_delay = 0
+            coin.coin_pickup_delay = 0
 
         # Run the functions to shoot the lasers for each of the enemies
         for bm in blue_machine.blue_machines:
@@ -2041,22 +2042,22 @@ while True:
 
         # Detects if the players has picked up a coin
         hit_coin = 0
-        for coin in coins_on_screen_list:
+        for c in coin.coins_on_screen_list:
             for p in machine_player.current_player:
                 # If the player picks up a coin
-                if p.get_laser().isvisible() and p.get_laser().distance(coin.get_coin()) < 55 * scale_factor and coin_pickup_delay == 0:
-                    coin.remove()
+                if p.get_laser().isvisible() and p.get_laser().distance(c.get_coin()) < 55 * scale_factor and coin.coin_pickup_delay == 0:
+                    c.remove()
                     # Increase the amount of coins based on the type of coin picked up
-                    if coin.get_type() == "copper":
+                    if c.get_type() == "copper":
                         shop_config.total_coins = shop_config.total_coins + 1
                         machine_coins_collected = machine_coins_collected + 1
-                    elif coin.get_type() == "silver":
+                    elif c.get_type() == "silver":
                         shop_config.total_coins = shop_config.total_coins + 5
                         machine_coins_collected = machine_coins_collected + 5
-                    elif coin.get_type() == "gold":
+                    elif c.get_type() == "gold":
                         shop_config.total_coins = shop_config.total_coins + 10
                         machine_coins_collected = machine_coins_collected + 10
-                    elif coin.get_type() == "platinum":
+                    elif c.get_type() == "platinum":
                         shop_config.total_coins = shop_config.total_coins + 25
                         machine_coins_collected = machine_coins_collected + 25
                     shop_config.save()
@@ -2066,7 +2067,7 @@ while True:
                     config['Statistics_Machine_Mode'][coins] = str(machine_coins_collected)
                     with open('Config/playerData.ini', 'w') as configfile:
                         config.write(configfile)
-                    coins_on_screen_list.pop(hit_coin)
+                    coin.coins_on_screen_list.pop(hit_coin)
                     # play the coin pickup sound
                     if coin_pickup_sound == 1:
                         sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
@@ -2080,15 +2081,15 @@ while True:
                 # If the player laser hits a blue machine that is visible and not dying
                 if (bm.get_blue_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(bm.get_blue_machine()) < 55 * scale_factor and blue_machine.blue_machines_update_values[current_blue_update_value_index] == 0) or blue_machine.blue_machines_update_values[current_blue_update_value_index] != 0:
                     # Kill the enemy
-                    bm.kill_enemy(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    bm.kill_enemy(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     blue_machine.blue_machines_update_values[current_blue_update_value_index] = blue_machine.blue_machines_update_values[current_blue_update_value_index] + 1
                     # Check if the death animation is finished
                     if bm.get_update_value() == 0:
                         blue_machine.blue_machines_update_values[current_blue_update_value_index] = 0
-                        coin_pickup_delay = 0
+                        coin.coin_pickup_delay = 0
                     # Delay the coin pickup so it does not pick up the coin at the same time as killing the enemy
                     if bm.get_update_value() == 3:
-                        coin_pickup_delay = 1
+                        coin.coin_pickup_delay = 1
                     if blue_machine.blue_machines_update_values[current_blue_update_value_index] == 1:
                         # Increase the players score
                         # When the blue power up is active, the score increases are doubled (This is universal)
@@ -2114,13 +2115,13 @@ while True:
                 # If the player laser hits a yellow machine that is visible and not dying
                 if (ym.get_yellow_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(ym.get_yellow_machine()) < 59 * scale_factor and yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] == 0) or yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] != 0:
                     # Same procedure as before
-                    ym.kill_enemy(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    ym.kill_enemy(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] = yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] + 1
                     if ym.get_update_value() == 0:
                         yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] = 0
-                        coin_pickup_delay = 0
+                        coin.coin_pickup_delay = 0
                     if ym.get_update_value() == 3:
-                        coin_pickup_delay = 1
+                        coin.coin_pickup_delay = 1
                     if yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 4
@@ -2142,13 +2143,13 @@ while True:
             for rm in red_machine.red_machines:
                 # If the player laser hits a red machine that is visible and not dying with 1 health
                 if red_machine.red_machines_update_values[current_red_update_value_index] != 0 or (rm.get_red_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(rm.get_red_machine()) < 64 * scale_factor and rm.health_bar == 1 and rm.hit_delay == 0 and red_machine.red_machines_update_values[current_red_update_value_index] == 0):
-                    rm.kill_enemy(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    rm.kill_enemy(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     red_machine.red_machines_update_values[current_red_update_value_index] = red_machine.red_machines_update_values[current_red_update_value_index] + 1
                     if rm.get_update_value() == 0:
                         red_machine.red_machines_update_values[current_red_update_value_index] = 0
-                        coin_pickup_delay = 0
+                        coin.coin_pickup_delay = 0
                     if rm.get_update_value() == 3:
-                        coin_pickup_delay = 1
+                        coin.coin_pickup_delay = 1
                     if red_machine.red_machines_update_values[current_red_update_value_index] == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 10
@@ -2186,13 +2187,13 @@ while True:
             for b in machine_boss.boss:
                 # If the player laser hits the boss that is visible and not dying with 1 health
                 if machine_boss.boss_update_value != 0 or (b.get_boss().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(b.get_boss()) < 75 * scale_factor and b.health_bar == 1 and b.hit_delay == 0 and machine_boss.boss_update_value == 0):
-                    b.kill_boss(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    b.kill_boss(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     machine_boss.boss_update_value = machine_boss.boss_update_value + 1
                     if b.get_update_value() == 0:
                         machine_boss.boss_update_value = 0
-                        coin_pickup_delay = 0
+                        coin.coin_pickup_delay = 0
                     if b.get_update_value() == 3:
-                        coin_pickup_delay = 1
+                        coin.coin_pickup_delay = 1
                     if machine_boss.boss_update_value == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 100
@@ -2842,22 +2843,22 @@ while True:
 
         # Detects if the players has picked up a coin
         hit_coin = 0
-        for coin in coins_on_screen_list:
+        for c in coin.coins_on_screen_list:
             for h in human_player.current_human:
                 # If the player picks up a coin
-                if (h.get_laser().isvisible() and h.get_laser().distance(coin.get_coin()) < 55 * scale_factor) or h.get_player().distance(coin.get_coin()) < 55 * scale_factor:
-                    coin.remove()
+                if (h.get_laser().isvisible() and h.get_laser().distance(c.get_coin()) < 55 * scale_factor) or h.get_player().distance(c.get_coin()) < 55 * scale_factor:
+                    c.remove()
                     # Increase the amount of coins based on the type of coin picked up
-                    if coin.get_type() == "copper":
+                    if c.get_type() == "copper":
                         shop_config.total_coins = shop_config.total_coins + 1
                         alien_coins_collected = alien_coins_collected + 1
-                    elif coin.get_type() == "silver":
+                    elif c.get_type() == "silver":
                         shop_config.total_coins = shop_config.total_coins + 5
                         alien_coins_collected = alien_coins_collected + 5
-                    elif coin.get_type() == "gold":
+                    elif c.get_type() == "gold":
                         shop_config.total_coins = shop_config.total_coins + 10
                         alien_coins_collected = alien_coins_collected + 10
-                    elif coin.get_type() == "platinum":
+                    elif c.get_type() == "platinum":
                         shop_config.total_coins = shop_config.total_coins + 25
                         alien_coins_collected = alien_coins_collected + 25
                     shop_config.save()
@@ -2867,7 +2868,7 @@ while True:
                     config['Statistics_Alien_Mode'][coins] = str(alien_coins_collected)
                     with open('Config/playerData.ini', 'w') as configfile:
                         config.write(configfile)
-                    coins_on_screen_list.pop(hit_coin)
+                    coin.coins_on_screen_list.pop(hit_coin)
                     # play the coin pickup sound
                     if coin_pickup_sound == 1:
                         sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
@@ -2883,7 +2884,7 @@ while True:
                         (sa.get_small_alien().xcor() - 26 * scale_factor_X < h.get_laser().xcor() < sa.get_small_alien().xcor() + 26 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and
                         small_alien.small_aliens_kill_values[current_small_alien_update_value_index] == 0) or small_alien.small_aliens_kill_values[current_small_alien_update_value_index] != 0:
                     # Kill the alien
-                    sa.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    sa.kill_alien(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = small_alien.small_aliens_kill_values[current_small_alien_update_value_index] + 1
                     # Check if the death animation is finished
                     if sa.get_death_animation() == 0:
@@ -2918,7 +2919,7 @@ while True:
                         (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.health == 1 and ma.hit_delay == 0 and
                         medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] == 0) or medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] != 0:
                     # Same procedure as before
-                    ma.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    ma.kill_alien(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
                     if ma.get_death_animation() == 0:
                         medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = 0
@@ -2969,7 +2970,7 @@ while True:
                 if (la.get_large_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(la.get_large_alien()) < 112 * scale_factor and (
                         (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and la.health == 1 and la.hit_delay == 0 and
                         large_alien.large_aliens_kill_values[current_large_alien_update_value_index] == 0) or large_alien.large_aliens_kill_values[current_large_alien_update_value_index] != 0:
-                    la.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    la.kill_alien(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = large_alien.large_aliens_kill_values[current_large_alien_update_value_index] + 1
                     if la.get_death_animation() == 0:
                         large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = 0
@@ -3015,7 +3016,7 @@ while True:
                 if ufo.ufo_kill_value != 0 or (u.get_ufo().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(u.get_ufo()) < 72 * scale_factor and
                         (u.get_ufo().xcor() - 53 * scale_factor_X < h.get_laser().xcor() < u.get_ufo().xcor() + 53 * scale_factor_X) and
                         u.get_ufo_health() == 1 and u.hit_delay == 0 and ufo.ufo_kill_value == 0):
-                    u.kill_ufo(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    u.kill_ufo(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     ufo.ufo_kill_value = ufo.ufo_kill_value + 1
                     if u.get_death_animation() == 0:
                         ufo.ufo_kill_value = 0

@@ -16,6 +16,22 @@
 from components.ItemCoin import CoinIndicator
 
 
+class SpawnCoin:
+    def __init__(self):
+        self.all_coins_list = []
+        self.all_coins_index = 0
+        self.coins_on_screen_list = []
+        self.current_coin_index = 0
+        self.coin_pickup_delay = 0
+
+    def __del__(self):
+        del self.all_coins_list
+        del self.all_coins_index
+        del self.coins_on_screen_list
+        del self.current_coin_index
+        del self.coin_pickup_delay
+
+
 class SpawnCoinIndicator:
     def __init__(self, scale_factor_x, scale_factor_y):
         self.coin_indicator_turtle = []
