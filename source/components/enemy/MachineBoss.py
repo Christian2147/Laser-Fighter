@@ -34,6 +34,18 @@ import pygame
 import random
 import time
 from components.ItemCoin import Coin
+from setup.TextureSetup import EXPLOSION_1_TEXTURE
+from setup.TextureSetup import EXPLOSION_2_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_1010_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_910_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_810_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_710_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_610_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_510_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_410_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_310_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_210_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_110_TEXTURE
 
 
 class Boss:
@@ -132,6 +144,9 @@ class Boss:
         self.float_start_time = time.time()
         self.laser_has_attacked = 0
         self.movement_activated = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
 
     def __del__(self):
         """
@@ -401,7 +416,7 @@ class Boss:
             # Hide the boss and spawn a gold coin where the boss died
             self.boss.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
-                platinum_coin = Coin(type="platinum", pos_x=self.boss.xcor(), pos_y=self.boss.ycor(), fullscreen=fullscreen)
+                platinum_coin = Coin(type="platinum", pos_x=self.boss.xcor(), pos_y=self.boss.ycor())
                 coins_on_screen.append(platinum_coin)
                 all_coins.append(platinum_coin)
             else:
@@ -409,7 +424,7 @@ class Boss:
                     if coin.get_coin().isvisible():
                         continue
                     else:
-                        coin.reinstate_to_platinum(pos_x=self.boss.xcor(), pos_y=self.boss.ycor(), fullscreen=fullscreen)
+                        coin.reinstate_to_platinum(pos_x=self.boss.xcor(), pos_y=self.boss.ycor())
                         coins_on_screen.append(coin)
                         break
             # Respawn the boss in a different random location

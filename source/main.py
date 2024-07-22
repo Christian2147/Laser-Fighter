@@ -46,10 +46,10 @@ from setup.SpriteSetup import extra_power_up_indicator
 from setup.SpriteSetup import coin_indicator
 from setup.SpriteSetup import machine_player
 from setup.SpriteSetup import human_player
+from setup.SpriteSetup import blue_machine
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
-from components.enemy.MachineBlueMachine import BlueMachine
 from components.enemy.MachineYellowMachine import YellowMachine
 from components.enemy.MachineRedMachine import RedMachine
 from components.enemy.MachineBoss import Boss
@@ -1676,35 +1676,6 @@ def update_text():
 """
 
 
-def spawn_blue_machine(id):
-    """
-        Spawn a blue machine with the given id on the screen.
-
-        :param id: The id that the enemy should have (Determines initial location of the enemy)
-        :type id: int
-
-        :return: None
-    """
-
-    global blue_machine_index
-    if len(all_blue_machines) <= len(blue_machines):
-        blue_machine = BlueMachine(id, scale_factor_X, scale_factor_Y, fullscreen)
-        blue_machines.append(blue_machine)
-        blue_machine_index = blue_machine_index + 1
-        all_blue_machines.append(blue_machine)
-        blue_machines_update_values.append(0)
-    else:
-        for bm in all_blue_machines:
-            if bm.get_blue_machine().isvisible():
-                continue
-            else:
-                bm.reinstate(id, scale_factor_X, scale_factor_Y, fullscreen)
-                blue_machines.append(bm)
-                blue_machine_index = blue_machine_index + 1
-                blue_machines_update_values.append(0)
-                break
-
-
 def spawn_yellow_machine(id):
     """
         Spawn a yellow machine with the given id on the screen.
@@ -2188,9 +2159,9 @@ while True:
         if machine_player.current_player_index == 0:
             machine_player.spawn_machine_player(god_mode)
         # Spawn 3 blue machines to start the game
-        if blue_machine_index == 0:
+        if blue_machine.blue_machine_index == 0:
             for i in range(3):
-                spawn_blue_machine(i + 1)
+                blue_machine.spawn_blue_machine(i + 1)
 
         # Used to shoot the players laser
         for p in machine_player.current_player:
@@ -2199,10 +2170,10 @@ while True:
         # Spawn Machine enemies based on the players score
         # At its peak, there will be 5 blue machines, 5 yellow machines, 5 red machines, and 1 machine boss attacking
         #   the player
-        if score >= 10 and blue_machine_index == 3:
-            spawn_blue_machine(4)
-        elif score >= 20 and blue_machine_index == 4:
-            spawn_blue_machine(5)
+        if score >= 10 and blue_machine.blue_machine_index == 3:
+            blue_machine.spawn_blue_machine(4)
+        elif score >= 20 and blue_machine.blue_machine_index == 4:
+            blue_machine.spawn_blue_machine(5)
         elif score >= 30 and yellow_machine_index == 0:
             spawn_yellow_machine(1)
         elif score >= 40 and yellow_machine_index == 1:
@@ -2227,18 +2198,18 @@ while True:
             spawn_boss()
         # If score is 0, reset the number of enemies back down to 3
         elif score == 0:
-            for blue_machine in blue_machines:
-                if blue_machine.get_id() == 4 or blue_machine.get_id() == 5:
-                    blue_machine.remove()
-                    blue_machine_index = blue_machine_index - 1
-            if len(blue_machines_update_values) == 4:
-                blue_machines_update_values.pop(3)
-                blue_machines.pop(3)
-            elif len(blue_machines_update_values) == 5:
-                blue_machines_update_values.pop(4)
-                blue_machines_update_values.pop(3)
-                blue_machines.pop(4)
-                blue_machines.pop(3)
+            for bm in blue_machine.blue_machines:
+                if bm.get_id() == 4 or bm.get_id() == 5:
+                    bm.remove()
+                    blue_machine.blue_machine_index = blue_machine.blue_machine_index - 1
+            if len(blue_machine.blue_machines_update_values) == 4:
+                blue_machine.blue_machines_update_values.pop(3)
+                blue_machine.blue_machines.pop(3)
+            elif len(blue_machine.blue_machines_update_values) == 5:
+                blue_machine.blue_machines_update_values.pop(4)
+                blue_machine.blue_machines_update_values.pop(3)
+                blue_machine.blue_machines.pop(4)
+                blue_machine.blue_machines.pop(3)
 
             for yellow_machine in yellow_machines:
                 yellow_machine.remove()
@@ -2260,8 +2231,8 @@ while True:
             coin_pickup_delay = 0
 
         # Run the functions to shoot the lasers for each of the enemies
-        for blue_machine in blue_machines:
-            blue_machine.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
+        for bm in blue_machine.blue_machines:
+            bm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound)
 
         for yellow_machine in yellow_machines:
             yellow_machine.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
@@ -2309,20 +2280,20 @@ while True:
         # Enemy Killer
         for p in machine_player.current_player:
             current_blue_update_value_index = 0
-            for bm in blue_machines:
+            for bm in blue_machine.blue_machines:
                 # If the player laser hits a blue machine that is visible and not dying
-                if (bm.get_blue_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(bm.get_blue_machine()) < 55 * scale_factor and blue_machines_update_values[current_blue_update_value_index] == 0) or blue_machines_update_values[current_blue_update_value_index] != 0:
+                if (bm.get_blue_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(bm.get_blue_machine()) < 55 * scale_factor and blue_machine.blue_machines_update_values[current_blue_update_value_index] == 0) or blue_machine.blue_machines_update_values[current_blue_update_value_index] != 0:
                     # Kill the enemy
-                    bm.kill_enemy(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
-                    blue_machines_update_values[current_blue_update_value_index] = blue_machines_update_values[current_blue_update_value_index] + 1
+                    bm.kill_enemy(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    blue_machine.blue_machines_update_values[current_blue_update_value_index] = blue_machine.blue_machines_update_values[current_blue_update_value_index] + 1
                     # Check if the death animation is finished
                     if bm.get_update_value() == 0:
-                        blue_machines_update_values[current_blue_update_value_index] = 0
+                        blue_machine.blue_machines_update_values[current_blue_update_value_index] = 0
                         coin_pickup_delay = 0
                     # Delay the coin pickup so it does not pick up the coin at the same time as killing the enemy
                     if bm.get_update_value() == 3:
                         coin_pickup_delay = 1
-                    if blue_machines_update_values[current_blue_update_value_index] == 1:
+                    if blue_machine.blue_machines_update_values[current_blue_update_value_index] == 1:
                         # Increase the players score
                         # When the blue power up is active, the score increases are doubled (This is universal)
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
@@ -2472,7 +2443,7 @@ while True:
                 machine_player.player_update_value = machine_player.player_update_value + 1
                 if p.get_player_death_update() == 0.6:
                     # Reset the initial and staying blue machines death count
-                    for bm in blue_machines:
+                    for bm in blue_machine.blue_machines:
                         bm.set_death_count(0)
                     # Update the stats if god mode is off
                     if god_mode == 0:
@@ -2494,7 +2465,7 @@ while True:
             # If the death animation is not ongoing
             else:
                 # For every enemy, check if the enemies laser has hit the player
-                for bm in blue_machines:
+                for bm in blue_machine.blue_machines:
                     if bm.get_blue_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if bm.get_blue_machine_laser().isvisible() and -30 * scale_factor_X < (bm.get_blue_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             bm.set_laser_has_attacked(1)
@@ -2550,7 +2521,7 @@ while True:
             # If there is no hit delay
             else:
                 # Check if the lasers of any enemies have hit the player
-                for bm in blue_machines:
+                for bm in blue_machine.blue_machines:
                     if bm.get_blue_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if bm.get_blue_machine_laser().isvisible() and -30 * scale_factor_X < (bm.get_blue_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             bm.set_laser_has_attacked(1)
@@ -2586,8 +2557,8 @@ while True:
         # Function for the float effect of the machine enemies
         # This float effect was added to create the illusion that the enemies are flying through outer space at
         #   fast speeds
-        for bm in blue_machines:
-            bm.float_effect(scale_factor_Y)
+        for bm in blue_machine.blue_machines:
+            bm.float_effect()
 
         for ym in yellow_machines:
             ym.float_effect(scale_factor_Y)
@@ -2601,8 +2572,8 @@ while True:
         # For the enemy movement
         # If the machine enemy has been killed enough times, it will start moving along the x-axis
         for p in machine_player.current_player:
-            for bm in blue_machines:
-                bm.move_enemy(p.get_death_animation(), scale_factor_X)
+            for bm in blue_machine.blue_machines:
+                bm.move_enemy(p.get_death_animation())
 
             for ym in yellow_machines:
                 ym.move_enemy(p.get_death_animation(), scale_factor_X)
@@ -2734,11 +2705,11 @@ while True:
         machine_player.current_player.clear()
         machine_player.current_player_index = 0
         player_update_value = 0
-        for bm in blue_machines:
+        for bm in blue_machine.blue_machines:
             bm.remove()
-        blue_machines.clear()
-        blue_machine_index = 0
-        blue_machines_update_values.clear()
+        blue_machine.blue_machines.clear()
+        blue_machine.blue_machine_index = 0
+        blue_machine.blue_machines_update_values.clear()
         for ym in yellow_machines:
             ym.remove()
         yellow_machines.clear()

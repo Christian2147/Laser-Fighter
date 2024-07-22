@@ -22,6 +22,10 @@
 """
 
 import turtle
+from setup.TextureSetup import COPPER_COIN_TEXTURE
+from setup.TextureSetup import SILVER_COIN_TEXTURE
+from setup.TextureSetup import GOLD_COIN_TEXTURE
+from setup.TextureSetup import PLATINUM_COIN_TEXTURE
 from setup.TextureSetup import COIN_INDICATOR_TEXTURE
 
 
@@ -34,7 +38,7 @@ class Coin:
             coin (turtle): The coin sprite
     """
 
-    def __init__(self, type, pos_x, pos_y, fullscreen):
+    def __init__(self, type, pos_x, pos_y):
         """
             Creates and places a coin on the screen
 
@@ -46,32 +50,17 @@ class Coin:
 
             :param pos_y: The y-coordinate of the coin sprite
             :type pos_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.coin = turtle.Turtle()
         if type == "copper":
-            if fullscreen == 1:
-                self.coin.shape("Textures/Coins/Copper_Coin_Scaled.gif")
-            else:
-                self.coin.shape("Textures/Coins/Copper_Coin.gif")
+            self.coin.shape(COPPER_COIN_TEXTURE)
         if type == "silver":
-            if fullscreen == 1:
-                self.coin.shape("Textures/Coins/Silver_Coin_Scaled.gif")
-            else:
-                self.coin.shape("Textures/Coins/Silver_Coin.gif")
+            self.coin.shape(SILVER_COIN_TEXTURE)
         if type == "gold":
-            if fullscreen == 1:
-                self.coin.shape("Textures/Coins/Gold_Coin_Scaled.gif")
-            else:
-                self.coin.shape("Textures/Coins/Gold_Coin.gif")
+            self.coin.shape(GOLD_COIN_TEXTURE)
         if type == "platinum":
-            if fullscreen == 1:
-                self.coin.shape("Textures/Coins/Platinum_Coin_Scaled.gif")
-            else:
-                self.coin.shape("Textures/Coins/Platinum_Coin.gif")
+            self.coin.shape(PLATINUM_COIN_TEXTURE)
         # Ensure that the turtle does not draw lines
         self.coin.penup()
         self.coin.shapesize(2, 2)
@@ -89,7 +78,7 @@ class Coin:
         self.coin.hideturtle()
         self.coin.reset()
 
-    def reinstate_to_copper(self, pos_x, pos_y, fullscreen):
+    def reinstate_to_copper(self, pos_x, pos_y):
         """
             Reuses the existing coin sprite to generate a copper coin on the screen
 
@@ -99,22 +88,16 @@ class Coin:
             :param: pos-y: the y-coordinate of the new coin
             :type: float
 
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        if fullscreen == 1:
-            self.coin.shape("Textures/Coins/Copper_Coin_Scaled.gif")
-        else:
-            self.coin.shape("Textures/Coins/Copper_Coin.gif")
+        self.coin.shape(COPPER_COIN_TEXTURE)
         self.coin.goto(pos_x, pos_y)
         self.coin.showturtle()
 
         self.type = "copper"
 
-    def reinstate_to_silver(self, pos_x, pos_y, fullscreen):
+    def reinstate_to_silver(self, pos_x, pos_y):
         """
             Reuses the existing coin sprite to generate a silver coin on the screen
 
@@ -124,22 +107,16 @@ class Coin:
             :param: pos-y: the y-coordinate of the new coin
             :type: float
 
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        if fullscreen == 1:
-            self.coin.shape("Textures/Coins/Silver_Coin_Scaled.gif")
-        else:
-            self.coin.shape("Textures/Coins/Silver_Coin.gif")
+        self.coin.shape(SILVER_COIN_TEXTURE)
         self.coin.goto(pos_x, pos_y)
         self.coin.showturtle()
 
         self.type = "silver"
 
-    def reinstate_to_gold(self, pos_x, pos_y, fullscreen):
+    def reinstate_to_gold(self, pos_x, pos_y):
         """
             Reuses the existing coin sprite to generate a gold coin on the screen
 
@@ -149,22 +126,16 @@ class Coin:
             :param: pos-y: the y-coordinate of the new coin
             :type: float
 
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        if fullscreen == 1:
-            self.coin.shape("Textures/Coins/Gold_Coin_Scaled.gif")
-        else:
-            self.coin.shape("Textures/Coins/Gold_Coin.gif")
+        self.coin.shape(GOLD_COIN_TEXTURE)
         self.coin.goto(pos_x, pos_y)
         self.coin.showturtle()
 
         self.type = "gold"
 
-    def reinstate_to_platinum(self, pos_x, pos_y, fullscreen):
+    def reinstate_to_platinum(self, pos_x, pos_y):
         """
             Reuses the existing coin sprite to generate a platinum coin on the screen
 
@@ -174,16 +145,10 @@ class Coin:
             :param: pos-y: the y-coordinate of the new coin
             :type: float
 
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        if fullscreen == 1:
-            self.coin.shape("Textures/Coins/Platinum_Coin_Scaled.gif")
-        else:
-            self.coin.shape("Textures/Coins/Platinum_Coin.gif")
+        self.coin.shape(PLATINUM_COIN_TEXTURE)
         self.coin.goto(pos_x, pos_y)
         self.coin.showturtle()
 

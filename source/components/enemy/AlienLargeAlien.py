@@ -341,7 +341,7 @@ class LargeAlien:
             # Spawn a coin where the alien has died
             self.large_alien.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
-                gold_coin = Coin(type="gold", pos_x=self.large_alien.xcor(), pos_y=self.large_alien.ycor(), fullscreen=fullscreen)
+                gold_coin = Coin(type="gold", pos_x=self.large_alien.xcor(), pos_y=self.large_alien.ycor())
                 coins_on_screen.append(gold_coin)
                 all_coins.append(gold_coin)
             else:
@@ -349,7 +349,7 @@ class LargeAlien:
                     if coin.get_coin().isvisible():
                         continue
                     else:
-                        coin.reinstate_to_gold(pos_x=self.large_alien.xcor(), pos_y=self.large_alien.ycor(), fullscreen=fullscreen)
+                        coin.reinstate_to_gold(pos_x=self.large_alien.xcor(), pos_y=self.large_alien.ycor())
                         coins_on_screen.append(coin)
                         break
             # Respawn the large alien in a random location (side of the screen)

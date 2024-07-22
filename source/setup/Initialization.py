@@ -81,10 +81,10 @@ current_coin_index = 0
 coin_pickup_delay = 0
 
 # Blue Machine setup
-all_blue_machines = []
-blue_machines = []
-blue_machines_update_values = []
-blue_machine_index = 0
+#all_blue_machines = []
+#blue_machines = []
+#blue_machines_update_values = []
+#blue_machine_index = 0
 
 # Yellow Machine setup
 all_yellow_machines = []

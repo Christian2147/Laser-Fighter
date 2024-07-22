@@ -280,7 +280,7 @@ class SmallAlien:
             # Spawn a coin where the alien has died
             self.small_alien.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
-                copper_coin = Coin(type="copper", pos_x=self.small_alien.xcor(), pos_y=self.small_alien.ycor(), fullscreen=fullscreen)
+                copper_coin = Coin(type="copper", pos_x=self.small_alien.xcor(), pos_y=self.small_alien.ycor())
                 coins_on_screen.append(copper_coin)
                 all_coins.append(copper_coin)
             else:
@@ -288,7 +288,7 @@ class SmallAlien:
                     if coin.get_coin().isvisible():
                         continue
                     else:
-                        coin.reinstate_to_copper(pos_x=self.small_alien.xcor(), pos_y=self.small_alien.ycor(), fullscreen=fullscreen)
+                        coin.reinstate_to_copper(pos_x=self.small_alien.xcor(), pos_y=self.small_alien.ycor())
                         coins_on_screen.append(coin)
                         break
             # Respawn the small alien in a random location (side of the screen)

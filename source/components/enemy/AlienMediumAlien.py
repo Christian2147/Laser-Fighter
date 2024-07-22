@@ -342,7 +342,7 @@ class MediumAlien:
             # Spawn a coin where the alien has died
             self.medium_alien.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
-                silver_coin = Coin(type="silver", pos_x=self.medium_alien.xcor(), pos_y=self.medium_alien.ycor(), fullscreen=fullscreen)
+                silver_coin = Coin(type="silver", pos_x=self.medium_alien.xcor(), pos_y=self.medium_alien.ycor())
                 coins_on_screen.append(silver_coin)
                 all_coins.append(silver_coin)
             else:
@@ -350,7 +350,7 @@ class MediumAlien:
                     if coin.get_coin().isvisible():
                         continue
                     else:
-                        coin.reinstate_to_silver(pos_x=self.medium_alien.xcor(), pos_y=self.medium_alien.ycor(), fullscreen=fullscreen)
+                        coin.reinstate_to_silver(pos_x=self.medium_alien.xcor(), pos_y=self.medium_alien.ycor())
                         coins_on_screen.append(coin)
                         break
             # Respawn the medium alien in a random location (side of the screen)

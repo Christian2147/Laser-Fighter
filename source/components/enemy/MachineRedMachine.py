@@ -33,6 +33,8 @@ import random
 import pygame
 import time
 from components.ItemCoin import Coin
+from setup.TextureSetup import EXPLOSION_1_TEXTURE
+from setup.TextureSetup import EXPLOSION_2_TEXTURE
 
 
 class RedMachine:
@@ -167,6 +169,9 @@ class RedMachine:
         self.laser_has_attacked = 0
         self.movement_activated = 0
         self.id = id
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
 
     def __del__(self):
         """
@@ -445,7 +450,7 @@ class RedMachine:
             # Hide the red machine and spawn a gold coin where the red machine died
             self.red_machine.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
-                gold_coin = Coin(type="gold", pos_x=self.red_machine.xcor(), pos_y=self.red_machine.ycor(), fullscreen=fullscreen)
+                gold_coin = Coin(type="gold", pos_x=self.red_machine.xcor(), pos_y=self.red_machine.ycor())
                 coins_on_screen.append(gold_coin)
                 all_coins.append(gold_coin)
             else:
@@ -453,7 +458,7 @@ class RedMachine:
                     if coin.get_coin().isvisible():
                         continue
                     else:
-                        coin.reinstate_to_gold(pos_x=self.red_machine.xcor(), pos_y=self.red_machine.ycor(), fullscreen=fullscreen)
+                        coin.reinstate_to_gold(pos_x=self.red_machine.xcor(), pos_y=self.red_machine.ycor())
                         coins_on_screen.append(coin)
                         break
             # Respawn the red machine in a different random location

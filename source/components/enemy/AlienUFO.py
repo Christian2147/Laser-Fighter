@@ -361,7 +361,7 @@ class UFO:
             # Spawn a coin where the UFO has died
             self.ufo.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
-                platinum_coin = Coin(type="platinum", pos_x=self.ufo.xcor(), pos_y=self.ufo.ycor(), fullscreen=fullscreen)
+                platinum_coin = Coin(type="platinum", pos_x=self.ufo.xcor(), pos_y=self.ufo.ycor())
                 coins_on_screen.append(platinum_coin)
                 all_coins.append(platinum_coin)
             else:
@@ -369,7 +369,7 @@ class UFO:
                     if coin.get_coin().isvisible():
                         continue
                     else:
-                        coin.reinstate_to_platinum(pos_x=self.ufo.xcor(), pos_y=self.ufo.ycor(), fullscreen=fullscreen)
+                        coin.reinstate_to_platinum(pos_x=self.ufo.xcor(), pos_y=self.ufo.ycor())
                         coins_on_screen.append(coin)
                         break
             # Respawn the UFO in a random location (side of the screen)
