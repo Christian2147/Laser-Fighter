@@ -127,7 +127,7 @@ def jump():
             # Prepare the player for a jump
             h.jump()
             # If the jump can successfully be preformed given the circumstances required to preform it
-            if god_mode == 0 and h.do_jump == 1:
+            if settings.god_mode == 0 and h.do_jump == 1:
                 # Update the game statistics to show that the player has jumped
                 jumps = jumps + 1
                 # New config parser object is created
@@ -160,9 +160,9 @@ def shoot():
             # If the laser is not currently moving across the screen and if the player is not dying
             if p.get_laser().ycor() > 359 * scale_factor_Y and p.get_death_animation() == 0:
                 # The laser is fired
-                p.fire(player_shooting_sound)
+                p.fire(settings.player_shooting_sound)
                 # Update the game statistics
-                if god_mode == 0:
+                if settings.god_mode == 0:
                     classic_lasers_fired = classic_lasers_fired + 1
                     config = configparser.ConfigParser()
                     config.read('Config/playerData.ini')
@@ -175,12 +175,12 @@ def shoot():
             # If the laser is not currently flying across the screen and if the player is not in the process of dying
             if h.shoot_update == 0 and h.death_animation == 0 and h.direction != 0:
                 # Fire the laser
-                h.shoot(player_shooting_sound)
+                h.shoot(settings.player_shooting_sound)
                 # Change "got_hit" for the UFO back to 0 since this is a new laser being fired
                 for u in ufo.ufos:
                     u.set_got_hit(0)
                 # Update the game statistics
-                if god_mode == 0:
+                if settings.god_mode == 0:
                     alien_lasers_fired = alien_lasers_fired + 1
                     config = configparser.ConfigParser()
                     config.read('Config/playerData.ini')
@@ -216,7 +216,7 @@ def launch_title_mode(x, y):
     if mode == "Machine_Mode" or mode == "Alien_Mode" or mode == "Stats" or mode == "Shop":
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -634 * scale_factor_X) and (x < -442 * scale_factor_X) and (y > 323 * scale_factor_Y) and (y < 355 * scale_factor_Y):
-            if button_sound == 1:
+            if settings.button_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
                 sound.play()
             # Set the mode to "Title_Mode" to change the screen
@@ -227,7 +227,7 @@ def launch_title_mode(x, y):
     if mode == "Settings" or mode == "Controls":
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > 26 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -315 * scale_factor_Y) and (y < -254 * scale_factor_Y):
-            if button_sound == 1:
+            if settings.button_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
                 sound.play()
             # If certain settings were updated, a restart may be required.
@@ -270,7 +270,7 @@ def launch_machine_mode(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > 49 * scale_factor_Y) and (y < 121 * scale_factor_Y):
-        if button_sound == 1:
+        if settings.button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
         # Enter Machine Mode
@@ -296,7 +296,7 @@ def launch_alien_mode(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -42 * scale_factor_Y) and (y < 30 * scale_factor_Y):
-        if button_sound == 1:
+        if settings.button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
         # Enter Alien Mode
@@ -324,7 +324,7 @@ def launch_shop_mode(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -133 * scale_factor_Y) and (y < -61 * scale_factor_Y):
-        if button_sound == 1:
+        if settings.button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
         # Enter The Shop
@@ -344,7 +344,7 @@ def display_machine_mode_page(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > 99 * scale_factor_Y) and (y < 201 * scale_factor_Y):
-        if button_sound == 1:
+        if settings.button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
         # Enter the Machine Mode page
@@ -364,7 +364,7 @@ def display_alien_mode_page(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > -21 * scale_factor_Y) and (y < 81 * scale_factor_Y):
-        if button_sound == 1:
+        if settings.button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
         # Enter the Alien Mode page
@@ -384,7 +384,7 @@ def display_power_up_page(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > -141 * scale_factor_Y) and (y < -39 * scale_factor_Y):
-        if button_sound == 1:
+        if settings.button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
         # Enter the Power Ups page
@@ -414,7 +414,7 @@ def launch_stats_mode(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > 9 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -224 * scale_factor_Y) and (y < -150 * scale_factor_Y):
-        if button_sound == 1:
+        if settings.button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
         # Go to the statistics screen
@@ -444,7 +444,7 @@ def launch_settings_mode(x, y):
     if mode == "Title_Mode":
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -252 * scale_factor_X) and (x < -10 * scale_factor_X) and (y > -224 * scale_factor_Y) and (y < -150 * scale_factor_Y):
-            if button_sound == 1:
+            if settings.button_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
                 sound.play()
             # Change to settings
@@ -454,7 +454,7 @@ def launch_settings_mode(x, y):
     if mode == "Controls":
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -235 * scale_factor_Y) and (y < -173 * scale_factor_Y):
-            if button_sound == 1:
+            if settings.button_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
                 sound.play()
             # Change to settings
@@ -482,7 +482,7 @@ def launch_controls_mode(x, y):
     global clickable
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -235 * scale_factor_Y) and (y < -173 * scale_factor_Y):
-        if button_sound == 1:
+        if settings.button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
         # Go to the controls screen
@@ -508,7 +508,7 @@ def exit_game(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -315 * scale_factor_Y) and (y < -241 * scale_factor_Y):
-        if button_sound == 1:
+        if settings.button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
         # Quit the game and exit the application
@@ -579,12 +579,11 @@ def slot_5_select(x, y):
 
 
 def execute_slot_function(current_page, slot_id):
-    #global current_button_index
     global button
     global refresh_variables
     global price_displayed
     # Button sound is played
-    if button_sound == 1:
+    if settings.button_sound == 1:
         sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
         sound.play()
     if current_page != "Power_Ups":
@@ -672,8 +671,6 @@ def execute_buy_button(x, y):
     global refresh_variables
     global button
     global textbox
-    #global current_button_index
-    #global current_text_index
     global current_price_index
     global price_displayed
     global page
@@ -681,7 +678,7 @@ def execute_buy_button(x, y):
     wn.onscreenclick(None)
     if (x > 299 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -328 * scale_factor_Y) and (y < -212 * scale_factor_Y):
         # Button sound is played
-        if button_sound == 1:
+        if settings.button_sound == 1:
             sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
             sound.play()
         if price_displayed > shop_config.total_coins:
@@ -690,7 +687,7 @@ def execute_buy_button(x, y):
             message_output = ctypes.windll.user32.MessageBoxW(0, "Are you sure you want to purchase this item for {} coins?".format(price_displayed), "Are you sure?", 4 + 32)
             if message_output != 7:
                 # Coin sound is played
-                if button_sound == 1:
+                if settings.button_sound == 1:
                     sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
                     sound.play()
                 shop_config.total_coins = shop_config.total_coins - price_displayed
@@ -778,7 +775,11 @@ def toggle_button_sound(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > 165 * scale_factor_Y) and (y < 226 * scale_factor_Y):
-        execute_setting_function(1)
+        if settings.button_sound == 1:
+            settings.button_sound = 0
+        else:
+            settings.button_sound = 1
+        execute_setting_function()
 
 
 def toggle_player_shooting_sound(x, y):
@@ -797,7 +798,11 @@ def toggle_player_shooting_sound(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > 85 * scale_factor_Y) and (y < 146 * scale_factor_Y):
-        execute_setting_function(2)
+        if settings.player_shooting_sound == 1:
+            settings.player_shooting_sound = 0
+        else:
+            settings.player_shooting_sound = 1
+        execute_setting_function()
 
 
 def toggle_enemy_shooting_sound(x, y):
@@ -816,7 +821,11 @@ def toggle_enemy_shooting_sound(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > 5 * scale_factor_Y) and (y < 66 * scale_factor_Y):
-        execute_setting_function(3)
+        if settings.enemy_shooting_sound == 1:
+            settings.enemy_shooting_sound = 0
+        else:
+            settings.enemy_shooting_sound = 1
+        execute_setting_function()
 
 
 def toggle_player_death_sound(x, y):
@@ -835,7 +844,11 @@ def toggle_player_death_sound(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > -75 * scale_factor_Y) and (y < -14 * scale_factor_Y):
-        execute_setting_function(4)
+        if settings.player_death_sound == 1:
+            settings.player_death_sound = 0
+        else:
+            settings.player_death_sound = 1
+        execute_setting_function()
 
 
 def toggle_enemy_death_sound(x, y):
@@ -854,7 +867,11 @@ def toggle_enemy_death_sound(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > -155 * scale_factor_Y) and (y < -94 * scale_factor_Y):
-        execute_setting_function(5)
+        if settings.enemy_death_sound == 1:
+            settings.enemy_death_sound = 0
+        else:
+            settings.enemy_death_sound = 1
+        execute_setting_function()
 
 
 def toggle_player_hit_sound(x, y):
@@ -873,7 +890,11 @@ def toggle_player_hit_sound(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > -235 * scale_factor_Y) and (y < -174 * scale_factor_Y):
-        execute_setting_function(6)
+        if settings.player_hit_sound == 1:
+            settings.player_hit_sound = 0
+        else:
+            settings.player_hit_sound = 1
+        execute_setting_function()
 
 
 def toggle_enemy_hit_sound(x, y):
@@ -891,7 +912,11 @@ def toggle_enemy_hit_sound(x, y):
 
     wn.onscreenclick(None)
     if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > -315 * scale_factor_Y) and (y < -254 * scale_factor_Y):
-        execute_setting_function(7)
+        if settings.enemy_hit_sound == 1:
+            settings.enemy_hit_sound = 0
+        else:
+            settings.enemy_hit_sound = 1
+        execute_setting_function()
 
 
 def toggle_power_up_pickup_sound(x, y):
@@ -910,7 +935,11 @@ def toggle_power_up_pickup_sound(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > 165 * scale_factor_Y) and (y < 226 * scale_factor_Y):
-        execute_setting_function(8)
+        if settings.power_up_pickup_sound == 1:
+            settings.power_up_pickup_sound = 0
+        else:
+            settings.power_up_pickup_sound = 1
+        execute_setting_function()
 
 
 def toggle_power_up_spawn_sound(x, y):
@@ -929,7 +958,11 @@ def toggle_power_up_spawn_sound(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > 85 * scale_factor_Y) and (y < 146 * scale_factor_Y):
-        execute_setting_function(9)
+        if settings.power_up_spawn_sound == 1:
+            settings.power_up_spawn_sound = 0
+        else:
+            settings.power_up_spawn_sound = 1
+        execute_setting_function()
 
 
 def toggle_coin_pick_up_sound(x, y):
@@ -948,7 +981,11 @@ def toggle_coin_pick_up_sound(x, y):
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > 5 * scale_factor_Y) and (y < 66 * scale_factor_Y):
-        execute_setting_function(10)
+        if settings.coin_pickup_sound == 1:
+            settings.coin_pickup_sound = 0
+        else:
+            settings.coin_pickup_sound = 1
+        execute_setting_function()
 
 
 def toggle_fullscreen(x, y):
@@ -964,19 +1001,24 @@ def toggle_fullscreen(x, y):
         :return: None
     """
 
+    global refresh_variables
     global updated_controls
     global fullscreen_toggled
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -75 * scale_factor_Y) and (y < -14 * scale_factor_Y):
+        # Button sound is played
+        if settings.button_sound == 1:
+            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+            sound.play()
         # If fullscreen was originally off
-        if fullscreen == 0 and fullscreen_toggled == 0:
+        if settings.fullscreen == 0 and fullscreen_toggled == 0:
             # Warn the player about the effects of performance
             message_output = ctypes.windll.user32.MessageBoxW(0,"Enabling fullscreen may cause a performance drop and expose your game to bugs. Are you sure you want to enable fullscreen?", "Warning!", 4 + 48)
             # If the player says yes
             if message_output != 7:
                 # Toggle fullscreen
-                execute_setting_function(11)
+                settings.toggle_fullscreen()
                 # Alert the game of a needed restart
                 if fullscreen_toggled == 0:
                     fullscreen_toggled = 1
@@ -987,13 +1029,15 @@ def toggle_fullscreen(x, y):
         # If fullscreen was originally on
         else:
             # Turn it off like normal, but a restart is still required
-            execute_setting_function(11)
+            settings.toggle_fullscreen()
             if fullscreen_toggled == 0:
                 fullscreen_toggled = 1
                 updated_controls = 1
             else:
                 fullscreen_toggled = 0
                 updated_controls = 0
+        refresh_variables.refresh_button = 1
+        refresh_variables.refresh_indicator = 1
 
 
 def toggle_vsync(x, y):
@@ -1013,45 +1057,40 @@ def toggle_vsync(x, y):
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -155 * scale_factor_Y) and (y < -94 * scale_factor_Y):
         # If VSync was originally off
-        if vsync == 0:
+        if settings.vsync == 0:
             # Warn the user about effects on performance
             message_output = ctypes.windll.user32.MessageBoxW(0, "Turning on VSync may lower performance. Are you sure you want to enable VSync?", "Warning!", 4 + 48)
             # If the user selects yes
             if message_output != 7:
                 # Toggle VSync
-                execute_setting_function(12)
+                if settings.vsync == 1:
+                    settings.vsync = 0
+                else:
+                    settings.vsync = 1
+                    execute_setting_function()
         # If VSync was originally on
         else:
             # Toggle like normal
-            execute_setting_function(12)
+            if settings.vsync == 1:
+                settings.vsync = 0
+            else:
+                settings.vsync = 1
+            execute_setting_function()
 
 
-def execute_setting_function(type):
+def execute_setting_function():
     """
         Used to actually execute the toggle based on the parameter "type".
-
-        :param type: The type of toggle to be executed based on the button clicked.
-        :type type: int
 
         :return: None
     """
     global refresh_variables
     # Button sound is played
-    if button_sound == 1:
+    if settings.button_sound == 1:
         sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
         sound.play()
     # The configuration file is updated
-    config = configparser.ConfigParser()
-    config.read('Config/config.ini')
-    setting = list(config['Settings'])[type]
-    # The specific toggle is edited
-    if config['Settings'].getint(setting) == 1:
-        config['Settings'][setting] = '0'
-    else:
-        config['Settings'][setting] = '1'
-    # Write back to file
-    with open('Config/config.ini', 'w') as configfile:
-        config.write(configfile)
+    settings.save()
     refresh_variables.refresh_button = 1
     refresh_variables.refresh_indicator = 1
 
@@ -1180,7 +1219,7 @@ def execute_control_setting(type):
         key_alert = jump_key_alert
         type_string = "Jump"
     # Play the button click sound
-    if button_sound == 1:
+    if settings.button_sound == 1:
         sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
         sound.play()
     # Backup the original keybind
@@ -1600,29 +1639,29 @@ def update_text():
             if refresh_variables.refresh_indicator == 1 or refresh_variables.refresh_indicator == 2:
                 if bu.type == "Settings_Toggle":
                     if bu.id == 1:
-                        bu.write_indicator(button_sound)
+                        bu.write_indicator(settings.button_sound)
                     elif bu.id == 2:
-                        bu.write_indicator(player_shooting_sound)
+                        bu.write_indicator(settings.player_shooting_sound)
                     elif bu.id == 3:
-                        bu.write_indicator(enemy_shooting_sound)
+                        bu.write_indicator(settings.enemy_shooting_sound)
                     elif bu.id == 4:
-                        bu.write_indicator(player_death_sound)
+                        bu.write_indicator(settings.player_death_sound)
                     elif bu.id == 5:
-                        bu.write_indicator(enemy_death_sound)
+                        bu.write_indicator(settings.enemy_death_sound)
                     elif bu.id == 6:
-                        bu.write_indicator(player_hit_sound)
+                        bu.write_indicator(settings.player_hit_sound)
                     elif bu.id == 7:
-                        bu.write_indicator(enemy_hit_sound)
+                        bu.write_indicator(settings.enemy_hit_sound)
                     elif bu.id == 8:
-                        bu.write_indicator(power_up_pickup_sound)
+                        bu.write_indicator(settings.power_up_pickup_sound)
                     elif bu.id == 9:
-                        bu.write_indicator(power_up_spawn_sound)
+                        bu.write_indicator(settings.power_up_spawn_sound)
                     elif bu.id == 10:
-                        bu.write_indicator(coin_pickup_sound)
+                        bu.write_indicator(settings.coin_pickup_sound)
                     elif bu.id == 11:
-                        bu.write_fullscreen_indicator(fullscreen, fullscreen_toggled)
+                        bu.write_fullscreen_indicator(settings.fullscreen, fullscreen_toggled)
                     elif bu.id == 12:
-                        bu.write_indicator(vsync)
+                        bu.write_indicator(settings.vsync)
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
         if refresh_variables.refresh_indicator == 2:
@@ -1709,7 +1748,7 @@ while True:
     """
 
     # If VSync is on
-    if vsync == 1:
+    if settings.vsync == 1:
         # Update the screen based on the refresh rate
         # For example, if the refresh rate is 60, update the screen 60 times a second
         current_ticks = pygame.time.get_ticks()
@@ -1870,7 +1909,7 @@ while True:
         if textbox.current_text_index == 0:
             textbox.spawn_text_box(1, 0, 155 * scale_factor_Y, "red")
             textbox.spawn_text_box(2, 510 * scale_factor_X, -347 * scale_factor_Y, "white")
-            if god_mode == 1:
+            if settings.god_mode == 1:
                 textbox.spawn_text_box(3, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
         for t in textbox.text_on_screen_list:
             if t.id == 1:
@@ -1921,7 +1960,7 @@ while True:
             textbox.spawn_text_box(3, 10 * scale_factor_X, 278 * scale_factor_Y, "#00001A")
             textbox.spawn_text_box(4, 80 * scale_factor_X, 278 * scale_factor_Y, "#001C00")
             textbox.spawn_text_box(5, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
-            if god_mode == 1:
+            if settings.god_mode == 1:
                 textbox.spawn_text_box(6, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Spawn the coin indicator
@@ -1941,7 +1980,7 @@ while True:
             extra_power_up_indicator.spawn_extra_power_up_indiciator(mode)
 
         # Check if the players score is greater than the current high score
-        if god_mode == 0:
+        if settings.god_mode == 0:
             if score > high_score_machine_war:
                 # Update the high score in the game and the ini file if it is
                 high_score_machine_war = score
@@ -1954,7 +1993,7 @@ while True:
 
         # Spawn the player
         if machine_player.current_player_index == 0:
-            machine_player.spawn_machine_player(god_mode)
+            machine_player.spawn_machine_player(settings.god_mode)
         # Spawn 3 blue machines to start the game
         if blue_machine.blue_machine_index == 0:
             for i in range(3):
@@ -2029,16 +2068,16 @@ while True:
 
         # Run the functions to shoot the lasers for each of the enemies
         for bm in blue_machine.blue_machines:
-            bm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound)
+            bm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), settings.enemy_shooting_sound)
 
         for ym in yellow_machine.yellow_machines:
-            ym.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound)
+            ym.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), settings.enemy_shooting_sound)
 
         for rm in red_machine.red_machines:
-            rm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound)
+            rm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), settings.enemy_shooting_sound)
 
         for b in machine_boss.boss:
-            b.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound)
+            b.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), settings.enemy_shooting_sound)
 
         # Detects if the players has picked up a coin
         hit_coin = 0
@@ -2069,7 +2108,7 @@ while True:
                         config.write(configfile)
                     coin.coins_on_screen_list.pop(hit_coin)
                     # play the coin pickup sound
-                    if coin_pickup_sound == 1:
+                    if settings.coin_pickup_sound == 1:
                         sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
                         sound.play()
                 hit_coin = hit_coin + 1
@@ -2081,7 +2120,7 @@ while True:
                 # If the player laser hits a blue machine that is visible and not dying
                 if (bm.get_blue_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(bm.get_blue_machine()) < 55 * scale_factor and blue_machine.blue_machines_update_values[current_blue_update_value_index] == 0) or blue_machine.blue_machines_update_values[current_blue_update_value_index] != 0:
                     # Kill the enemy
-                    bm.kill_enemy(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                    bm.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     blue_machine.blue_machines_update_values[current_blue_update_value_index] = blue_machine.blue_machines_update_values[current_blue_update_value_index] + 1
                     # Check if the death animation is finished
                     if bm.get_update_value() == 0:
@@ -2098,7 +2137,7 @@ while True:
                         else:
                             score = score + 1
                         # Update the stats if god mode is off
-                        if god_mode == 0:
+                        if settings.god_mode == 0:
                             blue_bots_killed = blue_bots_killed + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2115,7 +2154,7 @@ while True:
                 # If the player laser hits a yellow machine that is visible and not dying
                 if (ym.get_yellow_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(ym.get_yellow_machine()) < 59 * scale_factor and yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] == 0) or yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] != 0:
                     # Same procedure as before
-                    ym.kill_enemy(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                    ym.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] = yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] + 1
                     if ym.get_update_value() == 0:
                         yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] = 0
@@ -2127,7 +2166,7 @@ while True:
                             score = score + 4
                         else:
                             score = score + 2
-                        if god_mode == 0:
+                        if settings.god_mode == 0:
                             yellow_bots_killed = yellow_bots_killed + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2143,7 +2182,7 @@ while True:
             for rm in red_machine.red_machines:
                 # If the player laser hits a red machine that is visible and not dying with 1 health
                 if red_machine.red_machines_update_values[current_red_update_value_index] != 0 or (rm.get_red_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(rm.get_red_machine()) < 64 * scale_factor and rm.health_bar == 1 and rm.hit_delay == 0 and red_machine.red_machines_update_values[current_red_update_value_index] == 0):
-                    rm.kill_enemy(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                    rm.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     red_machine.red_machines_update_values[current_red_update_value_index] = red_machine.red_machines_update_values[current_red_update_value_index] + 1
                     if rm.get_update_value() == 0:
                         red_machine.red_machines_update_values[current_red_update_value_index] = 0
@@ -2155,7 +2194,7 @@ while True:
                             score = score + 10
                         else:
                             score = score + 5
-                        if god_mode == 0:
+                        if settings.god_mode == 0:
                             red_bots_killed = red_bots_killed + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2169,7 +2208,7 @@ while True:
                 # If the player laser hits a red machine that is visible and not dying with health > 1
                 if red_machine.red_machines_hit_values[current_red_hit_value_index] != 0 or (rm.get_red_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(rm.get_red_machine()) < 64 * scale_factor and rm.health_bar != 1 and rm.health_bar != 0 and red_machine.red_machines_hit_values[current_red_hit_value_index] == 0):
                     # Deal 1 health of damage to the red machine, but do not kill it yet
-                    rm.hit_enemy(enemy_hit_sound)
+                    rm.hit_enemy(settings.enemy_hit_sound)
                     red_machine.red_machines_hit_values[current_red_hit_value_index] = red_machine.red_machines_hit_values[current_red_hit_value_index] + 1
                     # Check if hit delay is finished
                     if rm.get_hit_value() == 0:
@@ -2187,7 +2226,7 @@ while True:
             for b in machine_boss.boss:
                 # If the player laser hits the boss that is visible and not dying with 1 health
                 if machine_boss.boss_update_value != 0 or (b.get_boss().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(b.get_boss()) < 75 * scale_factor and b.health_bar == 1 and b.hit_delay == 0 and machine_boss.boss_update_value == 0):
-                    b.kill_boss(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                    b.kill_boss(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     machine_boss.boss_update_value = machine_boss.boss_update_value + 1
                     if b.get_update_value() == 0:
                         machine_boss.boss_update_value = 0
@@ -2199,7 +2238,7 @@ while True:
                             score = score + 100
                         else:
                             score = score + 50
-                        if god_mode == 0:
+                        if settings.god_mode == 0:
                             bosses_killed = bosses_killed + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2211,7 +2250,7 @@ while True:
 
                 # If the player laser hits the boss that is visible and not dying with health > 1
                 if machine_boss.boss_hit_value != 0 or (b.get_boss().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(b.get_boss()) < 75 * scale_factor and b.health_bar != 1 and b.health_bar != 0 and machine_boss.boss_hit_value == 0):
-                    b.hit_boss(enemy_hit_sound)
+                    b.hit_boss(settings.enemy_hit_sound)
                     machine_boss.boss_hit_value = machine_boss.boss_hit_value + 1
                     if b.get_hit_value() == 0:
                         machine_boss.boss_hit_value = 0
@@ -2236,14 +2275,14 @@ while True:
             # If the death animation has already started
             if machine_player.player_update_value != 0:
                 # Keep going with the player death animation if it has started
-                p.kill_player(player_death_sound)
+                p.kill_player(settings.player_death_sound)
                 machine_player.player_update_value = machine_player.player_update_value + 1
                 if p.get_player_death_update() == 0.6:
                     # Reset the initial and staying blue machines death count
                     for bm in blue_machine.blue_machines:
                         bm.set_death_count(0)
                     # Update the stats if god mode is off
-                    if god_mode == 0:
+                    if settings.god_mode == 0:
                         classic_deaths = classic_deaths + 1
                         machine_damage_taken = machine_damage_taken + 1
                         config = configparser.ConfigParser()
@@ -2268,7 +2307,7 @@ while True:
                             bm.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
                                 # If so kill the player and set the score down to 0 to reset the game
-                                p.kill_player(player_death_sound)
+                                p.kill_player(settings.player_death_sound)
                                 score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
 
@@ -2277,7 +2316,7 @@ while True:
                         if ym.get_yellow_machine_laser().isvisible() and -30 * scale_factor_X < (ym.get_yellow_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             ym.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
-                                p.kill_player(player_death_sound)
+                                p.kill_player(settings.player_death_sound)
                                 score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
 
@@ -2286,7 +2325,7 @@ while True:
                         if rm.get_red_machine_laser().isvisible() and -30 * scale_factor_X < (rm.get_red_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             rm.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
-                                p.kill_player(player_death_sound)
+                                p.kill_player(settings.player_death_sound)
                                 score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
 
@@ -2295,14 +2334,14 @@ while True:
                         if b.get_boss_laser().isvisible() and -30 * scale_factor_X < (b.get_boss_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             b.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
-                                p.kill_player(player_death_sound)
+                                p.kill_player(settings.player_death_sound)
                                 score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
 
             # If the player has more than 1 health, only deal 1 health of damage
             # If the hit delay is ongoing
             if machine_player.player_hit_value != 0:
-                p.hit_player(player_hit_sound)
+                p.hit_player(settings.player_hit_sound)
                 machine_player.player_hit_value = machine_player.player_hit_value + 1
                 # Update the stats
                 if p.get_hit_delay() == 2:
@@ -2322,33 +2361,33 @@ while True:
                     if bm.get_blue_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if bm.get_blue_machine_laser().isvisible() and -30 * scale_factor_X < (bm.get_blue_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             bm.set_laser_has_attacked(1)
-                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and settings.god_mode == 0:
                                 # Hit the player
-                                p.hit_player(player_hit_sound)
+                                p.hit_player(settings.player_hit_sound)
                                 machine_player.player_hit_value = machine_player.player_hit_value + 1
 
                 for ym in yellow_machine.yellow_machines:
                     if ym.get_yellow_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if ym.get_yellow_machine_laser().isvisible() and -30 * scale_factor_X < (ym.get_yellow_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             ym.set_laser_has_attacked(1)
-                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
-                                p.hit_player(player_hit_sound)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and settings.god_mode == 0:
+                                p.hit_player(settings.player_hit_sound)
                                 machine_player.player_hit_value = machine_player.player_hit_value + 1
 
                 for rm in red_machine.red_machines:
                     if rm.get_red_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if rm.get_red_machine_laser().isvisible() and -30 * scale_factor_X < (rm.get_red_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             rm.set_laser_has_attacked(1)
-                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
-                                p.hit_player(player_hit_sound)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and settings.god_mode == 0:
+                                p.hit_player(settings.player_hit_sound)
                                 machine_player.player_hit_value = machine_player.player_hit_value + 1
 
                 for b in machine_boss.boss:
                     if b.get_boss_laser().distance(p.get_player()) < 125 * scale_factor:
                         if b.get_boss_laser().isvisible() and -30 * scale_factor_X < (b.get_boss_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             b.set_laser_has_attacked(1)
-                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and god_mode == 0:
-                                p.hit_player(player_hit_sound)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and settings.god_mode == 0:
+                                p.hit_player(settings.player_hit_sound)
                                 machine_player.player_hit_value = machine_player.player_hit_value + 1
 
         # Function for the float effect of the machine enemies
@@ -2414,29 +2453,29 @@ while True:
         # 1 for yellow power up
         if power_up_update == 1 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[0] == 0:
-                power_up.spawn_power_up(1, mode, power_up_spawn_sound)
+                power_up.spawn_power_up(1, mode, settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 1:
-                        pu.spawn(power_up_spawn_sound)
+                        pu.spawn(settings.power_up_spawn_sound)
 
         # 50 for blue power up
         if power_up_update == 50 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[1] == 0:
-                power_up.spawn_power_up(2, mode, power_up_spawn_sound)
+                power_up.spawn_power_up(2, mode, settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 2:
-                        pu.spawn(power_up_spawn_sound)
+                        pu.spawn(settings.power_up_spawn_sound)
 
         # 100 for the extra power up
         if power_up_update == 100 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[2] == 0:
-                power_up.spawn_power_up(3, mode, power_up_spawn_sound)
+                power_up.spawn_power_up(3, mode, settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 3:
-                        pu.spawn(power_up_spawn_sound)
+                        pu.spawn(settings.power_up_spawn_sound)
 
         # Check if the player has picked up a power up or not
         for p in machine_player.current_player:
@@ -2447,9 +2486,9 @@ while True:
                     # If the player runs to the power up
                     if pu.type == 1 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
                         # Pick it up
-                        pu.pick_up(power_up_pickup_sound)
+                        pu.pick_up(settings.power_up_pickup_sound)
                         # Update the stats
-                        if god_mode == 0:
+                        if settings.god_mode == 0:
                             classic_power_ups_picked_up = classic_power_ups_picked_up + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2461,8 +2500,8 @@ while True:
                         yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].set_power_up_active(1)
 
                     if pu.type == 2 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                        pu.pick_up(power_up_pickup_sound)
-                        if god_mode == 0:
+                        pu.pick_up(settings.power_up_pickup_sound)
+                        if settings.god_mode == 0:
                             classic_power_ups_picked_up = classic_power_ups_picked_up + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2473,8 +2512,8 @@ while True:
                         blue_power_up_indicator.blue_power_up_indicator_turtle[0].set_power_up_active(1)
 
                     if pu.type == 3 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                        pu.pick_up(power_up_pickup_sound)
-                        if god_mode == 0:
+                        pu.pick_up(settings.power_up_pickup_sound)
+                        if settings.god_mode == 0:
                             classic_power_ups_picked_up = classic_power_ups_picked_up + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2550,7 +2589,7 @@ while True:
             textbox.spawn_text_box(3, 10 * scale_factor_X, 278 * scale_factor_Y, "#00001A")
             textbox.spawn_text_box(4, 80 * scale_factor_X, 278 * scale_factor_Y, "#300000")
             textbox.spawn_text_box(5, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
-            if god_mode == 1:
+            if settings.god_mode == 1:
                 textbox.spawn_text_box(6, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Spawn all of the Alien Mode background objects
@@ -2562,7 +2601,7 @@ while True:
             background_objects.spawn_background_objects()
         # Spawn the human player
         if human_player.current_human_index == 0:
-            human_player.spawn_human_player(god_mode)
+            human_player.spawn_human_player(settings.god_mode)
         # Spawn three small aliens to start out
         if small_alien.small_alien_index == 0:
             for i in range(3):
@@ -2585,7 +2624,7 @@ while True:
             extra_power_up_indicator.spawn_extra_power_up_indiciator(mode)
 
         # Check if the players score is greater than the current high score
-        if god_mode == 0:
+        if settings.god_mode == 0:
             if score > high_score_alien_mode:
                 # Update the high score in the game and the ini file if it is
                 high_score_alien_mode = score
@@ -2629,29 +2668,29 @@ while True:
         # 1 for yellow power up
         if power_up_update == 1 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[0] == 0:
-                power_up.spawn_power_up(1, mode, power_up_spawn_sound)
+                power_up.spawn_power_up(1, mode, settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 1:
-                        pu.spawn(power_up_spawn_sound)
+                        pu.spawn(settings.power_up_spawn_sound)
 
         # 50 for blue power up
         if power_up_update == 50 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[1] == 0:
-                power_up.spawn_power_up(2, mode, power_up_spawn_sound)
+                power_up.spawn_power_up(2, mode, settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 2:
-                        pu.spawn(power_up_spawn_sound)
+                        pu.spawn(settings.power_up_spawn_sound)
 
         # 100 for the extra power up
         if power_up_update == 100 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[3] == 0:
-                power_up.spawn_power_up(4, mode, power_up_spawn_sound)
+                power_up.spawn_power_up(4, mode, settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 4:
-                        pu.spawn(power_up_spawn_sound)
+                        pu.spawn(settings.power_up_spawn_sound)
 
         # Check if the player has picked up a power up or not
         for h in human_player.current_human:
@@ -2662,9 +2701,9 @@ while True:
                     # If the player runs to the power up
                     if pu.type == 1 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
                         # Pick it up
-                        pu.pick_up(power_up_pickup_sound)
+                        pu.pick_up(settings.power_up_pickup_sound)
                         # Update the stats
-                        if god_mode == 0:
+                        if settings.god_mode == 0:
                             alien_power_ups_picked_up = alien_power_ups_picked_up + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2676,8 +2715,8 @@ while True:
                         yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].set_power_up_active(1)
 
                     if pu.type == 2 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                        pu.pick_up(power_up_pickup_sound)
-                        if god_mode == 0:
+                        pu.pick_up(settings.power_up_pickup_sound)
+                        if settings.god_mode == 0:
                             alien_power_ups_picked_up = alien_power_ups_picked_up + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2688,8 +2727,8 @@ while True:
                         blue_power_up_indicator.blue_power_up_indicator_turtle[0].set_power_up_active(1)
 
                     if pu.type == 4 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                        pu.pick_up(power_up_pickup_sound)
-                        if god_mode == 0:
+                        pu.pick_up(settings.power_up_pickup_sound)
+                        if settings.god_mode == 0:
                             alien_power_ups_picked_up = alien_power_ups_picked_up + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2826,7 +2865,7 @@ while True:
 
         # Shoot the UFOs laser
         for u in ufo.ufos:
-            u.shoot_laser(enemy_shooting_sound)
+            u.shoot_laser(settings.enemy_shooting_sound)
 
         # Update the aliens texture based on their direction and the walking animation
         for sa in small_alien.small_aliens:
@@ -2870,7 +2909,7 @@ while True:
                         config.write(configfile)
                     coin.coins_on_screen_list.pop(hit_coin)
                     # play the coin pickup sound
-                    if coin_pickup_sound == 1:
+                    if settings.coin_pickup_sound == 1:
                         sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
                         sound.play()
                 hit_coin = hit_coin + 1
@@ -2884,7 +2923,7 @@ while True:
                         (sa.get_small_alien().xcor() - 26 * scale_factor_X < h.get_laser().xcor() < sa.get_small_alien().xcor() + 26 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and
                         small_alien.small_aliens_kill_values[current_small_alien_update_value_index] == 0) or small_alien.small_aliens_kill_values[current_small_alien_update_value_index] != 0:
                     # Kill the alien
-                    sa.kill_alien(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                    sa.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = small_alien.small_aliens_kill_values[current_small_alien_update_value_index] + 1
                     # Check if the death animation is finished
                     if sa.get_death_animation() == 0:
@@ -2897,7 +2936,7 @@ while True:
                         else:
                             score = score + 1
                         # Update the stats if god mode is off
-                        if god_mode == 0:
+                        if settings.god_mode == 0:
                             small_aliens_killed = small_aliens_killed + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2919,7 +2958,7 @@ while True:
                         (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.health == 1 and ma.hit_delay == 0 and
                         medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] == 0) or medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] != 0:
                     # Same procedure as before
-                    ma.kill_alien(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                    ma.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
                     if ma.get_death_animation() == 0:
                         medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = 0
@@ -2928,7 +2967,7 @@ while True:
                             score = score + 4
                         else:
                             score = score + 2
-                        if god_mode == 0:
+                        if settings.god_mode == 0:
                             medium_aliens_killed = medium_aliens_killed + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2946,7 +2985,7 @@ while True:
                         (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.get_medium_alien_health() == 2 and
                         medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] == 0) or medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] != 0:
                     # Deal one damage to the medium alien
-                    ma.hit_alien(enemy_hit_sound)
+                    ma.hit_alien(settings.enemy_hit_sound)
                     medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
                     # Check if the hit delay is finished
                     if ma.get_hit_delay() == 0:
@@ -2970,7 +3009,7 @@ while True:
                 if (la.get_large_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(la.get_large_alien()) < 112 * scale_factor and (
                         (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and la.health == 1 and la.hit_delay == 0 and
                         large_alien.large_aliens_kill_values[current_large_alien_update_value_index] == 0) or large_alien.large_aliens_kill_values[current_large_alien_update_value_index] != 0:
-                    la.kill_alien(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                    la.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = large_alien.large_aliens_kill_values[current_large_alien_update_value_index] + 1
                     if la.get_death_animation() == 0:
                         large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = 0
@@ -2979,7 +3018,7 @@ while True:
                             score = score + 8
                         else:
                             score = score + 4
-                        if god_mode == 0:
+                        if settings.god_mode == 0:
                             big_aliens_killed = big_aliens_killed + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -2997,7 +3036,7 @@ while True:
                         (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and (la.get_large_alien_health() == 2 or la.get_large_alien_health() == 3) and
                         large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] == 0) or large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] != 0:
                     # Same procedure as before
-                    la.hit_alien(enemy_hit_sound)
+                    la.hit_alien(settings.enemy_hit_sound)
                     large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] + 1
                     if la.get_hit_delay() == 0:
                         large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = 0
@@ -3016,7 +3055,7 @@ while True:
                 if ufo.ufo_kill_value != 0 or (u.get_ufo().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(u.get_ufo()) < 72 * scale_factor and
                         (u.get_ufo().xcor() - 53 * scale_factor_X < h.get_laser().xcor() < u.get_ufo().xcor() + 53 * scale_factor_X) and
                         u.get_ufo_health() == 1 and u.hit_delay == 0 and ufo.ufo_kill_value == 0):
-                    u.kill_ufo(enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                    u.kill_ufo(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                     ufo.ufo_kill_value = ufo.ufo_kill_value + 1
                     if u.get_death_animation() == 0:
                         ufo.ufo_kill_value = 0
@@ -3025,7 +3064,7 @@ while True:
                             score = score + 100
                         else:
                             score = score + 50
-                        if god_mode == 0:
+                        if settings.god_mode == 0:
                             ufos_killed = ufos_killed + 1
                             config = configparser.ConfigParser()
                             config.read('Config/playerData.ini')
@@ -3041,7 +3080,7 @@ while True:
                 if ufo.ufo_hit_value != 0 or (u.get_ufo().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(u.get_ufo()) < 72 * scale_factor and
                         (u.get_ufo().xcor() - 53 * scale_factor_X < h.get_laser().xcor() < u.get_ufo().xcor() + 53 * scale_factor_X) and
                         u.get_ufo_health() != 1 and u.get_ufo_health() != 0 and ufo.ufo_hit_value == 0):
-                    u.hit_ufo(enemy_hit_sound)
+                    u.hit_ufo(settings.enemy_hit_sound)
                     ufo.ufo_hit_value = ufo.ufo_hit_value + 1
                     if u.get_hit_delay() == 0:
                         ufo.ufo_hit_value = 0
@@ -3070,11 +3109,11 @@ while True:
             # If the death animation has already started
             if human_player.human_update_value != 0:
                 # Keep going with the players death animation
-                h.kill_player(player_death_sound)
+                h.kill_player(settings.player_death_sound)
                 human_player.human_update_value = human_player.human_update_value + 1
                 if h.get_death_iterator() == 2:
                     # Update the stats if god mode is off
-                    if god_mode == 0:
+                    if settings.god_mode == 0:
                         alien_deaths = alien_deaths + 1
                         damage_taken = damage_taken + 1
                         config = configparser.ConfigParser()
@@ -3098,39 +3137,39 @@ while True:
                 for sa in small_alien.small_aliens:
                     if sa.get_small_alien().distance(h.get_player()) < 70 * scale_factor:
                         # The players health also has to be 1
-                        if h.health == 1 and h.hit_delay == 0 and sa.get_small_alien().xcor() - 12.5 * scale_factor_X < h.get_player().xcor() < sa.get_small_alien().xcor() + 12.5 * scale_factor_X and human_player.human_update_value == 0 and sa.get_death_animation() == 0 and god_mode == 0:
+                        if h.health == 1 and h.hit_delay == 0 and sa.get_small_alien().xcor() - 12.5 * scale_factor_X < h.get_player().xcor() < sa.get_small_alien().xcor() + 12.5 * scale_factor_X and human_player.human_update_value == 0 and sa.get_death_animation() == 0 and settings.god_mode == 0:
                             # Then, kill the player
-                            h.kill_player(player_death_sound)
+                            h.kill_player(settings.player_death_sound)
                             human_player.human_update_value = human_player.human_update_value + 1
 
                 for ma in medium_alien.medium_aliens:
                     if ma.get_medium_alien().distance(h.get_player()) < 100 * scale_factor:
-                        if h.health == 1 and h.hit_delay == 0 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and human_player.human_update_value == 0 and ma.get_death_animation() == 0 and god_mode == 0:
-                            h.kill_player(player_death_sound)
+                        if h.health == 1 and h.hit_delay == 0 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and human_player.human_update_value == 0 and ma.get_death_animation() == 0 and settings.god_mode == 0:
+                            h.kill_player(settings.player_death_sound)
                             human_player.human_update_value = human_player.human_update_value + 1
 
                 for la in large_alien.large_aliens:
                     if la.get_large_alien().distance(h.get_player()) < 160 * scale_factor:
-                        if h.health == 1 and h.hit_delay == 0 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and la.get_death_animation() == 0 and god_mode == 0:
-                            h.kill_player(player_death_sound)
+                        if h.health == 1 and h.hit_delay == 0 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and la.get_death_animation() == 0 and settings.god_mode == 0:
+                            h.kill_player(settings.player_death_sound)
                             human_player.human_update_value = human_player.human_update_value + 1
 
                 for u in ufo.ufos:
                     if u.get_ufo().distance(h.get_player()) < 53 * scale_factor:
-                        if h.health == 1 and h.hit_delay == 0 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and u.get_ufo().isvisible() and u.get_death_animation() == 0 and god_mode == 0:
-                            h.kill_player(player_death_sound)
+                        if h.health == 1 and h.hit_delay == 0 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and u.get_ufo().isvisible() and u.get_death_animation() == 0 and settings.god_mode == 0:
+                            h.kill_player(settings.player_death_sound)
                             human_player.human_update_value = human_player.human_update_value + 1
 
                     if u.get_ufo_laser().distance(h.get_player()) < 25 * scale_factor:
-                        if h.health == 1 and h.hit_delay == 0 and u.get_ufo_laser().isvisible() and god_mode == 0 and human_player.human_update_value == 0:
-                            h.kill_player(player_death_sound)
+                        if h.health == 1 and h.hit_delay == 0 and u.get_ufo_laser().isvisible() and settings.god_mode == 0 and human_player.human_update_value == 0:
+                            h.kill_player(settings.player_death_sound)
                             human_player.human_update_value = human_player.human_update_value + 1
 
             # If the player has more than 1 health, only deal 1 health owrth of damage
             # If the hit delay is ongoing
             if human_player.human_hit_value != 0:
                 # keep it going
-                h.hit_player(player_hit_sound)
+                h.hit_player(settings.player_hit_sound)
                 human_player.human_hit_value = human_player.human_hit_value + 1
                 # Update the stats
                 if h.get_hit_delay() == 2:
@@ -3149,33 +3188,33 @@ while True:
                 for sa in small_alien.small_aliens:
                     if sa.get_small_alien().distance(h.get_player()) < 70 * scale_factor:
                         # If the players health is greater than 1
-                        if h.get_health() > 1 and sa.get_small_alien().xcor() - 12.5 * scale_factor_X < h.get_player().xcor() < sa.get_small_alien().xcor() + 12.5 * scale_factor_X and sa.get_death_animation() == 0 and h.get_hit_delay() == 0 and god_mode == 0:
+                        if h.get_health() > 1 and sa.get_small_alien().xcor() - 12.5 * scale_factor_X < h.get_player().xcor() < sa.get_small_alien().xcor() + 12.5 * scale_factor_X and sa.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
                             # Hit the player
-                            h.hit_player(player_hit_sound)
+                            h.hit_player(settings.player_hit_sound)
                             human_player.human_hit_value = human_player.human_hit_value + 1
 
                 for ma in medium_alien.medium_aliens:
                     if ma.get_medium_alien().distance(h.get_player()) < 100 * scale_factor:
-                        if h.get_health() > 1 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and ma.get_death_animation() == 0 and h.get_hit_delay() == 0 and god_mode == 0:
-                            h.hit_player(player_hit_sound)
+                        if h.get_health() > 1 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and ma.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
+                            h.hit_player(settings.player_hit_sound)
                             human_player.human_hit_value = human_player.human_hit_value + 1
 
                 for la in large_alien.large_aliens:
                     if la.get_large_alien().distance(h.get_player()) < 160 * scale_factor:
-                        if h.get_health() > 1 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and la.get_death_animation() == 0 and h.get_hit_delay() == 0 and god_mode == 0:
-                            h.hit_player(player_hit_sound)
+                        if h.get_health() > 1 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and la.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
+                            h.hit_player(settings.player_hit_sound)
                             human_player.human_hit_value = human_player.human_hit_value + 1
 
                 for u in ufo.ufos:
                     # For the UFo, the player can get hurt by both touching the UFO and getting hit by the UFOs laser
                     if u.get_ufo().distance(h.get_player()) < 53 * scale_factor:
-                        if h.get_health() > 1 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and u.get_ufo().isvisible() and u.get_death_animation() == 0 and h.get_hit_delay() == 0 and god_mode == 0:
-                            h.hit_player(player_hit_sound)
+                        if h.get_health() > 1 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and u.get_ufo().isvisible() and u.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
+                            h.hit_player(settings.player_hit_sound)
                             human_player.human_hit_value = human_player.human_hit_value + 1
 
                     if u.get_ufo_laser().distance(h.get_player()) < 25 * scale_factor:
-                        if h.get_health() > 1 and u.get_ufo_laser().isvisible() and god_mode == 0:
-                            h.hit_player(player_hit_sound)
+                        if h.get_health() > 1 and u.get_ufo_laser().isvisible() and settings.god_mode == 0:
+                            h.hit_player(settings.player_hit_sound)
                             human_player.human_hit_value = human_player.human_hit_value + 1
     # If Alien Mode is toggled off
     else:
@@ -3480,7 +3519,7 @@ while True:
                 textbox.spawn_text_box(i + 4, -320 * scale_factor_X, (90 - (i * 40)) * scale_factor_Y, "white")
             for i in range(11):
                 textbox.spawn_text_box(13 + i + 1, 320 * scale_factor_X, (90 - (i * 40)) * scale_factor_Y, "white")
-            if god_mode == 1:
+            if settings.god_mode == 1:
                 textbox.spawn_text_box(25, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Move the title text back and fourth across the screen as needed
@@ -3539,7 +3578,7 @@ while True:
         # Create all additional text boxes
         if textbox.current_text_index == 0:
             textbox.spawn_text_box(1, 0, 240 * scale_factor_Y, "red")
-            if god_mode == 1:
+            if settings.god_mode == 1:
                 textbox.spawn_text_box(2, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Move the title text left and right across the screen
@@ -3547,61 +3586,6 @@ while True:
             if t.id == 1:
                 t.move(mode)
                 break
-
-        # Settings Data Updates
-        # This is used to check if any of the configuration settings have been updated through the toggle buttons
-        # If they have been, they are then updated in the current game
-        # The only one not on here is the fullscreen one. That is because that one needs a restart.
-        config = configparser.ConfigParser()
-        config.read('Config/config.ini')
-        if config['Settings'].getint('God_Mode') == 1:
-            god_mode = 1
-        else:
-            god_mode = 0
-        if config['Settings'].getint('Button_Sound') == 1:
-            button_sound = 1
-        else:
-            button_sound = 0
-        if config['Settings'].getint('Player_Shooting_Sound') == 1:
-            player_shooting_sound = 1
-        else:
-            player_shooting_sound = 0
-        if config['Settings'].getint('Enemy_Shooting_Sound') == 1:
-            enemy_shooting_sound = 1
-        else:
-            enemy_shooting_sound = 0
-        if config['Settings'].getint('Player_Death_Sound') == 1:
-            player_death_sound = 1
-        else:
-            player_death_sound = 0
-        if config['Settings'].getint('Enemy_Death_Sound') == 1:
-            enemy_death_sound = 1
-        else:
-            enemy_death_sound = 0
-        if config['Settings'].getint('Player_Hit_Sound') == 1:
-            player_hit_sound = 1
-        else:
-            player_hit_sound = 0
-        if config['Settings'].getint('Enemy_Hit_Sound') == 1:
-            enemy_hit_sound = 1
-        else:
-            enemy_hit_sound = 0
-        if config['Settings'].getint('Power_up_Pickup_Sound') == 1:
-            power_up_pickup_sound = 1
-        else:
-            power_up_pickup_sound = 0
-        if config['Settings'].getint('Power_up_Spawn_Sound') == 1:
-            power_up_spawn_sound = 1
-        else:
-            power_up_spawn_sound = 0
-        if config['Settings'].getint('Coin_Pick_Up_Sound') == 1:
-            coin_pickup_sound = 1
-        else:
-            coin_pickup_sound = 0
-        if config['Settings'].getint('VSync') == 1:
-            vsync = 1
-        else:
-            vsync = 0
 
     """
         Code Below is for when Controls Mode is turned on.
@@ -3637,7 +3621,7 @@ while True:
         # Create any additional text boxes
         if textbox.current_text_index == 0:
             textbox.spawn_text_box(1, 0, 240 * scale_factor_Y, "red")
-            if god_mode == 1:
+            if settings.god_mode == 1:
                 textbox.spawn_text_box(2, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
 
         # Move the title text left and right across the screen

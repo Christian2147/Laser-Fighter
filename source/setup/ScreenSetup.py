@@ -34,7 +34,7 @@ import os
 import pygame
 from PIL import Image
 from fractions import Fraction
-from setup.Initialization import fullscreen
+from setup.Initialization import settings
 
 # Scale Factors for fullscreen (1 when fullscreen is off)
 # All raw coordinates, distances, and movements are multiplied by the scale factor to ensure that the game stays scaled
@@ -47,7 +47,7 @@ scale_factor_Y = 1
 wn = turtle.Screen()
 wn.title("Laser Fighter")
 wn.bgcolor("black")
-if fullscreen == 1:
+if settings.fullscreen == 1:
     # Set the width and height to be the monitors width and height
     # The monitors width and height is retrieved from the windows API
     wn.setup(width=win32api.GetSystemMetrics(0), height=win32api.GetSystemMetrics(1))
@@ -227,7 +227,7 @@ texture_paths = [
 ]
 
 # Import the textures to the game
-if fullscreen == 1:
+if settings.fullscreen == 1:
     # If fullscreen is on, scale the textures the same way that the background was scaled
     for texture in texture_paths:
         # All textures are rescaled here

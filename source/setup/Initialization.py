@@ -134,64 +134,11 @@ if config_checker['Key_Update'].get('Key_4') == 'space':
 else:
     jump_key = jump_control
 
-# Extract the users settings from the config ini file
-config = configparser.ConfigParser()
-config.read('Config/config.ini')
-if config['Settings'].getint('God_Mode') == 1:
-    god_mode = 1
-else:
-    god_mode = 0
-if config['Settings'].getint('Button_Sound') == 1:
-    button_sound = 1
-else:
-    button_sound = 0
-if config['Settings'].getint('Player_Shooting_Sound') == 1:
-    player_shooting_sound = 1
-else:
-    player_shooting_sound = 0
-if config['Settings'].getint('Enemy_Shooting_Sound') == 1:
-    enemy_shooting_sound = 1
-else:
-    enemy_shooting_sound = 0
-if config['Settings'].getint('Player_Death_Sound') == 1:
-    player_death_sound = 1
-else:
-    player_death_sound = 0
-if config['Settings'].getint('Enemy_Death_Sound') == 1:
-    enemy_death_sound = 1
-else:
-    enemy_death_sound = 0
-if config['Settings'].getint('Player_Hit_Sound') == 1:
-    player_hit_sound = 1
-else:
-    player_hit_sound = 0
-if config['Settings'].getint('Enemy_Hit_Sound') == 1:
-    enemy_hit_sound = 1
-else:
-    enemy_hit_sound = 0
-if config['Settings'].getint('Power_up_Pickup_Sound') == 1:
-    power_up_pickup_sound = 1
-else:
-    power_up_pickup_sound = 0
-if config['Settings'].getint('Power_up_Spawn_Sound') == 1:
-    power_up_spawn_sound = 1
-else:
-    power_up_spawn_sound = 0
-if config['Settings'].getint('Coin_Pick_Up_Sound') == 1:
-    coin_pickup_sound = 1
-else:
-    coin_pickup_sound = 0
-if config['Settings'].getint('Fullscreen') == 1:
-    fullscreen = 1
-else:
-    fullscreen = 0
-if config['Settings'].getint('VSync') == 1:
-    vsync = 1
-else:
-    vsync = 0
+# Create Settings Object to store the settings variables
+settings = Settings()
 
 # Extract the users high score from the playerData ini file
-if god_mode == 0:
+if settings.god_mode == 0:
     config = configparser.ConfigParser()
     config.read('Config/playerData.ini')
     high_score_machine_war = config['High_Score'].getint('High_Score_Machine_War')

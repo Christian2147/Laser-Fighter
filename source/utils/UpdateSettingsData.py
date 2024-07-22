@@ -70,8 +70,21 @@ class Settings:
         self.config['Settings']['Power_up_Pickup_Sound'] = str(self.power_up_pickup_sound)
         self.config['Settings']['Power_up_Spawn_Sound'] = str(self.power_up_spawn_sound)
         self.config['Settings']['Coin_Pick_Up_Sound'] = str(self.coin_pickup_sound)
-        self.config['Settings']['Fullscreen'] = str(self.fullscreen)
         self.config['Settings']['VSync'] = str(self.vsync)
+
+        try:
+            with open(self.config_file, 'w') as configfile:
+                self.config.write(configfile)
+        except IOError as e:
+            ctypes.windll.user32.MessageBoxW(0, f"Error saving config file: {e}", "Error", 0x10)
+
+    def toggle_fullscreen(self):
+        current_fullscreen = self.config['Settings'].getint('Fullscreen')
+
+        if current_fullscreen == 1:
+            self.config['Settings']['Fullscreen'] = str(0)
+        else:
+            self.config['Settings']['Fullscreen'] = str(1)
 
         try:
             with open(self.config_file, 'w') as configfile:

@@ -13,7 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-from setup.Initialization import fullscreen
+from setup.Initialization import settings
+fullscreen = settings.fullscreen
 
 MACHINE_PLAYER_TEXTURE = "Textures/Player/Player.gif" if fullscreen == 0 else "Textures/Player/Player_Scaled.gif"
 MACHINE_PLAYER_LASER_TEXTURE = "Textures/Lasers/Player_Laser.gif" if fullscreen == 0 else "Textures/Lasers/Player_Laser_Scaled.gif"
