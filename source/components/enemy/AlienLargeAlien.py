@@ -31,6 +31,15 @@ import pygame
 import random
 import time
 from components.ItemCoin import Coin
+from setup.TextureSetup import ALIEN_STILL_RIGHT_11_15_TEXTURE
+from setup.TextureSetup import ALIEN_STILL_LEFT_11_15_TEXTURE
+from setup.TextureSetup import ALIEN_WALKING_RIGHT_11_15_TEXTURE
+from setup.TextureSetup import ALIEN_WALKING_LEFT_11_15_TEXTURE
+from setup.TextureSetup import ALIEN_DEATH_1_TEXTURE
+from setup.TextureSetup import ALIEN_DEATH_2_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_13_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_23_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_33_TEXTURE
 
 
 class LargeAlien:
@@ -58,7 +67,7 @@ class LargeAlien:
                 it can create a start time for it)
     """
 
-    def __init__(self, id, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, id, scale_factor_x, scale_factor_y):
         """
             Creates a large alien object with the given id and spawns it in the game.
 
@@ -70,16 +79,10 @@ class LargeAlien:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.large_alien = turtle.Turtle()
-        if fullscreen == 1:
-            self.large_alien.shape("Textures/Aliens/Alien_Still_Right(11-15)_Scaled.gif")
-        else:
-            self.large_alien.shape("Textures/Aliens/Alien_Still_Right(11-15).gif")
+        self.large_alien.shape(ALIEN_STILL_RIGHT_11_15_TEXTURE)
         self.large_alien.shapesize(8.5 * scale_factor_y, 3.5 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.large_alien.penup()
@@ -97,10 +100,7 @@ class LargeAlien:
         self.large_alien.direction = "stop"
 
         self.large_alien_health_bar = turtle.Turtle()
-        if fullscreen == 1:
-            self.large_alien_health_bar.shape("Textures/Health_Bars/HealthBar_3.3_Scaled.gif")
-        else:
-            self.large_alien_health_bar.shape("Textures/Health_Bars/HealthBar_3.3.gif")
+        self.large_alien_health_bar.shape(HEALTH_BAR_33_TEXTURE)
         self.large_alien_health_bar.shapesize(1 * scale_factor_y, 1 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.large_alien_health_bar.penup()
@@ -117,6 +117,9 @@ class LargeAlien:
         self.move_start_time = 0
         self.movement_activated = 0
 
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
     def __del__(self):
         """
             Cleans up the sprite from memory once the program has terminated
@@ -129,46 +132,31 @@ class LargeAlien:
         del self.large_alien
         del self.large_alien_health_bar
 
-    def reinstate(self, id, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate(self, id):
         """
             Reuses the existing sprite to spawn a large alien on the screen
 
             :param id: A new unique identifier for the medium alien
             :type id: int
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
-        if fullscreen == 1:
-            self.large_alien.shape("Textures/Aliens/Alien_Still_Right(11-15)_Scaled.gif")
-        else:
-            self.large_alien.shape("Textures/Aliens/Alien_Still_Right(11-15).gif")
+        self.large_alien.shape(ALIEN_STILL_RIGHT_11_15_TEXTURE)
         # Initial location based on the large aliens new id
         if id == 1:
-            self.large_alien.goto(-725 * scale_factor_x, -85 * scale_factor_y)
+            self.large_alien.goto(-725 * self.scale_factor_x, -85 * self.scale_factor_y)
         elif id == 2:
-            self.large_alien.goto(775 * scale_factor_x, -85 * scale_factor_y)
+            self.large_alien.goto(775 * self.scale_factor_x, -85 * self.scale_factor_y)
         elif id == 3:
-            self.large_alien.goto(-775 * scale_factor_x, -85 * scale_factor_y)
+            self.large_alien.goto(-775 * self.scale_factor_x, -85 * self.scale_factor_y)
         elif id == 4:
-            self.large_alien.goto(825 * scale_factor_x, -85 * scale_factor_y)
+            self.large_alien.goto(825 * self.scale_factor_x, -85 * self.scale_factor_y)
         elif id == 5:
-            self.large_alien.goto(-825 * scale_factor_x, -85 * scale_factor_y)
+            self.large_alien.goto(-825 * self.scale_factor_x, -85 * self.scale_factor_y)
         self.large_alien.direction = "stop"
         self.large_alien.showturtle()
 
-        if fullscreen == 1:
-            self.large_alien_health_bar.shape("Textures/Health_Bars/HealthBar_3.3_Scaled.gif")
-        else:
-            self.large_alien_health_bar.shape("Textures/Health_Bars/HealthBar_3.3.gif")
-        self.large_alien_health_bar.goto(self.large_alien.xcor(), 38 * scale_factor_y)
+        self.large_alien_health_bar.shape(HEALTH_BAR_33_TEXTURE)
+        self.large_alien_health_bar.goto(self.large_alien.xcor(), 38 * self.scale_factor_y)
         self.large_alien_health_bar.showturtle()
         self.move_start_time = time.time()
 
@@ -261,7 +249,7 @@ class LargeAlien:
                 self.large_alien.direction = "right"
                 self.direction = 1
 
-    def set_alien_texture(self, right_update, left_update, fullscreen):
+    def set_alien_texture(self, right_update, left_update):
         """
             Sets the large aliens texture based on the large aliens direction and creates a walking animation when the
                 large alien is walking.
@@ -271,9 +259,6 @@ class LargeAlien:
 
             :param left_update: Used to update the walking left animation correctly
             :type left_update: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -286,31 +271,19 @@ class LargeAlien:
             if self.direction == 1 and self.death_animation == 0:
                 # Make the large alien face and walk right
                 if right_update % 0.5 != 0:
-                    if fullscreen == 1:
-                        self.large_alien.shape("Textures/Aliens/Alien_Walking_Right(11-15)_Scaled.gif")
-                    else:
-                        self.large_alien.shape("Textures/Aliens/Alien_Walking_Right(11-15).gif")
+                    self.large_alien.shape(ALIEN_WALKING_RIGHT_11_15_TEXTURE)
                 else:
-                    if fullscreen == 1:
-                        self.large_alien.shape("Textures/Aliens/Alien_Still_Right(11-15)_Scaled.gif")
-                    else:
-                        self.large_alien.shape("Textures/Aliens/Alien_Still_Right(11-15).gif")
+                    self.large_alien.shape(ALIEN_STILL_RIGHT_11_15_TEXTURE)
             # If the large aliens direction is left
             elif self.direction == 2 and self.death_animation == 0:
                 # Make the large alien face and walk left
                 if left_update % 0.5 != 0:
-                    if fullscreen == 1:
-                        self.large_alien.shape("Textures/Aliens/Alien_Walking_Left(11-15)_Scaled.gif")
-                    else:
-                        self.large_alien.shape("Textures/Aliens/Alien_Walking_Left(11-15).gif")
+                    self.large_alien.shape(ALIEN_WALKING_LEFT_11_15_TEXTURE)
                 else:
-                    if fullscreen == 1:
-                        self.large_alien.shape("Textures/Aliens/Alien_Still_Left(11-15)_Scaled.gif")
-                    else:
-                        self.large_alien.shape("Textures/Aliens/Alien_Still_Left(11-15).gif")
+                    self.large_alien.shape(ALIEN_STILL_LEFT_11_15_TEXTURE)
             self.walk_start_time = time.time()
 
-    def kill_alien(self, death_sound, coins_on_screen, all_coins, scale_factor_x, scale_factor_y, fullscreen):
+    def kill_alien(self, death_sound, coins_on_screen, all_coins):
         """
             Kills the alien and plays the aliens death animation. After that, it respawns the alien on a random
                 side of the screen.
@@ -324,15 +297,6 @@ class LargeAlien:
             :param all_coins: Array that lists all of the coin sprites generated since the
                 programs execution (for reusing purposes)
             :type all_coins: list
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -355,16 +319,13 @@ class LargeAlien:
             # Respawn the large alien in a random location (side of the screen)
             alien_random = random.randint(1, 2)
             if alien_random == 1:
-                self.large_alien.goto(random.randint(-900 * scale_factor_x, -690 * scale_factor_x), -85 * scale_factor_y)
-                self.large_alien_health_bar.goto(self.large_alien.xcor(), 38 * scale_factor_y)
+                self.large_alien.goto(random.randint(-900 * self.scale_factor_x, -690 * self.scale_factor_x), -85 * self.scale_factor_y)
+                self.large_alien_health_bar.goto(self.large_alien.xcor(), 38 * self.scale_factor_y)
             if alien_random == 2:
-                self.large_alien.goto(random.randint(690 * scale_factor_x, 900 * scale_factor_x), -85 * scale_factor_y)
-                self.large_alien_health_bar.goto(self.large_alien.xcor(), 38 * scale_factor_y)
+                self.large_alien.goto(random.randint(690 * self.scale_factor_x, 900 * self.scale_factor_x), -85 * self.scale_factor_y)
+                self.large_alien_health_bar.goto(self.large_alien.xcor(), 38 * self.scale_factor_y)
             # Reset the large aliens health
-            if fullscreen == 1:
-                self.large_alien_health_bar.shape("Textures/Health_Bars/HealthBar_3.3_Scaled.gif")
-            else:
-                self.large_alien_health_bar.shape("Textures/Health_Bars/HealthBar_3.3.gif")
+            self.large_alien_health_bar.shape(HEALTH_BAR_33_TEXTURE)
             self.health = 3
             self.large_alien.showturtle()
             self.large_alien_health_bar.showturtle()
@@ -383,10 +344,7 @@ class LargeAlien:
 
         if 2 <= self.death_animation < 3:
             # Change the large aliens texture to the second frame in the death scene
-            if fullscreen == 1:
-                self.large_alien.shape("Textures/Explosions/Alien_Death_2_Scaled.gif")
-            else:
-                self.large_alien.shape("Textures/Explosions/Alien_Death_2.gif")
+            self.large_alien.shape(ALIEN_DEATH_2_TEXTURE)
             self.death_animation = 3
             self.kill_start_time = time.time()
             return
@@ -412,23 +370,17 @@ class LargeAlien:
                 sound = pygame.mixer.Sound("Sound/Alien_Death_Sound.wav")
                 sound.play()
             # Set the texture of the large alien to the first frame in the death scene
-            if fullscreen == 1:
-                self.large_alien.shape("Textures/Explosions/Alien_Death_1_Scaled.gif")
-            else:
-                self.large_alien.shape("Textures/Explosions/Alien_Death_1.gif")
+            self.large_alien.shape(ALIEN_DEATH_1_TEXTURE)
             self.death_animation = 1
             self.kill_start_time = time.time()
             return
 
-    def hit_alien(self, hit_sound, fullscreen):
+    def hit_alien(self, hit_sound):
         """
             Makes the large alien take "one hit" of damage and creates a hit delay before the large alien can be hit again
 
             :param hit_sound: Determines if the enemy hit sound is toggled on or off
             :type hit_sound: int
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -452,15 +404,9 @@ class LargeAlien:
         if self.death_animation == 0:
             # Decrease the aliens health by 1
             if self.health == 3:
-                if fullscreen == 1:
-                    self.large_alien_health_bar.shape("Textures/Health_Bars/HealthBar_3.2_Scaled.gif")
-                else:
-                    self.large_alien_health_bar.shape("Textures/Health_Bars/HealthBar_3.2.gif")
+                self.large_alien_health_bar.shape(HEALTH_BAR_23_TEXTURE)
             elif self.health == 2:
-                if fullscreen == 1:
-                    self.large_alien_health_bar.shape("Textures/Health_Bars/HealthBar_3.1_Scaled.gif")
-                else:
-                    self.large_alien_health_bar.shape("Textures/Health_Bars/HealthBar_3.1.gif")
+                self.large_alien_health_bar.shape(HEALTH_BAR_13_TEXTURE)
             # Play the hit sound
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Alien_Hit_Sound.wav")
@@ -470,13 +416,10 @@ class LargeAlien:
             self.hit_start_time = time.time()
             return
 
-    def set_movement_speed(self, scale_factor_x):
+    def set_movement_speed(self):
         """
             Function for the large aliens movement.
             When the large alien has died enough times, this function will cause it to start moving faster and faster.
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
 
             :return: None
         """
@@ -495,56 +438,56 @@ class LargeAlien:
                     # Move the alien right
                     if 0 <= self.death_count < 6:
                         # Calculate the delta movement as extra movement needed
-                        delta_movement = 0.3 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.large_alien.setx(self.large_alien.xcor() + 0.3 * scale_factor_x + delta_movement)
-                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() + 0.3 * scale_factor_x + delta_movement)
+                        delta_movement = 0.3 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.large_alien.setx(self.large_alien.xcor() + 0.3 * self.scale_factor_x + delta_movement)
+                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() + 0.3 * self.scale_factor_x + delta_movement)
                     if 6 <= self.death_count < 12:
-                        delta_movement = 0.6 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.large_alien.setx(self.large_alien.xcor() + 0.6 * scale_factor_x + delta_movement)
-                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() + 0.6 * scale_factor_x + delta_movement)
+                        delta_movement = 0.6 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.large_alien.setx(self.large_alien.xcor() + 0.6 * self.scale_factor_x + delta_movement)
+                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() + 0.6 * self.scale_factor_x + delta_movement)
                     if 12 <= self.death_count < 18:
-                        delta_movement = 0.9 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.large_alien.setx(self.large_alien.xcor() + 0.9 * scale_factor_x + delta_movement)
-                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() + 0.9 * scale_factor_x + delta_movement)
+                        delta_movement = 0.9 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.large_alien.setx(self.large_alien.xcor() + 0.9 * self.scale_factor_x + delta_movement)
+                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() + 0.9 * self.scale_factor_x + delta_movement)
                     if 18 <= self.death_count < 24:
-                        delta_movement = 1.2 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.large_alien.setx(self.large_alien.xcor() + 1.2 * scale_factor_x + delta_movement)
-                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() + 1.2 * scale_factor_x + delta_movement)
+                        delta_movement = 1.2 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.large_alien.setx(self.large_alien.xcor() + 1.2 * self.scale_factor_x + delta_movement)
+                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() + 1.2 * self.scale_factor_x + delta_movement)
                     if 24 <= self.death_count < 30:
-                        delta_movement = 1.5 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.large_alien.setx(self.large_alien.xcor() + 1.5 * scale_factor_x + delta_movement)
-                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() + 1.5 * scale_factor_x + delta_movement)
+                        delta_movement = 1.5 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.large_alien.setx(self.large_alien.xcor() + 1.5 * self.scale_factor_x + delta_movement)
+                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() + 1.5 * self.scale_factor_x + delta_movement)
                     if 30 <= self.death_count:
-                        delta_movement = 1.8 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.large_alien.setx(self.large_alien.xcor() + 1.8 * scale_factor_x + delta_movement)
-                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() + 1.8 * scale_factor_x + delta_movement)
+                        delta_movement = 1.8 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.large_alien.setx(self.large_alien.xcor() + 1.8 * self.scale_factor_x + delta_movement)
+                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() + 1.8 * self.scale_factor_x + delta_movement)
                 # If the aliens direction is left
                 else:
                     # Move the alien left
                     if 0 <= self.death_count < 6:
-                        delta_movement = 0.3 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.large_alien.setx(self.large_alien.xcor() - 0.3 * scale_factor_x - delta_movement)
-                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() - 0.3 * scale_factor_x - delta_movement)
+                        delta_movement = 0.3 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.large_alien.setx(self.large_alien.xcor() - 0.3 * self.scale_factor_x - delta_movement)
+                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() - 0.3 * self.scale_factor_x - delta_movement)
                     if 6 <= self.death_count < 12:
-                        delta_movement = 0.6 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.large_alien.setx(self.large_alien.xcor() - 0.6 * scale_factor_x - delta_movement)
-                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() - 0.6 * scale_factor_x - delta_movement)
+                        delta_movement = 0.6 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.large_alien.setx(self.large_alien.xcor() - 0.6 * self.scale_factor_x - delta_movement)
+                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() - 0.6 * self.scale_factor_x - delta_movement)
                     if 12 <= self.death_count < 18:
-                        delta_movement = 0.9 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.large_alien.setx(self.large_alien.xcor() - 0.9 * scale_factor_x - delta_movement)
-                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() - 0.9 * scale_factor_x - delta_movement)
+                        delta_movement = 0.9 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.large_alien.setx(self.large_alien.xcor() - 0.9 * self.scale_factor_x - delta_movement)
+                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() - 0.9 * self.scale_factor_x - delta_movement)
                     if 18 <= self.death_count < 24:
-                        delta_movement = 1.2 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.large_alien.setx(self.large_alien.xcor() - 1.2 * scale_factor_x - delta_movement)
-                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() - 1.2 * scale_factor_x - delta_movement)
+                        delta_movement = 1.2 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.large_alien.setx(self.large_alien.xcor() - 1.2 * self.scale_factor_x - delta_movement)
+                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() - 1.2 * self.scale_factor_x - delta_movement)
                     if 24 <= self.death_count < 30:
-                        delta_movement = 1.5 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.large_alien.setx(self.large_alien.xcor() - 1.5 * scale_factor_x - delta_movement)
-                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() - 1.5 * scale_factor_x - delta_movement)
+                        delta_movement = 1.5 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.large_alien.setx(self.large_alien.xcor() - 1.5 * self.scale_factor_x - delta_movement)
+                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() - 1.5 * self.scale_factor_x - delta_movement)
                     if 30 <= self.death_count:
-                        delta_movement = 1.8 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.large_alien.setx(self.large_alien.xcor() - 1.8 * scale_factor_x - delta_movement)
-                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() - 1.8 * scale_factor_x - delta_movement)
+                        delta_movement = 1.8 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.large_alien.setx(self.large_alien.xcor() - 1.8 * self.scale_factor_x - delta_movement)
+                        self.large_alien_health_bar.setx(self.large_alien_health_bar.xcor() - 1.8 * self.scale_factor_x - delta_movement)
                 self.move_start_time = time.time()
         else:
             self.move_start_time = 0

@@ -32,6 +32,20 @@ import pygame
 import random
 import time
 from components.ItemCoin import Coin
+from setup.TextureSetup import ALIEN_BOSS_TEXTURE
+from setup.TextureSetup import YELLOW_MACHINE_LASER_TEXTURE
+from setup.TextureSetup import EXPLOSION_1_TEXTURE
+from setup.TextureSetup import EXPLOSION_2_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_1010_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_910_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_810_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_710_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_610_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_510_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_410_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_310_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_210_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_110_TEXTURE
 
 
 class UFO:
@@ -61,7 +75,7 @@ class UFO:
                 it can create a start time for it)
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         """
             Creates a UFO object and spawns it in the game.
 
@@ -70,16 +84,10 @@ class UFO:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.ufo = turtle.Turtle()
-        if fullscreen == 1:
-            self.ufo.shape("Textures/Aliens/Alien_Boss_Scaled.gif")
-        else:
-            self.ufo.shape("Textures/Aliens/Alien_Boss.gif")
+        self.ufo.shape(ALIEN_BOSS_TEXTURE)
         self.ufo.shapesize(1.75 * scale_factor_y, 6 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.ufo.penup()
@@ -87,10 +95,7 @@ class UFO:
         self.ufo.direction = "stop"
 
         self.ufo_laser = turtle.Turtle()
-        if fullscreen == 1:
-            self.ufo_laser.shape("Textures/Lasers/Enemy(6-10)_Laser_Scaled.gif")
-        else:
-            self.ufo_laser.shape("Textures/Lasers/Enemy(6-10)_Laser.gif")
+        self.ufo_laser.shape(YELLOW_MACHINE_LASER_TEXTURE)
         self.ufo_laser.shapesize(2.25 * scale_factor_y, 0.5 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.ufo_laser.penup()
@@ -98,10 +103,7 @@ class UFO:
         self.ufo_laser.direction = "stop"
 
         self.ufo_health_bar = turtle.Turtle()
-        if fullscreen == 1:
-            self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.10_Scaled.gif")
-        else:
-            self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
+        self.ufo_health_bar.shape(HEALTH_BAR_1010_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.ufo_health_bar.penup()
         self.ufo_health_bar.shapesize(1 * scale_factor_y, 1 * scale_factor_x)
@@ -119,6 +121,9 @@ class UFO:
         self.move_start_time = time.time()
         self.movement_activated = 0
 
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
     def __del__(self):
         """
             Cleans up the sprite from memory once the program has terminated
@@ -133,37 +138,24 @@ class UFO:
         del self.ufo_laser
         del self.ufo_health_bar
 
-    def reinstate(self, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate(self):
         """
             Reuses the existing sprite to spawn a UFO on the screen
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
+            :return: None
         """
 
-        if fullscreen == 1:
-            self.ufo.shape("Textures/Aliens/Alien_Boss_Scaled.gif")
-        else:
-            self.ufo.shape("Textures/Aliens/Alien_Boss.gif")
-        self.ufo.goto(875 * scale_factor_x, -20 * scale_factor_y)
+        self.ufo.shape(ALIEN_BOSS_TEXTURE)
+        self.ufo.goto(875 * self.scale_factor_x, -20 * self.scale_factor_y)
         self.ufo.direction = "stop"
         self.ufo.showturtle()
 
-        self.ufo_laser.goto(877 * scale_factor_x, -90 * scale_factor_y)
+        self.ufo_laser.goto(877 * self.scale_factor_x, -90 * self.scale_factor_y)
         self.ufo_laser.direction = "stop"
         self.ufo_laser.showturtle()
 
-        if fullscreen == 1:
-            self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.10_Scaled.gif")
-        else:
-            self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
-        self.ufo_health_bar.goto(875 * scale_factor_x, 50 * scale_factor_y)
+        self.ufo_health_bar.shape(HEALTH_BAR_1010_TEXTURE)
+        self.ufo_health_bar.goto(875 * self.scale_factor_x, 50 * self.scale_factor_y)
         self.ufo_health_bar.showturtle()
         self.move_start_time = time.time()
 
@@ -261,7 +253,7 @@ class UFO:
         self.move_start_time = 0
         self.movement_activated = 0
 
-    def shoot_laser(self, shooting_sound, scale_factor_x, scale_factor_y):
+    def shoot_laser(self, shooting_sound):
         """
             Shoots the UFOs laser and moves it down to the ground after it is fired.
 
@@ -269,18 +261,12 @@ class UFO:
                 the shooting sound will play when the enemy laser is fired.
             :type shooting_sound: int
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
             :return: None
         """
 
         self.ufo_laser.showturtle()
         if self.ufo.isvisible() or self.death_animation != 0:
-            if self.ufo_laser.ycor() > -600 * scale_factor_y:
+            if self.ufo_laser.ycor() > -600 * self.scale_factor_y:
                 # Move the laser down 3.2 units every 0.0075 seconds
                 current_time = time.time()
                 elapsed_time = current_time - self.laser_start_time
@@ -288,26 +274,26 @@ class UFO:
                     # Calculate the delta movement
                     # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
-                    delta_movement = 3.2 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
-                    self.ufo_laser.sety(self.ufo_laser.ycor() - 3.2 * scale_factor_y - delta_movement)
+                    delta_movement = 3.2 * self.scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
+                    self.ufo_laser.sety(self.ufo_laser.ycor() - 3.2 * self.scale_factor_y - delta_movement)
                     self.laser_start_time = time.time()
             # If the UFO is not dying
             elif self.death_animation == 0:
                 # Fire the laser
-                self.ufo_laser.setx(self.ufo.xcor() + 2 * scale_factor_x)
-                self.ufo_laser.sety(-90 * scale_factor_y)
+                self.ufo_laser.setx(self.ufo.xcor() + 2 * self.scale_factor_x)
+                self.ufo_laser.sety(-90 * self.scale_factor_y)
                 if shooting_sound == 1:
                     sound = pygame.mixer.Sound("Sound/Laser_Gun_Enemy.wav")
                     sound.play()
                 self.laser_start_time = time.time()
         # If the ufo is not visible, then stop firing the laser
         else:
-            self.ufo_laser.setx(self.ufo.xcor() + 2 * scale_factor_x)
-            self.ufo_laser.sety(-90 * scale_factor_y)
+            self.ufo_laser.setx(self.ufo.xcor() + 2 * self.scale_factor_x)
+            self.ufo_laser.sety(-90 * self.scale_factor_y)
             self.laser_start_time = time.time()
 
         # Make the laser disappear once it hits the ground
-        if self.ufo_laser.ycor() < -170 * scale_factor_y:
+        if self.ufo_laser.ycor() < -170 * self.scale_factor_y:
             self.ufo_laser.hideturtle()
 
     def set_ufo_direction(self, player_x):
@@ -330,7 +316,7 @@ class UFO:
                 self.ufo.direction = "right"
                 self.direction = 1
 
-    def kill_ufo(self, death_sound, coins_on_screen, all_coins, scale_factor_x, scale_factor_y, fullscreen):
+    def kill_ufo(self, death_sound, coins_on_screen, all_coins):
         """
             Kills the UFO and plays the aliens death animation. After that, it respawns the UFO on a random
                 side of the screen.
@@ -344,15 +330,6 @@ class UFO:
             :param all_coins: Array that lists all of the coin sprites generated since the
                 programs execution (for reusing purposes)
             :type all_coins: list
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -375,20 +352,14 @@ class UFO:
             # Respawn the UFO in a random location (side of the screen)
             alien_random = random.randint(1, 2)
             if alien_random == 1:
-                self.ufo.goto(random.randint(-900 * scale_factor_x, -690 * scale_factor_x), -20 * scale_factor_y)
-                self.ufo_health_bar.goto(self.ufo.xcor(), 50 * scale_factor_y)
+                self.ufo.goto(random.randint(-900 * self.scale_factor_x, -690 * self.scale_factor_x), -20 * self.scale_factor_y)
+                self.ufo_health_bar.goto(self.ufo.xcor(), 50 * self.scale_factor_y)
             if alien_random == 2:
-                self.ufo.goto(random.randint(690 * scale_factor_x, 900 * scale_factor_x), -20 * scale_factor_y)
-                self.ufo_health_bar.goto(self.ufo.xcor(), 50 * scale_factor_y)
+                self.ufo.goto(random.randint(690 * self.scale_factor_x, 900 * self.scale_factor_x), -20 * self.scale_factor_y)
+                self.ufo_health_bar.goto(self.ufo.xcor(), 50 * self.scale_factor_y)
             # Reset the UFOs health
-            if fullscreen == 1:
-                self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.10_Scaled.gif")
-            else:
-                self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
-            if fullscreen == 1:
-                self.ufo.shape("Textures/Aliens/Alien_Boss_Scaled.gif")
-            else:
-                self.ufo.shape("Textures/Aliens/Alien_Boss.gif")
+            self.ufo_health_bar.shape(HEALTH_BAR_1010_TEXTURE)
+            self.ufo.shape(ALIEN_BOSS_TEXTURE)
             self.health = 10
             self.ufo.showturtle()
             self.ufo_health_bar.showturtle()
@@ -407,10 +378,7 @@ class UFO:
 
         if 2 <= self.death_animation < 3:
             # Change the UFOs texture to the second frame in the death scene
-            if fullscreen == 1:
-                self.ufo.shape("Textures/Explosions/Explosion2_Scaled.gif")
-            else:
-                self.ufo.shape("Textures/Explosions/Explosion2.gif")
+            self.ufo.shape(EXPLOSION_2_TEXTURE)
             self.death_animation = 3
             self.kill_start_time = time.time()
             return
@@ -438,23 +406,17 @@ class UFO:
                 sound = pygame.mixer.Sound("Sound/Explosion.wav")
                 sound.play()
             # Set the texture of the large alien to the first frame in the death scene
-            if fullscreen == 1:
-                self.ufo.shape("Textures/Explosions/Explosion1_Scaled.gif")
-            else:
-                self.ufo.shape("Textures/Explosions/Explosion1.gif")
+            self.ufo.shape(EXPLOSION_1_TEXTURE)
             self.death_animation = 1
             self.kill_start_time = time.time()
             return
 
-    def hit_ufo(self, hit_sound, fullscreen):
+    def hit_ufo(self, hit_sound):
         """
             Makes the UFO take "one hit" of damage and creates a hit delay before the UFO can be hit again
 
             :param hit_sound: Determines if the enemy hit sound is toggled on or off
             :type hit_sound: int
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -480,50 +442,23 @@ class UFO:
             self.got_hit = 1
             # Decrease the aliens health by 1
             if self.health == 10:
-                if fullscreen == 1:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.9_Scaled.gif")
-                else:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.9.gif")
+                self.ufo_health_bar.shape(HEALTH_BAR_910_TEXTURE)
             elif self.health == 9:
-                if fullscreen == 1:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.8_Scaled.gif")
-                else:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.8.gif")
+                self.ufo_health_bar.shape(HEALTH_BAR_810_TEXTURE)
             elif self.health == 8:
-                if fullscreen == 1:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.7_Scaled.gif")
-                else:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.7.gif")
+                self.ufo_health_bar.shape(HEALTH_BAR_710_TEXTURE)
             elif self.health == 7:
-                if fullscreen == 1:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.6_Scaled.gif")
-                else:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.6.gif")
+                self.ufo_health_bar.shape(HEALTH_BAR_610_TEXTURE)
             elif self.health == 6:
-                if fullscreen == 1:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.5_Scaled.gif")
-                else:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.5.gif")
+                self.ufo_health_bar.shape(HEALTH_BAR_510_TEXTURE)
             elif self.health == 5:
-                if fullscreen == 1:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.4_Scaled.gif")
-                else:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.4.gif")
+                self.ufo_health_bar.shape(HEALTH_BAR_410_TEXTURE)
             elif self.health == 4:
-                if fullscreen == 1:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.3_Scaled.gif")
-                else:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.3.gif")
+                self.ufo_health_bar.shape(HEALTH_BAR_310_TEXTURE)
             elif self.health == 3:
-                if fullscreen == 1:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.2_Scaled.gif")
-                else:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.2.gif")
+                self.ufo_health_bar.shape(HEALTH_BAR_210_TEXTURE)
             elif self.health == 2:
-                if fullscreen == 1:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.1_Scaled.gif")
-                else:
-                    self.ufo_health_bar.shape("Textures/Health_Bars/HealthBar_10.1.gif")
+                self.ufo_health_bar.shape(HEALTH_BAR_110_TEXTURE)
             # Play the hit sound
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Explosion2.wav")
@@ -533,7 +468,7 @@ class UFO:
             self.hit_start_time = time.time()
             return
 
-    def set_movement_speed(self, scale_factor_x):
+    def set_movement_speed(self):
         """
             Function for the UFOs movement.
             When the UFO has died enough times, this function will cause it to start moving faster and faster.
@@ -559,56 +494,56 @@ class UFO:
                     # Move the UFO right
                     if 0 <= self.death_count < 3:
                         # Calculate the delta movement as extra movement needed
-                        delta_movement = 0.25 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.ufo.setx(self.ufo.xcor() + 0.25 * scale_factor_x + delta_movement)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 0.25 * scale_factor_x + delta_movement)
+                        delta_movement = 0.25 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() + 0.25 * self.scale_factor_x + delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 0.25 * self.scale_factor_x + delta_movement)
                     if 3 <= self.death_count < 6:
-                        delta_movement = 0.5 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.ufo.setx(self.ufo.xcor() + 0.5 * scale_factor_x + delta_movement)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 0.5 * scale_factor_x + delta_movement)
+                        delta_movement = 0.5 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() + 0.5 * self.scale_factor_x + delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 0.5 * self.scale_factor_x + delta_movement)
                     if 6 <= self.death_count < 9:
-                        delta_movement = 1 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.ufo.setx(self.ufo.xcor() + 1 * scale_factor_x + delta_movement)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 1 * scale_factor_x + delta_movement)
+                        delta_movement = 1 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() + 1 * self.scale_factor_x + delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 1 * self.scale_factor_x + delta_movement)
                     if 9 <= self.death_count < 12:
-                        delta_movement = 1.75 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.ufo.setx(self.ufo.xcor() + 1.75 * scale_factor_x + delta_movement)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 1.75 * scale_factor_x + delta_movement)
+                        delta_movement = 1.75 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() + 1.75 * self.scale_factor_x + delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 1.75 * self.scale_factor_x + delta_movement)
                     if 12 <= self.death_count < 15:
-                        delta_movement = 2.75 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.ufo.setx(self.ufo.xcor() + 2.75 * scale_factor_x + delta_movement)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 2.75 * scale_factor_x + delta_movement)
+                        delta_movement = 2.75 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() + 2.75 * self.scale_factor_x + delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 2.75 * self.scale_factor_x + delta_movement)
                     if 15 <= self.death_count:
-                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.ufo.setx(self.ufo.xcor() + 4 * scale_factor_x + delta_movement)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 4 * scale_factor_x + delta_movement)
+                        delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() + 4 * self.scale_factor_x + delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() + 4 * self.scale_factor_x + delta_movement)
                 # If the UFOs direction is left
                 else:
                     # Move the UFO left
                     if 0 <= self.death_count < 3:
-                        delta_movement = 0.25 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.ufo.setx(self.ufo.xcor() - 0.25 * scale_factor_x - delta_movement)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 0.25 * scale_factor_x - delta_movement)
+                        delta_movement = 0.25 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() - 0.25 * self.scale_factor_x - delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 0.25 * self.scale_factor_x - delta_movement)
                     if 3 <= self.death_count < 6:
-                        delta_movement = 0.5 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.ufo.setx(self.ufo.xcor() - 0.5 * scale_factor_x - delta_movement)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 0.5 * scale_factor_x - delta_movement)
+                        delta_movement = 0.5 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() - 0.5 * self.scale_factor_x - delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 0.5 * self.scale_factor_x - delta_movement)
                     if 6 <= self.death_count < 9:
-                        delta_movement = 1 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.ufo.setx(self.ufo.xcor() - 1 * scale_factor_x - delta_movement)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 1 * scale_factor_x - delta_movement)
+                        delta_movement = 1 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() - 1 * self.scale_factor_x - delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 1 * self.scale_factor_x - delta_movement)
                     if 9 <= self.death_count < 12:
-                        delta_movement = 1.75 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.ufo.setx(self.ufo.xcor() - 1.75 * scale_factor_x - delta_movement)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 1.75 * scale_factor_x - delta_movement)
+                        delta_movement = 1.75 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() - 1.75 * self.scale_factor_x - delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 1.75 * self.scale_factor_x - delta_movement)
                     if 12 <= self.death_count < 15:
-                        delta_movement = 2.75 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.ufo.setx(self.ufo.xcor() - 2.75 * scale_factor_x - delta_movement)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 2.75 * scale_factor_x - delta_movement)
+                        delta_movement = 2.75 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() - 2.75 * self.scale_factor_x - delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 2.75 * self.scale_factor_x - delta_movement)
                     if 15 <= self.death_count:
-                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.ufo.setx(self.ufo.xcor() - 4 * scale_factor_x - delta_movement)
-                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 4 * scale_factor_x - delta_movement)
+                        delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
+                        self.ufo.setx(self.ufo.xcor() - 4 * self.scale_factor_x - delta_movement)
+                        self.ufo_health_bar.setx(self.ufo_health_bar.xcor() - 4 * self.scale_factor_x - delta_movement)
                 self.move_start_time = time.time()
         else:
             self.move_start_time = 0

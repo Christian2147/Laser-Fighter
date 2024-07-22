@@ -49,15 +49,6 @@ laser_update = 0
 power_up_update = 0
 power_up_time = 0
 
-"""
-    Sprite variables and how they work:
-    - "all" lists - permanently stores the turtles created throughout the entire lifetime of the application so that they
-        can be referenced and used again
-        - If for a type of sprite there is only one list, it is an "all" list (Like the power up indicators for example)
-    - "current" lists - stores the turtles as long as they are visible on the screen or being actively used
-    - "index" variables - used to access a specific slot in these lists
-"""
-
 # Refreshing when VSync is off
 tick_update = 0
 
@@ -79,33 +70,6 @@ all_coins_index = 0
 coins_on_screen_list = []
 current_coin_index = 0
 coin_pickup_delay = 0
-
-# Small Alien setup
-all_small_aliens = []
-small_aliens = []
-small_aliens_kill_values = []
-small_alien_index = 0
-
-# Medium Alien setup
-all_medium_aliens = []
-medium_aliens = []
-medium_aliens_kill_values = []
-medium_aliens_hit_values = []
-medium_alien_index = 0
-
-# Large Alien setup
-all_large_aliens = []
-large_aliens = []
-large_aliens_kill_values = []
-large_aliens_hit_values = []
-large_alien_index = 0
-
-# UFO setup
-all_ufos = []
-ufos = []
-ufo_kill_value = 0
-ufo_hit_value = 0
-ufo_index = 0
 
 # Walking Animation in Alien Mode
 right_update = 0

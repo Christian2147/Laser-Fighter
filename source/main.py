@@ -50,13 +50,13 @@ from setup.SpriteSetup import blue_machine
 from setup.SpriteSetup import yellow_machine
 from setup.SpriteSetup import red_machine
 from setup.SpriteSetup import machine_boss
+from setup.SpriteSetup import small_alien
+from setup.SpriteSetup import medium_alien
+from setup.SpriteSetup import large_alien
+from setup.SpriteSetup import ufo
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
-from components.enemy.AlienSmallAlien import SmallAlien
-from components.enemy.AlienMediumAlien import MediumAlien
-from components.enemy.AlienLargeAlien import LargeAlien
-from components.enemy.AlienUFO import UFO
 
 """
     The functions below are for the player controls.
@@ -176,7 +176,7 @@ def shoot():
                 # Fire the laser
                 h.shoot(player_shooting_sound)
                 # Change "got_hit" for the UFO back to 0 since this is a new laser being fired
-                for u in ufos:
+                for u in ufo.ufos:
                     u.set_got_hit(0)
                 # Update the game statistics
                 if god_mode == 0:
@@ -1671,126 +1671,6 @@ def update_text():
                 t.write("God Mode Is On!", 24, "normal")
 
 
-"""
-    The next functions are for spawning sprites on the screen
-"""
-
-
-def spawn_small_alien(id):
-    """
-        Spawn a small alien with the given id on the screen.
-
-        :param id: The id that the alien should have (Determines initial location of the alien)
-        :type id: int
-
-        :return: None
-    """
-
-    global small_alien_index
-    if len(all_small_aliens) <= len(small_aliens):
-        small_alien = SmallAlien(id, scale_factor_X, scale_factor_Y, fullscreen)
-        small_aliens.append(small_alien)
-        small_alien_index = small_alien_index + 1
-        all_small_aliens.append(small_alien)
-        small_aliens_kill_values.append(0)
-    else:
-        for sa in all_small_aliens:
-            if sa.get_small_alien().isvisible():
-                continue
-            else:
-                sa.reinstate(id, scale_factor_X, scale_factor_Y, fullscreen)
-                small_aliens.append(sa)
-                small_alien_index = small_alien_index + 1
-                small_aliens_kill_values.append(0)
-                break
-
-
-def spawn_medium_alien(id):
-    """
-        Spawn a medium alien with the given id on the screen.
-
-        :param id: The id that the alien should have (Determines initial location of the alien)
-        :type id: int
-
-        :return: None
-    """
-
-    global medium_alien_index
-    if len(all_medium_aliens) <= len(medium_aliens):
-        medium_alien = MediumAlien(id, scale_factor_X, scale_factor_Y, fullscreen)
-        medium_aliens.append(medium_alien)
-        medium_alien_index = medium_alien_index + 1
-        all_medium_aliens.append(medium_alien)
-        medium_aliens_kill_values.append(0)
-        medium_aliens_hit_values.append(0)
-    else:
-        for ma in all_medium_aliens:
-            if ma.get_medium_alien().isvisible():
-                continue
-            else:
-                ma.reinstate(id, scale_factor_X, scale_factor_Y, fullscreen)
-                medium_aliens.append(ma)
-                medium_alien_index = medium_alien_index + 1
-                medium_aliens_kill_values.append(0)
-                medium_aliens_hit_values.append(0)
-                break
-
-
-def spawn_large_alien(id):
-    """
-        Spawn a large alien with the given id on the screen.
-
-        :param id: The id that the alien should have (Determines initial location of the alien)
-        :type id: int
-
-        :return: None
-    """
-
-    global large_alien_index
-    if len(all_large_aliens) <= len(large_aliens):
-        large_alien = LargeAlien(id, scale_factor_X, scale_factor_Y, fullscreen)
-        large_aliens.append(large_alien)
-        large_alien_index = large_alien_index + 1
-        all_large_aliens.append(large_alien)
-        large_aliens_kill_values.append(0)
-        large_aliens_hit_values.append(0)
-    else:
-        for la in all_large_aliens:
-            if la.get_large_alien().isvisible():
-                continue
-            else:
-                la.reinstate(id, scale_factor_X, scale_factor_Y, fullscreen)
-                large_aliens.append(la)
-                large_alien_index = large_alien_index + 1
-                large_aliens_kill_values.append(0)
-                large_aliens_hit_values.append(0)
-                break
-
-
-def spawn_alien_boss():
-    """
-        Spawn an alien UFO on the screen.
-
-        :return: None
-    """
-
-    global ufo_index
-    if len(all_ufos) <= len(ufos):
-        spawn_ufo = UFO(scale_factor_X, scale_factor_Y, fullscreen)
-        ufos.append(spawn_ufo)
-        ufo_index = ufo_index + 1
-        all_ufos.append(spawn_ufo)
-    else:
-        for u in all_ufos:
-            if u.get_ufo().isvisible():
-                continue
-            else:
-                u.reinstate(scale_factor_X, scale_factor_Y, fullscreen)
-                ufos.append(u)
-                ufo_index = ufo_index + 1
-                break
-
-
 def on_quit():
     """
         Closes the game and terminates the turtle graphics window properly
@@ -2683,9 +2563,9 @@ while True:
         if human_player.current_human_index == 0:
             human_player.spawn_human_player(god_mode)
         # Spawn three small aliens to start out
-        if small_alien_index == 0:
+        if small_alien.small_alien_index == 0:
             for i in range(3):
-                spawn_small_alien(i + 1)
+                small_alien.spawn_small_alien(i + 1)
 
         # Spawn the coin indicator
         if coin_indicator.coin_indicator_index == 0:
@@ -2830,58 +2710,58 @@ while True:
 
         # Spawn aliens based on the players score
         # At its peak, there will be 5 small aliens, 5 medium aliens, 5 large aliens, and 1 UFO attacking the player
-        if score > 20 and small_alien_index == 3:
-            spawn_small_alien(4)
-        elif score > 40 and small_alien_index == 4:
-            spawn_small_alien(5)
-        elif score > 60 and medium_alien_index == 0:
-            spawn_medium_alien(1)
-        elif score > 80 and medium_alien_index == 1:
-            spawn_medium_alien(2)
-        elif score > 100 and medium_alien_index == 2:
-            spawn_medium_alien(3)
-        elif score > 120 and medium_alien_index == 3:
-            spawn_medium_alien(4)
-        elif score > 140 and medium_alien_index == 4:
-            spawn_medium_alien(5)
-        elif score > 160 and large_alien_index == 0:
-            spawn_large_alien(1)
-        elif score > 180 and large_alien_index == 1:
-            spawn_large_alien(2)
-        elif score > 200 and large_alien_index == 2:
-            spawn_large_alien(3)
-        elif score > 220 and large_alien_index == 3:
-            spawn_large_alien(4)
-        elif score > 240 and large_alien_index == 4:
-            spawn_large_alien(5)
-        elif score >= 300 and ufo_index == 0:
-            spawn_alien_boss()
+        if score > 20 and small_alien.small_alien_index == 3:
+            small_alien.spawn_small_alien(4)
+        elif score > 40 and small_alien.small_alien_index == 4:
+            small_alien.spawn_small_alien(5)
+        elif score > 60 and medium_alien.medium_alien_index == 0:
+            medium_alien.spawn_medium_alien(1)
+        elif score > 80 and medium_alien.medium_alien_index == 1:
+            medium_alien.spawn_medium_alien(2)
+        elif score > 100 and medium_alien.medium_alien_index == 2:
+            medium_alien.spawn_medium_alien(3)
+        elif score > 120 and medium_alien.medium_alien_index == 3:
+            medium_alien.spawn_medium_alien(4)
+        elif score > 140 and medium_alien.medium_alien_index == 4:
+            medium_alien.spawn_medium_alien(5)
+        elif score > 160 and large_alien.large_alien_index == 0:
+            large_alien.spawn_large_alien(1)
+        elif score > 180 and large_alien.large_alien_index == 1:
+            large_alien.spawn_large_alien(2)
+        elif score > 200 and large_alien.large_alien_index == 2:
+            large_alien.spawn_large_alien(3)
+        elif score > 220 and large_alien.large_alien_index == 3:
+            large_alien.spawn_large_alien(4)
+        elif score > 240 and large_alien.large_alien_index == 4:
+            large_alien.spawn_large_alien(5)
+        elif score >= 300 and ufo.ufo_index == 0:
+            ufo.spawn_alien_boss()
         # If score is less than 7, reset the number of aliens back down to 3
         elif score < 7:
-            if small_alien_index == 4 or small_alien_index == 5:
-                for small_alien in small_aliens:
-                    small_alien.remove()
-                small_aliens.clear()
-                small_alien_index = 0
-                small_aliens_kill_values.clear()
-            for medium_alien in medium_aliens:
-                medium_alien.remove()
-            medium_aliens.clear()
-            medium_alien_index = 0
-            medium_aliens_kill_values.clear()
-            medium_aliens_hit_values.clear()
-            for large_alien in large_aliens:
-                large_alien.remove()
-            large_aliens.clear()
-            large_alien_index = 0
-            large_aliens_kill_values.clear()
-            large_aliens_hit_values.clear()
-            for u in ufos:
+            if small_alien.small_alien_index == 4 or small_alien.small_alien_index == 5:
+                for sa in small_alien.small_aliens:
+                    sa.remove()
+                small_alien.small_aliens.clear()
+                small_alien.small_alien_index = 0
+                small_alien.small_aliens_kill_values.clear()
+            for ma in medium_alien.medium_aliens:
+                ma.remove()
+            medium_alien.medium_aliens.clear()
+            medium_alien.medium_alien_index = 0
+            medium_alien.medium_aliens_kill_values.clear()
+            medium_alien.medium_aliens_hit_values.clear()
+            for la in large_alien.large_aliens:
+                la.remove()
+            large_alien.large_aliens.clear()
+            large_alien.large_alien_index = 0
+            large_alien.large_aliens_kill_values.clear()
+            large_alien.large_aliens_hit_values.clear()
+            for u in ufo.ufos:
                 u.remove()
-            ufos.clear()
-            ufo_index = 0
-            ufo_update_value = 0
-            ufo_hit_value = 0
+            ufo.ufos.clear()
+            ufo.ufo_index = 0
+            ufo.ufo_update_value = 0
+            ufo.ufo_hit_value = 0
 
         # Move the sun along the ellipse
         for s in sun.sun_turtle:
@@ -2918,47 +2798,47 @@ while True:
 
         # Update the directions that each of the aliens are facing
         for h in human_player.current_human:
-            for sa in small_aliens:
+            for sa in small_alien.small_aliens:
                 sa.set_alien_direction(h.get_player().xcor())
 
-            for ma in medium_aliens:
+            for ma in medium_alien.medium_aliens:
                 ma.set_alien_direction(h.get_player().xcor())
 
-            for la in large_aliens:
+            for la in large_alien.large_aliens:
                 la.set_alien_direction(h.get_player().xcor())
 
-            for u in ufos:
+            for u in ufo.ufos:
                 u.set_ufo_direction(h.get_player().xcor())
 
         # Update the aliens position, the aliens move faster the more times they are killed until the player dies
-        for sa in small_aliens:
-            sa.set_movement_speed(scale_factor_X)
+        for sa in small_alien.small_aliens:
+            sa.set_movement_speed()
 
-        for ma in medium_aliens:
-            ma.set_movement_speed(scale_factor_X)
+        for ma in medium_alien.medium_aliens:
+            ma.set_movement_speed()
 
-        for la in large_aliens:
-            la.set_movement_speed(scale_factor_X)
+        for la in large_alien.large_aliens:
+            la.set_movement_speed()
 
-        for u in ufos:
-            u.set_movement_speed(scale_factor_X)
+        for u in ufo.ufos:
+            u.set_movement_speed()
 
         # Shoot the UFOs laser
-        for u in ufos:
-            u.shoot_laser(enemy_shooting_sound, scale_factor_X, scale_factor_Y)
+        for u in ufo.ufos:
+            u.shoot_laser(enemy_shooting_sound)
 
         # Update the aliens texture based on their direction and the walking animation
-        for sa in small_aliens:
+        for sa in small_alien.small_aliens:
             if sa.get_small_alien().isvisible():
-                sa.set_alien_texture(right_update, left_update, fullscreen)
+                sa.set_alien_texture(right_update, left_update)
 
-        for ma in medium_aliens:
+        for ma in medium_alien.medium_aliens:
             if ma.get_medium_alien().isvisible():
-                ma.set_alien_texture(right_update, left_update, fullscreen)
+                ma.set_alien_texture(right_update, left_update)
 
-        for la in large_aliens:
+        for la in large_alien.large_aliens:
             if la.get_large_alien().isvisible():
-                la.set_alien_texture(right_update, left_update, fullscreen)
+                la.set_alien_texture(right_update, left_update)
 
         # Detects if the players has picked up a coin
         hit_coin = 0
@@ -2997,17 +2877,17 @@ while True:
         # Alien Killer
         for h in human_player.current_human:
             current_small_alien_update_value_index = 0
-            for sa in small_aliens:
+            for sa in small_alien.small_aliens:
                 # If the player laser hits a small alien that is visible and not dying
                 if (sa.get_small_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(sa.get_small_alien()) < 53 * scale_factor and (
                         (sa.get_small_alien().xcor() - 26 * scale_factor_X < h.get_laser().xcor() < sa.get_small_alien().xcor() + 26 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and
-                        small_aliens_kill_values[current_small_alien_update_value_index] == 0) or small_aliens_kill_values[current_small_alien_update_value_index] != 0:
+                        small_alien.small_aliens_kill_values[current_small_alien_update_value_index] == 0) or small_alien.small_aliens_kill_values[current_small_alien_update_value_index] != 0:
                     # Kill the alien
-                    sa.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
-                    small_aliens_kill_values[current_small_alien_update_value_index] = small_aliens_kill_values[current_small_alien_update_value_index] + 1
+                    sa.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = small_alien.small_aliens_kill_values[current_small_alien_update_value_index] + 1
                     # Check if the death animation is finished
                     if sa.get_death_animation() == 0:
-                        small_aliens_kill_values[current_small_alien_update_value_index] = 0
+                        small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = 0
                     if sa.get_death_animation() == 1:
                         # Increase the players score
                         # When the blue power up is active, the score increases are doubled (This is universal)
@@ -3032,16 +2912,16 @@ while True:
 
             current_medium_alien_update_value_index = 0
             current_medium_alien_hit_value_index = 0
-            for ma in medium_aliens:
+            for ma in medium_alien.medium_aliens:
                 # If the player laser hits a medium alien that is visible and not dying and has 1 health
                 if (ma.get_medium_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(ma.get_medium_alien()) < 72 * scale_factor and (
                         (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.health == 1 and ma.hit_delay == 0 and
-                        medium_aliens_kill_values[current_medium_alien_update_value_index] == 0) or medium_aliens_kill_values[current_medium_alien_update_value_index] != 0:
+                        medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] == 0) or medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] != 0:
                     # Same procedure as before
-                    ma.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
-                    medium_aliens_kill_values[current_medium_alien_update_value_index] = medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
+                    ma.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
                     if ma.get_death_animation() == 0:
-                        medium_aliens_kill_values[current_medium_alien_update_value_index] = 0
+                        medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = 0
                     if ma.get_death_animation() == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 4
@@ -3063,13 +2943,13 @@ while True:
                 # If the player laser hits a medium alien that is visible and not dying and has health > 1
                 if (ma.get_medium_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(ma.get_medium_alien()) < 72 * scale_factor and (
                         (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.get_medium_alien_health() == 2 and
-                        medium_aliens_hit_values[current_medium_alien_hit_value_index] == 0) or medium_aliens_hit_values[current_medium_alien_hit_value_index] != 0:
+                        medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] == 0) or medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] != 0:
                     # Deal one damage to the medium alien
-                    ma.hit_alien(enemy_hit_sound, fullscreen)
-                    medium_aliens_hit_values[current_medium_alien_hit_value_index] = medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
+                    ma.hit_alien(enemy_hit_sound)
+                    medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
                     # Check if the hit delay is finished
                     if ma.get_hit_delay() == 0:
-                        medium_aliens_hit_values[current_medium_alien_hit_value_index] = 0
+                        medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = 0
                     if ma.get_hit_delay() == 1:
                         # Increase the players score for hitting the medium alien
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
@@ -3084,15 +2964,15 @@ while True:
 
             current_large_alien_update_value_index = 0
             current_large_alien_hit_value_index = 0
-            for la in large_aliens:
+            for la in large_alien.large_aliens:
                 # If the player laser hits a large alien that is visible and not dying and has 1 health
                 if (la.get_large_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(la.get_large_alien()) < 112 * scale_factor and (
                         (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and la.health == 1 and la.hit_delay == 0 and
-                        large_aliens_kill_values[current_large_alien_update_value_index] == 0) or large_aliens_kill_values[current_large_alien_update_value_index] != 0:
-                    la.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
-                    large_aliens_kill_values[current_large_alien_update_value_index] = large_aliens_kill_values[current_large_alien_update_value_index] + 1
+                        large_alien.large_aliens_kill_values[current_large_alien_update_value_index] == 0) or large_alien.large_aliens_kill_values[current_large_alien_update_value_index] != 0:
+                    la.kill_alien(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = large_alien.large_aliens_kill_values[current_large_alien_update_value_index] + 1
                     if la.get_death_animation() == 0:
-                        large_aliens_kill_values[current_large_alien_update_value_index] = 0
+                        large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = 0
                     if la.get_death_animation() == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 8
@@ -3114,12 +2994,12 @@ while True:
                 # If the player laser hits a medium alien that is visible and not dying and has health > 1
                 if (la.get_large_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(la.get_large_alien()) < 112 * scale_factor and (
                         (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and (la.get_large_alien_health() == 2 or la.get_large_alien_health() == 3) and
-                        large_aliens_hit_values[current_large_alien_hit_value_index] == 0) or large_aliens_hit_values[current_large_alien_hit_value_index] != 0:
+                        large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] == 0) or large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] != 0:
                     # Same procedure as before
-                    la.hit_alien(enemy_hit_sound, fullscreen)
-                    large_aliens_hit_values[current_large_alien_hit_value_index] = large_aliens_hit_values[current_large_alien_hit_value_index] + 1
+                    la.hit_alien(enemy_hit_sound)
+                    large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] + 1
                     if la.get_hit_delay() == 0:
-                        large_aliens_hit_values[current_large_alien_hit_value_index] = 0
+                        large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = 0
                     if la.get_hit_delay() == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 2
@@ -3130,15 +3010,15 @@ while True:
                             laser_update = laser_update + 1
                 current_large_alien_hit_value_index = current_large_alien_hit_value_index + 1
 
-            for u in ufos:
+            for u in ufo.ufos:
                 # If the player laser hits the UFO that is visible and not dying and has 1 health
-                if ufo_kill_value != 0 or (u.get_ufo().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(u.get_ufo()) < 72 * scale_factor and
+                if ufo.ufo_kill_value != 0 or (u.get_ufo().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(u.get_ufo()) < 72 * scale_factor and
                         (u.get_ufo().xcor() - 53 * scale_factor_X < h.get_laser().xcor() < u.get_ufo().xcor() + 53 * scale_factor_X) and
-                        u.get_ufo_health() == 1 and u.hit_delay == 0 and ufo_kill_value == 0):
-                    u.kill_ufo(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
-                    ufo_kill_value = ufo_kill_value + 1
+                        u.get_ufo_health() == 1 and u.hit_delay == 0 and ufo.ufo_kill_value == 0):
+                    u.kill_ufo(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    ufo.ufo_kill_value = ufo.ufo_kill_value + 1
                     if u.get_death_animation() == 0:
-                        ufo_kill_value = 0
+                        ufo.ufo_kill_value = 0
                     if u.get_death_animation() == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 100
@@ -3157,13 +3037,13 @@ while True:
                             laser_update = laser_update + 1
 
                 # If the player laser hits the UFO that is visible and not dying and has health > 1
-                if ufo_hit_value != 0 or (u.get_ufo().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(u.get_ufo()) < 72 * scale_factor and
+                if ufo.ufo_hit_value != 0 or (u.get_ufo().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(u.get_ufo()) < 72 * scale_factor and
                         (u.get_ufo().xcor() - 53 * scale_factor_X < h.get_laser().xcor() < u.get_ufo().xcor() + 53 * scale_factor_X) and
-                        u.get_ufo_health() != 1 and u.get_ufo_health() != 0 and ufo_hit_value == 0):
-                    u.hit_ufo(enemy_hit_sound, fullscreen)
-                    ufo_hit_value = ufo_hit_value + 1
+                        u.get_ufo_health() != 1 and u.get_ufo_health() != 0 and ufo.ufo_hit_value == 0):
+                    u.hit_ufo(enemy_hit_sound)
+                    ufo.ufo_hit_value = ufo.ufo_hit_value + 1
                     if u.get_hit_delay() == 0:
-                        ufo_hit_value = 0
+                        ufo.ufo_hit_value = 0
                     if u.get_hit_delay() == 1:
                         if u.get_ufo_health() == 2 or u.get_ufo_health() == 1:
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
@@ -3214,7 +3094,7 @@ while True:
             # If the death animation is not ongoing
             else:
                 # For every alien, check if the alien got close enough to hit the player
-                for sa in small_aliens:
+                for sa in small_alien.small_aliens:
                     if sa.get_small_alien().distance(h.get_player()) < 70 * scale_factor:
                         # The players health also has to be 1
                         if h.health == 1 and h.hit_delay == 0 and sa.get_small_alien().xcor() - 12.5 * scale_factor_X < h.get_player().xcor() < sa.get_small_alien().xcor() + 12.5 * scale_factor_X and human_player.human_update_value == 0 and sa.get_death_animation() == 0 and god_mode == 0:
@@ -3222,19 +3102,19 @@ while True:
                             h.kill_player(player_death_sound)
                             human_player.human_update_value = human_player.human_update_value + 1
 
-                for ma in medium_aliens:
+                for ma in medium_alien.medium_aliens:
                     if ma.get_medium_alien().distance(h.get_player()) < 100 * scale_factor:
                         if h.health == 1 and h.hit_delay == 0 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and human_player.human_update_value == 0 and ma.get_death_animation() == 0 and god_mode == 0:
                             h.kill_player(player_death_sound)
                             human_player.human_update_value = human_player.human_update_value + 1
 
-                for la in large_aliens:
+                for la in large_alien.large_aliens:
                     if la.get_large_alien().distance(h.get_player()) < 160 * scale_factor:
                         if h.health == 1 and h.hit_delay == 0 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and la.get_death_animation() == 0 and god_mode == 0:
                             h.kill_player(player_death_sound)
                             human_player.human_update_value = human_player.human_update_value + 1
 
-                for u in ufos:
+                for u in ufo.ufos:
                     if u.get_ufo().distance(h.get_player()) < 53 * scale_factor:
                         if h.health == 1 and h.hit_delay == 0 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and u.get_ufo().isvisible() and u.get_death_animation() == 0 and god_mode == 0:
                             h.kill_player(player_death_sound)
@@ -3265,7 +3145,7 @@ while True:
             # If there is no hit delay
             else:
                 # For every alien, check if the alien got close enough to hit the player
-                for sa in small_aliens:
+                for sa in small_alien.small_aliens:
                     if sa.get_small_alien().distance(h.get_player()) < 70 * scale_factor:
                         # If the players health is greater than 1
                         if h.get_health() > 1 and sa.get_small_alien().xcor() - 12.5 * scale_factor_X < h.get_player().xcor() < sa.get_small_alien().xcor() + 12.5 * scale_factor_X and sa.get_death_animation() == 0 and h.get_hit_delay() == 0 and god_mode == 0:
@@ -3273,19 +3153,19 @@ while True:
                             h.hit_player(player_hit_sound)
                             human_player.human_hit_value = human_player.human_hit_value + 1
 
-                for ma in medium_aliens:
+                for ma in medium_alien.medium_aliens:
                     if ma.get_medium_alien().distance(h.get_player()) < 100 * scale_factor:
                         if h.get_health() > 1 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and ma.get_death_animation() == 0 and h.get_hit_delay() == 0 and god_mode == 0:
                             h.hit_player(player_hit_sound)
                             human_player.human_hit_value = human_player.human_hit_value + 1
 
-                for la in large_aliens:
+                for la in large_alien.large_aliens:
                     if la.get_large_alien().distance(h.get_player()) < 160 * scale_factor:
                         if h.get_health() > 1 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and la.get_death_animation() == 0 and h.get_hit_delay() == 0 and god_mode == 0:
                             h.hit_player(player_hit_sound)
                             human_player.human_hit_value = human_player.human_hit_value + 1
 
-                for u in ufos:
+                for u in ufo.ufos:
                     # For the UFo, the player can get hurt by both touching the UFO and getting hit by the UFOs laser
                     if u.get_ufo().distance(h.get_player()) < 53 * scale_factor:
                         if h.get_health() > 1 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and u.get_ufo().isvisible() and u.get_death_animation() == 0 and h.get_hit_delay() == 0 and god_mode == 0:
@@ -3315,29 +3195,29 @@ while True:
         human_player.human_update_value = 0
         human_player.human_hit_value = 0
         laser_update = 0
-        for small_alien in small_aliens:
-            small_alien.remove()
-        small_aliens.clear()
-        small_alien_index = 0
-        small_aliens_kill_values.clear()
-        for medium_alien in medium_aliens:
-            medium_alien.remove()
-        medium_aliens.clear()
-        medium_alien_index = 0
-        medium_aliens_kill_values.clear()
-        medium_aliens_hit_values.clear()
-        for large_alien in large_aliens:
-            large_alien.remove()
-        large_aliens.clear()
-        large_alien_index = 0
-        large_aliens_kill_values.clear()
-        large_aliens_hit_values.clear()
-        for ufo in ufos:
-            ufo.remove()
-        ufos.clear()
-        ufo_index = 0
-        ufo_kill_value = 0
-        ufo_hit_value = 0
+        for sa in small_alien.small_aliens:
+            sa.remove()
+        small_alien.small_aliens.clear()
+        small_alien.small_alien_index = 0
+        small_alien.small_aliens_kill_values.clear()
+        for ma in medium_alien.medium_aliens:
+            ma.remove()
+        medium_alien.medium_aliens.clear()
+        medium_alien.medium_alien_index = 0
+        medium_alien.medium_aliens_kill_values.clear()
+        medium_alien.medium_aliens_hit_values.clear()
+        for la in large_alien.large_aliens:
+            la.remove()
+        large_alien.large_aliens.clear()
+        large_alien.large_alien_index = 0
+        large_alien.large_aliens_kill_values.clear()
+        large_alien.large_aliens_hit_values.clear()
+        for u in ufo.ufos:
+            u.remove()
+        ufo.ufos.clear()
+        ufo.ufo_index = 0
+        ufo.ufo_kill_value = 0
+        ufo.ufo_hit_value = 0
 
     """
         Code below is for when the Shop is entered
