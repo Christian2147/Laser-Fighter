@@ -2305,7 +2305,7 @@ while True:
                     if bm.get_blue_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if bm.get_blue_machine_laser().isvisible() and -30 * scale_factor_X < (bm.get_blue_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             bm.set_laser_has_attacked(1)
-                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and settings.god_mode == 0:
                                 # If so kill the player and set the score down to 0 to reset the game
                                 p.kill_player(settings.player_death_sound)
                                 score = 0
@@ -2315,7 +2315,7 @@ while True:
                     if ym.get_yellow_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if ym.get_yellow_machine_laser().isvisible() and -30 * scale_factor_X < (ym.get_yellow_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             ym.set_laser_has_attacked(1)
-                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and settings.god_mode == 0:
                                 p.kill_player(settings.player_death_sound)
                                 score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
@@ -2324,7 +2324,7 @@ while True:
                     if rm.get_red_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if rm.get_red_machine_laser().isvisible() and -30 * scale_factor_X < (rm.get_red_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             rm.set_laser_has_attacked(1)
-                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and settings.god_mode == 0:
                                 p.kill_player(settings.player_death_sound)
                                 score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
@@ -2333,7 +2333,7 @@ while True:
                     if b.get_boss_laser().distance(p.get_player()) < 125 * scale_factor:
                         if b.get_boss_laser().isvisible() and -30 * scale_factor_X < (b.get_boss_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             b.set_laser_has_attacked(1)
-                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and god_mode == 0:
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and settings.god_mode == 0:
                                 p.kill_player(settings.player_death_sound)
                                 score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
