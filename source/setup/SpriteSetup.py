@@ -35,6 +35,10 @@ from components.spawn.SpawnMachine import SpawnBlueMachine
 from components.spawn.SpawnMachine import SpawnYellowMachine
 from components.spawn.SpawnMachine import SpawnRedMachine
 from components.spawn.SpawnMachine import SpawnMachineBoss
+from components.spawn.SpawnAlien import SpawnSmallAlien
+from components.spawn.SpawnAlien import SpawnMediumAlien
+from components.spawn.SpawnAlien import SpawnLargeAlien
+from components.spawn.SpawnAlien import SpawnUFO
 
 
 button = SpawnButton(scale_factor, scale_factor_X, scale_factor_Y)
@@ -74,3 +78,12 @@ yellow_machine = SpawnYellowMachine(scale_factor_X, scale_factor_Y)
 red_machine = SpawnRedMachine(scale_factor_X, scale_factor_Y)
 
 machine_boss = SpawnMachineBoss(scale_factor_X, scale_factor_Y)
+
+small_alien = SpawnSmallAlien(scale_factor_X, scale_factor_Y)
+
+medium_alien = SpawnMediumAlien(scale_factor_X, scale_factor_Y)
+
+large_alien = SpawnLargeAlien(scale_factor_X, scale_factor_Y)
+
+ufo = SpawnUFO(scale_factor_X, scale_factor_Y)
+
