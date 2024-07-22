@@ -47,12 +47,12 @@ from setup.SpriteSetup import coin_indicator
 from setup.SpriteSetup import machine_player
 from setup.SpriteSetup import human_player
 from setup.SpriteSetup import blue_machine
+from setup.SpriteSetup import yellow_machine
+from setup.SpriteSetup import red_machine
+from setup.SpriteSetup import machine_boss
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
-from components.enemy.MachineYellowMachine import YellowMachine
-from components.enemy.MachineRedMachine import RedMachine
-from components.enemy.MachineBoss import Boss
 from components.enemy.AlienSmallAlien import SmallAlien
 from components.enemy.AlienMediumAlien import MediumAlien
 from components.enemy.AlienLargeAlien import LargeAlien
@@ -1676,90 +1676,6 @@ def update_text():
 """
 
 
-def spawn_yellow_machine(id):
-    """
-        Spawn a yellow machine with the given id on the screen.
-
-        :param id: The id that the enemy should have (Determines initial location of the enemy)
-        :type id: int
-
-        :return: None
-    """
-
-    global yellow_machine_index
-    if len(all_yellow_machines) <= len(yellow_machines):
-        yellow_machine = YellowMachine(id, scale_factor_X, scale_factor_Y, fullscreen)
-        yellow_machines.append(yellow_machine)
-        yellow_machine_index = yellow_machine_index + 1
-        all_yellow_machines.append(yellow_machine)
-        yellow_machines_update_values.append(0)
-    else:
-        for ym in all_yellow_machines:
-            if ym.get_yellow_machine().isvisible():
-                continue
-            else:
-                ym.reinstate(id, scale_factor_X, scale_factor_Y, fullscreen)
-                yellow_machines.append(ym)
-                yellow_machine_index = yellow_machine_index + 1
-                yellow_machines_update_values.append(0)
-                break
-
-
-def spawn_red_machine(id):
-    """
-        Spawn a red machine with the given id on the screen.
-
-        :param id: The id that the enemy should have (Determines initial location of the enemy)
-        :type id: int
-
-        :return: None
-    """
-
-    global red_machine_index
-    if len(all_red_machines) <= len(red_machines):
-        red_machine = RedMachine(id, scale_factor_X, scale_factor_Y, fullscreen)
-        red_machines.append(red_machine)
-        red_machine_index = red_machine_index + 1
-        all_red_machines.append(red_machine)
-        red_machines_update_values.append(0)
-        red_machines_hit_values.append(0)
-    else:
-        for rm in all_red_machines:
-            if rm.get_red_machine().isvisible():
-                continue
-            else:
-                rm.reinstate(id, scale_factor_X, scale_factor_Y, fullscreen)
-                red_machines.append(rm)
-                red_machine_index = red_machine_index + 1
-                red_machines_update_values.append(0)
-                red_machines_hit_values.append(0)
-                break
-
-
-def spawn_boss():
-    """
-        Spawn a Machine Mode boss on the screen.
-
-        :return: None
-    """
-
-    global boss_index
-    if len(all_boss) <= len(boss):
-        spawn_boss = Boss(scale_factor_X, scale_factor_Y, fullscreen)
-        boss.append(spawn_boss)
-        boss_index = boss_index + 1
-        all_boss.append(spawn_boss)
-    else:
-        for b in all_boss:
-            if b.get_boss().isvisible():
-                continue
-            else:
-                b.reinstate(scale_factor_X, scale_factor_Y, fullscreen)
-                boss.append(b)
-                boss_index = boss_index + 1
-                break
-
-
 def spawn_small_alien(id):
     """
         Spawn a small alien with the given id on the screen.
@@ -2174,28 +2090,28 @@ while True:
             blue_machine.spawn_blue_machine(4)
         elif score >= 20 and blue_machine.blue_machine_index == 4:
             blue_machine.spawn_blue_machine(5)
-        elif score >= 30 and yellow_machine_index == 0:
-            spawn_yellow_machine(1)
-        elif score >= 40 and yellow_machine_index == 1:
-            spawn_yellow_machine(2)
-        elif score >= 50 and yellow_machine_index == 2:
-            spawn_yellow_machine(3)
-        elif score >= 60 and yellow_machine_index == 3:
-            spawn_yellow_machine(4)
-        elif score >= 70 and yellow_machine_index == 4:
-            spawn_yellow_machine(5)
-        elif score >= 80 and red_machine_index == 0:
-            spawn_red_machine(1)
-        elif score >= 100 and red_machine_index == 1:
-            spawn_red_machine(2)
-        elif score >= 120 and red_machine_index == 2:
-            spawn_red_machine(3)
-        elif score >= 140 and red_machine_index == 3:
-            spawn_red_machine(4)
-        elif score >= 160 and red_machine_index == 4:
-            spawn_red_machine(5)
-        elif score >= 200 and boss_index == 0:
-            spawn_boss()
+        elif score >= 30 and yellow_machine.yellow_machine_index == 0:
+            yellow_machine.spawn_yellow_machine(1)
+        elif score >= 40 and yellow_machine.yellow_machine_index == 1:
+            yellow_machine.spawn_yellow_machine(2)
+        elif score >= 50 and yellow_machine.yellow_machine_index == 2:
+            yellow_machine.spawn_yellow_machine(3)
+        elif score >= 60 and yellow_machine.yellow_machine_index == 3:
+            yellow_machine.spawn_yellow_machine(4)
+        elif score >= 70 and yellow_machine.yellow_machine_index == 4:
+            yellow_machine.spawn_yellow_machine(5)
+        elif score >= 80 and red_machine.red_machine_index == 0:
+            red_machine.spawn_red_machine(1)
+        elif score >= 100 and red_machine.red_machine_index == 1:
+            red_machine.spawn_red_machine(2)
+        elif score >= 120 and red_machine.red_machine_index == 2:
+            red_machine.spawn_red_machine(3)
+        elif score >= 140 and red_machine.red_machine_index == 3:
+            red_machine.spawn_red_machine(4)
+        elif score >= 160 and red_machine.red_machine_index == 4:
+            red_machine.spawn_red_machine(5)
+        elif score >= 200 and machine_boss.boss_index == 0:
+            machine_boss.spawn_boss()
         # If score is 0, reset the number of enemies back down to 3
         elif score == 0:
             for bm in blue_machine.blue_machines:
@@ -2211,37 +2127,37 @@ while True:
                 blue_machine.blue_machines.pop(4)
                 blue_machine.blue_machines.pop(3)
 
-            for yellow_machine in yellow_machines:
-                yellow_machine.remove()
-            yellow_machines.clear()
-            yellow_machine_index = 0
-            yellow_machines_update_values.clear()
-            for red_machine in red_machines:
-                red_machine.remove()
-            red_machines.clear()
-            red_machine_index = 0
-            red_machines_update_values.clear()
-            red_machines_hit_values.clear()
-            for b in boss:
+            for ym in yellow_machine.yellow_machines:
+                ym.remove()
+            yellow_machine.yellow_machines.clear()
+            yellow_machine.yellow_machine_index = 0
+            yellow_machine.yellow_machines_update_values.clear()
+            for rm in red_machine.red_machines:
+                rm.remove()
+            red_machine.red_machines.clear()
+            red_machine.red_machine_index = 0
+            red_machine.red_machines_update_values.clear()
+            red_machine.red_machines_hit_values.clear()
+            for b in machine_boss.boss:
                 b.remove()
-            boss.clear()
-            boss_index = 0
-            boss_update_value = 0
-            boss_hit_value = 0
+            machine_boss.boss.clear()
+            machine_boss.boss_index = 0
+            machine_boss.boss_update_value = 0
+            machine_boss.boss_hit_value = 0
             coin_pickup_delay = 0
 
         # Run the functions to shoot the lasers for each of the enemies
         for bm in blue_machine.blue_machines:
             bm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound)
 
-        for yellow_machine in yellow_machines:
-            yellow_machine.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
+        for ym in yellow_machine.yellow_machines:
+            ym.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound)
 
-        for red_machine in red_machines:
-            red_machine.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
+        for rm in red_machine.red_machines:
+            rm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound)
 
-        for b in boss:
-            b.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound, scale_factor_Y)
+        for b in machine_boss.boss:
+            b.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), enemy_shooting_sound)
 
         # Detects if the players has picked up a coin
         hit_coin = 0
@@ -2314,18 +2230,18 @@ while True:
                 current_blue_update_value_index = current_blue_update_value_index + 1
 
             current_yellow_update_value_index = 0
-            for ym in yellow_machines:
+            for ym in yellow_machine.yellow_machines:
                 # If the player laser hits a yellow machine that is visible and not dying
-                if (ym.get_yellow_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(ym.get_yellow_machine()) < 59 * scale_factor and yellow_machines_update_values[current_yellow_update_value_index] == 0) or yellow_machines_update_values[current_yellow_update_value_index] != 0:
+                if (ym.get_yellow_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(ym.get_yellow_machine()) < 59 * scale_factor and yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] == 0) or yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] != 0:
                     # Same procedure as before
-                    ym.kill_enemy(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
-                    yellow_machines_update_values[current_yellow_update_value_index] = yellow_machines_update_values[current_yellow_update_value_index] + 1
+                    ym.kill_enemy(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] = yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] + 1
                     if ym.get_update_value() == 0:
-                        yellow_machines_update_values[current_yellow_update_value_index] = 0
+                        yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] = 0
                         coin_pickup_delay = 0
                     if ym.get_update_value() == 3:
                         coin_pickup_delay = 1
-                    if yellow_machines_update_values[current_yellow_update_value_index] == 1:
+                    if yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 4
                         else:
@@ -2343,17 +2259,17 @@ while True:
 
             current_red_update_value_index = 0
             current_red_hit_value_index = 0
-            for rm in red_machines:
+            for rm in red_machine.red_machines:
                 # If the player laser hits a red machine that is visible and not dying with 1 health
-                if red_machines_update_values[current_red_update_value_index] != 0 or (rm.get_red_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(rm.get_red_machine()) < 64 * scale_factor and rm.health_bar == 1 and rm.hit_delay == 0 and red_machines_update_values[current_red_update_value_index] == 0):
-                    rm.kill_enemy(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
-                    red_machines_update_values[current_red_update_value_index] = red_machines_update_values[current_red_update_value_index] + 1
+                if red_machine.red_machines_update_values[current_red_update_value_index] != 0 or (rm.get_red_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(rm.get_red_machine()) < 64 * scale_factor and rm.health_bar == 1 and rm.hit_delay == 0 and red_machine.red_machines_update_values[current_red_update_value_index] == 0):
+                    rm.kill_enemy(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    red_machine.red_machines_update_values[current_red_update_value_index] = red_machine.red_machines_update_values[current_red_update_value_index] + 1
                     if rm.get_update_value() == 0:
-                        red_machines_update_values[current_red_update_value_index] = 0
+                        red_machine.red_machines_update_values[current_red_update_value_index] = 0
                         coin_pickup_delay = 0
                     if rm.get_update_value() == 3:
                         coin_pickup_delay = 1
-                    if red_machines_update_values[current_red_update_value_index] == 1:
+                    if red_machine.red_machines_update_values[current_red_update_value_index] == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 10
                         else:
@@ -2370,14 +2286,14 @@ while True:
                 current_red_update_value_index = current_red_update_value_index + 1
 
                 # If the player laser hits a red machine that is visible and not dying with health > 1
-                if red_machines_hit_values[current_red_hit_value_index] != 0 or (rm.get_red_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(rm.get_red_machine()) < 64 * scale_factor and rm.health_bar != 1 and rm.health_bar != 0 and red_machines_hit_values[current_red_hit_value_index] == 0):
+                if red_machine.red_machines_hit_values[current_red_hit_value_index] != 0 or (rm.get_red_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(rm.get_red_machine()) < 64 * scale_factor and rm.health_bar != 1 and rm.health_bar != 0 and red_machine.red_machines_hit_values[current_red_hit_value_index] == 0):
                     # Deal 1 health of damage to the red machine, but do not kill it yet
-                    rm.hit_enemy(enemy_hit_sound, fullscreen)
-                    red_machines_hit_values[current_red_hit_value_index] = red_machines_hit_values[current_red_hit_value_index] + 1
+                    rm.hit_enemy(enemy_hit_sound)
+                    red_machine.red_machines_hit_values[current_red_hit_value_index] = red_machine.red_machines_hit_values[current_red_hit_value_index] + 1
                     # Check if hit delay is finished
                     if rm.get_hit_value() == 0:
-                        red_machines_hit_values[current_red_hit_value_index] = 0
-                    if red_machines_hit_values[current_red_hit_value_index] == 1:
+                        red_machine.red_machines_hit_values[current_red_hit_value_index] = 0
+                    if red_machine.red_machines_hit_values[current_red_hit_value_index] == 1:
                         # Increase the players score for hitting the red machine
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 2
@@ -2387,17 +2303,17 @@ while True:
                         p.set_laser_has_attacked(1)
                 current_red_hit_value_index = current_red_hit_value_index + 1
 
-            for b in boss:
+            for b in machine_boss.boss:
                 # If the player laser hits the boss that is visible and not dying with 1 health
-                if boss_update_value != 0 or (b.get_boss().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(b.get_boss()) < 75 * scale_factor and b.health_bar == 1 and b.hit_delay == 0 and boss_update_value == 0):
-                    b.kill_boss(enemy_death_sound, coins_on_screen_list, all_coins_list, scale_factor_X, scale_factor_Y, fullscreen)
-                    boss_update_value = boss_update_value + 1
+                if machine_boss.boss_update_value != 0 or (b.get_boss().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(b.get_boss()) < 75 * scale_factor and b.health_bar == 1 and b.hit_delay == 0 and machine_boss.boss_update_value == 0):
+                    b.kill_boss(enemy_death_sound, coins_on_screen_list, all_coins_list)
+                    machine_boss.boss_update_value = machine_boss.boss_update_value + 1
                     if b.get_update_value() == 0:
-                        boss_update_value = 0
+                        machine_boss.boss_update_value = 0
                         coin_pickup_delay = 0
                     if b.get_update_value() == 3:
                         coin_pickup_delay = 1
-                    if boss_update_value == 1:
+                    if machine_boss.boss_update_value == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                             score = score + 100
                         else:
@@ -2413,12 +2329,12 @@ while True:
                         p.set_laser_has_attacked(1)
 
                 # If the player laser hits the boss that is visible and not dying with health > 1
-                if boss_hit_value != 0 or (b.get_boss().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(b.get_boss()) < 75 * scale_factor and b.health_bar != 1 and b.health_bar != 0 and boss_hit_value == 0):
-                    b.hit_boss(enemy_hit_sound, fullscreen)
-                    boss_hit_value = boss_hit_value + 1
+                if machine_boss.boss_hit_value != 0 or (b.get_boss().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(b.get_boss()) < 75 * scale_factor and b.health_bar != 1 and b.health_bar != 0 and machine_boss.boss_hit_value == 0):
+                    b.hit_boss(enemy_hit_sound)
+                    machine_boss.boss_hit_value = machine_boss.boss_hit_value + 1
                     if b.get_hit_value() == 0:
-                        boss_hit_value = 0
-                    if boss_hit_value == 1:
+                        machine_boss.boss_hit_value = 0
+                    if machine_boss.boss_hit_value == 1:
                         # First hit gets double the points, the rest are only 1 point
                         # This means that the total points you can get from killing
                         #   one boss is 60 (120 with blue power up)
@@ -2475,7 +2391,7 @@ while True:
                                 score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
 
-                for ym in yellow_machines:
+                for ym in yellow_machine.yellow_machines:
                     if ym.get_yellow_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if ym.get_yellow_machine_laser().isvisible() and -30 * scale_factor_X < (ym.get_yellow_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             ym.set_laser_has_attacked(1)
@@ -2484,7 +2400,7 @@ while True:
                                 score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
 
-                for rm in red_machines:
+                for rm in red_machine.red_machines:
                     if rm.get_red_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if rm.get_red_machine_laser().isvisible() and -30 * scale_factor_X < (rm.get_red_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             rm.set_laser_has_attacked(1)
@@ -2493,7 +2409,7 @@ while True:
                                 score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
 
-                for b in boss:
+                for b in machine_boss.boss:
                     if b.get_boss_laser().distance(p.get_player()) < 125 * scale_factor:
                         if b.get_boss_laser().isvisible() and -30 * scale_factor_X < (b.get_boss_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             b.set_laser_has_attacked(1)
@@ -2530,7 +2446,7 @@ while True:
                                 p.hit_player(player_hit_sound)
                                 machine_player.player_hit_value = machine_player.player_hit_value + 1
 
-                for ym in yellow_machines:
+                for ym in yellow_machine.yellow_machines:
                     if ym.get_yellow_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if ym.get_yellow_machine_laser().isvisible() and -30 * scale_factor_X < (ym.get_yellow_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             ym.set_laser_has_attacked(1)
@@ -2538,7 +2454,7 @@ while True:
                                 p.hit_player(player_hit_sound)
                                 machine_player.player_hit_value = machine_player.player_hit_value + 1
 
-                for rm in red_machines:
+                for rm in red_machine.red_machines:
                     if rm.get_red_machine_laser().distance(p.get_player()) < 125 * scale_factor:
                         if rm.get_red_machine_laser().isvisible() and -30 * scale_factor_X < (rm.get_red_machine_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             rm.set_laser_has_attacked(1)
@@ -2546,7 +2462,7 @@ while True:
                                 p.hit_player(player_hit_sound)
                                 machine_player.player_hit_value = machine_player.player_hit_value + 1
 
-                for b in boss:
+                for b in machine_boss.boss:
                     if b.get_boss_laser().distance(p.get_player()) < 125 * scale_factor:
                         if b.get_boss_laser().isvisible() and -30 * scale_factor_X < (b.get_boss_laser().xcor() - p.get_player().xcor()) < 30 * scale_factor_X:
                             b.set_laser_has_attacked(1)
@@ -2560,14 +2476,14 @@ while True:
         for bm in blue_machine.blue_machines:
             bm.float_effect()
 
-        for ym in yellow_machines:
-            ym.float_effect(scale_factor_Y)
+        for ym in yellow_machine.yellow_machines:
+            ym.float_effect()
 
-        for rm in red_machines:
-            rm.float_effect(scale_factor_Y)
+        for rm in red_machine.red_machines:
+            rm.float_effect()
 
-        for b in boss:
-            b.float_effect(scale_factor_Y)
+        for b in machine_boss.boss:
+            b.float_effect()
 
         # For the enemy movement
         # If the machine enemy has been killed enough times, it will start moving along the x-axis
@@ -2575,14 +2491,14 @@ while True:
             for bm in blue_machine.blue_machines:
                 bm.move_enemy(p.get_death_animation())
 
-            for ym in yellow_machines:
-                ym.move_enemy(p.get_death_animation(), scale_factor_X)
+            for ym in yellow_machine.yellow_machines:
+                ym.move_enemy(p.get_death_animation())
 
-            for rm in red_machines:
-                rm.move_enemy(p.get_death_animation(), scale_factor_X, scale_factor_Y)
+            for rm in red_machine.red_machines:
+                rm.move_enemy(p.get_death_animation())
 
-            for b in boss:
-                b.move_boss(p.get_death_animation(), scale_factor_X, scale_factor_Y)
+            for b in machine_boss.boss:
+                b.move_boss(p.get_death_animation())
 
         # Check if the power ups are active or not
         for t in textbox.text_on_screen_list:
@@ -2710,23 +2626,23 @@ while True:
         blue_machine.blue_machines.clear()
         blue_machine.blue_machine_index = 0
         blue_machine.blue_machines_update_values.clear()
-        for ym in yellow_machines:
+        for ym in yellow_machine.yellow_machines:
             ym.remove()
-        yellow_machines.clear()
-        yellow_machine_index = 0
-        yellow_machines_update_values.clear()
-        for rm in red_machines:
+        yellow_machine.yellow_machines.clear()
+        yellow_machine.yellow_machine_index = 0
+        yellow_machine.yellow_machines_update_values.clear()
+        for rm in red_machine.red_machines:
             rm.remove()
-        red_machines.clear()
-        red_machine_index = 0
-        red_machines_update_values.clear()
-        red_machines_hit_values.clear()
-        for b in boss:
+        red_machine.red_machines.clear()
+        red_machine.red_machine_index = 0
+        red_machine.red_machines_update_values.clear()
+        red_machine.red_machines_hit_values.clear()
+        for b in machine_boss.boss:
             b.remove()
-        boss.clear()
-        boss_index = 0
-        boss_update_value = 0
-        boss_hit_value = 0
+        machine_boss.boss.clear()
+        machine_boss.boss_index = 0
+        machine_boss.boss_update_value = 0
+        machine_boss.boss_hit_value = 0
 
     """
         Code Below is for when Alien Mode is turned on.

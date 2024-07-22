@@ -16,7 +16,6 @@
 from setup.ScreenSetup import scale_factor
 from setup.ScreenSetup import scale_factor_X
 from setup.ScreenSetup import scale_factor_Y
-from setup.ScreenSetup import fullscreen
 from components.spawn.SpawnButton import SpawnButton
 from components.spawn.SpawnTextBox import SpawnTextbox
 from components.spawn.SpawnGUI import SpawnPanel

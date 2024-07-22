@@ -34,6 +34,8 @@ import pygame
 import random
 import time
 from components.ItemCoin import Coin
+from setup.TextureSetup import MACHINE_BOSS_TEXTURE
+from setup.TextureSetup import MACHINE_BOSS_LASER_TEXTURE
 from setup.TextureSetup import EXPLOSION_1_TEXTURE
 from setup.TextureSetup import EXPLOSION_2_TEXTURE
 from setup.TextureSetup import HEALTH_BAR_1010_TEXTURE
@@ -83,7 +85,7 @@ class Boss:
                 that it can create a start time for it)
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, scale_factor_x, scale_factor_y):
         """
             Creates a boss object and spawns it on the screen
 
@@ -92,16 +94,10 @@ class Boss:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.boss = turtle.Turtle()
-        if fullscreen == 1:
-            self.boss.shape("Textures/Enemies/Boss_Scaled.gif")
-        else:
-            self.boss.shape("Textures/Enemies/Boss.gif")
+        self.boss.shape(MACHINE_BOSS_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.boss.penup()
         self.boss.shapesize(2 * scale_factor_y, 2 * scale_factor_x)
@@ -109,10 +105,7 @@ class Boss:
         self.boss.direction = "down"
 
         self.boss_laser = turtle.Turtle()
-        if fullscreen == 1:
-            self.boss_laser.shape("Textures/Lasers/Boss_Laser_Scaled.gif")
-        else:
-            self.boss_laser.shape("Textures/Lasers/Boss_Laser.gif")
+        self.boss_laser.shape(MACHINE_BOSS_LASER_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.boss_laser.penup()
         self.boss_laser.shapesize(2.25 * scale_factor_y, 0.5 * scale_factor_x)
@@ -120,10 +113,7 @@ class Boss:
         self.boss_laser.direction = "down"
 
         self.boss_health_bar = turtle.Turtle()
-        if fullscreen == 1:
-            self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.10_Scaled.gif")
-        else:
-            self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
+        self.boss_health_bar.shape(HEALTH_BAR_1010_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.boss_health_bar.penup()
         self.boss_health_bar.shapesize(1 * scale_factor_y, 1 * scale_factor_x)
@@ -165,33 +155,18 @@ class Boss:
         del self.boss_laser
         del self.boss_health_bar
 
-    def reinstate(self, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate(self):
         """
             Reuses the existing sprite to spawn a boss on the screen
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
 
-        if fullscreen == 1:
-            self.boss.shape("Textures/Enemies/Boss_Scaled.gif")
-        else:
-            self.boss.shape("Textures/Enemies/Boss.gif")
-        if fullscreen == 1:
-            self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.10_Scaled.gif")
-        else:
-            self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
-        self.boss.goto(175 * scale_factor_x, 220 * scale_factor_y)
-        self.boss_laser.goto(175 * scale_factor_x, 140 * scale_factor_y)
-        self.boss_health_bar.goto(175 * scale_factor_x, 302 * scale_factor_y)
+        self.boss.shape(MACHINE_BOSS_TEXTURE)
+        self.boss_health_bar.shape(HEALTH_BAR_1010_TEXTURE)
+        self.boss.goto(175 * self.scale_factor_x, 220 * self.scale_factor_y)
+        self.boss_laser.goto(175 * self.scale_factor_x, 140 * self.scale_factor_y)
+        self.boss_health_bar.goto(175 * self.scale_factor_x, 302 * self.scale_factor_y)
         self.boss.direction = "down"
         self.boss_laser.direction = "down"
         self.boss.showturtle()
@@ -289,7 +264,7 @@ class Boss:
         self.laser_has_attacked = 0
         self.movement_activated = 0
 
-    def shoot_laser(self, green_power_up, shooting_sound, scale_factor_y):
+    def shoot_laser(self, green_power_up, shooting_sound):
         """
             Shoots the boss laser (Spawning it right below the sprite) and move it down across the screen. The laser
                 moves faster and faster the lower the bosses health goes.
@@ -302,9 +277,6 @@ class Boss:
                 the shooting sound will play when the enemy laser is fired.
             :type shooting_sound: int
 
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
             :return: None
         """
 
@@ -315,7 +287,7 @@ class Boss:
             else:
                 self.boss_laser.showturtle()
             # If the laser is still visible in the frame of the screen
-            if self.boss_laser.ycor() > -360 * scale_factor_y:
+            if self.boss_laser.ycor() > -360 * self.scale_factor_y:
                 # Keep moving the laser down the screen every 0.015 seconds
                 current_time = time.time()
                 elapsed_time = current_time - self.laser_start_time
@@ -325,25 +297,25 @@ class Boss:
                         # Calculate the delta movement
                         # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                         # Done to ensure the game speed stays the same regardless of frame rate
-                        delta_movement = 9.5 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                        self.boss_laser.sety(self.boss_laser.ycor() - 9.5 * scale_factor_y - delta_movement)
+                        delta_movement = 9.5 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                        self.boss_laser.sety(self.boss_laser.ycor() - 9.5 * self.scale_factor_y - delta_movement)
                     if 8 >= self.health_bar > 6:
-                        delta_movement = 11 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                        self.boss_laser.sety(self.boss_laser.ycor() - 11 * scale_factor_y - delta_movement)
+                        delta_movement = 11 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                        self.boss_laser.sety(self.boss_laser.ycor() - 11 * self.scale_factor_y - delta_movement)
                     if 6 >= self.health_bar > 4:
-                        delta_movement = 12.5 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                        self.boss_laser.sety(self.boss_laser.ycor() - 12.5 * scale_factor_y - delta_movement)
+                        delta_movement = 12.5 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                        self.boss_laser.sety(self.boss_laser.ycor() - 12.5 * self.scale_factor_y - delta_movement)
                     if 4 >= self.health_bar > 2:
-                        delta_movement = 14 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                        self.boss_laser.sety(self.boss_laser.ycor() - 14 * scale_factor_y - delta_movement)
+                        delta_movement = 14 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                        self.boss_laser.sety(self.boss_laser.ycor() - 14 * self.scale_factor_y - delta_movement)
                     if 2 >= self.health_bar > -1:
-                        delta_movement = 15.5 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                        self.boss_laser.sety(self.boss_laser.ycor() - 15.5 * scale_factor_y - delta_movement)
+                        delta_movement = 15.5 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                        self.boss_laser.sety(self.boss_laser.ycor() - 15.5 * self.scale_factor_y - delta_movement)
                     self.laser_start_time = time.time()
             else:
                 # Otherwise, set the laser to its original state and shoot it again
                 self.boss_laser.setx(self.boss.xcor())
-                self.boss_laser.sety(self.boss.ycor() - 80 * scale_factor_y)
+                self.boss_laser.sety(self.boss.ycor() - 80 * self.scale_factor_y)
                 self.laser_has_attacked = 0
                 if shooting_sound == 1:
                     sound = pygame.mixer.Sound("Sound/Laser_Gun_Enemy.wav")
@@ -353,11 +325,11 @@ class Boss:
         else:
             self.boss_laser.hideturtle()
             self.boss_laser.setx(self.boss.xcor())
-            self.boss_laser.sety(self.boss.ycor() - 80 * scale_factor_y)
+            self.boss_laser.sety(self.boss.ycor() - 80 * self.scale_factor_y)
             self.laser_has_attacked = 0
             self.laser_start_time = time.time()
 
-    def kill_boss(self, death_sound, coins_on_screen, all_coins, scale_factor_x, scale_factor_y, fullscreen):
+    def kill_boss(self, death_sound, coins_on_screen, all_coins):
         """
             Kills the boss and plays the enemies death animation. After that, it spawns the boss in a new location.
 
@@ -370,15 +342,6 @@ class Boss:
             :param all_coins: Array that lists all of the coin sprites generated since the
                 programs execution (for reusing purposes)
             :type all_coins: list
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -402,11 +365,8 @@ class Boss:
 
         if self.update == 3.5:
             # Reset the health bar and the enemies health
-            self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
-            if fullscreen == 1:
-                self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.10_Scaled.gif")
-            else:
-                self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.10.gif")
+            self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
+            self.boss_health_bar.shape(HEALTH_BAR_1010_TEXTURE)
             self.health_bar = 10
             self.update = 4
             self.start_time = time.time()
@@ -428,12 +388,9 @@ class Boss:
                         coins_on_screen.append(coin)
                         break
             # Respawn the boss in a different random location
-            if fullscreen == 1:
-                self.boss.shape("Textures/Enemies/Boss_Scaled.gif")
-            else:
-                self.boss.shape("Textures/Enemies/Boss.gif")
+            self.boss.shape(MACHINE_BOSS_TEXTURE)
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
-            self.boss.goto(random.randint(int(-640 * scale_factor_x), int(640 * scale_factor_x)), random.randint(int(120 * scale_factor_y), int(220 * scale_factor_y)))
+            self.boss.goto(random.randint(int(-640 * self.scale_factor_x), int(640 * self.scale_factor_x)), random.randint(int(120 * self.scale_factor_y), int(220 * self.scale_factor_y)))
             self.update = 3.5
             return
 
@@ -448,13 +405,10 @@ class Boss:
 
         # Change the texture of the boss to the second frame of the explosion
         if 1.0 <= self.update <= 1.1:
-            if fullscreen == 1:
-                self.boss.shape("Textures/Explosions/Explosion2_Scaled.gif")
-            else:
-                self.boss.shape("Textures/Explosions/Explosion2.gif")
+            self.boss.shape(EXPLOSION_2_TEXTURE)
             self.update = 1.5
             self.start_time = time.time()
-            self.kill_boss(death_sound, coins_on_screen, all_coins, scale_factor_x, scale_factor_y, fullscreen)
+            self.kill_boss(death_sound, coins_on_screen, all_coins)
             return
 
         # Wait 0.1 seconds
@@ -477,23 +431,17 @@ class Boss:
                 sound = pygame.mixer.Sound("Sound/Explosion.wav")
                 sound.play()
             # Change the texture of the boss to the first frame of the death explosion
-            if fullscreen == 1:
-                self.boss.shape("Textures/Explosions/Explosion1_Scaled.gif")
-            else:
-                self.boss.shape("Textures/Explosions/Explosion1.gif")
+            self.boss.shape(EXPLOSION_1_TEXTURE)
             self.update = 0.5
             self.start_time = time.time()
             return
 
-    def hit_boss(self, hit_sound, fullscreen):
+    def hit_boss(self, hit_sound):
         """
             Makes the enemy take "one hit" of damage and creates a hit delay before the enemy can be hit again
 
             :param hit_sound: Determines if the enemy hit sound is toggled on or off
             :type hit_sound: int
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -515,50 +463,23 @@ class Boss:
         if self.hit_delay == 0 and no_hit == 0 and self.update == 0:
             # Decrease the bosses health by 1
             if self.health_bar == 10:
-                if fullscreen == 1:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.9_Scaled.gif")
-                else:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.9.gif")
+                self.boss_health_bar.shape(HEALTH_BAR_910_TEXTURE)
             elif self.health_bar == 9:
-                if fullscreen == 1:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.8_Scaled.gif")
-                else:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.8.gif")
+                self.boss_health_bar.shape(HEALTH_BAR_810_TEXTURE)
             elif self.health_bar == 8:
-                if fullscreen == 1:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.7_Scaled.gif")
-                else:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.7.gif")
+                self.boss_health_bar.shape(HEALTH_BAR_710_TEXTURE)
             elif self.health_bar == 7:
-                if fullscreen == 1:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.6_Scaled.gif")
-                else:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.6.gif")
+                self.boss_health_bar.shape(HEALTH_BAR_610_TEXTURE)
             elif self.health_bar == 6:
-                if fullscreen == 1:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.5_Scaled.gif")
-                else:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.5.gif")
+                self.boss_health_bar.shape(HEALTH_BAR_510_TEXTURE)
             elif self.health_bar == 5:
-                if fullscreen == 1:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.4_Scaled.gif")
-                else:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.4.gif")
+                self.boss_health_bar.shape(HEALTH_BAR_410_TEXTURE)
             elif self.health_bar == 4:
-                if fullscreen == 1:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.3_Scaled.gif")
-                else:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.3.gif")
+                self.boss_health_bar.shape(HEALTH_BAR_310_TEXTURE)
             elif self.health_bar == 3:
-                if fullscreen == 1:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.2_Scaled.gif")
-                else:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.2.gif")
+                self.boss_health_bar.shape(HEALTH_BAR_210_TEXTURE)
             elif self.health_bar == 2:
-                if fullscreen == 1:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.1_Scaled.gif")
-                else:
-                    self.boss_health_bar.shape("Textures/Health_Bars/HealthBar_10.1.gif")
+                self.boss_health_bar.shape(HEALTH_BAR_110_TEXTURE)
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Explosion2.wav")
                 sound.play()
@@ -566,13 +487,10 @@ class Boss:
             self.health_bar = self.health_bar - 1
             self.hit_start_time = time.time()
 
-    def float_effect(self, scale_factor_y):
+    def float_effect(self):
         """
             Moves the boss up and down to create a float effect and make it seem as if the boss is moving
                 fast through outer space.
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
 
             :return: None
         """
@@ -594,26 +512,23 @@ class Boss:
         if elapsed_time >= 0.0075:
             if self.float == 1:
                 # Calculate the delta movement and add it as additional movement required
-                delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
-                self.boss.goto(self.boss.xcor(), self.boss.ycor() + 0.15 * scale_factor_y + delta_movement)
-                self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
+                delta_movement = 0.15 * self.scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
+                self.boss.goto(self.boss.xcor(), self.boss.ycor() + 0.15 * self.scale_factor_y + delta_movement)
+                self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
             elif self.float == -1:
                 # Calculate the delta movement and add it as additional movement required
-                delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
-                self.boss.goto(self.boss.xcor(), self.boss.ycor() - 0.15 * scale_factor_y - delta_movement)
-                self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
+                delta_movement = 0.15 * self.scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
+                self.boss.goto(self.boss.xcor(), self.boss.ycor() - 0.15 * self.scale_factor_y - delta_movement)
+                self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
             self.float_start_time = time.time()
 
-    def move_boss(self, death, scale_factor_x, scale_factor_y):
+    def move_boss(self, death):
         """
             When the boss has died enough times, this function will cause it to start moving left and
                 right, which will speed up the more times that the boss dies.
 
             :param death: Determines whether the death animation for the player is active or not.
             :type death: int
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
 
             :return: None
         """
@@ -628,57 +543,57 @@ class Boss:
             elapsed_time = current_time - self.move_start_time
             if elapsed_time >= 0.02:
                 # Boss reaches the right end of the screen
-                if 600 * scale_factor_x < self.boss.xcor() < 650 * scale_factor_x:
+                if 600 * self.scale_factor_x < self.boss.xcor() < 650 * self.scale_factor_x:
                     # Move left
                     self.movement = -1
                 # Boss reaches the left end of the screen
-                if -600 * scale_factor_x > self.boss.xcor() > -650 * scale_factor_x:
+                if -600 * self.scale_factor_x > self.boss.xcor() > -650 * self.scale_factor_x:
                     # Move right
                     self.movement = 1
                 if self.movement == 1:
                     # Speeds up based on the death_count variable
                     if 4 <= self.death_count < 7:
                         # Calculate the delta movement as extra movement needed
-                        delta_movement = 2 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() + 2 * scale_factor_x + delta_movement)
-                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
+                        delta_movement = 2 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + 2 * self.scale_factor_x + delta_movement)
+                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 7 <= self.death_count < 10:
-                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() + 4 * scale_factor_x + delta_movement)
-                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
+                        delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + 4 * self.scale_factor_x + delta_movement)
+                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 10 <= self.death_count < 13:
-                        delta_movement = 6 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() + 6 * scale_factor_x + delta_movement)
-                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
+                        delta_movement = 6 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + 6 * self.scale_factor_x + delta_movement)
+                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 13 <= self.death_count < 16:
-                        delta_movement = 8 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() + 8 * scale_factor_x + delta_movement)
-                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
+                        delta_movement = 8 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + 8 * self.scale_factor_x + delta_movement)
+                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 16 <= self.death_count:
-                        delta_movement = 10 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() + 10 * scale_factor_x + delta_movement)
-                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
+                        delta_movement = 10 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + 10 * self.scale_factor_x + delta_movement)
+                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                 elif self.movement == -1:
                     if 4 <= self.death_count < 7:
-                        delta_movement = 2 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() - 2 * scale_factor_x - delta_movement)
-                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
+                        delta_movement = 2 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - 2 * self.scale_factor_x - delta_movement)
+                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 7 <= self.death_count < 10:
-                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() - 4 * scale_factor_x - delta_movement)
-                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
+                        delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - 4 * self.scale_factor_x - delta_movement)
+                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 10 <= self.death_count < 13:
-                        delta_movement = 6 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() - 6 * scale_factor_x - delta_movement)
-                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
+                        delta_movement = 6 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - 6 * self.scale_factor_x - delta_movement)
+                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 13 <= self.death_count < 16:
-                        delta_movement = 8 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() - 8 * scale_factor_x - delta_movement)
-                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
+                        delta_movement = 8 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - 8 * self.scale_factor_x - delta_movement)
+                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 16 <= self.death_count:
-                        delta_movement = 10 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() - 10 * scale_factor_x - delta_movement)
-                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * scale_factor_y)
+                        delta_movement = 10 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - 10 * self.scale_factor_x - delta_movement)
+                        self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                 self.move_start_time = time.time()
         else:
             self.move_start_time = 0

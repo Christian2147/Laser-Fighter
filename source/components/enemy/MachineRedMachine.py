@@ -33,6 +33,10 @@ import random
 import pygame
 import time
 from components.ItemCoin import Coin
+from setup.TextureSetup import RED_MACHINE_TEXTURE
+from setup.TextureSetup import RED_MACHINE_LASER_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_12_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_22_TEXTURE
 from setup.TextureSetup import EXPLOSION_1_TEXTURE
 from setup.TextureSetup import EXPLOSION_2_TEXTURE
 
@@ -73,7 +77,7 @@ class RedMachine:
             id (int): The id of the current red machine (Used for counting how many are on the screen)
     """
 
-    def __init__(self, id, scale_factor_x, scale_factor_y, fullscreen):
+    def __init__(self, id, scale_factor_x, scale_factor_y):
         """
             Creates a red machine object and spawns it on the screen
 
@@ -86,16 +90,10 @@ class RedMachine:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
         """
 
         self.red_machine = turtle.Turtle()
-        if fullscreen == 1:
-            self.red_machine.shape("Textures/Enemies/Enemy(11-15)_Scaled.gif")
-        else:
-            self.red_machine.shape("Textures/Enemies/Enemy(11-15).gif")
+        self.red_machine.shape(RED_MACHINE_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.red_machine.penup()
         self.red_machine.shapesize(2 * scale_factor_y, 2 * scale_factor_x)
@@ -113,10 +111,7 @@ class RedMachine:
         self.red_machine.direction = "down"
 
         self.red_machine_laser = turtle.Turtle()
-        if fullscreen == 1:
-            self.red_machine_laser.shape("Textures/Lasers/Enemy(11-15)_Laser_Scaled.gif")
-        else:
-            self.red_machine_laser.shape("Textures/Lasers/Enemy(11-15)_Laser.gif")
+        self.red_machine_laser.shape(RED_MACHINE_LASER_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.red_machine_laser.penup()
         self.red_machine_laser.shapesize(2.25 * scale_factor_y, 0.5 * scale_factor_x)
@@ -134,10 +129,7 @@ class RedMachine:
             self.red_machine_laser.goto(275 * scale_factor_x, 150 * scale_factor_y)
 
         self.red_machine_health_bar = turtle.Turtle()
-        if fullscreen == 1:
-            self.red_machine_health_bar.shape("Textures/Health_Bars/HealthBar_2.2_Scaled.gif")
-        else:
-            self.red_machine_health_bar.shape("Textures/Health_Bars/HealthBar_2.2.gif")
+        self.red_machine_health_bar.shape(HEALTH_BAR_22_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.red_machine_health_bar.penup()
         self.red_machine_health_bar.shapesize(1 * scale_factor_y, 1 * scale_factor_x)
@@ -190,7 +182,7 @@ class RedMachine:
         del self.red_machine_laser
         del self.red_machine_health_bar
 
-    def reinstate(self, id, scale_factor_x, scale_factor_y, fullscreen):
+    def reinstate(self, id):
         """
             Reuses the existing sprite to spawn a red machine on the screen with the correct id
 
@@ -198,47 +190,32 @@ class RedMachine:
                 on the screen)
             :type id: int
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
-
             :return: None
         """
 
-        if fullscreen == 1:
-            self.red_machine.shape("Textures/Enemies/Enemy(11-15)_Scaled.gif")
-        else:
-            self.red_machine.shape("Textures/Enemies/Enemy(11-15).gif")
-        if fullscreen == 1:
-            self.red_machine_health_bar.shape("Textures/Health_Bars/HealthBar_2.2_Scaled.gif")
-        else:
-            self.red_machine_health_bar.shape("Textures/Health_Bars/HealthBar_2.2.gif")
+        self.red_machine.shape(RED_MACHINE_TEXTURE)
+        self.red_machine_health_bar.shape(HEALTH_BAR_22_TEXTURE)
         # Correct location based on id
         if id == 1:
-            self.red_machine.goto(375 * scale_factor_x, 220 * scale_factor_y)
-            self.red_machine_laser.goto(375 * scale_factor_x, 150 * scale_factor_y)
-            self.red_machine_health_bar.goto(375 * scale_factor_x, 295 * scale_factor_y)
+            self.red_machine.goto(375 * self.scale_factor_x, 220 * self.scale_factor_y)
+            self.red_machine_laser.goto(375 * self.scale_factor_x, 150 * self.scale_factor_y)
+            self.red_machine_health_bar.goto(375 * self.scale_factor_x, 295 * self.scale_factor_y)
         elif id == 2:
-            self.red_machine.goto(-375 * scale_factor_x, 220 * scale_factor_y)
-            self.red_machine_laser.goto(-375 * scale_factor_x, 150 * scale_factor_y)
-            self.red_machine_health_bar.goto(-375 * scale_factor_x, 295 * scale_factor_y)
+            self.red_machine.goto(-375 * self.scale_factor_x, 220 * self.scale_factor_y)
+            self.red_machine_laser.goto(-375 * self.scale_factor_x, 150 * self.scale_factor_y)
+            self.red_machine_health_bar.goto(-375 * self.scale_factor_x, 295 * self.scale_factor_y)
         elif id == 3:
-            self.red_machine.goto(325 * scale_factor_x, 220 * scale_factor_y)
-            self.red_machine_laser.goto(325 * scale_factor_x, 150 * scale_factor_y)
-            self.red_machine_health_bar.goto(325 * scale_factor_x, 295 * scale_factor_y)
+            self.red_machine.goto(325 * self.scale_factor_x, 220 * self.scale_factor_y)
+            self.red_machine_laser.goto(325 * self.scale_factor_x, 150 * self.scale_factor_y)
+            self.red_machine_health_bar.goto(325 * self.scale_factor_x, 295 * self.scale_factor_y)
         elif id == 4:
-            self.red_machine.goto(-325 * scale_factor_x, 220 * scale_factor_y)
-            self.red_machine_laser.goto(-325 * scale_factor_x, 150 * scale_factor_y)
-            self.red_machine_health_bar.goto(-325 * scale_factor_x, 295 * scale_factor_y)
+            self.red_machine.goto(-325 * self.scale_factor_x, 220 * self.scale_factor_y)
+            self.red_machine_laser.goto(-325 * self.scale_factor_x, 150 * self.scale_factor_y)
+            self.red_machine_health_bar.goto(-325 * self.scale_factor_x, 295 * self.scale_factor_y)
         elif id == 5:
-            self.red_machine.goto(275 * scale_factor_x, 220 * scale_factor_y)
-            self.red_machine_laser.goto(275 * scale_factor_x, 150 * scale_factor_y)
-            self.red_machine_health_bar.goto(275 * scale_factor_x, 295 * scale_factor_y)
+            self.red_machine.goto(275 * self.scale_factor_x, 220 * self.scale_factor_y)
+            self.red_machine_laser.goto(275 * self.scale_factor_x, 150 * self.scale_factor_y)
+            self.red_machine_health_bar.goto(275 * self.scale_factor_x, 295 * self.scale_factor_y)
         self.red_machine.direction = "down"
         self.red_machine_laser.direction = "down"
         # Set the id to the new id
@@ -338,7 +315,7 @@ class RedMachine:
         self.laser_has_attacked = 0
         self.movement_activated = 0
 
-    def shoot_laser(self, green_power_up, shooting_sound, scale_factor_y):
+    def shoot_laser(self, green_power_up, shooting_sound):
         """
             Shoots the red machine laser (Spawning it right below the sprite) and move it down across the screen
 
@@ -350,9 +327,6 @@ class RedMachine:
                 the shooting sound will play when the enemy laser is fired.
             :type shooting_sound: int
 
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
             :return: None
         """
 
@@ -363,7 +337,7 @@ class RedMachine:
             else:
                 self.red_machine_laser.showturtle()
             # If the laser is still visible in the frame of the screen
-            if self.red_machine_laser.ycor() > -360 * scale_factor_y:
+            if self.red_machine_laser.ycor() > -360 * self.scale_factor_y:
                 # Keep moving the laser down the screen 11 units every 0.015 seconds
                 current_time = time.time()
                 elapsed_time = current_time - self.laser_start_time
@@ -371,13 +345,13 @@ class RedMachine:
                     # Calculate the delta movement
                     # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
-                    delta_movement = 11 * scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                    self.red_machine_laser.sety(self.red_machine_laser.ycor() - 11 * scale_factor_y - delta_movement)
+                    delta_movement = 11 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                    self.red_machine_laser.sety(self.red_machine_laser.ycor() - 11 * self.scale_factor_y - delta_movement)
                     self.laser_start_time = time.time()
             else:
                 # Otherwise, set the laser to its original state and shoot it again
                 self.red_machine_laser.setx(self.red_machine.xcor())
-                self.red_machine_laser.sety(self.red_machine.ycor() - 70 * scale_factor_y)
+                self.red_machine_laser.sety(self.red_machine.ycor() - 70 * self.scale_factor_y)
                 self.laser_has_attacked = 0
                 if shooting_sound == 1:
                     sound = pygame.mixer.Sound("Sound/Laser_Gun_Enemy.wav")
@@ -387,11 +361,11 @@ class RedMachine:
         else:
             self.red_machine_laser.hideturtle()
             self.red_machine_laser.setx(self.red_machine.xcor())
-            self.red_machine_laser.sety(self.red_machine.ycor() - 70 * scale_factor_y)
+            self.red_machine_laser.sety(self.red_machine.ycor() - 70 * self.scale_factor_y)
             self.laser_has_attacked = 0
             self.laser_start_time = time.time()
 
-    def kill_enemy(self, death_sound, coins_on_screen, all_coins, scale_factor_x, scale_factor_y, fullscreen):
+    def kill_enemy(self, death_sound, coins_on_screen, all_coins):
         """
             Kills the enemy and plays the enemies death animation. After that, it spawns the enemy in a new location.
 
@@ -404,15 +378,6 @@ class RedMachine:
             :param all_coins: Array that lists all of the coin sprites generated since the
                 programs execution (for reusing purposes)
             :type all_coins: list
-
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -436,11 +401,8 @@ class RedMachine:
 
         if self.update == 3.5:
             # Reset the health bar and the enemies health
-            self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
-            if fullscreen == 1:
-                self.red_machine_health_bar.shape("Textures/Health_Bars/HealthBar_2.2_Scaled.gif")
-            else:
-                self.red_machine_health_bar.shape("Textures/Health_Bars/HealthBar_2.2.gif")
+            self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
+            self.red_machine_health_bar.shape(HEALTH_BAR_22_TEXTURE)
             self.health_bar = 2
             self.update = 4
             self.start_time = time.time()
@@ -462,12 +424,9 @@ class RedMachine:
                         coins_on_screen.append(coin)
                         break
             # Respawn the red machine in a different random location
-            if fullscreen == 1:
-                self.red_machine.shape("Textures/Enemies/Enemy(11-15)_Scaled.gif")
-            else:
-                self.red_machine.shape("Textures/Enemies/Enemy(11-15).gif")
+            self.red_machine.shape(RED_MACHINE_TEXTURE)
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
-            self.red_machine.goto(random.randint(int(-640 * scale_factor_x), int(640 * scale_factor_x)), random.randint(int(120 * scale_factor_y), int(220 * scale_factor_y)))
+            self.red_machine.goto(random.randint(int(-640 * self.scale_factor_x), int(640 * self.scale_factor_x)), random.randint(int(120 * self.scale_factor_y), int(220 * self.scale_factor_y)))
             self.update = 3.5
             return
 
@@ -482,13 +441,10 @@ class RedMachine:
 
         # Change the texture of the red machine to the second frame of the explosion
         if 1.0 <= self.update <= 1.1:
-            if fullscreen == 1:
-                self.red_machine.shape("Textures/Explosions/Explosion2_Scaled.gif")
-            else:
-                self.red_machine.shape("Textures/Explosions/Explosion2.gif")
+            self.red_machine.shape(EXPLOSION_2_TEXTURE)
             self.update = 1.5
             self.start_time = time.time()
-            self.kill_enemy(death_sound, coins_on_screen, all_coins, scale_factor_x, scale_factor_y, fullscreen)
+            self.kill_enemy(death_sound, coins_on_screen, all_coins)
             return
 
         # Wait 0.1 seconds
@@ -511,23 +467,17 @@ class RedMachine:
                 sound = pygame.mixer.Sound("Sound/Explosion.wav")
                 sound.play()
             # Change the texture of the red machine to the first frame of the death explosion
-            if fullscreen == 1:
-                self.red_machine.shape("Textures/Explosions/Explosion1_Scaled.gif")
-            else:
-                self.red_machine.shape("Textures/Explosions/Explosion1.gif")
+            self.red_machine.shape(EXPLOSION_1_TEXTURE)
             self.update = 0.5
             self.start_time = time.time()
             return
 
-    def hit_enemy(self, hit_sound, fullscreen):
+    def hit_enemy(self, hit_sound):
         """
             Makes the enemy take "one hit" of damage and creates a hit delay before the enemy can be hit again
 
             :param hit_sound: Determines if the enemy hit sound is toggled on or off
             :type hit_sound: int
-
-            :param fullscreen: The variable that determines if fullscreen is on or off
-            :type fullscreen: int
 
             :return: None
         """
@@ -546,10 +496,7 @@ class RedMachine:
 
         if self.update == 0 and self.health_bar == 2:
             # Decrease the enemies health by 1
-            if fullscreen == 1:
-                self.red_machine_health_bar.shape("Textures/Health_Bars/HealthBar_2.1_Scaled.gif")
-            else:
-                self.red_machine_health_bar.shape("Textures/Health_Bars/HealthBar_2.1.gif")
+            self.red_machine_health_bar.shape(HEALTH_BAR_12_TEXTURE)
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Explosion2.wav")
                 sound.play()
@@ -557,13 +504,10 @@ class RedMachine:
             self.hit_delay = 1
             self.hit_start_time = time.time()
 
-    def float_effect(self, scale_factor_y):
+    def float_effect(self):
         """
             Moves the red machine up and down to create a float effect and make it seem as if the enemy is moving
                 fast through outer space.
-
-            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-            :type scale_factor_y: float
 
             :return: None
         """
@@ -585,17 +529,17 @@ class RedMachine:
         if elapsed_time >= 0.0075:
             if self.float == 1:
                 # Calculate the delta movement and add it as additional movement required
-                delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
-                self.red_machine.goto(self.red_machine.xcor(), self.red_machine.ycor() + 0.15 * scale_factor_y + delta_movement)
-                self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
+                delta_movement = 0.15 * self.scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
+                self.red_machine.goto(self.red_machine.xcor(), self.red_machine.ycor() + 0.15 * self.scale_factor_y + delta_movement)
+                self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
             elif self.float == -1:
                 # Calculate the delta movement and add it as additional movement required
-                delta_movement = 0.15 * scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
-                self.red_machine.goto(self.red_machine.xcor(), self.red_machine.ycor() - 0.15 * scale_factor_y - delta_movement)
-                self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
+                delta_movement = 0.15 * self.scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
+                self.red_machine.goto(self.red_machine.xcor(), self.red_machine.ycor() - 0.15 * self.scale_factor_y - delta_movement)
+                self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
             self.float_start_time = time.time()
 
-    def move_enemy(self, death, scale_factor_x, scale_factor_y):
+    def move_enemy(self, death):
         """
             When the red machine has died enough times, this function will cause it to start moving left and
                 right, which will speed up the more times that the red machine dies.
@@ -619,57 +563,57 @@ class RedMachine:
             elapsed_time = current_time - self.move_start_time
             if elapsed_time >= 0.02:
                 # Red machine reaches the right end of the screen
-                if 600 * scale_factor_x < self.red_machine.xcor() < 650 * scale_factor_x:
+                if 600 * self.scale_factor_x < self.red_machine.xcor() < 650 * self.scale_factor_x:
                     # Move left
                     self.movement = -1
                 # Red machine reaches the left end of the screen
-                if -600 * scale_factor_x > self.red_machine.xcor() > -650 * scale_factor_x:
+                if -600 * self.scale_factor_x > self.red_machine.xcor() > -650 * self.scale_factor_x:
                     # Move right
                     self.movement = 1
                 if self.movement == 1:
                     # Speeds up based on the death_count variable
                     if 4 <= self.death_count < 7:
                         # Calculate the delta movement as extra movement needed
-                        delta_movement = 2 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.red_machine.setx(self.red_machine.xcor() + 2 * scale_factor_x + delta_movement)
-                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
+                        delta_movement = 2 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.red_machine.setx(self.red_machine.xcor() + 2 * self.scale_factor_x + delta_movement)
+                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
                     elif 7 <= self.death_count < 10:
-                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.red_machine.setx(self.red_machine.xcor() + 4 * scale_factor_x + delta_movement)
-                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
+                        delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.red_machine.setx(self.red_machine.xcor() + 4 * self.scale_factor_x + delta_movement)
+                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
                     elif 10 <= self.death_count < 13:
-                        delta_movement = 6 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.red_machine.setx(self.red_machine.xcor() + 6 * scale_factor_x + delta_movement)
-                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
+                        delta_movement = 6 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.red_machine.setx(self.red_machine.xcor() + 6 * self.scale_factor_x + delta_movement)
+                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
                     elif 13 <= self.death_count < 16:
-                        delta_movement = 8 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.red_machine.setx(self.red_machine.xcor() + 8 * scale_factor_x + delta_movement)
-                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
+                        delta_movement = 8 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.red_machine.setx(self.red_machine.xcor() + 8 * self.scale_factor_x + delta_movement)
+                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
                     elif 16 <= self.death_count:
-                        delta_movement = 10 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.red_machine.setx(self.red_machine.xcor() + 10 * scale_factor_x + delta_movement)
-                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
+                        delta_movement = 10 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.red_machine.setx(self.red_machine.xcor() + 10 * self.scale_factor_x + delta_movement)
+                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
                 elif self.movement == -1:
                     if 4 <= self.death_count < 7:
-                        delta_movement = 2 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.red_machine.setx(self.red_machine.xcor() - 2 * scale_factor_x - delta_movement)
-                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
+                        delta_movement = 2 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.red_machine.setx(self.red_machine.xcor() - 2 * self.scale_factor_x - delta_movement)
+                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
                     elif 7 <= self.death_count < 10:
-                        delta_movement = 4 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.red_machine.setx(self.red_machine.xcor() - 4 * scale_factor_x - delta_movement)
-                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
+                        delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.red_machine.setx(self.red_machine.xcor() - 4 * self.scale_factor_x - delta_movement)
+                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
                     elif 10 <= self.death_count < 13:
-                        delta_movement = 6 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.red_machine.setx(self.red_machine.xcor() - 6 * scale_factor_x - delta_movement)
-                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
+                        delta_movement = 6 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.red_machine.setx(self.red_machine.xcor() - 6 * self.scale_factor_x - delta_movement)
+                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
                     elif 13 <= self.death_count < 16:
-                        delta_movement = 8 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.red_machine.setx(self.red_machine.xcor() - 8 * scale_factor_x - delta_movement)
-                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
+                        delta_movement = 8 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.red_machine.setx(self.red_machine.xcor() - 8 * self.scale_factor_x - delta_movement)
+                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
                     elif 16 <= self.death_count:
-                        delta_movement = 10 * scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.red_machine.setx(self.red_machine.xcor() - 10 * scale_factor_x - delta_movement)
-                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * scale_factor_y)
+                        delta_movement = 10 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
+                        self.red_machine.setx(self.red_machine.xcor() - 10 * self.scale_factor_x - delta_movement)
+                        self.red_machine_health_bar.goto(self.red_machine.xcor(), self.red_machine.ycor() + 75 * self.scale_factor_y)
                 self.move_start_time = time.time()
         else:
             self.move_start_time = 0

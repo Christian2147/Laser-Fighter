@@ -80,32 +80,6 @@ coins_on_screen_list = []
 current_coin_index = 0
 coin_pickup_delay = 0
 
-# Blue Machine setup
-#all_blue_machines = []
-#blue_machines = []
-#blue_machines_update_values = []
-#blue_machine_index = 0
-
-# Yellow Machine setup
-all_yellow_machines = []
-yellow_machines = []
-yellow_machines_update_values = []
-yellow_machine_index = 0
-
-# Red Machine setup
-all_red_machines = []
-red_machines = []
-red_machines_update_values = []
-red_machines_hit_values = []
-red_machine_index = 0
-
-# Boss setup
-all_boss = []
-boss = []
-boss_update_value = 0
-boss_hit_value = 0
-boss_index = 0
-
 # Small Alien setup
 all_small_aliens = []
 small_aliens = []
