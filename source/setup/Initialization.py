@@ -26,6 +26,7 @@ import configparser
 import subprocess
 import os
 from utils.Refresh import Refresh
+from utils.UpdateSettingsData import Settings
 from utils.UpdateShopData import ShopConfig
 
 # Current Screen Variable - Determines what screen is currently being displayed in the window
