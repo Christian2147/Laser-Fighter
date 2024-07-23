@@ -17,13 +17,6 @@ from components.gui.InterfaceButton import Button
 
 
 class SpawnButton:
-    _instance = None
-
-    def __new__(cls, *args, **kwargs):
-        if cls._instance is None:
-            cls._instance = super(SpawnButton, cls).__new__(cls)
-        return cls._instance
-
     def __init__(self, scale_factor, scale_factor_x, scale_factor_y):
         self.all_button_list = []
         self.buttons_on_screen_list = []
