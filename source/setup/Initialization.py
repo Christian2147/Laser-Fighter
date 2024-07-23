@@ -27,6 +27,7 @@ import subprocess
 import os
 from utils.Refresh import Refresh
 from utils.UpdateSettingsData import Settings
+from utils.UpdateStatsData import Stats
 from utils.UpdateShopData import ShopConfig
 
 # Current Screen Variable - Determines what screen is currently being displayed in the window
@@ -136,6 +137,9 @@ else:
 
 # Create Settings Object to store the settings variables
 settings = Settings()
+
+# Create a Stats PObject to store the statistics variables
+statistics = Stats(settings.god_mode)
 
 # Extract the users high score from the playerData ini file
 if settings.god_mode == 0:
