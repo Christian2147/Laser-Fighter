@@ -29,7 +29,7 @@
 import ctypes
 import time
 import random
-from setup.Initialization import *
+from setup.ConfigurationSetup import *
 from setup.ScreenSetup import *
 from setup.SpriteSetup import button
 from setup.SpriteSetup import textbox

@@ -34,7 +34,7 @@ import os
 import pygame
 from PIL import Image
 from fractions import Fraction
-from setup.Initialization import settings
+from setup.ConfigurationSetup import settings
 
 # Scale Factors for fullscreen (1 when fullscreen is off)
 # All raw coordinates, distances, and movements are multiplied by the scale factor to ensure that the game stays scaled

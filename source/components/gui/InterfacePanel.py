@@ -23,7 +23,7 @@
 """
 
 import turtle
-from setup.Initialization import shop_config
+from setup.ConfigurationSetup import shop_config
 from setup.data.ShopDescriptions import MAIN_DESCRIPTION
 from setup.data.ShopDescriptions import MACHINE_DESCRIPTIONS
 from setup.data.ShopDescriptions import ALIEN_DESCRIPTIONS

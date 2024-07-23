@@ -13,27 +13,3 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-
-class ScreenUpdate:
-    def __init__(self):
-        self._mode = "Title_Mode"
-        self.page = "Machine_Mode"
-
-        self.tick_update = 0
-        self.screen_update = 0
-        self.page_update = 0
-
-    @property
-    def mode(self):
-        return self._mode
-
-    @mode.setter
-    def mode(self, new_mode):
-        self._mode = new_mode
-
-    #def __del__(self):
-        #del self.mode
-        #del self.page
-        #del self.tick_update
-        #el self.screen_update
-        #del self.page_update
