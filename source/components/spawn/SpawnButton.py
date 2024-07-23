@@ -17,10 +17,21 @@ from components.gui.InterfaceButton import Button
 
 
 class SpawnButton:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(SpawnButton, cls).__new__(cls)
+        return cls._instance
+
     def __init__(self, scale_factor, scale_factor_x, scale_factor_y):
         self.all_button_list = []
         self.buttons_on_screen_list = []
         self.current_button_index = 0
+
+        self.button_update = 0
+        self.clickable = 0
+        self.buy_button_pressed = 0
 
         self.scale_factor = scale_factor
         self.scale_factor_x = scale_factor_x
@@ -30,6 +41,9 @@ class SpawnButton:
         del self.all_button_list
         del self.buttons_on_screen_list
         del self.current_button_index
+        del self.button_update
+        del self.clickable
+        del self.buy_button_pressed
 
     def spawn_button(self, type, id, page=None):
         """

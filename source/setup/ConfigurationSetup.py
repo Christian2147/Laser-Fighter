@@ -35,9 +35,6 @@ mode = "Title_Mode"
 # Determines the subscreen
 page = "Machine_Mode"
 
-# Button text highlighting - Used to ensure button text highlighting stays consistent across screens
-button_update = 0
-
 # Current Score
 score = 0
 
@@ -57,8 +54,6 @@ tick_update = 0
 # Used for when certain data needs to be transferred across screens or updated only on certain screens
 screen_update = 0
 page_update = 0
-clickable = 0
-buy_button_pressed = 0
 
 # Initialize the update variables
 refresh_variables = Refresh()
