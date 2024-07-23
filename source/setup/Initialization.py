@@ -16,7 +16,7 @@
 """
     File: Initialization.py
     Author: Christian Marinkovich
-    Date: 2024-07-07
+    Date: 2024-07-23
     Description:
     This file contains all of the global variables needed for the game to run.
     This also includes any external variables stored in the ini files.
@@ -86,29 +86,6 @@ message_output = 0
 # Close Window setup
 quit_loop = 0
 
-# Extract the users statistics from the playerData ini file
-config = configparser.ConfigParser()
-config.read('config/playerData.ini')
-bosses_killed = config['Statistics_Machine_Mode'].getint('Bosses_Killed')
-red_bots_killed = config['Statistics_Machine_Mode'].getint('Red_Bots_Killed')
-yellow_bots_killed = config['Statistics_Machine_Mode'].getint('Yellow_Bots_Killed')
-blue_bots_killed = config['Statistics_Machine_Mode'].getint('Blue_Bots_Killed')
-classic_deaths = config['Statistics_Machine_Mode'].getint('Deaths')
-machine_damage_taken = config['Statistics_Machine_Mode'].getint('Damage_Taken')
-classic_lasers_fired = config['Statistics_Machine_Mode'].getint('Lasers_Fired')
-classic_power_ups_picked_up = config['Statistics_Machine_Mode'].getint('Power_Ups_Picked_Up')
-machine_coins_collected = config['Statistics_Machine_Mode'].getint('Coins_Collected')
-ufos_killed = config['Statistics_Alien_Mode'].getint('Ufos_Killed')
-big_aliens_killed = config['Statistics_Alien_Mode'].getint('Big_Aliens_Killed')
-medium_aliens_killed = config['Statistics_Alien_Mode'].getint('Medium_Aliens_Killed')
-small_aliens_killed = config['Statistics_Alien_Mode'].getint('Small_Aliens_Killed')
-alien_deaths = config['Statistics_Alien_Mode'].getint('Deaths')
-damage_taken = config['Statistics_Alien_Mode'].getint('Damage_Taken')
-alien_lasers_fired = config['Statistics_Alien_Mode'].getint('Lasers_Fired')
-jumps = config['Statistics_Alien_Mode'].getint('Jumps')
-alien_power_ups_picked_up = config['Statistics_Alien_Mode'].getint('Power_Ups_Picked_Up')
-alien_coins_collected = config['Statistics_Alien_Mode'].getint('Coins_Collected')
-
 # Extract the users controls from the config ini file
 config = configparser.ConfigParser()
 config.read('Config/config.ini')
@@ -140,16 +117,6 @@ settings = Settings()
 
 # Create a Stats PObject to store the statistics variables
 statistics = Stats(settings.god_mode)
-
-# Extract the users high score from the playerData ini file
-if settings.god_mode == 0:
-    config = configparser.ConfigParser()
-    config.read('Config/playerData.ini')
-    high_score_machine_war = config['High_Score'].getint('High_Score_Machine_War')
-    high_score_alien_mode = config['High_Score'].getint('High_Score_Alien_Mode')
-else:
-    high_score_machine_war = "NA"
-    high_score_alien_mode = "NA"
 
 # Current Shop Configuration
 shop_config = ShopConfig()

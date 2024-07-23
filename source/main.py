@@ -129,18 +129,8 @@ def jump():
             # If the jump can successfully be preformed given the circumstances required to preform it
             if settings.god_mode == 0 and h.do_jump == 1:
                 # Update the game statistics to show that the player has jumped
-                jumps = jumps + 1
-                # New config parser object is created
-                config = configparser.ConfigParser()
-                # Data from config file is extracted
-                config.read('Config/playerData.ini')
-                # The statistic to edit is extracted
-                statistic_to_update = list(config['Statistics_Alien_Mode'])[7]
-                # The statistic to edit is updated
-                config['Statistics_Alien_Mode'][statistic_to_update] = str(jumps)
-                # The new data is written back to the ini file
-                with open('Config/playerData.ini', 'w') as configfile:
-                    config.write(configfile)
+                statistics.jumps = statistics.jumps + 1
+                statistics.save()
 
 
 def shoot():
@@ -153,8 +143,7 @@ def shoot():
     global shoot_update
     global laser_direction
     global head_death_animation
-    global classic_lasers_fired
-    global alien_lasers_fired
+    global statistics
     if mode == "Machine_Mode":
         for p in machine_player.current_player:
             # If the laser is not currently moving across the screen and if the player is not dying
@@ -163,13 +152,8 @@ def shoot():
                 p.fire(settings.player_shooting_sound)
                 # Update the game statistics
                 if settings.god_mode == 0:
-                    classic_lasers_fired = classic_lasers_fired + 1
-                    config = configparser.ConfigParser()
-                    config.read('Config/playerData.ini')
-                    statistic_to_update = list(config['Statistics_Machine_Mode'])[6]
-                    config['Statistics_Machine_Mode'][statistic_to_update] = str(classic_lasers_fired)
-                    with open('Config/playerData.ini', 'w') as configfile:
-                        config.write(configfile)
+                    statistics.classic_lasers_fired = statistics.classic_lasers_fired + 1
+                    statistics.save()
     if mode == "Alien_Mode":
         for h in human_player.current_human:
             # If the laser is not currently flying across the screen and if the player is not in the process of dying
@@ -181,13 +165,8 @@ def shoot():
                     u.set_got_hit(0)
                 # Update the game statistics
                 if settings.god_mode == 0:
-                    alien_lasers_fired = alien_lasers_fired + 1
-                    config = configparser.ConfigParser()
-                    config.read('Config/playerData.ini')
-                    statistic_to_update = list(config['Statistics_Alien_Mode'])[6]
-                    config['Statistics_Alien_Mode'][statistic_to_update] = str(alien_lasers_fired)
-                    with open('Config/playerData.ini', 'w') as configfile:
-                        config.write(configfile)
+                    statistics.alien_lasers_fired = statistics.alien_lasers_fired + 1
+                    statistics.save()
 
 
 """
@@ -1428,7 +1407,7 @@ def update_text():
             refresh_variables.refresh_button = 0
         for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.write("Score: {}  High Score: {}".format(score, high_score_machine_war), 24, "normal")
+                t.write("Score: {}  High Score: {}".format(score, statistics.high_score_machine_war), 24, "normal")
             elif t.id == 2:
                 for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
                     if yi.get_power_up_active() == 1:
@@ -1459,7 +1438,7 @@ def update_text():
             refresh_variables.refresh_button = 0
         for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.write("Score: {}  High Score: {}".format(score, high_score_alien_mode), 24, "normal")
+                t.write("Score: {}  High Score: {}".format(score, statistics.high_score_alien_mode), 24, "normal")
             elif t.id == 2:
                 for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
                     if yi.get_power_up_active() == 1:
@@ -1588,47 +1567,47 @@ def update_text():
                 elif t.id == 3:
                     t.write("Alien Mode", 48, "bold")
                 elif t.id == 4:
-                    t.write("High Score: {}".format(high_score_machine_war), 24, "normal")
+                    t.write("High Score: {}".format(statistics.high_score_machine_war), 24, "normal")
                 elif t.id == 5:
-                    t.write("Bosses Killed: {}".format(bosses_killed), 24, "normal")
+                    t.write("Bosses Killed: {}".format(statistics.bosses_killed), 24, "normal")
                 elif t.id == 6:
-                    t.write("Red Bots Killed: {}".format(red_bots_killed), 24, "normal")
+                    t.write("Red Bots Killed: {}".format(statistics.red_bots_killed), 24, "normal")
                 elif t.id == 7:
-                    t.write("Yellow Bots Killed: {}".format(yellow_bots_killed), 24, "normal")
+                    t.write("Yellow Bots Killed: {}".format(statistics.yellow_bots_killed), 24, "normal")
                 elif t.id == 8:
-                    t.write("Blue Bots Killed: {}".format(blue_bots_killed), 24, "normal")
+                    t.write("Blue Bots Killed: {}".format(statistics.blue_bots_killed), 24, "normal")
                 elif t.id == 9:
-                    t.write("Deaths: {}".format(classic_deaths), 24, "normal")
+                    t.write("Deaths: {}".format(statistics.classic_deaths), 24, "normal")
                 elif t.id == 10:
-                    t.write("Damage Taken: {}".format(machine_damage_taken), 24, "normal")
+                    t.write("Damage Taken: {}".format(statistics.machine_damage_taken), 24, "normal")
                 elif t.id == 11:
-                    t.write("Lasers Fired: {}".format(classic_lasers_fired), 24, "normal")
+                    t.write("Lasers Fired: {}".format(statistics.classic_lasers_fired), 24, "normal")
                 elif t.id == 12:
-                    t.write("Power Ups Picked Up: {}".format(classic_power_ups_picked_up), 24, "normal")
+                    t.write("Power Ups Picked Up: {}".format(statistics.classic_power_ups_picked_up), 24, "normal")
                 elif t.id == 13:
-                    t.write("Coins Collected: {}".format(machine_coins_collected), 24, "normal")
+                    t.write("Coins Collected: {}".format(statistics.machine_coins_collected), 24, "normal")
                 elif t.id == 14:
-                    t.write("High Score: {}".format(high_score_alien_mode), 24, "normal")
+                    t.write("High Score: {}".format(statistics.high_score_alien_mode), 24, "normal")
                 elif t.id == 15:
-                    t.write("UFOs Killed: {}".format(ufos_killed), 24, "normal")
+                    t.write("UFOs Killed: {}".format(statistics.ufos_killed), 24, "normal")
                 elif t.id == 16:
-                    t.write("Big Aliens Killed: {}".format(big_aliens_killed), 24, "normal")
+                    t.write("Big Aliens Killed: {}".format(statistics.big_aliens_killed), 24, "normal")
                 elif t.id == 17:
-                    t.write("Medium Aliens Killed: {}".format(medium_aliens_killed), 24, "normal")
+                    t.write("Medium Aliens Killed: {}".format(statistics.medium_aliens_killed), 24, "normal")
                 elif t.id == 18:
-                    t.write("Small Aliens Killed: {}".format(small_aliens_killed), 24, "normal")
+                    t.write("Small Aliens Killed: {}".format(statistics.small_aliens_killed), 24, "normal")
                 elif t.id == 19:
-                    t.write("Deaths: {}".format(alien_deaths), 24, "normal")
+                    t.write("Deaths: {}".format(statistics.alien_deaths), 24, "normal")
                 elif t.id == 20:
-                    t.write("Damage Taken: {}".format(damage_taken), 24, "normal")
+                    t.write("Damage Taken: {}".format(statistics.damage_taken), 24, "normal")
                 elif t.id == 21:
-                    t.write("Lasers Fired: {}".format(alien_lasers_fired), 24, "normal")
+                    t.write("Lasers Fired: {}".format(statistics.alien_lasers_fired), 24, "normal")
                 elif t.id == 22:
-                    t.write("Jumps: {}".format(jumps), 24, "normal")
+                    t.write("Jumps: {}".format(statistics.jumps), 24, "normal")
                 elif t.id == 23:
-                    t.write("Power Ups Picked Up: {}".format(alien_power_ups_picked_up), 24, "normal")
+                    t.write("Power Ups Picked Up: {}".format(statistics.alien_power_ups_picked_up), 24, "normal")
                 elif t.id == 24:
-                    t.write("Coins Collected: {}".format(alien_coins_collected), 24, "normal")
+                    t.write("Coins Collected: {}".format(statistics.alien_coins_collected), 24, "normal")
                     refresh_variables.refresh_text = 0
             if t.id == 25:
                 t.write("God Mode Is On!", 24, "normal")
@@ -1981,15 +1960,10 @@ while True:
 
         # Check if the players score is greater than the current high score
         if settings.god_mode == 0:
-            if score > high_score_machine_war:
+            if score > statistics.high_score_machine_war:
                 # Update the high score in the game and the ini file if it is
-                high_score_machine_war = score
-                config = configparser.ConfigParser()
-                config.read('Config/playerData.ini')
-                high_score = list(config['High_Score'])[0]
-                config['High_Score'][high_score] = str(high_score_machine_war)
-                with open('Config/playerData.ini', 'w') as configfile:
-                    config.write(configfile)
+                statistics.high_score_machine_war = score
+                statistics.save()
 
         # Spawn the player
         if machine_player.current_player_index == 0:
@@ -2089,23 +2063,18 @@ while True:
                     # Increase the amount of coins based on the type of coin picked up
                     if c.get_type() == "copper":
                         shop_config.total_coins = shop_config.total_coins + 1
-                        machine_coins_collected = machine_coins_collected + 1
+                        statistics.machine_coins_collected = statistics.machine_coins_collected + 1
                     elif c.get_type() == "silver":
                         shop_config.total_coins = shop_config.total_coins + 5
-                        machine_coins_collected = machine_coins_collected + 5
+                        statistics.machine_coins_collected = statistics.machine_coins_collected + 5
                     elif c.get_type() == "gold":
                         shop_config.total_coins = shop_config.total_coins + 10
-                        machine_coins_collected = machine_coins_collected + 10
+                        statistics.machine_coins_collected = statistics.machine_coins_collected + 10
                     elif c.get_type() == "platinum":
                         shop_config.total_coins = shop_config.total_coins + 25
-                        machine_coins_collected = machine_coins_collected + 25
+                        statistics.machine_coins_collected = statistics.machine_coins_collected + 25
                     shop_config.save()
-                    config = configparser.ConfigParser()
-                    config.read('Config/playerData.ini')
-                    coins = list(config['Statistics_Machine_Mode'])[8]
-                    config['Statistics_Machine_Mode'][coins] = str(machine_coins_collected)
-                    with open('Config/playerData.ini', 'w') as configfile:
-                        config.write(configfile)
+                    statistics.save()
                     coin.coins_on_screen_list.pop(hit_coin)
                     # play the coin pickup sound
                     if settings.coin_pickup_sound == 1:
@@ -2138,13 +2107,8 @@ while True:
                             score = score + 1
                         # Update the stats if god mode is off
                         if settings.god_mode == 0:
-                            blue_bots_killed = blue_bots_killed + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Machine_Mode'])[3]
-                            config['Statistics_Machine_Mode'][statistic_to_update] = str(blue_bots_killed)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.blue_bots_killed = statistics.blue_bots_killed + 1
+                            statistics.save()
                         # Confirm that the players laser has attacked
                         p.set_laser_has_attacked(1)
                 current_blue_update_value_index = current_blue_update_value_index + 1
@@ -2167,13 +2131,8 @@ while True:
                         else:
                             score = score + 2
                         if settings.god_mode == 0:
-                            yellow_bots_killed = yellow_bots_killed + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Machine_Mode'])[2]
-                            config['Statistics_Machine_Mode'][statistic_to_update] = str(yellow_bots_killed)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.yellow_bots_killed = statistics.yellow_bots_killed + 1
+                            statistics.save()
                         p.set_laser_has_attacked(1)
                 current_yellow_update_value_index = current_yellow_update_value_index + 1
 
@@ -2195,13 +2154,8 @@ while True:
                         else:
                             score = score + 5
                         if settings.god_mode == 0:
-                            red_bots_killed = red_bots_killed + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Machine_Mode'])[1]
-                            config['Statistics_Machine_Mode'][statistic_to_update] = str(red_bots_killed)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.red_bots_killed = statistics.red_bots_killed + 1
+                            statistics.save()
                         p.set_laser_has_attacked(1)
                 current_red_update_value_index = current_red_update_value_index + 1
 
@@ -2239,13 +2193,8 @@ while True:
                         else:
                             score = score + 50
                         if settings.god_mode == 0:
-                            bosses_killed = bosses_killed + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Machine_Mode'])[0]
-                            config['Statistics_Machine_Mode'][statistic_to_update] = str(bosses_killed)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.bosses_killed = statistics.bosses_killed + 1
+                            statistics.save()
                         p.set_laser_has_attacked(1)
 
                 # If the player laser hits the boss that is visible and not dying with health > 1
@@ -2283,18 +2232,9 @@ while True:
                         bm.set_death_count(0)
                     # Update the stats if god mode is off
                     if settings.god_mode == 0:
-                        classic_deaths = classic_deaths + 1
-                        machine_damage_taken = machine_damage_taken + 1
-                        config = configparser.ConfigParser()
-                        config.read('Config/playerData.ini')
-                        statistic_to_update = list(config['Statistics_Machine_Mode'])[4]
-                        config['Statistics_Machine_Mode'][statistic_to_update] = str(classic_deaths)
-                        with open('Config/playerData.ini', 'w') as configfile:
-                            config.write(configfile)
-                        statistic_to_update = list(config['Statistics_Machine_Mode'])[5]
-                        config['Statistics_Machine_Mode'][statistic_to_update] = str(machine_damage_taken)
-                        with open('Config/playerData.ini', 'w') as configfile:
-                            config.write(configfile)
+                        statistics.classic_deaths = statistics.classic_deaths + 1
+                        statistics.machine_damage_taken = statistics.machine_damage_taken + 1
+                        statistics.save()
                 # Check if the death animation is finished
                 if p.get_player_death_update() == 0:
                     machine_player.player_update_value = 0
@@ -2345,13 +2285,8 @@ while True:
                 machine_player.player_hit_value = machine_player.player_hit_value + 1
                 # Update the stats
                 if p.get_hit_delay() == 2:
-                    machine_damage_taken = machine_damage_taken + 1
-                    config = configparser.ConfigParser()
-                    config.read('Config/playerData.ini')
-                    statistic_to_update = list(config['Statistics_Machine_Mode'])[5]
-                    config['Statistics_Machine_Mode'][statistic_to_update] = str(machine_damage_taken)
-                    with open('Config/playerData.ini', 'w') as configfile:
-                        config.write(configfile)
+                    statistics.machine_damage_taken = statistics.machine_damage_taken + 1
+                    statistics.save()
                 if p.get_hit_delay() == 0:
                     machine_player.player_hit_value = 0
             # If there is no hit delay
@@ -2489,38 +2424,23 @@ while True:
                         pu.pick_up(settings.power_up_pickup_sound)
                         # Update the stats
                         if settings.god_mode == 0:
-                            classic_power_ups_picked_up = classic_power_ups_picked_up + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Machine_Mode'])[7]
-                            config['Statistics_Machine_Mode'][statistic_to_update] = str(classic_power_ups_picked_up)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
+                            statistics.save()
                         # Activate the specified power up (In this case yellow)
                         yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].set_power_up_active(1)
 
                     if pu.type == 2 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
                         pu.pick_up(settings.power_up_pickup_sound)
                         if settings.god_mode == 0:
-                            classic_power_ups_picked_up = classic_power_ups_picked_up + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Machine_Mode'])[7]
-                            config['Statistics_Machine_Mode'][statistic_to_update] = str(classic_power_ups_picked_up)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
+                            statistics.save()
                         blue_power_up_indicator.blue_power_up_indicator_turtle[0].set_power_up_active(1)
 
                     if pu.type == 3 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                         pu.pick_up(settings.power_up_pickup_sound)
                         if settings.god_mode == 0:
-                            classic_power_ups_picked_up = classic_power_ups_picked_up + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Machine_Mode'])[7]
-                            config['Statistics_Machine_Mode'][statistic_to_update] = str(classic_power_ups_picked_up)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
+                            statistics.save()
                         extra_power_up_indicator.extra_power_up_indicator_turtle[0].set_power_up_active(1)
 
         # If the power ups are active, run their timers through these functions
@@ -2625,15 +2545,10 @@ while True:
 
         # Check if the players score is greater than the current high score
         if settings.god_mode == 0:
-            if score > high_score_alien_mode:
+            if score > statistics.high_score_alien_mode:
                 # Update the high score in the game and the ini file if it is
-                high_score_alien_mode = score
-                config = configparser.ConfigParser()
-                config.read('Config/playerData.ini')
-                high_score = list(config['High_Score'])[1]
-                config['High_Score'][high_score] = str(high_score_alien_mode)
-                with open('Config/playerData.ini', 'w') as configfile:
-                    config.write(configfile)
+                statistics.high_score_alien_mode = score
+                statistics.save()
 
         # Check if the power ups are active or not
         for t in textbox.text_on_screen_list:
@@ -2704,38 +2619,23 @@ while True:
                         pu.pick_up(settings.power_up_pickup_sound)
                         # Update the stats
                         if settings.god_mode == 0:
-                            alien_power_ups_picked_up = alien_power_ups_picked_up + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Alien_Mode'])[8]
-                            config['Statistics_Alien_Mode'][statistic_to_update] = str(alien_power_ups_picked_up)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1
+                            statistics.save()
                         # Activate the specified power up (In this case yellow)
                         yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].set_power_up_active(1)
 
                     if pu.type == 2 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
                         pu.pick_up(settings.power_up_pickup_sound)
                         if settings.god_mode == 0:
-                            alien_power_ups_picked_up = alien_power_ups_picked_up + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Alien_Mode'])[8]
-                            config['Statistics_Alien_Mode'][statistic_to_update] = str(alien_power_ups_picked_up)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1
+                            statistics.save()
                         blue_power_up_indicator.blue_power_up_indicator_turtle[0].set_power_up_active(1)
 
                     if pu.type == 4 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                         pu.pick_up(settings.power_up_pickup_sound)
                         if settings.god_mode == 0:
-                            alien_power_ups_picked_up = alien_power_ups_picked_up + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Alien_Mode'])[8]
-                            config['Statistics_Alien_Mode'][statistic_to_update] = str(alien_power_ups_picked_up)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1
+                            statistics.save()
                         extra_power_up_indicator.extra_power_up_indicator_turtle[0].set_power_up_active(1)
 
         # If the power ups are active, run their timers through these functions
@@ -2890,23 +2790,18 @@ while True:
                     # Increase the amount of coins based on the type of coin picked up
                     if c.get_type() == "copper":
                         shop_config.total_coins = shop_config.total_coins + 1
-                        alien_coins_collected = alien_coins_collected + 1
+                        statistics.alien_coins_collected = statistics.alien_coins_collected + 1
                     elif c.get_type() == "silver":
                         shop_config.total_coins = shop_config.total_coins + 5
-                        alien_coins_collected = alien_coins_collected + 5
+                        statistics.alien_coins_collected = statistics.alien_coins_collected + 5
                     elif c.get_type() == "gold":
                         shop_config.total_coins = shop_config.total_coins + 10
-                        alien_coins_collected = alien_coins_collected + 10
+                        statistics.alien_coins_collected = statistics.alien_coins_collected + 10
                     elif c.get_type() == "platinum":
                         shop_config.total_coins = shop_config.total_coins + 25
-                        alien_coins_collected = alien_coins_collected + 25
+                        statistics.alien_coins_collected = statistics.alien_coins_collected + 25
                     shop_config.save()
-                    config = configparser.ConfigParser()
-                    config.read('Config/playerData.ini')
-                    coins = list(config['Statistics_Alien_Mode'])[9]
-                    config['Statistics_Alien_Mode'][coins] = str(alien_coins_collected)
-                    with open('Config/playerData.ini', 'w') as configfile:
-                        config.write(configfile)
+                    statistics.save()
                     coin.coins_on_screen_list.pop(hit_coin)
                     # play the coin pickup sound
                     if settings.coin_pickup_sound == 1:
@@ -2937,13 +2832,8 @@ while True:
                             score = score + 1
                         # Update the stats if god mode is off
                         if settings.god_mode == 0:
-                            small_aliens_killed = small_aliens_killed + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Alien_Mode'])[3]
-                            config['Statistics_Alien_Mode'][statistic_to_update] = str(small_aliens_killed)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.small_aliens_killed = statistics.small_aliens_killed + 1
+                            statistics.save()
                         # Confirm that the players laser has attacked and count it as an enemy pierced
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
@@ -2968,13 +2858,8 @@ while True:
                         else:
                             score = score + 2
                         if settings.god_mode == 0:
-                            medium_aliens_killed = medium_aliens_killed + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Alien_Mode'])[2]
-                            config['Statistics_Alien_Mode'][statistic_to_update] = str(medium_aliens_killed)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.medium_aliens_killed = statistics.medium_aliens_killed + 1
+                            statistics.save()
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             laser_update = laser_update + 1
@@ -3019,13 +2904,8 @@ while True:
                         else:
                             score = score + 4
                         if settings.god_mode == 0:
-                            big_aliens_killed = big_aliens_killed + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Alien_Mode'])[1]
-                            config['Statistics_Alien_Mode'][statistic_to_update] = str(big_aliens_killed)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.big_aliens_killed = statistics.big_aliens_killed + 1
+                            statistics.save()
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             laser_update = laser_update + 1
@@ -3065,13 +2945,8 @@ while True:
                         else:
                             score = score + 50
                         if settings.god_mode == 0:
-                            ufos_killed = ufos_killed + 1
-                            config = configparser.ConfigParser()
-                            config.read('Config/playerData.ini')
-                            statistic_to_update = list(config['Statistics_Alien_Mode'])[0]
-                            config['Statistics_Alien_Mode'][statistic_to_update] = str(ufos_killed)
-                            with open('Config/playerData.ini', 'w') as configfile:
-                                config.write(configfile)
+                            statistics.ufos_killed = statistics.ufos_killed + 1
+                            statistics.save()
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             laser_update = laser_update + 1
@@ -3114,18 +2989,9 @@ while True:
                 if h.get_death_iterator() == 2:
                     # Update the stats if god mode is off
                     if settings.god_mode == 0:
-                        alien_deaths = alien_deaths + 1
-                        damage_taken = damage_taken + 1
-                        config = configparser.ConfigParser()
-                        config.read('Config/playerData.ini')
-                        statistic_to_update = list(config['Statistics_Alien_Mode'])[4]
-                        config['Statistics_Alien_Mode'][statistic_to_update] = str(alien_deaths)
-                        with open('Config/playerData.ini', 'w') as configfile:
-                            config.write(configfile)
-                        statistic_to_update = list(config['Statistics_Alien_Mode'])[5]
-                        config['Statistics_Alien_Mode'][statistic_to_update] = str(damage_taken)
-                        with open('Config/playerData.ini', 'w') as configfile:
-                            config.write(configfile)
+                        statistics.alien_deaths = statistics.alien_deaths + 1
+                        statistics.damage_taken = statistics.damage_taken + 1
+                        statistics.save()
                     # Set the store to 0 and reset the game
                     score = 0
                 # Check if the death animation has finished
@@ -3173,13 +3039,8 @@ while True:
                 human_player.human_hit_value = human_player.human_hit_value + 1
                 # Update the stats
                 if h.get_hit_delay() == 2:
-                    damage_taken = damage_taken + 1
-                    config = configparser.ConfigParser()
-                    config.read('Config/playerData.ini')
-                    statistic_to_update = list(config['Statistics_Alien_Mode'])[5]
-                    config['Statistics_Alien_Mode'][statistic_to_update] = str(damage_taken)
-                    with open('Config/playerData.ini', 'w') as configfile:
-                        config.write(configfile)
+                    statistics.damage_taken = statistics.damage_taken + 1
+                    statistics.save()
                 if h.get_hit_delay() == 0:
                     human_player.human_hit_value = 0
             # If there is no hit delay
