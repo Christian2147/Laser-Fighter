@@ -59,9 +59,12 @@ from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
 from utils.ScreenManager import ScreenUpdate
+from utils.ControlManager import Controls
 from utils.HoverManager import Hover
 
 screen = ScreenUpdate(wn, button, settings, refresh_variables, scale_factor_X, scale_factor_Y)
+
+controls = Controls(screen, machine_player, human_player, ufo, settings, statistics, scale_factor_Y)
 
 hover = Hover(screen, button)
 
