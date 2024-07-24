@@ -225,7 +225,6 @@ def execute_buy_button(x, y):
     global refresh_variables
     global button
     global textbox
-    global current_price_index
     global price_displayed
     global screen
     wn.onscreenclick(None)
