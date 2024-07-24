@@ -59,6 +59,7 @@ from utils.ScreenManager import ScreenUpdate
 from utils.ControlManager import Controls
 from utils.HoverManager import Hover
 from utils.ShopManager import Shop
+from utils.SettingsManager import SettingsToggle
 
 screen = ScreenUpdate(wn, button, settings, refresh_variables, scale_factor_X, scale_factor_Y)
 
@@ -68,345 +69,7 @@ hover = Hover(screen, button)
 
 shop = Shop(wn, screen, button, panel, textbox, price_label, settings, refresh_variables, shop_config, scale_factor_X, scale_factor_Y)
 
-"""
-    The next functions are for changing the game settings.
-"""
-
-
-def toggle_button_sound(x, y):
-    """
-        Used to toggle the button sound on and off.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > 165 * scale_factor_Y) and (y < 226 * scale_factor_Y):
-        if settings.button_sound == 1:
-            settings.button_sound = 0
-        else:
-            settings.button_sound = 1
-        execute_setting_function()
-
-
-def toggle_player_shooting_sound(x, y):
-    """
-        Used to toggle the button sound on and off.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > 85 * scale_factor_Y) and (y < 146 * scale_factor_Y):
-        if settings.player_shooting_sound == 1:
-            settings.player_shooting_sound = 0
-        else:
-            settings.player_shooting_sound = 1
-        execute_setting_function()
-
-
-def toggle_enemy_shooting_sound(x, y):
-    """
-        Used to toggle the button sound on and off.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > 5 * scale_factor_Y) and (y < 66 * scale_factor_Y):
-        if settings.enemy_shooting_sound == 1:
-            settings.enemy_shooting_sound = 0
-        else:
-            settings.enemy_shooting_sound = 1
-        execute_setting_function()
-
-
-def toggle_player_death_sound(x, y):
-    """
-        Used to toggle the player death sound on and off.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > -75 * scale_factor_Y) and (y < -14 * scale_factor_Y):
-        if settings.player_death_sound == 1:
-            settings.player_death_sound = 0
-        else:
-            settings.player_death_sound = 1
-        execute_setting_function()
-
-
-def toggle_enemy_death_sound(x, y):
-    """
-        Used to toggle the enemy death sound on and off.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > -155 * scale_factor_Y) and (y < -94 * scale_factor_Y):
-        if settings.enemy_death_sound == 1:
-            settings.enemy_death_sound = 0
-        else:
-            settings.enemy_death_sound = 1
-        execute_setting_function()
-
-
-def toggle_player_hit_sound(x, y):
-    """
-        Used to toggle the player hit sound on and off.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > -235 * scale_factor_Y) and (y < -174 * scale_factor_Y):
-        if settings.player_hit_sound == 1:
-            settings.player_hit_sound = 0
-        else:
-            settings.player_hit_sound = 1
-        execute_setting_function()
-
-
-def toggle_enemy_hit_sound(x, y):
-    """
-        Used to toggle the enemy hit sound on and off.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > -315 * scale_factor_Y) and (y < -254 * scale_factor_Y):
-        if settings.enemy_hit_sound == 1:
-            settings.enemy_hit_sound = 0
-        else:
-            settings.enemy_hit_sound = 1
-        execute_setting_function()
-
-
-def toggle_power_up_pickup_sound(x, y):
-    """
-        Used to toggle the power up pickup sound on and off.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > 165 * scale_factor_Y) and (y < 226 * scale_factor_Y):
-        if settings.power_up_pickup_sound == 1:
-            settings.power_up_pickup_sound = 0
-        else:
-            settings.power_up_pickup_sound = 1
-        execute_setting_function()
-
-
-def toggle_power_up_spawn_sound(x, y):
-    """
-        Used to toggle the power up spawn sound on and off.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > 85 * scale_factor_Y) and (y < 146 * scale_factor_Y):
-        if settings.power_up_spawn_sound == 1:
-            settings.power_up_spawn_sound = 0
-        else:
-            settings.power_up_spawn_sound = 1
-        execute_setting_function()
-
-
-def toggle_coin_pick_up_sound(x, y):
-    """
-        Used to toggle the coin pick up sound on and off.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > 5 * scale_factor_Y) and (y < 66 * scale_factor_Y):
-        if settings.coin_pickup_sound == 1:
-            settings.coin_pickup_sound = 0
-        else:
-            settings.coin_pickup_sound = 1
-        execute_setting_function()
-
-
-def toggle_fullscreen(x, y):
-    """
-        Used to toggle fullscreen on and off.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    global refresh_variables
-    global screen
-    global fullscreen_toggled
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -75 * scale_factor_Y) and (y < -14 * scale_factor_Y):
-        # Button sound is played
-        if settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-            sound.play()
-        # If fullscreen was originally off
-        if settings.fullscreen == 0 and fullscreen_toggled == 0:
-            # Warn the player about the effects of performance
-            message_output = ctypes.windll.user32.MessageBoxW(0,"Enabling fullscreen may cause a performance drop and expose your game to bugs. Are you sure you want to enable fullscreen?", "Warning!", 4 + 48)
-            # If the player says yes
-            if message_output != 7:
-                # Toggle fullscreen
-                settings.toggle_fullscreen()
-                # Alert the game of a needed restart
-                if fullscreen_toggled == 0:
-                    fullscreen_toggled = 1
-                    screen.updated_controls = 1
-                else:
-                    fullscreen_toggled = 0
-                    screen.updated_controls = 0
-        # If fullscreen was originally on
-        else:
-            # Turn it off like normal, but a restart is still required
-            settings.toggle_fullscreen()
-            if fullscreen_toggled == 0:
-                fullscreen_toggled = 1
-                screen.updated_controls = 1
-            else:
-                fullscreen_toggled = 0
-                screen.updated_controls = 0
-        refresh_variables.refresh_button = 1
-        refresh_variables.refresh_indicator = 1
-
-
-def toggle_vsync(x, y):
-    """
-        Used to toggle VSync on and off.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -155 * scale_factor_Y) and (y < -94 * scale_factor_Y):
-        # If VSync was originally off
-        if settings.vsync == 0:
-            # Warn the user about effects on performance
-            message_output = ctypes.windll.user32.MessageBoxW(0, "Turning on VSync may lower performance. Are you sure you want to enable VSync?", "Warning!", 4 + 48)
-            # If the user selects yes
-            if message_output != 7:
-                # Toggle VSync
-                if settings.vsync == 1:
-                    settings.vsync = 0
-                else:
-                    settings.vsync = 1
-                    execute_setting_function()
-        # If VSync was originally on
-        else:
-            # Toggle like normal
-            if settings.vsync == 1:
-                settings.vsync = 0
-            else:
-                settings.vsync = 1
-            execute_setting_function()
-
-
-def execute_setting_function():
-    """
-        Used to actually execute the toggle based on the parameter "type".
-
-        :return: None
-    """
-    global refresh_variables
-    # Button sound is played
-    if settings.button_sound == 1:
-        sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-        sound.play()
-    # The configuration file is updated
-    settings.save()
-    refresh_variables.refresh_button = 1
-    refresh_variables.refresh_indicator = 1
+settings_toggle = SettingsToggle(wn, screen, button, settings, refresh_variables, scale_factor_X, scale_factor_Y)
 
 
 def change_go_right_key(x, y):
@@ -931,7 +594,7 @@ def update_text():
                     elif bu.id == 10:
                         bu.write_indicator(settings.coin_pickup_sound)
                     elif bu.id == 11:
-                        bu.write_fullscreen_indicator(settings.fullscreen, fullscreen_toggled)
+                        bu.write_fullscreen_indicator(settings.fullscreen, settings_toggle.fullscreen_toggled)
                     elif bu.id == 12:
                         bu.write_indicator(settings.vsync)
         if refresh_variables.refresh_button == 1:
@@ -2691,29 +2354,29 @@ while True:
                     button.clickable = 0
             elif button_type == "Settings_Toggle":
                 if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(toggle_button_sound)
+                    wn.onscreenclick(settings_toggle.toggle_button_sound)
                 elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(toggle_player_shooting_sound)
+                    wn.onscreenclick(settings_toggle.toggle_player_shooting_sound)
                 elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(toggle_enemy_shooting_sound)
+                    wn.onscreenclick(settings_toggle.toggle_enemy_shooting_sound)
                 elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(toggle_player_death_sound)
+                    wn.onscreenclick(settings_toggle.toggle_player_death_sound)
                 elif id == 5 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(toggle_enemy_death_sound)
+                    wn.onscreenclick(settings_toggle.toggle_enemy_death_sound)
                 elif id == 6 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(toggle_player_hit_sound)
+                    wn.onscreenclick(settings_toggle.toggle_player_hit_sound)
                 elif id == 7 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(toggle_enemy_hit_sound)
+                    wn.onscreenclick(settings_toggle.toggle_enemy_hit_sound)
                 elif id == 8 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(toggle_power_up_pickup_sound)
+                    wn.onscreenclick(settings_toggle.toggle_power_up_pickup_sound)
                 elif id == 9 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(toggle_power_up_spawn_sound)
+                    wn.onscreenclick(settings_toggle.toggle_power_up_spawn_sound)
                 elif id == 10 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(toggle_coin_pick_up_sound)
+                    wn.onscreenclick(settings_toggle.toggle_coin_pick_up_sound)
                 elif id == 11 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(toggle_fullscreen)
+                    wn.onscreenclick(settings_toggle.toggle_fullscreen)
                 elif id == 12 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(toggle_vsync)
+                    wn.onscreenclick(settings_toggle.toggle_vsync)
 
         # Create all additional text boxes
         if textbox.current_text_index == 0:

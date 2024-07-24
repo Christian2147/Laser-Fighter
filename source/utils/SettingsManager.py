@@ -300,20 +300,20 @@ class SettingsToggle:
                     self._settings.toggle_fullscreen()
                     # Alert the game of a needed restart
                     if self._fullscreen_toggled == 0:
-                        fullscreen_toggled = 1
+                        self._fullscreen_toggled = 1
                         self._screen.updated_controls = 1
                     else:
-                        fullscreen_toggled = 0
+                        self._fullscreen_toggled = 0
                         self._screen.updated_controls = 0
             # If fullscreen was originally on
             else:
                 # Turn it off like normal, but a restart is still required
                 self._settings.toggle_fullscreen()
                 if self._fullscreen_toggled == 0:
-                    fullscreen_toggled = 1
+                    self._fullscreen_toggled = 1
                     self._screen.updated_controls = 1
                 else:
-                    fullscreen_toggled = 0
+                    self._fullscreen_toggled = 0
                     self._screen.updated_controls = 0
             self._refresh.refresh_button = 1
             self._refresh.refresh_indicator = 1
