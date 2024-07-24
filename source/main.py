@@ -68,113 +68,6 @@ controls = Controls(screen, machine_player, human_player, ufo, settings, statist
 
 hover = Hover(screen, button)
 
-"""
-    The functions below are for the player controls.
-"""
-
-
-def go_right():
-    """
-        Function for moving right in Laser Fighter. Activates when the keybind to move right is triggered.
-
-        :return: None
-    """
-
-    if screen.mode == "Machine_Mode":
-        for p in machine_player.current_player:
-            # The machine player is prepared to move right and faces right
-            p.set_direction_right()
-        move()
-    if screen.mode == "Alien_Mode":
-        for h in human_player.current_human:
-            # Prepares the human player to move right
-            h.go_right()
-
-
-def go_left():
-    """
-        Function for moving left in Laser Fighter. Activates when the keybind to move left is triggered.
-
-        :return: None
-    """
-
-    if screen.mode == "Machine_Mode":
-        for p in machine_player.current_player:
-            # The machine player is prepared to move left and faces left
-            p.set_direction_left()
-        move()
-    if screen.mode == "Alien_Mode":
-        for h in human_player.current_human:
-            # Prepares the human player to move left
-            h.go_left()
-
-
-def move():
-    """
-        Function used to trigger the players movement in Machine Mode.
-
-        :return: None
-    """
-
-    # Player is moved in its current facing direction when this function is activated.
-    if screen.mode == "Machine_Mode":
-        for p in machine_player.current_player:
-            p.move_player()
-
-
-def jump():
-    """
-        Function used to activate the players jump in Alien Mode.
-
-        :return: None
-    """
-
-    if screen.mode == "Alien_Mode":
-        for h in human_player.current_human:
-            # Prepare the player for a jump
-            h.jump()
-            # If the jump can successfully be preformed given the circumstances required to preform it
-            if settings.god_mode == 0 and h.do_jump == 1:
-                # Update the game statistics to show that the player has jumped
-                statistics.jumps = statistics.jumps + 1
-                statistics.save()
-
-
-def shoot():
-    """
-        Function used to fire the players laser.
-
-        :return: None
-    """
-
-    global shoot_update
-    global laser_direction
-    global head_death_animation
-    global statistics
-    if screen.mode == "Machine_Mode":
-        for p in machine_player.current_player:
-            # If the laser is not currently moving across the screen and if the player is not dying
-            if p.get_laser().ycor() > 359 * scale_factor_Y and p.get_death_animation() == 0:
-                # The laser is fired
-                p.fire(settings.player_shooting_sound)
-                # Update the game statistics
-                if settings.god_mode == 0:
-                    statistics.classic_lasers_fired = statistics.classic_lasers_fired + 1
-                    statistics.save()
-    if screen.mode == "Alien_Mode":
-        for h in human_player.current_human:
-            # If the laser is not currently flying across the screen and if the player is not in the process of dying
-            if h.shoot_update == 0 and h.death_animation == 0 and h.direction != 0:
-                # Fire the laser
-                h.shoot(settings.player_shooting_sound)
-                # Change "got_hit" for the UFO back to 0 since this is a new laser being fired
-                for u in ufo.ufos:
-                    u.set_got_hit(0)
-                # Update the game statistics
-                if settings.god_mode == 0:
-                    statistics.alien_lasers_fired = statistics.alien_lasers_fired + 1
-                    statistics.save()
-
 
 def slot_1_select(x, y):
     global screen
@@ -842,7 +735,6 @@ def execute_control_setting(type):
     """
 
     global refresh_variables
-    global message_output
     global screen
     # Actual keybind
     key_1 = 0
@@ -1332,10 +1224,10 @@ def update_text():
 # Set the keybinds for the turtle graphics window:
 # Bind the current keybinds to their appropriate functions
 wn.listen()
-wn.onkeypress(go_left, go_left_key)
-wn.onkeypress(go_right, go_right_key)
-wn.onkeypress(shoot, shoot_key)
-wn.onkeypress(jump, jump_key)
+wn.onkeypress(controls.go_left, go_left_key)
+wn.onkeypress(controls.go_right, go_right_key)
+wn.onkeypress(controls.shoot, shoot_key)
+wn.onkeypress(controls.jump, jump_key)
 
 # Detect when the user wants to close the window and terminate the game loop.
 # "WM_DELETE_WINDOW" is the parameter used to determine if the user has clicked the red x in the corner of the window
