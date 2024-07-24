@@ -30,11 +30,6 @@ from utils.UpdateSettingsData import Settings
 from utils.UpdateStatsData import Stats
 from utils.UpdateShopData import ShopConfig
 
-# Current Screen Variable - Determines what screen is currently being displayed in the window
-mode = "Title_Mode"
-# Determines the subscreen
-page = "Machine_Mode"
-
 # Current Score
 score = 0
 
@@ -51,10 +46,6 @@ power_up_time = 0
 # Refreshing when VSync is off
 tick_update = 0
 
-# Used for when certain data needs to be transferred across screens or updated only on certain screens
-screen_update = 0
-page_update = 0
-
 # Initialize the update variables
 refresh_variables = Refresh()
 
@@ -66,7 +57,6 @@ right_update = 0
 left_update = 0
 
 # Restart Variables (Having these set to 1 means the game needs to restart to update controls
-updated_controls = 0
 fullscreen_toggled = 0
 
 # Key Binding Conflicts
@@ -74,12 +64,6 @@ go_right_key_alert = 0
 go_left_key_alert = 0
 shoot_key_alert = 0
 jump_key_alert = 0
-
-# Message Box setup
-message_output = 0
-
-# Close Window setup
-quit_loop = 0
 
 # Extract the users controls from the config ini file
 config = configparser.ConfigParser()

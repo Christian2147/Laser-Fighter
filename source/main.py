@@ -63,7 +63,7 @@ from utils.HoverManager import Hover
 
 screen = ScreenUpdate(wn, button, settings, refresh_variables, scale_factor_X, scale_factor_Y)
 
-hover = Hover(mode, button)
+hover = Hover(screen, button)
 
 """
     The functions below are for the player controls.
@@ -77,12 +77,12 @@ def go_right():
         :return: None
     """
 
-    if mode == "Machine_Mode":
+    if screen.mode == "Machine_Mode":
         for p in machine_player.current_player:
             # The machine player is prepared to move right and faces right
             p.set_direction_right()
         move()
-    if mode == "Alien_Mode":
+    if screen.mode == "Alien_Mode":
         for h in human_player.current_human:
             # Prepares the human player to move right
             h.go_right()
@@ -95,12 +95,12 @@ def go_left():
         :return: None
     """
 
-    if mode == "Machine_Mode":
+    if screen.mode == "Machine_Mode":
         for p in machine_player.current_player:
             # The machine player is prepared to move left and faces left
             p.set_direction_left()
         move()
-    if mode == "Alien_Mode":
+    if screen.mode == "Alien_Mode":
         for h in human_player.current_human:
             # Prepares the human player to move left
             h.go_left()
@@ -114,7 +114,7 @@ def move():
     """
 
     # Player is moved in its current facing direction when this function is activated.
-    if mode == "Machine_Mode":
+    if screen.mode == "Machine_Mode":
         for p in machine_player.current_player:
             p.move_player()
 
@@ -126,9 +126,7 @@ def jump():
         :return: None
     """
 
-    if mode == "Alien_Mode":
-        # The global keyword is used for parameters that are to simply be accessed globally.
-        global jumps
+    if screen.mode == "Alien_Mode":
         for h in human_player.current_human:
             # Prepare the player for a jump
             h.jump()
@@ -150,7 +148,7 @@ def shoot():
     global laser_direction
     global head_death_animation
     global statistics
-    if mode == "Machine_Mode":
+    if screen.mode == "Machine_Mode":
         for p in machine_player.current_player:
             # If the laser is not currently moving across the screen and if the player is not dying
             if p.get_laser().ycor() > 359 * scale_factor_Y and p.get_death_animation() == 0:
@@ -160,7 +158,7 @@ def shoot():
                 if settings.god_mode == 0:
                     statistics.classic_lasers_fired = statistics.classic_lasers_fired + 1
                     statistics.save()
-    if mode == "Alien_Mode":
+    if screen.mode == "Alien_Mode":
         for h in human_player.current_human:
             # If the laser is not currently flying across the screen and if the player is not in the process of dying
             if h.shoot_update == 0 and h.death_animation == 0 and h.direction != 0:
@@ -175,402 +173,67 @@ def shoot():
                     statistics.save()
 
 
-"""
-    The functions below are for switching screens.
-"""
-
-
-def launch_title_mode(x, y):
-    """
-        Function used to go back to the title screen from a different screen.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    global mode
-    global updated_controls
-    global message_output
-    global screen_update
-    wn.onscreenclick(None)
-    if mode == "Machine_Mode" or mode == "Alien_Mode" or mode == "Stats" or mode == "Shop":
-        # Check to see if the cursor is in the bound of the button to be clicked
-        if (x > -634 * scale_factor_X) and (x < -442 * scale_factor_X) and (y > 323 * scale_factor_Y) and (y < 355 * scale_factor_Y):
-            if settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-                sound.play()
-            # Set the mode to "Title_Mode" to change the screen
-            mode = "Title_Mode"
-            hover.mode = "Title_Mode"
-            screen_update = 1
-            wn.onscreenclick(None)
-    # If coming from settings or controls, there may be a special procedure needed
-    if mode == "Settings" or mode == "Controls":
-        # Check to see if the cursor is in the bound of the button to be clicked
-        if (x > 26 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -315 * scale_factor_Y) and (y < -254 * scale_factor_Y):
-            if settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-                sound.play()
-            # If certain settings were updated, a restart may be required.
-            # "updated_controls" checks if this is the case.
-            if updated_controls == 1:
-                # Warn the user that a restart is required
-                message_output = ctypes.windll.user32.MessageBoxW(0, "A restart is required for these changes to take effect!\nDo you want to restart now?", "Restart Required!", 4+48)
-                # If the user selects "yes"
-                if message_output == 6:
-                    on_quit()
-                # If the user selects "no"
-                elif message_output == 7:
-                    # Set the mode to "Title_Mode" to change the screen
-                    mode = "Title_Mode"
-                    hover.mode = "Title_Mode"
-                    screen_update = 1
-                    wn.onscreenclick(None)
-                    updated_controls = 0
-                    message_output = 0
-            else:
-                mode = "Title_Mode"
-                hover.mode = "Title_Mode"
-                screen_update = 1
-                wn.onscreenclick(None)
-
-
-def launch_machine_mode(x, y):
-    """
-        Function used to enter Machine Mode.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    global mode
-    global screen_update
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > 49 * scale_factor_Y) and (y < 121 * scale_factor_Y):
-        if settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-            sound.play()
-        # Enter Machine Mode
-        mode = "Machine_Mode"
-        hover.mode = "Machine_Mode"
-        screen_update = 1
-
-
-def launch_alien_mode(x, y):
-    """
-        Function used to enter Alien Mode.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    global mode
-    global screen_update
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -42 * scale_factor_Y) and (y < 30 * scale_factor_Y):
-        if settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-            sound.play()
-        # Enter Alien Mode
-        mode = "Alien_Mode"
-        hover.mode = "Alien_Mode"
-        screen_update = 1
-
-
-def launch_shop_mode(x, y):
-    """
-        Function used to enter the shop in Laser Fighter.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    global mode
-    global page
-    global screen_update
-    global refresh_variables
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -133 * scale_factor_Y) and (y < -61 * scale_factor_Y):
-        if settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-            sound.play()
-        # Enter The Shop
-        mode = "Shop"
-        hover.mode = "Shop"
-        page = "Machine_Mode"
-        screen_update = 1
-        refresh_variables.refresh_panel = 1
-        refresh_variables.refresh_text = 1
-        refresh_variables.move_slot_selector = 1
-
-
-def display_machine_mode_page(x, y):
-    global page
-    global screen_update
-    global page_update
-    global refresh_variables
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > 99 * scale_factor_Y) and (y < 201 * scale_factor_Y):
-        if settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-            sound.play()
-        # Enter the Machine Mode page
-        page = "Machine_Mode"
-        screen_update = 1
-        page_update = 1
-        refresh_variables.refresh_text = 1
-        refresh_variables.move_tab_selector = 1
-        refresh_variables.move_slot_selector = 1
-
-
-def display_alien_mode_page(x, y):
-    global page
-    global screen_update
-    global page_update
-    global refresh_variables
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > -21 * scale_factor_Y) and (y < 81 * scale_factor_Y):
-        if settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-            sound.play()
-        # Enter the Alien Mode page
-        page = "Alien_Mode"
-        screen_update = 1
-        page_update = 1
-        refresh_variables.refresh_text = 1
-        refresh_variables.move_tab_selector = 1
-        refresh_variables.move_slot_selector = 1
-
-
-def display_power_up_page(x, y):
-    global page
-    global screen_update
-    global page_update
-    global refresh_variables
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -641 * scale_factor_X) and (x < -566 * scale_factor_X) and (y > -141 * scale_factor_Y) and (y < -39 * scale_factor_Y):
-        if settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-            sound.play()
-        # Enter the Power Ups page
-        page = "Power_Ups"
-        screen_update = 1
-        page_update = 1
-        refresh_variables.refresh_text = 1
-        refresh_variables.move_tab_selector = 1
-
-
-def launch_stats_mode(x, y):
-    """
-        Function used to enter the statistics screen.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    global mode
-    global screen_update
-    global refresh_variables
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > 9 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -224 * scale_factor_Y) and (y < -150 * scale_factor_Y):
-        if settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-            sound.play()
-        # Go to the statistics screen
-        mode = "Stats"
-        hover.mode = "Stats"
-        screen_update = 1
-        refresh_variables.refresh_text = 1
-
-
-def launch_settings_mode(x, y):
-    """
-        Function used to enter the settings screen.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    global mode
-    global screen_update
-    global button
-    wn.onscreenclick(None)
-    # If entering from the title screen
-    if mode == "Title_Mode":
-        # Check to see if the cursor is in the bound of the button to be clicked
-        if (x > -252 * scale_factor_X) and (x < -10 * scale_factor_X) and (y > -224 * scale_factor_Y) and (y < -150 * scale_factor_Y):
-            if settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-                sound.play()
-            # Change to settings
-            mode = "Settings"
-            hover.mode = "Settings"
-            screen_update = 1
-    # If entering from the controls screen
-    if mode == "Controls":
-        # Check to see if the cursor is in the bound of the button to be clicked
-        if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -235 * scale_factor_Y) and (y < -173 * scale_factor_Y):
-            if settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-                sound.play()
-            # Change to settings
-            mode = "Settings"
-            hover.mode = "Settings"
-            screen_update = 1
-            # Used so that there is no delay in clicking this button from the controls screen
-            button.clickable = 1
-
-
-def launch_controls_mode(x, y):
-    """
-        Function used to enter the controls screen.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    global mode
-    global screen_update
-    global button
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > 29 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -235 * scale_factor_Y) and (y < -173 * scale_factor_Y):
-        if settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-            sound.play()
-        # Go to the controls screen
-        mode = "Controls"
-        hover.mode = "Controls"
-        screen_update = 1
-        # Used so that there is no delay in clicking this button from the settings screen
-        button.clickable = 2
-
-
-def exit_game(x, y):
-    """
-        Function used to force exit the game.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -252 * scale_factor_X) and (x < 250 * scale_factor_X) and (y > -315 * scale_factor_Y) and (y < -241 * scale_factor_Y):
-        if settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-            sound.play()
-        # Quit the game and exit the application
-        on_quit()
-
-
 def slot_1_select(x, y):
-    global page
+    global screen
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -503 * scale_factor_X) and (x < -352 * scale_factor_X) and (y > 11 * scale_factor_Y) and (y < 182 * scale_factor_Y):
-        if page == "Machine_Mode":
+        if screen.page == "Machine_Mode":
             execute_slot_function("Machine_Mode", 1)
-        elif page == "Alien_Mode":
+        elif screen.page == "Alien_Mode":
             execute_slot_function("Alien_Mode", 1)
-        elif page == "Power_Ups":
+        elif screen.page == "Power_Ups":
             execute_slot_function("Power_Ups", 1)
 
 
 def slot_2_select(x, y):
-    global page
+    global screen
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -333 * scale_factor_X) and (x < -182 * scale_factor_X) and (y > 11 * scale_factor_Y) and (y < 182 * scale_factor_Y):
-        if page == "Machine_Mode":
+        if screen.page == "Machine_Mode":
             execute_slot_function("Machine_Mode", 2)
-        elif page == "Alien_Mode":
+        elif screen.page == "Alien_Mode":
             execute_slot_function("Alien_Mode", 2)
-        elif page == "Power_Ups":
+        elif screen.page == "Power_Ups":
             execute_slot_function("Power_Ups", 2)
 
 
 def slot_3_select(x, y):
-    global page
+    global screen
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -163 * scale_factor_X) and (x < -12 * scale_factor_X) and (y > 11 * scale_factor_Y) and (y < 182 * scale_factor_Y):
-        if page == "Machine_Mode":
+        if screen.page == "Machine_Mode":
             execute_slot_function("Machine_Mode", 3)
-        elif page == "Alien_Mode":
+        elif screen.page == "Alien_Mode":
             execute_slot_function("Alien_Mode", 3)
-        elif page == "Power_Ups":
+        elif screen.page == "Power_Ups":
             execute_slot_function("Power_Ups", 3)
 
 
 def slot_4_select(x, y):
-    global page
+    global screen
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > 7 * scale_factor_X) and (x < 158 * scale_factor_X) and (y > 11 * scale_factor_Y) and (y < 182 * scale_factor_Y):
-        if page == "Machine_Mode":
+        if screen.page == "Machine_Mode":
             execute_slot_function("Machine_Mode", 4)
-        elif page == "Alien_Mode":
+        elif screen.page == "Alien_Mode":
             execute_slot_function("Alien_Mode", 4)
-        elif page == "Power_Ups":
+        elif screen.page == "Power_Ups":
             execute_slot_function("Power_Ups", 4)
 
 
 def slot_5_select(x, y):
-    global page
+    global screen
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
     if (x > -503 * scale_factor_X) and (x < -352 * scale_factor_X) and (y > -179 * scale_factor_Y) and (y < -8 * scale_factor_Y):
-        if page == "Machine_Mode":
+        if screen.page == "Machine_Mode":
             execute_slot_function("Machine_Mode", 5)
-        elif page == "Alien_Mode":
-            execute_slot_function("Alien_Mode", 5)
+        elif screen.page == "Alien_Mode":
+            screen.execute_slot_function("Alien_Mode", 5)
 
 
 def execute_slot_function(current_page, slot_id):
@@ -668,7 +331,7 @@ def execute_buy_button(x, y):
     global textbox
     global current_price_index
     global price_displayed
-    global page
+    global screen
     wn.onscreenclick(None)
     if (x > 299 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -328 * scale_factor_Y) and (y < -212 * scale_factor_Y):
         # Button sound is played
@@ -688,15 +351,15 @@ def execute_buy_button(x, y):
                 shop_config.save()
                 for pl in panel.panel_turtle:
                     current_slot = pl.get_panel_id()
-                if page == "Machine_Mode":
+                if screen.page == "Machine_Mode":
                     shop_config.machine_slots_unlocked[current_slot - 1] = 1
                     shop_config.machine_slot_selected = current_slot
                     shop_config.save()
-                elif page == "Alien_Mode":
+                elif screen.page == "Alien_Mode":
                     shop_config.alien_slots_unlocked[current_slot - 1] = 1
                     shop_config.alien_slot_selected = current_slot
                     shop_config.save()
-                elif page == "Power_Ups":
+                elif screen.page == "Power_Ups":
                     if current_slot == 1:
                         shop_config.yellow_power_up_level = shop_config.yellow_power_up_level + 1
                         if shop_config.yellow_power_up_level == 5:
@@ -726,7 +389,7 @@ def execute_buy_button(x, y):
                             price_displayed = POWER_UP_PRICES[shop_config.red_power_up_level - 1]
                             max_level = 0
                     shop_config.save()
-                if page != "Power_Ups" or max_level == 1:
+                if screen.page != "Power_Ups" or max_level == 1:
                     for bu in button.buttons_on_screen_list:
                         if bu.get_type() == "Buy":
                             bu.remove()
@@ -996,7 +659,7 @@ def toggle_fullscreen(x, y):
     """
 
     global refresh_variables
-    global updated_controls
+    global screen
     global fullscreen_toggled
     wn.onscreenclick(None)
     # Check to see if the cursor is in the bound of the button to be clicked
@@ -1016,20 +679,20 @@ def toggle_fullscreen(x, y):
                 # Alert the game of a needed restart
                 if fullscreen_toggled == 0:
                     fullscreen_toggled = 1
-                    updated_controls = 1
+                    screen.updated_controls = 1
                 else:
                     fullscreen_toggled = 0
-                    updated_controls = 0
+                    screen.updated_controls = 0
         # If fullscreen was originally on
         else:
             # Turn it off like normal, but a restart is still required
             settings.toggle_fullscreen()
             if fullscreen_toggled == 0:
                 fullscreen_toggled = 1
-                updated_controls = 1
+                screen.updated_controls = 1
             else:
                 fullscreen_toggled = 0
-                updated_controls = 0
+                screen.updated_controls = 0
         refresh_variables.refresh_button = 1
         refresh_variables.refresh_indicator = 1
 
@@ -1177,7 +840,7 @@ def execute_control_setting(type):
 
     global refresh_variables
     global message_output
-    global updated_controls
+    global screen
     # Actual keybind
     key_1 = 0
     # String inputted into the textbox
@@ -1314,7 +977,7 @@ def execute_control_setting(type):
 
                     key_backup = key_1
                     # Alert that a restart is needed for changes to take effect
-                    updated_controls = 1
+                    screen.updated_controls = 1
             else:
                 # If there are no conflicts, update the main config file like normal.
                 config = configparser.ConfigParser()
@@ -1333,7 +996,7 @@ def execute_control_setting(type):
 
                 key_backup = key_1
                 # Alert that a restart is needed for changes to take effect
-                updated_controls = 1
+                screen.updated_controls = 1
     # If the keybind settings to do not need to updated
     else:
         key_2 = key_backup
@@ -1355,10 +1018,10 @@ def update_text():
         :return: None
     """
 
-    global mode
+    global screen
     global refresh_variables
     # Update based on the current mode
-    if mode == "Title_Mode":
+    if screen.mode == "Title_Mode":
         if refresh_variables.refresh_button == 1 or refresh_variables.refresh_button == 2:
             for bu in button.buttons_on_screen_list:
                 bu.write_lines()
@@ -1373,7 +1036,7 @@ def update_text():
                 t.write("Beta 1.1.0b", 24, "normal")
             elif t.id == 3:
                 t.write("God Mode Is On!", 24, "normal")
-    elif mode == "Machine_Mode":
+    elif screen.mode == "Machine_Mode":
         if refresh_variables.refresh_button == 1:
             for bu in button.buttons_on_screen_list:
                 bu.write_lines()
@@ -1404,7 +1067,7 @@ def update_text():
                 t.write_left("{}".format(shop_config.total_coins), 24, "normal")
             elif t.id == 6:
                 t.write("God Mode Is On!", 24, "normal")
-    elif mode == "Alien_Mode":
+    elif screen.mode == "Alien_Mode":
         if refresh_variables.refresh_button == 1:
             for bu in button.buttons_on_screen_list:
                 bu.write_lines()
@@ -1435,7 +1098,7 @@ def update_text():
                 t.write_left("{}".format(shop_config.total_coins), 24, "normal")
             elif t.id == 6:
                 t.write("God Mode Is On!", 24, "normal")
-    elif mode == "Shop":
+    elif screen.mode == "Shop":
         if refresh_variables.refresh_button == 1:
             for bu in button.buttons_on_screen_list:
                 if bu.get_type() != "Shop_Slot" and bu.get_type() != "Buy":
@@ -1463,7 +1126,7 @@ def update_text():
             elif t.id == 2:
                 t.write_left("{}".format(shop_config.total_coins), 24, "normal")
             if refresh_variables.refresh_text == 1:
-                if page == "Machine_Mode":
+                if screen.page == "Machine_Mode":
                     if t.id == 3:
                         t.write_left("Machine Mode", 36, "bold")
                     elif t.id == 5:
@@ -1474,7 +1137,7 @@ def update_text():
                         t.write_left(" 40000", 22, "normal")
                     elif t.id == 8:
                         t.write_left(" 100000", 22, "normal")
-                elif page == "Alien_Mode":
+                elif screen.page == "Alien_Mode":
                     if t.id == 3:
                         t.write_left("Alien Mode", 36, "bold")
                     elif t.id == 5:
@@ -1485,7 +1148,7 @@ def update_text():
                         t.write_left(" 40000", 22, "normal")
                     elif t.id == 8:
                         t.write_left(" 100000", 22, "normal")
-                elif page == "Power_Ups":
+                elif screen.page == "Power_Ups":
                     if t.id == 3:
                         t.write_left("Power Ups", 36, "bold")
                     elif t.id == 4:
@@ -1526,7 +1189,7 @@ def update_text():
                             t.write_left(" 30000", 22, "normal")
         if refresh_variables.refresh_text == 1:
             refresh_variables.refresh_text = 0
-    elif mode == "Stats":
+    elif screen.mode == "Stats":
         if refresh_variables.refresh_button == 1:
             for bu in button.buttons_on_screen_list:
                 bu.write_lines()
@@ -1585,7 +1248,7 @@ def update_text():
                     refresh_variables.refresh_text = 0
             if t.id == 25:
                 t.write("God Mode Is On!", 24, "normal")
-    elif mode == "Settings":
+    elif screen.mode == "Settings":
         for bu in button.buttons_on_screen_list:
             if refresh_variables.refresh_button == 1:
                 bu.write_lines()
@@ -1626,7 +1289,7 @@ def update_text():
                 t.write("Settings", 72, "bold")
             elif t.id == 2:
                 t.write("God Mode Is On!", 24, "normal")
-    elif mode == "Controls":
+    elif screen.mode == "Controls":
         if refresh_variables.refresh_button == 1 or refresh_variables.refresh_button == 2:
             for bu in button.buttons_on_screen_list:
                 if bu.type != "Controls_Toggle":
@@ -1663,20 +1326,6 @@ def update_text():
             elif t.id == 2:
                 t.write("God Mode Is On!", 24, "normal")
 
-
-def on_quit():
-    """
-        Closes the game and terminates the turtle graphics window properly
-
-        :return: None
-    """
-
-    global quit_loop
-    # Quit loop means the game loop must be closed
-    quit_loop = 1
-    # After 300 milliseconds, destroy the window and terminate the program
-    wn._root.after(300, wn._root.destroy)
-
 # Set the keybinds for the turtle graphics window:
 # Bind the current keybinds to their appropriate functions
 wn.listen()
@@ -1688,7 +1337,7 @@ wn.onkeypress(jump, jump_key)
 # Detect when the user wants to close the window and terminate the game loop.
 # "WM_DELETE_WINDOW" is the parameter used to determine if the user has clicked the red x in the corner of the window
 # If so, run the "on_quit" function which terminates the window
-wn._root.protocol("WM_DELETE_WINDOW", on_quit)
+wn._root.protocol("WM_DELETE_WINDOW", screen.on_quit)
 
 # The two lines of code below are used to collect the position of the users mouse on the canvas
 mouse_position = wn.getcanvas()
@@ -1720,18 +1369,18 @@ while True:
         # Update the screen as many times as the hardware allows (Not ideal)
         # "tick_update" is used for updating text because the game lags when the text is updated too often
         # The frequency of updating depends on the screen
-        if mode == "Title_Mode":
+        if screen.mode == "Title_Mode":
             update_text()
-        elif mode == "Machine_Mode" or mode == "Alien_Mode":
+        elif screen.mode == "Machine_Mode" or screen.mode == "Alien_Mode":
             if tick_update % 15 == 0:
                 update_text()
-        elif mode == "Stats":
+        elif screen.mode == "Stats":
             if tick_update % 4 == 0:
                 update_text()
-        elif mode == "Settings" or mode == "Shop":
+        elif screen.mode == "Settings" or screen.mode == "Shop":
             if tick_update % 3 == 0:
                 update_text()
-        elif mode == "Controls":
+        elif screen.mode == "Controls":
             if tick_update % 5 == 0:
                 update_text()
         wn.update()
@@ -1741,7 +1390,7 @@ while True:
     """
 
     # If requested, terminates the game loop
-    if quit_loop == 1:
+    if screen.quit_loop == 1:
         break
 
     """
@@ -1766,14 +1415,14 @@ while True:
     tick_update = tick_update + 1
 
     # Screen update is 1 when the screen has been changed
-    if screen_update == 1:
+    if screen.screen_update == 1:
         # Things that need to be updated between screens are updated here
         # Old button and text box sprites are removed
         for bu in button.buttons_on_screen_list:
             bu.remove()
         button.buttons_on_screen_list.clear()
         button.current_button_index = 0
-        if page_update != 1:
+        if screen.page_update != 1:
             for pa in panel.panel_turtle:
                 pa.remove()
             panel.panel_index = 0
@@ -1794,8 +1443,8 @@ while True:
         refresh_variables.refresh_button = 1
         refresh_variables.refresh_indicator = 1
         refresh_variables.refresh_text = 1
-        screen_update = 0
-        page_update = 0
+        screen.screen_update = 0
+        screen.page_update = 0
         button.buy_button_pressed = 0
         print(len(wn.turtles()))
 
@@ -1818,7 +1467,7 @@ while True:
         When Title Mode is on
     """
 
-    if mode == "Title_Mode":
+    if screen.mode == "Title_Mode":
         # Remove and reset all power ups
         for pu in power_up.current_power_ups:
             pu.remove()
@@ -1866,7 +1515,7 @@ while True:
                 textbox.spawn_text_box(3, 481 * scale_factor_X, 320 * scale_factor_Y, "white")
         for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.move(mode)
+                t.move(screen.mode)
 
         # detect if the buttons have been clicked
         for bu in button.buttons_on_screen_list:
@@ -1875,24 +1524,24 @@ while True:
                 # If the mouse is hovering over the valid button
                 if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
                     # Run the button function if clicked
-                    wn.onscreenclick(launch_machine_mode)
+                    wn.onscreenclick(screen.launch_machine_mode)
                 elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(launch_alien_mode)
+                    wn.onscreenclick(screen.launch_alien_mode)
                 elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(launch_shop_mode)
+                    wn.onscreenclick(screen.launch_shop_mode)
                 elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(exit_game)
+                    wn.onscreenclick(screen.exit_game)
             elif button_type == "Title_Small":
                 if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(launch_settings_mode)
+                    wn.onscreenclick(screen.launch_settings_mode)
                 elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(launch_stats_mode)
+                    wn.onscreenclick(screen.launch_stats_mode)
 
     """
         When Machine Mode is on
     """
 
-    if mode == "Machine_Mode":
+    if screen.mode == "Machine_Mode":
         # Create the in game main menu button
         if button.current_button_index == 0:
             button.spawn_button("Game", 1)
@@ -1901,7 +1550,7 @@ while True:
         for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
-                wn.onscreenclick(launch_title_mode)
+                wn.onscreenclick(screen.launch_title_mode)
 
         # Spawn the rest of the game interface
         # This includes the power up timers
@@ -1930,7 +1579,7 @@ while True:
 
         # Spawn the green power up indicator
         if extra_power_up_indicator.extra_power_up_indicator_index == 0:
-            extra_power_up_indicator.spawn_extra_power_up_indiciator(mode)
+            extra_power_up_indicator.spawn_extra_power_up_indiciator(screen.mode)
 
         # Check if the players score is greater than the current high score
         if settings.god_mode == 0:
@@ -2362,7 +2011,7 @@ while True:
         # 1 for yellow power up
         if power_up_update == 1 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[0] == 0:
-                power_up.spawn_power_up(1, mode, settings.power_up_spawn_sound)
+                power_up.spawn_power_up(1, screen.mode, settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 1:
@@ -2371,7 +2020,7 @@ while True:
         # 50 for blue power up
         if power_up_update == 50 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[1] == 0:
-                power_up.spawn_power_up(2, mode, settings.power_up_spawn_sound)
+                power_up.spawn_power_up(2, screen.mode, settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 2:
@@ -2380,7 +2029,7 @@ while True:
         # 100 for the extra power up
         if power_up_update == 100 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[2] == 0:
-                power_up.spawn_power_up(3, mode, settings.power_up_spawn_sound)
+                power_up.spawn_power_up(3, screen.mode, settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 3:
@@ -2462,7 +2111,7 @@ while True:
         Code Below is for when Alien Mode is turned on.
     """
 
-    if mode == "Alien_Mode":
+    if screen.mode == "Alien_Mode":
         # Create the in game main menu button
         if button.current_button_index == 0:
             button.spawn_button("Game", 1)
@@ -2471,7 +2120,7 @@ while True:
         for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
-                wn.onscreenclick(launch_title_mode)
+                wn.onscreenclick(screen.launch_title_mode)
 
         # Spawn the rest of the game interface
         # This includes the power up timers
@@ -2515,7 +2164,7 @@ while True:
 
         # Spawn the red power up indicator
         if extra_power_up_indicator.extra_power_up_indicator_index == 0:
-            extra_power_up_indicator.spawn_extra_power_up_indiciator(mode)
+            extra_power_up_indicator.spawn_extra_power_up_indiciator(screen.mode)
 
         # Check if the players score is greater than the current high score
         if settings.god_mode == 0:
@@ -2557,7 +2206,7 @@ while True:
         # 1 for yellow power up
         if power_up_update == 1 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[0] == 0:
-                power_up.spawn_power_up(1, mode, settings.power_up_spawn_sound)
+                power_up.spawn_power_up(1, screen.mode, settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 1:
@@ -2566,7 +2215,7 @@ while True:
         # 50 for blue power up
         if power_up_update == 50 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[1] == 0:
-                power_up.spawn_power_up(2, mode, settings.power_up_spawn_sound)
+                power_up.spawn_power_up(2, screen.mode, settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 2:
@@ -2575,7 +2224,7 @@ while True:
         # 100 for the extra power up
         if power_up_update == 100 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[3] == 0:
-                power_up.spawn_power_up(4, mode, settings.power_up_spawn_sound)
+                power_up.spawn_power_up(4, screen.mode, settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 4:
@@ -2689,7 +2338,7 @@ while True:
         right_update = time.perf_counter()
         right_update = round(right_update, 1)
 
-        # Cherck if a left movement of the player needs to be executed
+        # Check if a left movement of the player needs to be executed
         for h in human_player.current_human:
             h.execute_left_movement()
 
@@ -3098,10 +2747,10 @@ while True:
         Code below is for when the Shop is entered
     """
 
-    if mode == "Shop":
+    if screen.mode == "Shop":
         # Create the side panel
         if panel.panel_index == 0:
-            panel.spawn_panel(mode)
+            panel.spawn_panel(screen.mode)
 
         # Create Main Menu button
         if button.current_button_index == 0:
@@ -3113,17 +2762,17 @@ while True:
         for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
-                wn.onscreenclick(launch_title_mode)
+                wn.onscreenclick(screen.launch_title_mode)
 
         for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Tab":
                 if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(display_machine_mode_page)
+                    wn.onscreenclick(screen.display_machine_mode_page)
                 elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(display_alien_mode_page)
+                    wn.onscreenclick(screen.display_alien_mode_page)
                 elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(display_power_up_page)
+                    wn.onscreenclick(screen.display_power_up_page)
 
         # Spawn all the necessary standalone text
         if textbox.current_text_index == 0:
@@ -3134,10 +2783,10 @@ while True:
         if selector.current_selector_index == 0:
             selector.spawn_selector("Tab")
 
-        if page == "Machine_Mode":
+        if screen.page == "Machine_Mode":
             if button.current_button_index == 4:
                 for i in range(5):
-                    button.spawn_button("Shop_Slot", i + 1, page)
+                    button.spawn_button("Shop_Slot", i + 1, screen.page)
 
             if textbox.current_text_index == 3 and button.buy_button_pressed == 0:
                 counter = 4
@@ -3196,10 +2845,10 @@ while True:
                 elif bu.get_type() == "Buy":
                     if button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(execute_buy_button)
-        elif page == "Alien_Mode":
+        elif screen.page == "Alien_Mode":
             if button.current_button_index == 4:
                 for i in range(5):
-                    button.spawn_button("Shop_Slot", i + 1, page)
+                    button.spawn_button("Shop_Slot", i + 1, screen.page)
 
             if textbox.current_text_index == 3 and button.buy_button_pressed == 0:
                 counter = 4
@@ -3258,7 +2907,7 @@ while True:
                 elif bu.get_type() == "Buy":
                     if button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(execute_buy_button)
-        elif page == "Power_Ups":
+        elif screen.page == "Power_Ups":
             if button.current_button_index == 4:
                 for i in range(4):
                     button.spawn_button("Power_Up_Slot", i + 1)
@@ -3327,14 +2976,14 @@ while True:
         # Move the title text back and fourth across the screen as needed
         for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.move(mode)
+                t.move(screen.mode)
                 break
 
     """
          Code Below is for when Statistics Mode is turned on.
     """
 
-    if mode == "Stats":
+    if screen.mode == "Stats":
         # Create Main Menu button
         if button.current_button_index == 0:
             button.spawn_button("Game", 1)
@@ -3343,7 +2992,7 @@ while True:
         for bu in button.buttons_on_screen_list:
             button_color, button_type, id = bu.click_button()
             if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
-                wn.onscreenclick(launch_title_mode)
+                wn.onscreenclick(screen.launch_title_mode)
 
         # Create the statistics text
         if textbox.current_text_index == 0:
@@ -3360,14 +3009,14 @@ while True:
         # Move the title text back and fourth across the screen as needed
         for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.move(mode)
+                t.move(screen.mode)
                 break
 
     """
         Code Below is for when Settings Mode is turned on.
     """
 
-    if mode == "Settings":
+    if screen.mode == "Settings":
         # Create all the screen buttons, including the toggle buttons
         if button.current_button_index == 0:
             for i in range(2):
@@ -3380,9 +3029,9 @@ while True:
             button_color, button_type, id = bu.click_button()
             if button_type == "Regular_Settings_And_Controls":
                 if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(launch_title_mode)
+                    wn.onscreenclick(screen.launch_title_mode)
                 elif id == 2 and (button_color == "yellow" or button.clickable == 1) and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(launch_controls_mode)
+                    wn.onscreenclick(screen.launch_controls_mode)
                     button.clickable = 0
             elif button_type == "Settings_Toggle":
                 if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
@@ -3419,14 +3068,14 @@ while True:
         # Move the title text left and right across the screen
         for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.move(mode)
+                t.move(screen.mode)
                 break
 
     """
         Code Below is for when Controls Mode is turned on.
     """
 
-    if mode == "Controls":
+    if screen.mode == "Controls":
         # Create all the buttons for the screen, including the toggle buttons.
         if button.current_button_index == 0:
             button.spawn_button("Regular_Settings_And_Controls", 1)
@@ -3439,9 +3088,9 @@ while True:
             button_color, button_type, id = bu.click_button()
             if button_type == "Regular_Settings_And_Controls":
                 if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(launch_title_mode)
+                    wn.onscreenclick(screen.launch_title_mode)
                 elif id == 3 and (button_color == "yellow" or button.clickable == 2) and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(launch_settings_mode)
+                    wn.onscreenclick(screen.launch_settings_mode)
                     button.clickable = 0
             elif button_type == "Controls_Toggle":
                 if id == 1 and (button_color == "yellow" or button_color == "orange") and bu.get_button_frame().isvisible():
@@ -3462,7 +3111,7 @@ while True:
         # Move the title text left and right across the screen
         for t in textbox.text_on_screen_list:
             if t.id == 1:
-                t.move(mode)
+                t.move(screen.mode)
                 break
 
         # Control Setting Conflict Updates

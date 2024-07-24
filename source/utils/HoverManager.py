@@ -15,24 +15,13 @@
 
 
 class Hover:
-    def __init__(self, mode, button):
-        self._mode = mode
+    def __init__(self, screen, button):
+        self._screen = screen
         self._button = button
 
     def __del__(self):
-        del self._mode
+        del self._screen
         del self._button
-
-    @property
-    def mode(self):
-        return self._mode
-
-    @mode.setter
-    def mode(self, value):
-        if isinstance(value, str):
-            self._mode = value
-        else:
-            raise ValueError("Mode must be a string")
 
     def hover(self, event):
         """
@@ -48,13 +37,13 @@ class Hover:
         # Extract x and y coordinate of the cursor
         a, b = event.x, event.y
         # Update button text as needed
-        if self._mode == "Title_Mode":
+        if self._screen.mode == "Title_Mode":
             for bu in self._button.buttons_on_screen_list:
                 bu.update_highlight(a, b)
-        if self._mode == "Machine_Mode" or self._mode == "Alien_Mode" or self._mode == "Stats" or self._mode == "Shop":
+        if self._screen.mode == "Machine_Mode" or self._screen.mode == "Alien_Mode" or self._screen.mode == "Stats" or self._screen.mode == "Shop":
             for bu in self._button.buttons_on_screen_list:
                 self._button.button_update = bu.update_highlight(a, b)
-        if self._mode == "Settings":
+        if self._screen.mode == "Settings":
             for bu in self._button.buttons_on_screen_list:
                 if bu.type == "Regular_Settings_And_Controls":
                     if bu.id == 1:
@@ -63,7 +52,7 @@ class Hover:
                         bu.update_highlight(a, b)
                 else:
                     bu.update_highlight(a, b)
-        if self._mode == "Controls":
+        if self._screen.mode == "Controls":
             for bu in self._button.buttons_on_screen_list:
                 if bu.type == "Regular_Settings_And_Controls":
                     if bu.id == 1:

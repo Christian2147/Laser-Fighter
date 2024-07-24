@@ -74,10 +74,10 @@ class ScreenUpdate:
 
     @screen_update.setter
     def screen_update(self, value):
-        if isinstance(value, str):
+        if isinstance(value, int):
             self._screen_update = value
         else:
-            raise ValueError("Mode must be a string")
+            raise ValueError("Mode must be a integer")
 
     @property
     def page_update(self):
@@ -85,10 +85,10 @@ class ScreenUpdate:
 
     @page_update.setter
     def page_update(self, value):
-        if isinstance(value, str):
+        if isinstance(value, int):
             self._page_update = value
         else:
-            raise ValueError("Mode must be a string")
+            raise ValueError("Mode must be a integer")
 
     @property
     def updated_controls(self):
@@ -96,10 +96,14 @@ class ScreenUpdate:
 
     @updated_controls.setter
     def updated_controls(self, value):
-        if isinstance(value, str):
+        if isinstance(value, int):
             self._updated_controls = value
         else:
-            raise ValueError("Mode must be a string")
+            raise ValueError("Mode must be a integer")
+
+    @property
+    def quit_loop(self):
+        return self._quit_loop
 
     def launch_title_mode(self, x, y):
         """
