@@ -59,7 +59,7 @@ class Shop:
         if isinstance(value, int):
             self._price_displayed = value
         else:
-            raise ValueError("Mode must be a integer")
+            raise ValueError("price_displayed must be a integer")
 
     def slot_1_select(self, x, y):
         self._window.onscreenclick(None)
