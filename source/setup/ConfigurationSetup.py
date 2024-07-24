@@ -49,9 +49,6 @@ tick_update = 0
 # Initialize the update variables
 refresh_variables = Refresh()
 
-# Which item is being displayed
-price_displayed = 0
-
 # Walking Animation in Alien Mode
 right_update = 0
 left_update = 0

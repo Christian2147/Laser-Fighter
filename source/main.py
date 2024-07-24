@@ -55,12 +55,10 @@ from setup.SpriteSetup import small_alien
 from setup.SpriteSetup import medium_alien
 from setup.SpriteSetup import large_alien
 from setup.SpriteSetup import ufo
-from setup.data.ShopDescriptions import MACHINE_PRICES
-from setup.data.ShopDescriptions import ALIEN_PRICES
-from setup.data.ShopDescriptions import POWER_UP_PRICES
 from utils.ScreenManager import ScreenUpdate
 from utils.ControlManager import Controls
 from utils.HoverManager import Hover
+from utils.ShopManager import Shop
 
 screen = ScreenUpdate(wn, button, settings, refresh_variables, scale_factor_X, scale_factor_Y)
 
@@ -68,243 +66,7 @@ controls = Controls(screen, machine_player, human_player, ufo, settings, statist
 
 hover = Hover(screen, button)
 
-
-def slot_1_select(x, y):
-    global screen
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -503 * scale_factor_X) and (x < -352 * scale_factor_X) and (y > 11 * scale_factor_Y) and (y < 182 * scale_factor_Y):
-        if screen.page == "Machine_Mode":
-            execute_slot_function("Machine_Mode", 1)
-        elif screen.page == "Alien_Mode":
-            execute_slot_function("Alien_Mode", 1)
-        elif screen.page == "Power_Ups":
-            execute_slot_function("Power_Ups", 1)
-
-
-def slot_2_select(x, y):
-    global screen
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -333 * scale_factor_X) and (x < -182 * scale_factor_X) and (y > 11 * scale_factor_Y) and (y < 182 * scale_factor_Y):
-        if screen.page == "Machine_Mode":
-            execute_slot_function("Machine_Mode", 2)
-        elif screen.page == "Alien_Mode":
-            execute_slot_function("Alien_Mode", 2)
-        elif screen.page == "Power_Ups":
-            execute_slot_function("Power_Ups", 2)
-
-
-def slot_3_select(x, y):
-    global screen
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -163 * scale_factor_X) and (x < -12 * scale_factor_X) and (y > 11 * scale_factor_Y) and (y < 182 * scale_factor_Y):
-        if screen.page == "Machine_Mode":
-            execute_slot_function("Machine_Mode", 3)
-        elif screen.page == "Alien_Mode":
-            execute_slot_function("Alien_Mode", 3)
-        elif screen.page == "Power_Ups":
-            execute_slot_function("Power_Ups", 3)
-
-
-def slot_4_select(x, y):
-    global screen
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > 7 * scale_factor_X) and (x < 158 * scale_factor_X) and (y > 11 * scale_factor_Y) and (y < 182 * scale_factor_Y):
-        if screen.page == "Machine_Mode":
-            execute_slot_function("Machine_Mode", 4)
-        elif screen.page == "Alien_Mode":
-            execute_slot_function("Alien_Mode", 4)
-        elif screen.page == "Power_Ups":
-            execute_slot_function("Power_Ups", 4)
-
-
-def slot_5_select(x, y):
-    global screen
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -503 * scale_factor_X) and (x < -352 * scale_factor_X) and (y > -179 * scale_factor_Y) and (y < -8 * scale_factor_Y):
-        if screen.page == "Machine_Mode":
-            execute_slot_function("Machine_Mode", 5)
-        elif screen.page == "Alien_Mode":
-            screen.execute_slot_function("Alien_Mode", 5)
-
-
-def execute_slot_function(current_page, slot_id):
-    global button
-    global refresh_variables
-    global price_displayed
-    # Button sound is played
-    if settings.button_sound == 1:
-        sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-        sound.play()
-    if current_page != "Power_Ups":
-        for pa in panel.panel_turtle:
-            pa.set_panel_text(current_page, slot_id)
-        if current_page == "Machine_Mode":
-            if shop_config.machine_slots_unlocked[slot_id - 1] == 1:
-                shop_config.machine_slot_selected = slot_id
-                shop_config.save()
-                refresh_variables.move_slot_selector = 1
-                for bu in button.buttons_on_screen_list:
-                    if bu.get_type() == "Buy":
-                        bu.remove()
-                        button.buttons_on_screen_list.pop()
-            else:
-                for bu in button.buttons_on_screen_list:
-                    if bu.get_type() == "Buy":
-                        bu.remove()
-                        button.buttons_on_screen_list.pop()
-                button.spawn_button("Buy", 1)
-                price_displayed = MACHINE_PRICES[slot_id - 1]
-        elif current_page == "Alien_Mode":
-            if shop_config.alien_slots_unlocked[slot_id - 1] == 1:
-                shop_config.alien_slot_selected = slot_id
-                shop_config.save()
-                refresh_variables.move_slot_selector = 1
-                for bu in button.buttons_on_screen_list:
-                    if bu.get_type() == "Buy":
-                        bu.remove()
-                        button.buttons_on_screen_list.pop()
-            else:
-                for bu in button.buttons_on_screen_list:
-                    if bu.get_type() == "Buy":
-                        bu.remove()
-                        button.buttons_on_screen_list.pop()
-                button.spawn_button("Buy", 1)
-                price_displayed = ALIEN_PRICES[slot_id - 1]
-    else:
-        if slot_id == 1:
-            for pa in panel.panel_turtle:
-                pa.set_panel_text("Yellow_Power_Up", slot_id)
-            if shop_config.yellow_power_up_level != 5:
-                price_displayed = POWER_UP_PRICES[shop_config.yellow_power_up_level - 1]
-            else:
-                price_displayed = 0
-        elif slot_id == 2:
-            for pa in panel.panel_turtle:
-                pa.set_panel_text("Blue_Power_Up", slot_id)
-            if shop_config.blue_power_up_level != 5:
-                price_displayed = POWER_UP_PRICES[shop_config.blue_power_up_level - 1]
-            else:
-                price_displayed = 0
-        elif slot_id == 3:
-            for pa in panel.panel_turtle:
-                pa.set_panel_text("Green_Power_Up", slot_id)
-            if shop_config.green_power_up_level != 5:
-                price_displayed = POWER_UP_PRICES[shop_config.green_power_up_level - 1]
-            else:
-                price_displayed = 0
-        elif slot_id == 4:
-            for pa in panel.panel_turtle:
-                pa.set_panel_text("Red_Power_Up", slot_id)
-            if shop_config.red_power_up_level != 5:
-                price_displayed = POWER_UP_PRICES[shop_config.red_power_up_level - 1]
-            else:
-                price_displayed = 0
-        if price_displayed != 0:
-            for bu in button.buttons_on_screen_list:
-                if bu.get_type() == "Buy":
-                    bu.remove()
-                    button.buttons_on_screen_list.pop()
-                    button.current_button_index = button.current_button_index - 1
-            button.spawn_button("Buy", 1)
-        else:
-            for bu in button.buttons_on_screen_list:
-                if bu.get_type() == "Buy":
-                    bu.remove()
-                    button.buttons_on_screen_list.pop()
-                    button.current_button_index = button.current_button_index - 1
-    refresh_variables.refresh_panel = 1
-    refresh_variables.refresh_button = 1
-
-
-def execute_buy_button(x, y):
-    global refresh_variables
-    global button
-    global textbox
-    global price_displayed
-    global screen
-    wn.onscreenclick(None)
-    if (x > 299 * scale_factor_X) and (x < 600 * scale_factor_X) and (y > -328 * scale_factor_Y) and (y < -212 * scale_factor_Y):
-        # Button sound is played
-        if settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-            sound.play()
-        if price_displayed > shop_config.total_coins:
-            ctypes.windll.user32.MessageBoxW(0, "You do not have enough coins to purchase this item!", "Not Enough Coins!", 16)
-        else:
-            message_output = ctypes.windll.user32.MessageBoxW(0, "Are you sure you want to purchase this item for {} coins?".format(price_displayed), "Are you sure?", 4 + 32)
-            if message_output != 7:
-                # Coin sound is played
-                if settings.button_sound == 1:
-                    sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
-                    sound.play()
-                shop_config.total_coins = shop_config.total_coins - price_displayed
-                shop_config.save()
-                for pl in panel.panel_turtle:
-                    current_slot = pl.get_panel_id()
-                if screen.page == "Machine_Mode":
-                    shop_config.machine_slots_unlocked[current_slot - 1] = 1
-                    shop_config.machine_slot_selected = current_slot
-                    shop_config.save()
-                elif screen.page == "Alien_Mode":
-                    shop_config.alien_slots_unlocked[current_slot - 1] = 1
-                    shop_config.alien_slot_selected = current_slot
-                    shop_config.save()
-                elif screen.page == "Power_Ups":
-                    if current_slot == 1:
-                        shop_config.yellow_power_up_level = shop_config.yellow_power_up_level + 1
-                        if shop_config.yellow_power_up_level == 5:
-                            max_level = 1
-                        else:
-                            price_displayed = POWER_UP_PRICES[shop_config.yellow_power_up_level - 1]
-                            max_level = 0
-                    elif current_slot == 2:
-                        shop_config.blue_power_up_level = shop_config.blue_power_up_level + 1
-                        if shop_config.blue_power_up_level == 5:
-                            max_level = 1
-                        else:
-                            price_displayed = POWER_UP_PRICES[shop_config.blue_power_up_level - 1]
-                            max_level = 0
-                    elif current_slot == 3:
-                        shop_config.green_power_up_level = shop_config.green_power_up_level + 1
-                        if shop_config.green_power_up_level == 5:
-                            max_level = 1
-                        else:
-                            price_displayed = POWER_UP_PRICES[shop_config.green_power_up_level - 1]
-                            max_level = 0
-                    elif current_slot == 4:
-                        shop_config.red_power_up_level = shop_config.red_power_up_level + 1
-                        if shop_config.red_power_up_level == 5:
-                            max_level = 1
-                        else:
-                            price_displayed = POWER_UP_PRICES[shop_config.red_power_up_level - 1]
-                            max_level = 0
-                    shop_config.save()
-                if screen.page != "Power_Ups" or max_level == 1:
-                    for bu in button.buttons_on_screen_list:
-                        if bu.get_type() == "Buy":
-                            bu.remove()
-                            button.buttons_on_screen_list.pop()
-                            button.current_button_index = button.current_button_index - 1
-                    for t in textbox.text_on_screen_list:
-                        if t.get_id() == current_slot + 3:
-                            t.remove()
-                            textbox.text_on_screen_list.remove(t)
-                            textbox.current_text_index = textbox.current_text_index - 1
-                    for pr in price_label.price_label_on_screen_list:
-                        if pr.get_id() == current_slot + 3:
-                            pr.remove()
-                refresh_variables.refresh_panel = 1
-                refresh_variables.refresh_text = 1
-                refresh_variables.refresh_button = 1
-                refresh_variables.refresh_indicator = 1
-                refresh_variables.move_slot_selector = 1
-                button.buy_button_pressed = 1
-
+shop = Shop(wn, screen, button, panel, textbox, price_label, settings, refresh_variables, shop_config, scale_factor_X, scale_factor_Y)
 
 """
     The next functions are for changing the game settings.
@@ -1007,7 +769,7 @@ def update_text():
                     elif bu.get_id() == 4:
                         bu.write_indicator(shop_config.red_power_up_level)
                 if bu.get_type() == "Buy":
-                    bu.write_buy(price_displayed)
+                    bu.write_buy(shop.price_displayed)
         if refresh_variables.refresh_button == 1:
             refresh_variables.refresh_button = 0
         if refresh_variables.refresh_panel == 1:
@@ -2727,18 +2489,18 @@ while True:
                 button_color, button_type, id = bu.click_button()
                 if bu.get_type() == "Shop_Slot":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_1_select)
+                        wn.onscreenclick(shop.slot_1_select)
                     elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_2_select)
+                        wn.onscreenclick(shop.slot_2_select)
                     elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_3_select)
+                        wn.onscreenclick(shop.slot_3_select)
                     elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_4_select)
+                        wn.onscreenclick(shop.slot_4_select)
                     elif id == 5 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_5_select)
+                        wn.onscreenclick(shop.slot_5_select)
                 elif bu.get_type() == "Buy":
                     if button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(execute_buy_button)
+                        wn.onscreenclick(shop.execute_buy_button)
         elif screen.page == "Alien_Mode":
             if button.current_button_index == 4:
                 for i in range(5):
@@ -2789,18 +2551,18 @@ while True:
                 button_color, button_type, id = bu.click_button()
                 if bu.get_type() == "Shop_Slot":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_1_select)
+                        wn.onscreenclick(shop.slot_1_select)
                     elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_2_select)
+                        wn.onscreenclick(shop.slot_2_select)
                     elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_3_select)
+                        wn.onscreenclick(shop.slot_3_select)
                     elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_4_select)
+                        wn.onscreenclick(shop.slot_4_select)
                     elif id == 5 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_5_select)
+                        wn.onscreenclick(shop.slot_5_select)
                 elif bu.get_type() == "Buy":
                     if button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(execute_buy_button)
+                        wn.onscreenclick(shop.execute_buy_button)
         elif screen.page == "Power_Ups":
             if button.current_button_index == 4:
                 for i in range(4):
@@ -2852,16 +2614,16 @@ while True:
                 button_color, button_type, id = bu.click_button()
                 if bu.get_type() == "Power_Up_Slot":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_1_select)
+                        wn.onscreenclick(shop.slot_1_select)
                     elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_2_select)
+                        wn.onscreenclick(shop.slot_2_select)
                     elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_3_select)
+                        wn.onscreenclick(shop.slot_3_select)
                     elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(slot_4_select)
+                        wn.onscreenclick(shop.slot_4_select)
                 elif bu.get_type() == "Buy":
                     if button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(execute_buy_button)
+                        wn.onscreenclick(shop.execute_buy_button)
 
         # Spawn the coin indicator
         if coin_indicator.coin_indicator_index == 0:
