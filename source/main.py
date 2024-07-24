@@ -58,7 +58,10 @@ from setup.SpriteSetup import ufo
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
+from utils.ScreenManager import ScreenUpdate
 from utils.HoverManager import Hover
+
+screen = ScreenUpdate(wn, button, settings, refresh_variables, scale_factor_X, scale_factor_Y)
 
 hover = Hover(mode, button)
 
