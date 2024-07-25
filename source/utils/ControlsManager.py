@@ -54,7 +54,7 @@ class Controls:
     def go_right_key_alert(self, value):
         if not isinstance(value, int):
             raise ValueError("Value must be an integer.")
-        if value != 0 or value != 1:
+        if value != 0 and value != 1:
             raise ValueError("Value must be 0 or 1.")
         self._go_right_key_alert = value
 
@@ -66,7 +66,7 @@ class Controls:
     def go_left_key_alert(self, value):
         if not isinstance(value, int):
             raise ValueError("Value must be an integer.")
-        if value != 0 or value != 1:
+        if value != 0 and value != 1:
             raise ValueError("Value must be 0 or 1.")
         self._go_left_key_alert = value
 
@@ -78,7 +78,7 @@ class Controls:
     def shoot_key_alert(self, value):
         if not isinstance(value, int):
             raise ValueError("Value must be an integer.")
-        if value != 0 or value != 1:
+        if value != 0 and value != 1:
             raise ValueError("Value must be 0 or 1.")
         self._shoot_key_alert = value
 
@@ -90,7 +90,7 @@ class Controls:
     def jump_key_alert(self, value):
         if not isinstance(value, int):
             raise ValueError("Value must be an integer.")
-        if value != 0 or value != 1:
+        if value != 0 and value != 1:
             raise ValueError("Value must be 0 or 1.")
         self._jump_key_alert = value
 

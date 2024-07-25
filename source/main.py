@@ -74,206 +74,6 @@ settings_toggle = SettingsToggle(wn, screen, button, settings, refresh_variables
 
 controls = Controls(wn, screen, settings, controls_toggle, refresh_variables, scale_factor_X, scale_factor_Y)
 
-
-def change_go_right_key(x, y):
-    """
-        Used to change the keybind for going right.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > 165 * scale_factor_Y) and (y < 226 * scale_factor_Y):
-        execute_control_setting(0)
-
-
-def change_go_left_key(x, y):
-    """
-        Used to change the keybind for going left.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > 85 * scale_factor_Y) and (y < 146 * scale_factor_Y):
-        execute_control_setting(1)
-
-
-def change_shoot_key(x, y):
-    """
-        Used to change the keybind for shooting the player laser.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > 5 * scale_factor_Y) and (y < 66 * scale_factor_Y):
-        execute_control_setting(2)
-
-
-def change_jump_key(x, y):
-    """
-        Used to change the keybind for jumping.
-
-        :param x: The current x-coordinate of the cursor
-        :type x: float
-
-        :param y: The current y-coordinate of the cursor
-        :type y: float
-
-        :return: None
-    """
-
-    wn.onscreenclick(None)
-    # Check to see if the cursor is in the bound of the button to be clicked
-    if (x > -612 * scale_factor_X) and (x < -40 * scale_factor_X) and (y > -75 * scale_factor_Y) and (y < -14 * scale_factor_Y):
-        execute_control_setting(3)
-
-
-def execute_control_setting(type):
-    """
-        Actaully executes the keybind change given by the "type" parameter.
-
-        :param type: The type of keybind change to be executed.
-        :type type: int
-
-        :return: None
-    """
-
-    global refresh_variables
-    global controls_toggle
-    global screen
-    key_1 = 0
-    # "type" parameter as a string
-    type_string = ""
-    # Go right key
-    if type == 0:
-        global go_right_key_alert
-        key_1 = controls_toggle.go_right_key
-        type_string = "Go Right"
-    # Go left key
-    elif type == 1:
-        global go_left_key_alert
-        key_1 = controls_toggle.go_left_key
-        type_string = "Go Left"
-    # Shoot key
-    elif type == 2:
-        global shoot_key_alert
-        key_1 = controls_toggle.shoot_key
-        type_string = "Shoot"
-    # Jump key
-    elif type == 3:
-        global jump_key_alert
-        key_1 = controls_toggle.jump_key
-        type_string = "Jump"
-    # Play the button click sound
-    if settings.button_sound == 1:
-        sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
-        sound.play()
-    # Backup the original keybind
-    key_backup = key_1
-    # Set "key_2" to whatever the user inputted into the textbox
-    key_2 = wn.textinput("{}".format(type_string), "Insert new key here:")
-    # If the user inputted a space, display "space"
-    if key_2 == " ":
-        key_2 = "space"
-    # Listen for new keybinds
-    wn.listen()
-    # If the new keybind exists and is different from the one before, the keybind setting need to be updated
-    if key_2 != None and key_2 != key_backup:
-        # If the new keybind input is invalid (enter key or multiple charecters)
-        if (len(key_2) > 1 and key_2 != "space") or key_2 == "":
-            # Let the user know through an error
-            ctypes.windll.user32.MessageBoxW(0, "That is an invalid input!", "Invalid Input!", 16)
-        # if it is valid
-        else:
-            # Update the keybind in the backup ini file.
-            controls_toggle.key_check[type] = key_2
-            controls_toggle.save_check()
-            key_1 = key_2
-            # Check for keybind conflicts for each keybind individually
-            if type == 0:
-                controls_toggle.go_right_key = key_1
-                if controls_toggle.go_right_key != controls_toggle.go_left_key and controls_toggle.go_right_key != controls_toggle.shoot_key and controls_toggle.go_right_key != controls_toggle.jump_key:
-                    go_right_key_alert = 0
-                else:
-                    go_right_key_alert = 1
-                key_alert = go_right_key_alert
-            elif type == 1:
-                controls_toggle.go_left_key = key_1
-                if controls_toggle.go_left_key != controls_toggle.go_right_key and controls_toggle.go_left_key != controls_toggle.shoot_key and controls_toggle.go_left_key != controls_toggle.jump_key:
-                    go_left_key_alert = 0
-                else:
-                    go_left_key_alert = 1
-                key_alert = go_left_key_alert
-            elif type == 2:
-                controls_toggle.shoot_key = key_1
-                if controls_toggle.shoot_key != controls_toggle.go_right_key and controls_toggle.shoot_key != controls_toggle.go_left_key and controls_toggle.shoot_key != controls_toggle.jump_key:
-                    shoot_key_alert = 0
-                else:
-                    shoot_key_alert = 1
-                key_alert = shoot_key_alert
-            else:
-                controls_toggle.jump_key = key_1
-                if controls_toggle.jump_key != controls_toggle.go_right_key and controls_toggle.jump_key != controls_toggle.go_left_key and controls_toggle.jump_key != controls_toggle.shoot_key:
-                    jump_key_alert = 0
-                else:
-                    jump_key_alert = 1
-                key_alert = jump_key_alert
-            # If there is a conflict
-            if key_alert == 1:
-                # Alert the user about the conflict
-                message_output = ctypes.windll.user32.MessageBoxW(0, "Your current configuration may cause conflicts with other controls!\nAre you sure you want to keep it?", "Conflict!", 4 + 48)
-                # If the user wants to go back
-                if message_output == 7:
-                    # Reinstate the old keybinds and update the backup keybind file
-                    key_1 = key_backup
-                    key_2 = key_backup
-                    controls_toggle.key_check[type] = key_2
-                    controls_toggle.save_check()
-                    if type == 0:
-                        controls_toggle.go_right_key = key_1
-                    elif type == 1:
-                        controls_toggle.go_left_key = key_1
-                    elif type == 2:
-                        controls_toggle.shoot_key = key_1
-                    else:
-                        controls_toggle.jump_key = key_1
-                # If the user wants to keep the controls
-                else:
-                    # Update the main config file to confirm the changes
-                    controls_toggle.save()
-                    # Alert that a restart is needed for changes to take effect
-                    screen.updated_controls = 1
-            else:
-                # If there are no conflicts, update the main config file like normal.
-                controls_toggle.save()
-                # Alert that a restart is needed for changes to take effect
-                screen.updated_controls = 1
-    refresh_variables.refresh_button = 1
-
-
 """
     The functions below are for updating the text on the screen.
 """
@@ -568,22 +368,22 @@ def update_text():
                 else:
                     bu.write_control(controls_toggle.go_right_key, controls_toggle.go_left_key, controls_toggle.shoot_key, controls_toggle.jump_key)
                     if bu.id == 1:
-                        if go_right_key_alert == 1:
+                        if controls.go_right_key_alert == 1:
                             bu.update_controls_text_color(bu.id)
                         else:
                             bu.update_controls_text_color(0)
                     elif bu.id == 2:
-                        if go_left_key_alert == 1:
+                        if controls.go_left_key_alert == 1:
                             bu.update_controls_text_color(bu.id)
                         else:
                             bu.update_controls_text_color(0)
                     elif bu.id == 3:
-                        if shoot_key_alert == 1:
+                        if controls.shoot_key_alert == 1:
                             bu.update_controls_text_color(bu.id)
                         else:
                             bu.update_controls_text_color(0)
                     elif bu.id == 4:
-                        if jump_key_alert == 1:
+                        if controls.jump_key_alert == 1:
                             bu.update_controls_text_color(bu.id)
                         else:
                             bu.update_controls_text_color(0)
@@ -720,7 +520,7 @@ while True:
         print(len(wn.turtles()))
 
     # The Alien Mode background objects are created right when the game is launched.
-    # This is done to make sure that they are truely in the background and that nothing lies behind these sprites.
+    # This is done to make sure that they are truly in the background and that nothing lies behind these sprites.
     # Since turtle does not allow a way to push a turtle in front of another turtle, this is the only way to do this.
     if len(background_objects.background_objects_turtle) == 0:
         background_objects.spawn_background_objects()
@@ -778,7 +578,7 @@ while True:
             for i in range(2):
                 button.spawn_button("Title_Small", i + 1)
 
-        # Spawn the title mode text (Like title and bversion number in the bottom corner)
+        # Spawn the title mode text (Like title and version number in the bottom corner)
         if textbox.current_text_index == 0:
             textbox.spawn_text_box(1, 0, 155 * scale_factor_Y, "red")
             textbox.spawn_text_box(2, 510 * scale_factor_X, -347 * scale_factor_Y, "white")
@@ -2365,13 +2165,13 @@ while True:
                     button.clickable = 0
             elif button_type == "Controls_Toggle":
                 if id == 1 and (button_color == "yellow" or button_color == "orange") and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(change_go_right_key)
+                    wn.onscreenclick(controls.change_go_right_key)
                 elif id == 2 and (button_color == "yellow" or button_color == "orange") and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(change_go_left_key)
+                    wn.onscreenclick(controls.change_go_left_key)
                 elif id == 3 and (button_color == "yellow" or button_color == "orange") and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(change_shoot_key)
+                    wn.onscreenclick(controls.change_shoot_key)
                 elif id == 4 and (button_color == "yellow" or button_color == "orange") and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(change_jump_key)
+                    wn.onscreenclick(controls.change_jump_key)
 
         # Create any additional text boxes
         if textbox.current_text_index == 0:
@@ -2389,21 +2189,21 @@ while True:
         # This checks if there are any conflicts with the current controls.
         # This is done here in case any new updates to the controls cause conflicts.
         if controls_toggle.go_right_key != controls_toggle.go_left_key and controls_toggle.go_right_key != controls_toggle.shoot_key and controls_toggle.go_right_key != controls_toggle.jump_key:
-            go_right_key_alert = 0
+            controls.go_right_key_alert = 0
         else:
-            go_right_key_alert = 1
+            controls.go_right_key_alert = 1
 
         if controls_toggle.go_left_key != controls_toggle.go_right_key and controls_toggle.go_left_key != controls_toggle.shoot_key and controls_toggle.go_left_key != controls_toggle.jump_key:
-            go_left_key_alert = 0
+            controls.go_left_key_alert = 0
         else:
-            go_left_key_alert = 1
+            controls.go_left_key_alert = 1
 
         if controls_toggle.shoot_key != controls_toggle.go_left_key and controls_toggle.shoot_key != controls_toggle.go_right_key and controls_toggle.shoot_key != controls_toggle.jump_key:
-            shoot_key_alert = 0
+            controls.shoot_key_alert = 0
         else:
-            shoot_key_alert = 1
+            controls.shoot_key_alert = 1
 
         if controls_toggle.jump_key != controls_toggle.go_left_key and controls_toggle.jump_key != controls_toggle.shoot_key and controls_toggle.jump_key != controls_toggle.go_right_key:
-            jump_key_alert = 0
+            controls.jump_key_alert = 0
         else:
-            jump_key_alert = 1
+            controls.jump_key_alert = 1

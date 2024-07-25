@@ -53,12 +53,6 @@ refresh_variables = Refresh()
 right_update = 0
 left_update = 0
 
-# Key Binding Conflicts
-go_right_key_alert = 0
-go_left_key_alert = 0
-shoot_key_alert = 0
-jump_key_alert = 0
-
 # Create Settings Object to store the settings variables
 settings = Settings()
 
