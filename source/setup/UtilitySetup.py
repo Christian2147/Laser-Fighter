@@ -46,8 +46,7 @@ screen = ScreenUpdate(wn, button, settings, refresh_variables,
                       scale_factor_X, scale_factor_Y)
 
 movement = Movement(screen, machine_player, human_player,
-                    small_alien, medium_alien, large_alien,
-                    ufo, settings, statistics,
+                    settings, statistics,
                     scale_factor_Y)
 
 hover = Hover(screen, button)

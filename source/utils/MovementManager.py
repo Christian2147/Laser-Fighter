@@ -13,18 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-from physics.AlienCollision import AlienCollision
+from physics.CollisionMaster import alien_collision
 
 
 class Movement:
-    def __init__(self, screen, machine_player, human_player, small_alien, medium_alien, large_alien, ufo, settings, statistics, scale_factor_y):
+    def __init__(self, screen, machine_player, human_player, settings, statistics, scale_factor_y):
         self._screen = screen
         self._machine_player = machine_player
         self._human_player = human_player
-        self._small_alien = small_alien
-        self._medium_alien = medium_alien
-        self._large_alien = large_alien
-        self._ufo = ufo
         self._settings = settings
         self._statistics = statistics
         self._scale_factor_y = scale_factor_y
@@ -33,10 +29,6 @@ class Movement:
         del self._screen
         del self._machine_player
         del self._human_player
-        del self._small_alien
-        del self._medium_alien
-        del self._large_alien
-        del self._ufo
         del self._settings
         del self._statistics
         del self._scale_factor_y
@@ -128,67 +120,8 @@ class Movement:
                 if h.shoot_update == 0 and h.death_animation == 0 and h.direction != 0:
                     # Fire the laser
                     h.shoot(self._settings.player_shooting_sound)
-                    # Change "got_hit" for the UFO back to 0 since this is a new laser being fired
-                    for sa in self._small_alien.small_aliens:
-                        sa.got_hit = 0
-                        if sa.get_small_alien().xcor() - AlienCollision.SMALL_ALIEN_X_DISTANCE >= (h.get_player().xcor() + AlienCollision.PLAYER_LASER_GAP) or \
-                                (sa.get_small_alien().xcor() - AlienCollision.SMALL_ALIEN_X_DISTANCE < (h.get_player().xcor() - AlienCollision.PLAYER_LASER_GAP) < sa.get_small_alien().xcor() + AlienCollision.SMALL_ALIEN_X_DISTANCE and h.direction == 2):
-                            sa.collision_point = -1
-                        else:
-                            sa.collision_point = 1
-                        if h.get_player().xcor() > sa.get_small_alien().xcor() + (AlienCollision.SMALL_ALIEN_X_DISTANCE * sa.collision_point):
-                            sa.already_ahead = 1
-                        else:
-                            sa.already_ahead = 0
-                        if h.get_player().xcor() < sa.get_small_alien().xcor() + (AlienCollision.SMALL_ALIEN_X_DISTANCE * sa.collision_point):
-                            sa.already_behind = 1
-                        else:
-                            sa.already_behind = 0
-                    for ma in self._medium_alien.medium_aliens:
-                        ma.got_hit = 0
-                        if ma.get_medium_alien().xcor() - AlienCollision.MEDIUM_ALIEN_X_DISTANCE >= (h.get_player().xcor() + AlienCollision.PLAYER_LASER_GAP) or \
-                                (ma.get_medium_alien().xcor() - AlienCollision.MEDIUM_ALIEN_X_DISTANCE < (h.get_player().xcor() - AlienCollision.PLAYER_LASER_GAP) < ma.get_medium_alien().xcor() + AlienCollision.MEDIUM_ALIEN_X_DISTANCE and h.direction == 2):
-                            ma.collision_point = -1
-                        else:
-                            ma.collision_point = 1
-                        if h.get_player().xcor() > ma.get_medium_alien().xcor() + (AlienCollision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point):
-                            ma.already_ahead = 1
-                        else:
-                            ma.already_ahead = 0
-                        if h.get_player().xcor() < ma.get_medium_alien().xcor() + (AlienCollision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point):
-                            ma.already_behind = 1
-                        else:
-                            ma.already_behind = 0
-                    for la in self._large_alien.large_aliens:
-                        la.got_hit = 0
-                        if la.get_large_alien().xcor() - AlienCollision.LARGE_ALIEN_X_DISTANCE >= (h.get_player().xcor() + AlienCollision.PLAYER_LASER_GAP) or \
-                                (la.get_large_alien().xcor() - AlienCollision.LARGE_ALIEN_X_DISTANCE < (h.get_player().xcor() - AlienCollision.PLAYER_LASER_GAP) < la.get_large_alien().xcor() + AlienCollision.LARGE_ALIEN_X_DISTANCE and h.direction == 2):
-                            la.collision_point = -1
-                        else:
-                            la.collision_point = 1
-                        if h.get_player().xcor() > la.get_large_alien().xcor() + (AlienCollision.LARGE_ALIEN_X_DISTANCE * la.collision_point):
-                            la.already_ahead = 1
-                        else:
-                            la.already_ahead = 0
-                        if h.get_player().xcor() < la.get_large_alien().xcor() + (AlienCollision.LARGE_ALIEN_X_DISTANCE * la.collision_point):
-                            la.already_behind = 1
-                        else:
-                            la.already_behind = 0
-                    for u in self._ufo.ufos:
-                        u.got_hit = 0
-                        if u.get_ufo().xcor() - AlienCollision.UFO_X_DISTANCE >= (h.get_player().xcor() + AlienCollision.PLAYER_LASER_GAP) or \
-                                (u.get_ufo().xcor() - AlienCollision.UFO_X_DISTANCE < (h.get_player().xcor() - AlienCollision.PLAYER_LASER_GAP) < u.get_ufo().xcor() + AlienCollision.UFO_X_DISTANCE and h.direction == 2):
-                            u.collision_point = -1
-                        else:
-                            u.collision_point = 1
-                        if h.get_player().xcor() > u.get_ufo().xcor() + (AlienCollision.UFO_X_DISTANCE * u.collision_point):
-                            u.already_ahead = 1
-                        else:
-                            u.already_ahead = 0
-                        if h.get_player().xcor() < u.get_ufo().xcor() + (AlienCollision.UFO_X_DISTANCE * u.collision_point):
-                            u.already_behind = 1
-                        else:
-                            u.already_behind = 0
+                    # Recalculate collision parameters based on new laser fired
+                    alien_collision.calculate_collision()
                     # Update the game statistics
                     if self._settings.god_mode == 0:
                         self._statistics.alien_lasers_fired = self._statistics.alien_lasers_fired + 1
