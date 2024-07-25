@@ -13,24 +13,3 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-
-class TextRefresh:
-    def __init__(self, screen, button, panel, textbox, settings, settings_manager, statistics, refresh):
-        self._screen = screen
-        self._button = button
-        self._panel = panel
-        self._textbox = textbox
-        self._settings = settings
-        self._settings_manager = settings_manager
-        self._statistics = statistics
-        self._refresh = refresh
-
-    def __del__(self):
-        del self._screen
-        del self._button
-        del self._panel
-        del self._textbox
-        del self._settings
-        del self._settings_manager
-        del self._statistics
-        del self._refresh

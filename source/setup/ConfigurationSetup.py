@@ -53,9 +53,6 @@ refresh_variables = Refresh()
 right_update = 0
 left_update = 0
 
-# Restart Variables (Having these set to 1 means the game needs to restart to update controls
-fullscreen_toggled = 0
-
 # Key Binding Conflicts
 go_right_key_alert = 0
 go_left_key_alert = 0
