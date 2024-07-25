@@ -54,6 +54,7 @@ from setup.SpriteSetup import small_alien
 from setup.SpriteSetup import medium_alien
 from setup.SpriteSetup import large_alien
 from setup.SpriteSetup import ufo
+from physics.AlienCollision import AlienCollision
 from setup.UtilitySetup import screen
 from setup.UtilitySetup import shop
 from setup.UtilitySetup import settings_toggle
@@ -1157,8 +1158,8 @@ def main():
                 current_small_alien_update_value_index = 0
                 for sa in small_alien.small_aliens:
                     # If the player laser hits a small alien that is visible and not dying
-                    if (sa.get_small_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(sa.get_small_alien()) < 53 * scale_factor and (
-                            (sa.get_small_alien().xcor() - 26 * scale_factor_X < h.get_laser().xcor() < sa.get_small_alien().xcor() + 26 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and
+                    if (sa.get_small_alien().isvisible() and h.get_laser().isvisible() and sa.got_hit == 0 and (AlienCollision.SMALL_ALIEN_Y_RANGE[0] < h.get_laser().ycor() < AlienCollision.SMALL_ALIEN_Y_RANGE[1]) and (
+                            (h.get_laser().xcor() > sa.get_small_alien().xcor() + AlienCollision.SMALL_ALIEN_X_DISTANCE * sa.collision_point and h.direction == 1 and sa.already_ahead == 0) or (h.get_laser().xcor() < sa.get_small_alien().xcor() + AlienCollision.SMALL_ALIEN_X_DISTANCE * sa.collision_point and h.direction == 2 and sa.already_behind == 0)) and
                             small_alien.small_aliens_kill_values[current_small_alien_update_value_index] == 0) or small_alien.small_aliens_kill_values[current_small_alien_update_value_index] != 0:
                         # Kill the alien
                         sa.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)

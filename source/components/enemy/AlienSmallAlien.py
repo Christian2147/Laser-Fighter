@@ -97,7 +97,10 @@ class SmallAlien:
         self.walk_start_time = 0
         self.move_start_time = time.time()
         self.movement_activated = 0
+        self.got_hit = 0
         self.collision_point = 0
+        self.already_ahead = 0
+        self.already_behind = 0
         self.id = id
 
         self.scale_factor_x = scale_factor_x
@@ -173,7 +176,10 @@ class SmallAlien:
         self.walk_start_time = 0
         self.move_start_time = 0
         self.movement_activated = 0
+        self.got_hit = 0
         self.collision_point = 0
+        self.already_ahead = 0
+        self.already_behind = 0
 
     def set_alien_direction(self, player_x):
         """
@@ -309,6 +315,9 @@ class SmallAlien:
                 sound.play()
             # Set the texture of the small alien to the first frame in the death scene
             self.small_alien.shape(ALIEN_DEATH_1_TEXTURE)
+            self.got_hit = 1
+            self.already_ahead = 0
+            self.already_behind = 0
             self.death_animation = 1
             self.kill_start_time = time.time()
             return

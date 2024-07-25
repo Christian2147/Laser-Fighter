@@ -27,3 +27,5 @@ class AlienCollision:
     MEDIUM_ALIEN_X_DISTANCE = 36 * scale_factor_X
     LARGE_ALIEN_X_DISTANCE = 50 * scale_factor_X
     UFO_X_DISTANCE = 53 * scale_factor_X
+
+    PLAYER_LASER_GAP = 30 * scale_factor_X
