@@ -97,6 +97,8 @@ class SmallAlien:
         self.walk_start_time = 0
         self.move_start_time = time.time()
         self.movement_activated = 0
+        self.collision_point = 0
+        self.id = id
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -134,6 +136,7 @@ class SmallAlien:
         self.small_alien.direction = "stop"
         self.small_alien.showturtle()
         self.move_start_time = time.time()
+        self.id = id
 
     def get_small_alien(self):
         """
@@ -170,6 +173,7 @@ class SmallAlien:
         self.walk_start_time = 0
         self.move_start_time = 0
         self.movement_activated = 0
+        self.collision_point = 0
 
     def set_alien_direction(self, player_x):
         """

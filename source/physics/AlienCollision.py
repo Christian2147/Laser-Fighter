@@ -22,3 +22,8 @@ class AlienCollision:
     MEDIUM_ALIEN_Y_RANGE = (-196 * scale_factor_Y, -52 * scale_factor_Y)
     LARGE_ALIEN_Y_RANGE = (-197 * scale_factor_Y, 27 * scale_factor_Y)
     UFO_Y_RANGE = (-92 * scale_factor_Y, 52 * scale_factor_Y)
+
+    SMALL_ALIEN_X_DISTANCE = 26 * scale_factor_X
+    MEDIUM_ALIEN_X_DISTANCE = 36 * scale_factor_X
+    LARGE_ALIEN_X_DISTANCE = 50 * scale_factor_X
+    UFO_X_DISTANCE = 53 * scale_factor_X

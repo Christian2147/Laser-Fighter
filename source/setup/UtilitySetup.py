@@ -23,6 +23,9 @@ from setup.SpriteSetup import blue_power_up_indicator
 from setup.SpriteSetup import extra_power_up_indicator
 from setup.SpriteSetup import machine_player
 from setup.SpriteSetup import human_player
+from setup.SpriteSetup import small_alien
+from setup.SpriteSetup import medium_alien
+from setup.SpriteSetup import large_alien
 from setup.SpriteSetup import ufo
 from setup.ConfigurationSetup import shop_config
 from setup.ConfigurationSetup import settings
@@ -43,6 +46,7 @@ screen = ScreenUpdate(wn, button, settings, refresh_variables,
                       scale_factor_X, scale_factor_Y)
 
 movement = Movement(screen, machine_player, human_player,
+                    small_alien, medium_alien, large_alien,
                     ufo, settings, statistics,
                     scale_factor_Y)
 

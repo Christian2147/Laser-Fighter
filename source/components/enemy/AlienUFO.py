@@ -120,6 +120,7 @@ class UFO:
         self.laser_start_time = 0
         self.move_start_time = time.time()
         self.movement_activated = 0
+        self.collision_point = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -252,6 +253,7 @@ class UFO:
         self.laser_start_time = 0
         self.move_start_time = 0
         self.movement_activated = 0
+        self.collision_point = 0
 
     def shoot_laser(self, shooting_sound):
         """
