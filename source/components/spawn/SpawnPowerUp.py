@@ -24,6 +24,8 @@ class SpawnPowerUp:
         self.all_power_ups = []
         self.current_power_ups = []
         self.power_up_index = [0, 0, 0, 0]
+        self.power_up_update = 0
+        self.power_up_time = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -32,6 +34,8 @@ class SpawnPowerUp:
         del self.all_power_ups
         del self.current_power_ups
         del self.power_up_index
+        del self.power_up_update
+        del self.power_up_time
 
     def spawn_power_up(self, type, mode, power_up_spawn_sound):
         """

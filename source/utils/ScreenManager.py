@@ -30,6 +30,7 @@ class ScreenUpdate:
         self._page = "Machine_Mode"
         self._screen_update = 0
         self._page_update = 0
+        self._tick_update = 0
         self._updated_controls = 0
         self._quit_loop = 0
 
@@ -89,6 +90,17 @@ class ScreenUpdate:
             self._page_update = value
         else:
             raise ValueError("Mode must be a integer")
+
+    @property
+    def tick_update(self):
+        return self._tick_update
+
+    @tick_update.setter
+    def tick_update(self, value):
+        if isinstance(value, int):
+            self._tick_update = value
+        else:
+            raise ValueError("Value must be an integer.")
 
     @property
     def updated_controls(self):

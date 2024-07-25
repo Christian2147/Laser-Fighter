@@ -30,25 +30,8 @@ from utils.UpdateControls import ControlsConfig
 from utils.UpdateStatsData import Stats
 from utils.UpdateShopData import ShopConfig
 
-# Laser piercing in alien mode (Can only pierce through 2 enemies by default)
-laser_update = 0
-
-# Variables to spawn power-ups
-# power_up_update - random variable which determines if a power up spawns
-# power_up_time - used to ensure that the random variable is
-#   only being updated a specific number of times over an interval of time
-power_up_update = 0
-power_up_time = 0
-
-# Refreshing when VSync is off
-tick_update = 0
-
 # Initialize the update variables
 refresh_variables = Refresh()
-
-# Walking Animation in Alien Mode
-right_update = 0
-left_update = 0
 
 # Create Settings Object to store the settings variables
 settings = Settings()

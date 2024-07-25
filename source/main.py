@@ -138,16 +138,16 @@ while True:
         if screen.mode == "Title_Mode":
             text_refresh.update_text()
         elif screen.mode == "Machine_Mode" or screen.mode == "Alien_Mode":
-            if tick_update % 15 == 0:
+            if screen.tick_update % 15 == 0:
                 text_refresh.update_text()
         elif screen.mode == "Stats":
-            if tick_update % 4 == 0:
+            if screen.tick_update % 4 == 0:
                 text_refresh.update_text()
         elif screen.mode == "Settings" or screen.mode == "Shop":
-            if tick_update % 3 == 0:
+            if screen.tick_update % 3 == 0:
                 text_refresh.update_text()
         elif screen.mode == "Controls":
-            if tick_update % 5 == 0:
+            if screen.tick_update % 5 == 0:
                 text_refresh.update_text()
         wn.update()
 
@@ -165,7 +165,7 @@ while True:
 
     # Every 0.4 seconds, there is a 1/67 chance of a power up spawning (1/200 per a power up type)
     current_power_up_time = time.time()
-    elapsed_power_up_time = current_power_up_time - power_up_time
+    elapsed_power_up_time = current_power_up_time - power_up.power_up_time
     if elapsed_power_up_time >= 0.4:
         # See if more than 1 whole 0.4 seconds has passed (Just in case there is EXTREME lag)
         # If it has, run the random chance the number of 0.4 that have passed
@@ -174,11 +174,11 @@ while True:
         iterations = 1 + delta_movement
         for i in range(iterations):
             # Random number between 1 and 200 to create the 1/200 random chance for each power up
-            power_up_update = random.randint(-50, 150)
-            power_up_time = time.time()
+            power_up.power_up_update = random.randint(-50, 150)
+            power_up.power_up_time = time.time()
 
     # Used when VSync is off
-    tick_update = tick_update + 1
+    screen.tick_update = screen.tick_update + 1
 
     # Screen update is 1 when the screen has been changed
     if screen.screen_update == 1:
@@ -775,7 +775,7 @@ while True:
 
         # If the RNG hits the 1/200, then spawn the power ups
         # 1 for yellow power up
-        if power_up_update == 1 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
+        if power_up.power_up_update == 1 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[0] == 0:
                 power_up.spawn_power_up(1, screen.mode, settings.power_up_spawn_sound)
             else:
@@ -784,7 +784,7 @@ while True:
                         pu.spawn(settings.power_up_spawn_sound)
 
         # 50 for blue power up
-        if power_up_update == 50 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
+        if power_up.power_up_update == 50 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[1] == 0:
                 power_up.spawn_power_up(2, screen.mode, settings.power_up_spawn_sound)
             else:
@@ -793,7 +793,7 @@ while True:
                         pu.spawn(settings.power_up_spawn_sound)
 
         # 100 for the extra power up
-        if power_up_update == 100 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+        if power_up.power_up_update == 100 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[2] == 0:
                 power_up.spawn_power_up(3, screen.mode, settings.power_up_spawn_sound)
             else:
@@ -970,7 +970,7 @@ while True:
 
         # If the RNG hits the 1/200, then spawn the power ups
         # 1 for yellow power up
-        if power_up_update == 1 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
+        if power_up.power_up_update == 1 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[0] == 0:
                 power_up.spawn_power_up(1, screen.mode, settings.power_up_spawn_sound)
             else:
@@ -979,7 +979,7 @@ while True:
                         pu.spawn(settings.power_up_spawn_sound)
 
         # 50 for blue power up
-        if power_up_update == 50 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
+        if power_up.power_up_update == 50 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[1] == 0:
                 power_up.spawn_power_up(2, screen.mode, settings.power_up_spawn_sound)
             else:
@@ -988,7 +988,7 @@ while True:
                         pu.spawn(settings.power_up_spawn_sound)
 
         # 100 for the extra power up
-        if power_up_update == 100 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+        if power_up.power_up_update == 100 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
             if power_up.power_up_index[3] == 0:
                 power_up.spawn_power_up(4, screen.mode, settings.power_up_spawn_sound)
             else:
@@ -1101,16 +1101,16 @@ while True:
             h.execute_right_movement()
 
         # Update the time variable used to create the walking right animation
-        right_update = time.perf_counter()
-        right_update = round(right_update, 1)
+        human_player.right_update = time.perf_counter()
+        human_player.right_update = round(human_player.right_update, 1)
 
         # Check if a left movement of the player needs to be executed
         for h in human_player.current_human:
             h.execute_left_movement()
 
         # Update the time variable used to create the walking left animation
-        left_update = time.perf_counter()
-        left_update = round(left_update, 1)
+        human_player.left_update = time.perf_counter()
+        human_player.left_update = round(human_player.left_update, 1)
 
         # Check if a player jump needs to be executed
         for h in human_player.current_human:
@@ -1118,11 +1118,11 @@ while True:
 
         # Check if the players laser needs to be shot
         for h in human_player.current_human:
-            laser_update = h.execute_shoot(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active(), laser_update)
+            human_player.laser_update = h.execute_shoot(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active(), human_player.laser_update)
 
         # Execute the walking animation for the player
         for h in human_player.current_human:
-            h.set_player_texture(right_update, left_update)
+            h.set_player_texture(human_player.right_update, human_player.left_update)
             h.set_gun_texture()
 
         # Update the directions that each of the aliens are facing
@@ -1159,15 +1159,15 @@ while True:
         # Update the aliens texture based on their direction and the walking animation
         for sa in small_alien.small_aliens:
             if sa.get_small_alien().isvisible():
-                sa.set_alien_texture(right_update, left_update)
+                sa.set_alien_texture(human_player.right_update, human_player.left_update)
 
         for ma in medium_alien.medium_aliens:
             if ma.get_medium_alien().isvisible():
-                ma.set_alien_texture(right_update, left_update)
+                ma.set_alien_texture(human_player.right_update, human_player.left_update)
 
         for la in large_alien.large_aliens:
             if la.get_large_alien().isvisible():
-                la.set_alien_texture(right_update, left_update)
+                la.set_alien_texture(human_player.right_update, human_player.left_update)
 
         # Detects if the players has picked up a coin
         hit_coin = 0
@@ -1226,7 +1226,7 @@ while True:
                         # Confirm that the players laser has attacked and count it as an enemy pierced
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                            laser_update = laser_update + 1
+                            human_player.laser_update = human_player.laser_update + 1
                 current_small_alien_update_value_index = current_small_alien_update_value_index + 1
 
             current_medium_alien_update_value_index = 0
@@ -1251,7 +1251,7 @@ while True:
                             statistics.save()
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                            laser_update = laser_update + 1
+                            human_player.laser_update = human_player.laser_update + 1
                 current_medium_alien_update_value_index = current_medium_alien_update_value_index + 1
 
                 # If the player laser hits a medium alien that is visible and not dying and has health > 1
@@ -1273,7 +1273,7 @@ while True:
                         # Confirm that the players laser has attacked and count it as an enemy pierced
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                            laser_update = laser_update + 1
+                            human_player.laser_update = human_player.laser_update + 1
                 current_medium_alien_hit_value_index = current_medium_alien_hit_value_index + 1
 
             current_large_alien_update_value_index = 0
@@ -1297,7 +1297,7 @@ while True:
                             statistics.save()
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                            laser_update = laser_update + 1
+                            human_player.laser_update = human_player.laser_update + 1
                 current_large_alien_update_value_index = current_large_alien_update_value_index + 1
 
                 # If the player laser hits a medium alien that is visible and not dying and has health > 1
@@ -1316,7 +1316,7 @@ while True:
                             statistics.score = statistics.score + 1
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                            laser_update = laser_update + 1
+                            human_player.laser_update = human_player.laser_update + 1
                 current_large_alien_hit_value_index = current_large_alien_hit_value_index + 1
 
             for u in ufo.ufos:
@@ -1338,7 +1338,7 @@ while True:
                             statistics.save()
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                            laser_update = laser_update + 1
+                            human_player.laser_update = human_player.laser_update + 1
 
                 # If the player laser hits the UFO that is visible and not dying and has health > 1
                 if ufo.ufo_hit_value != 0 or (u.get_ufo().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(u.get_ufo()) < 72 * scale_factor and
@@ -1366,7 +1366,7 @@ while True:
                                 statistics.score = statistics.score + 1
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                            laser_update = laser_update + 1
+                            human_player.laser_update = human_player.laser_update + 1
 
         # Player Killer
         for h in human_player.current_human:
@@ -1484,7 +1484,7 @@ while True:
         human_player.current_human_index = 0
         human_player.human_update_value = 0
         human_player.human_hit_value = 0
-        laser_update = 0
+        human_player.laser_update = 0
         for sa in small_alien.small_aliens:
             sa.remove()
         small_alien.small_aliens.clear()
