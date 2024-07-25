@@ -13,3 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+from setup.ScreenSetup import scale_factor_X
+from setup.ScreenSetup import scale_factor_Y
+
+
+class AlienCollision:
+    SMALL_ALIEN_Y_RANGE = (-193 * scale_factor_Y, -88 * scale_factor_Y)
+    MEDIUM_ALIEN_Y_RANGE = (-196 * scale_factor_Y, -52 * scale_factor_Y)
+    LARGE_ALIEN_Y_RANGE = (-197 * scale_factor_Y, 27 * scale_factor_Y)
+    UFO_Y_RANGE = (-92 * scale_factor_Y, 52 * scale_factor_Y)

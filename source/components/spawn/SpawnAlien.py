@@ -103,7 +103,7 @@ class SpawnMediumAlien:
                 if ma.get_medium_alien().isvisible():
                     continue
                 else:
-                    ma.reinstate(id, self.scale_factor_x, self.scale_factor_y)
+                    ma.reinstate(id)
                     self.medium_aliens.append(ma)
                     self.medium_alien_index = self.medium_alien_index + 1
                     self.medium_aliens_kill_values.append(0)
