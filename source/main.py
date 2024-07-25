@@ -1188,8 +1188,8 @@ def main():
                 current_medium_alien_hit_value_index = 0
                 for ma in medium_alien.medium_aliens:
                     # If the player laser hits a medium alien that is visible and not dying and has 1 health
-                    if (ma.get_medium_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(ma.get_medium_alien()) < 72 * scale_factor and (
-                            (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.health == 1 and ma.hit_delay == 0 and
+                    if (ma.get_medium_alien().isvisible() and h.get_laser().isvisible() and ma.got_hit == 0 and (AlienCollision.MEDIUM_ALIEN_Y_RANGE[0] < h.get_laser().ycor() < AlienCollision.MEDIUM_ALIEN_Y_RANGE[1]) and (
+                            (h.get_laser().xcor() > ma.get_medium_alien().xcor() + AlienCollision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.direction == 1 and ma.already_ahead == 0) or (h.get_laser().xcor() < ma.get_medium_alien().xcor() + AlienCollision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.direction == 2 and ma.already_behind == 0)) and ma.health == 1 and ma.hit_delay == 0 and
                             medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] == 0) or medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] != 0:
                         # Same procedure as before
                         ma.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
@@ -1210,8 +1210,8 @@ def main():
                     current_medium_alien_update_value_index = current_medium_alien_update_value_index + 1
 
                     # If the player laser hits a medium alien that is visible and not dying and has health > 1
-                    if (ma.get_medium_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(ma.get_medium_alien()) < 72 * scale_factor and (
-                            (ma.get_medium_alien().xcor() - 36 * scale_factor_X < h.get_laser().xcor() < ma.get_medium_alien().xcor() + 36 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and ma.get_medium_alien_health() == 2 and
+                    if (ma.get_medium_alien().isvisible() and h.get_laser().isvisible() and ma.got_hit == 0 and (AlienCollision.MEDIUM_ALIEN_Y_RANGE[0] < h.get_laser().ycor() < AlienCollision.MEDIUM_ALIEN_Y_RANGE[1]) and (
+                            (h.get_laser().xcor() > ma.get_medium_alien().xcor() + AlienCollision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.direction == 1 and ma.already_ahead == 0) or (h.get_laser().xcor() < ma.get_medium_alien().xcor() + AlienCollision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.direction == 2 and ma.already_behind == 0)) and ma.get_medium_alien_health() == 2 and
                             medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] == 0) or medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] != 0:
                         # Deal one damage to the medium alien
                         ma.hit_alien(settings.enemy_hit_sound)
@@ -1235,8 +1235,8 @@ def main():
                 current_large_alien_hit_value_index = 0
                 for la in large_alien.large_aliens:
                     # If the player laser hits a large alien that is visible and not dying and has 1 health
-                    if (la.get_large_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(la.get_large_alien()) < 112 * scale_factor and (
-                            (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and la.health == 1 and la.hit_delay == 0 and
+                    if (la.get_large_alien().isvisible() and h.get_laser().isvisible() and la.got_hit == 0 and (AlienCollision.LARGE_ALIEN_Y_RANGE[0] < h.get_laser().ycor() < AlienCollision.LARGE_ALIEN_Y_RANGE[1]) and (
+                            (h.get_laser().xcor() > la.get_large_alien().xcor() + AlienCollision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.direction == 1 and la.already_ahead == 0) or (h.get_laser().xcor() < la.get_large_alien().xcor() + AlienCollision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.direction == 2 and la.already_behind == 0)) and la.health == 1 and la.hit_delay == 0 and
                             large_alien.large_aliens_kill_values[current_large_alien_update_value_index] == 0) or large_alien.large_aliens_kill_values[current_large_alien_update_value_index] != 0:
                         la.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = large_alien.large_aliens_kill_values[current_large_alien_update_value_index] + 1
@@ -1256,8 +1256,8 @@ def main():
                     current_large_alien_update_value_index = current_large_alien_update_value_index + 1
 
                     # If the player laser hits a medium alien that is visible and not dying and has health > 1
-                    if (la.get_large_alien().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(la.get_large_alien()) < 112 * scale_factor and (
-                            (la.get_large_alien().xcor() - 50 * scale_factor_X < h.get_laser().xcor() < la.get_large_alien().xcor() + 50 * scale_factor_X) or yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 1) and (la.get_large_alien_health() == 2 or la.get_large_alien_health() == 3) and
+                    if (la.get_large_alien().isvisible() and h.get_laser().isvisible() and la.got_hit == 0 and (AlienCollision.LARGE_ALIEN_Y_RANGE[0] < h.get_laser().ycor() < AlienCollision.LARGE_ALIEN_Y_RANGE[1]) and (
+                            (h.get_laser().xcor() > la.get_large_alien().xcor() + AlienCollision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.direction == 1 and la.already_ahead == 0) or (h.get_laser().xcor() < la.get_large_alien().xcor() + AlienCollision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.direction == 2 and la.already_behind == 0)) and (la.get_large_alien_health() == 2 or la.get_large_alien_health() == 3) and
                             large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] == 0) or large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] != 0:
                         # Same procedure as before
                         la.hit_alien(settings.enemy_hit_sound)
@@ -1275,9 +1275,10 @@ def main():
                     current_large_alien_hit_value_index = current_large_alien_hit_value_index + 1
 
                 for u in ufo.ufos:
+                    print(u.get_ufo().ycor())
                     # If the player laser hits the UFO that is visible and not dying and has 1 health
-                    if ufo.ufo_kill_value != 0 or (u.get_ufo().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(u.get_ufo()) < 72 * scale_factor and
-                            (u.get_ufo().xcor() - 53 * scale_factor_X < h.get_laser().xcor() < u.get_ufo().xcor() + 53 * scale_factor_X) and
+                    if ufo.ufo_kill_value != 0 or (u.get_ufo().isvisible() and h.get_laser().isvisible() and u.got_hit == 0 and (AlienCollision.UFO_Y_RANGE[0] < h.get_laser().ycor() < AlienCollision.UFO_Y_RANGE[1]) and
+                            ((h.get_laser().xcor() > u.get_ufo().xcor() + AlienCollision.UFO_X_DISTANCE * u.collision_point and h.direction == 1 and u.already_ahead == 0) or (h.get_laser().xcor() < u.get_ufo().xcor() + AlienCollision.UFO_X_DISTANCE * u.collision_point and h.direction == 2 and u.already_behind == 0)) and
                             u.get_ufo_health() == 1 and u.hit_delay == 0 and ufo.ufo_kill_value == 0):
                         u.kill_ufo(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         ufo.ufo_kill_value = ufo.ufo_kill_value + 1
@@ -1296,8 +1297,8 @@ def main():
                                 human_player.laser_update = human_player.laser_update + 1
 
                     # If the player laser hits the UFO that is visible and not dying and has health > 1
-                    if ufo.ufo_hit_value != 0 or (u.get_ufo().isvisible() and h.get_laser().isvisible() and h.get_laser().distance(u.get_ufo()) < 72 * scale_factor and
-                            (u.get_ufo().xcor() - 53 * scale_factor_X < h.get_laser().xcor() < u.get_ufo().xcor() + 53 * scale_factor_X) and
+                    if ufo.ufo_hit_value != 0 or (u.get_ufo().isvisible() and h.get_laser().isvisible() and u.got_hit == 0 and (AlienCollision.UFO_Y_RANGE[0] < h.get_laser().ycor() < AlienCollision.UFO_Y_RANGE[1]) and
+                            ((h.get_laser().xcor() > u.get_ufo().xcor() + AlienCollision.UFO_X_DISTANCE * u.collision_point and h.direction == 1 and u.already_ahead == 0) or (h.get_laser().xcor() < u.get_ufo().xcor() + AlienCollision.UFO_X_DISTANCE * u.collision_point and h.direction == 2 and u.already_behind == 0)) and
                             u.get_ufo_health() != 1 and u.get_ufo_health() != 0 and ufo.ufo_hit_value == 0):
                         u.hit_ufo(settings.enemy_hit_sound)
                         ufo.ufo_hit_value = ufo.ufo_hit_value + 1

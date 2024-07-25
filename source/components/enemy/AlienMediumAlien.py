@@ -115,7 +115,10 @@ class MediumAlien:
         self.walk_start_time = 0
         self.move_start_time = time.time()
         self.movement_activated = 0
+        self.got_hit = 0
         self.collision_point = 0
+        self.already_ahead = 0
+        self.already_behind = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -229,7 +232,10 @@ class MediumAlien:
         self.walk_start_time = 0
         self.move_start_time = 0
         self.movement_activated = 0
+        self.got_hit = 0
         self.collision_point = 0
+        self.already_ahead = 0
+        self.already_behind = 0
 
     def set_alien_direction(self, player_x):
         """
@@ -373,6 +379,9 @@ class MediumAlien:
                 sound.play()
             # Set the texture of the medium alien to the first frame in the death scene
             self.medium_alien.shape(ALIEN_DEATH_1_TEXTURE)
+            self.got_hit = 1
+            self.already_ahead = 0
+            self.already_behind = 0
             self.death_animation = 1
             self.kill_start_time = time.time()
             return
@@ -410,6 +419,9 @@ class MediumAlien:
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Alien_Hit_Sound.wav")
                 sound.play()
+            self.got_hit = 1
+            self.already_ahead = 0
+            self.already_behind = 0
             self.health = 1
             self.hit_delay = 1
             self.hit_start_time = time.time()

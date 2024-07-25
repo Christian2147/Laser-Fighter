@@ -144,26 +144,51 @@ class Movement:
                             sa.already_behind = 1
                         else:
                             sa.already_behind = 0
-                        #print(str(sa.id) + ":" + str(sa.collision_point) + "dude " + str(sa.already_ahead))
                     for ma in self._medium_alien.medium_aliens:
+                        ma.got_hit = 0
                         if ma.get_medium_alien().xcor() - AlienCollision.MEDIUM_ALIEN_X_DISTANCE >= (h.get_player().xcor() + AlienCollision.PLAYER_LASER_GAP) or \
                                 (ma.get_medium_alien().xcor() - AlienCollision.MEDIUM_ALIEN_X_DISTANCE < (h.get_player().xcor() - AlienCollision.PLAYER_LASER_GAP) < ma.get_medium_alien().xcor() + AlienCollision.MEDIUM_ALIEN_X_DISTANCE and h.direction == 2):
                             ma.collision_point = -1
                         else:
                             ma.collision_point = 1
+                        if h.get_player().xcor() > ma.get_medium_alien().xcor() + (AlienCollision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point):
+                            ma.already_ahead = 1
+                        else:
+                            ma.already_ahead = 0
+                        if h.get_player().xcor() < ma.get_medium_alien().xcor() + (AlienCollision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point):
+                            ma.already_behind = 1
+                        else:
+                            ma.already_behind = 0
                     for la in self._large_alien.large_aliens:
+                        la.got_hit = 0
                         if la.get_large_alien().xcor() - AlienCollision.LARGE_ALIEN_X_DISTANCE >= (h.get_player().xcor() + AlienCollision.PLAYER_LASER_GAP) or \
                                 (la.get_large_alien().xcor() - AlienCollision.LARGE_ALIEN_X_DISTANCE < (h.get_player().xcor() - AlienCollision.PLAYER_LASER_GAP) < la.get_large_alien().xcor() + AlienCollision.LARGE_ALIEN_X_DISTANCE and h.direction == 2):
                             la.collision_point = -1
                         else:
                             la.collision_point = 1
+                        if h.get_player().xcor() > la.get_large_alien().xcor() + (AlienCollision.LARGE_ALIEN_X_DISTANCE * la.collision_point):
+                            la.already_ahead = 1
+                        else:
+                            la.already_ahead = 0
+                        if h.get_player().xcor() < la.get_large_alien().xcor() + (AlienCollision.LARGE_ALIEN_X_DISTANCE * la.collision_point):
+                            la.already_behind = 1
+                        else:
+                            la.already_behind = 0
                     for u in self._ufo.ufos:
-                        u.set_got_hit(0)
+                        u.got_hit = 0
                         if u.get_ufo().xcor() - AlienCollision.UFO_X_DISTANCE >= (h.get_player().xcor() + AlienCollision.PLAYER_LASER_GAP) or \
                                 (u.get_ufo().xcor() - AlienCollision.UFO_X_DISTANCE < (h.get_player().xcor() - AlienCollision.PLAYER_LASER_GAP) < u.get_ufo().xcor() + AlienCollision.UFO_X_DISTANCE and h.direction == 2):
                             u.collision_point = -1
                         else:
                             u.collision_point = 1
+                        if h.get_player().xcor() > u.get_ufo().xcor() + (AlienCollision.UFO_X_DISTANCE * u.collision_point):
+                            u.already_ahead = 1
+                        else:
+                            u.already_ahead = 0
+                        if h.get_player().xcor() < u.get_ufo().xcor() + (AlienCollision.UFO_X_DISTANCE * u.collision_point):
+                            u.already_behind = 1
+                        else:
+                            u.already_behind = 0
                     # Update the game statistics
                     if self._settings.god_mode == 0:
                         self._statistics.alien_lasers_fired = self._statistics.alien_lasers_fired + 1

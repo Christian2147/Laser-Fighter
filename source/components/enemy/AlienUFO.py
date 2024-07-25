@@ -114,13 +114,15 @@ class UFO:
         self.direction = 0
         self.hit_delay = 0
         self.health = 10
-        self.got_hit = 0
         self.kill_start_time = 0
         self.hit_start_time = 0
         self.laser_start_time = 0
         self.move_start_time = time.time()
         self.movement_activated = 0
+        self.got_hit = 0
         self.collision_point = 0
+        self.already_ahead = 0
+        self.already_behind = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -247,13 +249,15 @@ class UFO:
         self.direction = 0
         self.hit_delay = 0
         self.health = 10
-        self.got_hit = 0
         self.kill_start_time = 0
         self.hit_start_time = 0
         self.laser_start_time = 0
         self.move_start_time = 0
         self.movement_activated = 0
+        self.got_hit = 0
         self.collision_point = 0
+        self.already_ahead = 0
+        self.already_behind = 0
 
     def shoot_laser(self, shooting_sound):
         """
@@ -396,9 +400,8 @@ class UFO:
                 self.kill_start_time = 0
             return
 
-        if self.death_animation == 0 and self.got_hit == 0:
+        if self.death_animation == 0:
             # UFO was hit by the players laser
-            self.got_hit = 1
             # Increase the death count
             self.death_count = self.death_count + 1
             self.health = 0
@@ -409,6 +412,9 @@ class UFO:
                 sound.play()
             # Set the texture of the large alien to the first frame in the death scene
             self.ufo.shape(EXPLOSION_1_TEXTURE)
+            self.got_hit = 1
+            self.already_ahead = 0
+            self.already_behind = 0
             self.death_animation = 1
             self.kill_start_time = time.time()
             return
@@ -439,9 +445,7 @@ class UFO:
                 self.hit_start_time = 0
             return
 
-        if self.death_animation == 0 and self.got_hit == 0:
-            # detect that the UFO just got hit by the players laser
-            self.got_hit = 1
+        if self.death_animation == 0:
             # Decrease the aliens health by 1
             if self.health == 10:
                 self.ufo_health_bar.shape(HEALTH_BAR_910_TEXTURE)
@@ -465,6 +469,9 @@ class UFO:
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Explosion2.wav")
                 sound.play()
+            self.got_hit = 1
+            self.already_ahead = 0
+            self.already_behind = 0
             self.health = self.health - 1
             self.hit_delay = 1
             self.hit_start_time = time.time()
