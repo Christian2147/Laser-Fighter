@@ -159,40 +159,30 @@ def execute_control_setting(type):
     """
 
     global refresh_variables
+    global controls_toggle
     global screen
-    # Actual keybind
     key_1 = 0
-    # String inputted into the textbox
-    key_2 = 0
-    # Keybind conflict
-    key_alert = 0
-    # Backup of actual keybind (In case something goes wrong)
-    key_backup = 0
     # "type" parameter as a string
     type_string = ""
     # Go right key
     if type == 0:
-        global go_right_key, go_right_key_alert
-        key_1 = go_right_key
-        key_alert = go_right_key_alert
+        global go_right_key_alert
+        key_1 = controls_toggle.go_right_key
         type_string = "Go Right"
     # Go left key
     elif type == 1:
-        global go_left_key, go_left_key_alert
-        key_1 = go_left_key
-        key_alert = go_left_key_alert
+        global go_left_key_alert
+        key_1 = controls_toggle.go_left_key
         type_string = "Go Left"
     # Shoot key
     elif type == 2:
-        global shoot_key, shoot_key_alert
-        key_1 = shoot_key
-        key_alert = shoot_key_alert
+        global shoot_key_alert
+        key_1 = controls_toggle.shoot_key
         type_string = "Shoot"
     # Jump key
     elif type == 3:
-        global jump_key, jump_key_alert
-        key_1 = jump_key
-        key_alert = jump_key_alert
+        global jump_key_alert
+        key_1 = controls_toggle.jump_key
         type_string = "Jump"
     # Play the button click sound
     if settings.button_sound == 1:
@@ -213,43 +203,37 @@ def execute_control_setting(type):
         if (len(key_2) > 1 and key_2 != "space") or key_2 == "":
             # Let the user know through an error
             ctypes.windll.user32.MessageBoxW(0, "That is an invalid input!", "Invalid Input!", 16)
-            # Go back to the old keybind
-            key_2 = key_backup
         # if it is valid
         else:
             # Update the keybind in the backup ini file.
-            config = configparser.ConfigParser()
-            config.read('Config/keyUpdate.ini')
-            key_to_change = list(config['Key_Update'])[type]
-            config['Key_Update'][key_to_change] = key_2
-            with open('Config/keyUpdate.ini', 'w') as configfile:
-                config.write(configfile)
+            controls_toggle.key_check[type] = key_2
+            controls_toggle.save_check()
             key_1 = key_2
             # Check for keybind conflicts for each keybind individually
             if type == 0:
-                go_right_key = key_1
-                if go_right_key != go_left_key and go_right_key != shoot_key and go_right_key != jump_key:
+                controls_toggle.go_right_key = key_1
+                if controls_toggle.go_right_key != controls_toggle.go_left_key and controls_toggle.go_right_key != controls_toggle.shoot_key and controls_toggle.go_right_key != controls_toggle.jump_key:
                     go_right_key_alert = 0
                 else:
                     go_right_key_alert = 1
                 key_alert = go_right_key_alert
             elif type == 1:
-                go_left_key = key_1
-                if go_left_key != go_right_key and go_left_key != shoot_key and go_left_key != jump_key:
+                controls_toggle.go_left_key = key_1
+                if controls_toggle.go_left_key != controls_toggle.go_right_key and controls_toggle.go_left_key != controls_toggle.shoot_key and controls_toggle.go_left_key != controls_toggle.jump_key:
                     go_left_key_alert = 0
                 else:
                     go_left_key_alert = 1
                 key_alert = go_left_key_alert
             elif type == 2:
-                shoot_key = key_1
-                if shoot_key != go_right_key and shoot_key != go_left_key and shoot_key != jump_key:
+                controls_toggle.shoot_key = key_1
+                if controls_toggle.shoot_key != controls_toggle.go_right_key and controls_toggle.shoot_key != controls_toggle.go_left_key and controls_toggle.shoot_key != controls_toggle.jump_key:
                     shoot_key_alert = 0
                 else:
                     shoot_key_alert = 1
                 key_alert = shoot_key_alert
             else:
-                jump_key = key_1
-                if jump_key != go_right_key and jump_key != go_left_key and jump_key != shoot_key:
+                controls_toggle.jump_key = key_1
+                if controls_toggle.jump_key != controls_toggle.go_right_key and controls_toggle.jump_key != controls_toggle.go_left_key and controls_toggle.jump_key != controls_toggle.shoot_key:
                     jump_key_alert = 0
                 else:
                     jump_key_alert = 1
@@ -263,62 +247,27 @@ def execute_control_setting(type):
                     # Reinstate the old keybinds and update the backup keybind file
                     key_1 = key_backup
                     key_2 = key_backup
-                    config = configparser.ConfigParser()
-                    config.read('Config/keyUpdate.ini')
-                    key_to_change = list(config['Key_Update'])[type]
-                    config['Key_Update'][key_to_change] = key_2
-                    with open('Config/keyUpdate.ini', 'w') as configfile:
-                        config.write(configfile)
+                    controls_toggle.key_check[type] = key_2
+                    controls_toggle.save_check()
                     if type == 0:
-                        go_right_key = key_1
+                        controls_toggle.go_right_key = key_1
                     elif type == 1:
-                        go_left_key = key_1
+                        controls_toggle.go_left_key = key_1
                     elif type == 2:
-                        shoot_key = key_1
+                        controls_toggle.shoot_key = key_1
                     else:
-                        jump_key = key_1
+                        controls_toggle.jump_key = key_1
                 # If the user wants to keep the controls
                 else:
                     # Update the main config file to confirm the changes
-                    config = configparser.ConfigParser()
-                    config.read('Config/config.ini')
-                    key_to_change = list(config['Controls'])[type]
-                    if type == 0:
-                        config['Controls'][key_to_change] = go_right_key
-                    elif type == 1:
-                        config['Controls'][key_to_change] = go_left_key
-                    elif type == 2:
-                        config['Controls'][key_to_change] = shoot_key
-                    elif type == 3:
-                        config['Controls'][key_to_change] = jump_key
-                    with open('Config/config.ini', 'w') as configfile:
-                        config.write(configfile)
-
-                    key_backup = key_1
+                    controls_toggle.save()
                     # Alert that a restart is needed for changes to take effect
                     screen.updated_controls = 1
             else:
                 # If there are no conflicts, update the main config file like normal.
-                config = configparser.ConfigParser()
-                config.read('Config/config.ini')
-                key_to_change = list(config['Controls'])[type]
-                if type == 0:
-                    config['Controls'][key_to_change] = go_right_key
-                elif type == 1:
-                    config['Controls'][key_to_change] = go_left_key
-                elif type == 2:
-                    config['Controls'][key_to_change] = shoot_key
-                elif type == 3:
-                    config['Controls'][key_to_change] = jump_key
-                with open('Config/config.ini', 'w') as configfile:
-                    config.write(configfile)
-
-                key_backup = key_1
+                controls_toggle.save()
                 # Alert that a restart is needed for changes to take effect
                 screen.updated_controls = 1
-    # If the keybind settings to do not need to updated
-    else:
-        key_2 = key_backup
     refresh_variables.refresh_button = 1
 
 
@@ -614,7 +563,7 @@ def update_text():
                 if bu.type != "Controls_Toggle":
                     bu.write_lines()
                 else:
-                    bu.write_control(go_right_key, go_left_key, shoot_key, jump_key)
+                    bu.write_control(controls_toggle.go_right_key, controls_toggle.go_left_key, controls_toggle.shoot_key, controls_toggle.jump_key)
                     if bu.id == 1:
                         if go_right_key_alert == 1:
                             bu.update_controls_text_color(bu.id)
@@ -648,10 +597,10 @@ def update_text():
 # Set the keybinds for the turtle graphics window:
 # Bind the current keybinds to their appropriate functions
 wn.listen()
-wn.onkeypress(controls.go_left, go_left_key)
-wn.onkeypress(controls.go_right, go_right_key)
-wn.onkeypress(controls.shoot, shoot_key)
-wn.onkeypress(controls.jump, jump_key)
+wn.onkeypress(controls.go_left, controls_toggle.go_left_key)
+wn.onkeypress(controls.go_right, controls_toggle.go_right_key)
+wn.onkeypress(controls.shoot, controls_toggle.shoot_key)
+wn.onkeypress(controls.jump, controls_toggle.jump_key)
 
 # Detect when the user wants to close the window and terminate the game loop.
 # "WM_DELETE_WINDOW" is the parameter used to determine if the user has clicked the red x in the corner of the window
@@ -2436,22 +2385,22 @@ while True:
         # Control Setting Conflict Updates
         # This checks if there are any conflicts with the current controls.
         # This is done here in case any new updates to the controls cause conflicts.
-        if go_right_key != go_left_key and go_right_key != shoot_key and go_right_key != jump_key:
+        if controls_toggle.go_right_key != controls_toggle.go_left_key and controls_toggle.go_right_key != controls_toggle.shoot_key and controls_toggle.go_right_key != controls_toggle.jump_key:
             go_right_key_alert = 0
         else:
             go_right_key_alert = 1
 
-        if go_left_key != go_right_key and go_left_key != shoot_key and go_left_key != jump_key:
+        if controls_toggle.go_left_key != controls_toggle.go_right_key and controls_toggle.go_left_key != controls_toggle.shoot_key and controls_toggle.go_left_key != controls_toggle.jump_key:
             go_left_key_alert = 0
         else:
             go_left_key_alert = 1
 
-        if shoot_key != go_left_key and shoot_key != go_right_key and shoot_key != jump_key:
+        if controls_toggle.shoot_key != controls_toggle.go_left_key and controls_toggle.shoot_key != controls_toggle.go_right_key and controls_toggle.shoot_key != controls_toggle.jump_key:
             shoot_key_alert = 0
         else:
             shoot_key_alert = 1
 
-        if jump_key != go_left_key and jump_key != shoot_key and jump_key != go_right_key:
+        if controls_toggle.jump_key != controls_toggle.go_left_key and controls_toggle.jump_key != controls_toggle.shoot_key and controls_toggle.jump_key != controls_toggle.go_right_key:
             jump_key_alert = 0
         else:
             jump_key_alert = 1

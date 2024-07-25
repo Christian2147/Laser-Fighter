@@ -30,20 +30,17 @@ class ControlsConfig:
 
         self.load()
 
-        self.go_right_check = ''
-        self.go_left_check = ''
-        self.shoot_check = ''
-        self.jump_check = ''
+        self.key_check = ['', '', '', '']
 
         self.check_load()
 
-        if self.go_right_check == 'space':
+        if self.key_check[0] == 'space':
             self.go_right_key = 'space'
-        elif self.go_left_check == 'space':
+        elif self.key_check[1] == 'space':
             self.go_left_key = 'space'
-        elif self.shoot_check == 'space':
+        elif self.key_check[2] == 'space':
             self.shoot_key = 'space'
-        elif self.jump_check == 'space':
+        elif self.key_check[3] == 'space':
             self.jump_key = 'space'
 
     def load(self):
@@ -57,10 +54,10 @@ class ControlsConfig:
     def check_load(self):
         self.config.read(self.check_config_file)
 
-        self.go_right_check = self.config['Key_Update'].get('Key_1')
-        self.go_left_check = self.config['Key_Update'].get('Key_2')
-        self.shoot_check = self.config['Key_Update'].get('Key_3')
-        self.jump_check = self.config['Key_Update'].get('Key_4')
+        self.key_check[0] = self.config['Key_Update'].get('Key_1')
+        self.key_check[1] = self.config['Key_Update'].get('Key_2')
+        self.key_check[2] = self.config['Key_Update'].get('Key_3')
+        self.key_check[3] = self.config['Key_Update'].get('Key_4')
 
     def save(self):
         try:
@@ -76,10 +73,10 @@ class ControlsConfig:
 
     def save_check(self):
         try:
-            self.config['Key_Update']['Key_1'] = self.go_right_check
-            self.config['Key_Update']['Key_2'] = self.go_left_check
-            self.config['Key_Update']['Key_3'] = self.shoot_check
-            self.config['Key_Update']['Key_4'] = self.jump_check
+            self.config['Key_Update']['Key_1'] = self.key_check[0]
+            self.config['Key_Update']['Key_2'] = self.key_check[1]
+            self.config['Key_Update']['Key_3'] = self.key_check[2]
+            self.config['Key_Update']['Key_4'] = self.key_check[3]
 
             with open(self.check_config_file, 'w') as checkconfigfile:
                 self.config.write(checkconfigfile)
@@ -92,7 +89,7 @@ class ControlsConfig:
                 f"go_left_key='{self.go_left_key}', "
                 f"shoot_key='{self.shoot_key}', "
                 f"jump_key='{self.jump_key}', "
-                f"go_right_check='{self.go_right_check}', "
-                f"go_left_check='{self.go_left_check}', "
-                f"shoot_check='{self.shoot_check}', "
-                f"jump_check='{self.jump_check}')")
+                f"go_right_check='{self.key_check[0]}', "
+                f"go_left_check='{self.key_check[1]}', "
+                f"shoot_check='{self.key_check[2]}', "
+                f"jump_check='{self.key_check[3]}')")

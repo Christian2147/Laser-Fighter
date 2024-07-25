@@ -22,11 +22,11 @@
     This also includes any external variables stored in the ini files.
 """
 
-import configparser
 import subprocess
 import os
 from utils.Refresh import Refresh
 from utils.UpdateSettingsData import Settings
+from utils.UpdateControls import ControlsConfig
 from utils.UpdateStatsData import Stats
 from utils.UpdateShopData import ShopConfig
 
@@ -59,34 +59,11 @@ go_left_key_alert = 0
 shoot_key_alert = 0
 jump_key_alert = 0
 
-# Extract the users controls from the config ini file
-config = configparser.ConfigParser()
-config.read('Config/config.ini')
-right_control = config['Controls'].get('Go_Right')
-left_control = config['Controls'].get('Go_Left')
-shoot_control = config['Controls'].get('Shoot')
-jump_control = config['Controls'].get('Jump')
-config_checker = configparser.ConfigParser()
-config_checker.read('Config/keyUpdate.ini')
-if config_checker['Key_Update'].get('Key_1') == 'space':
-    go_right_key = "space"
-else:
-    go_right_key = right_control
-if config_checker['Key_Update'].get('Key_2') == 'space':
-    go_left_key = "space"
-else:
-    go_left_key = left_control
-if config_checker['Key_Update'].get('Key_3') == 'space':
-    shoot_key = "space"
-else:
-    shoot_key = shoot_control
-if config_checker['Key_Update'].get('Key_4') == 'space':
-    jump_key = "space"
-else:
-    jump_key = jump_control
-
 # Create Settings Object to store the settings variables
 settings = Settings()
+
+# Create Controls Object to store the control keybinds
+controls_toggle = ControlsConfig()
 
 # Create a Stats PObject to store the statistics variables
 statistics = Stats(settings.god_mode)
