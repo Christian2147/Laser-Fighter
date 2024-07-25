@@ -14,7 +14,7 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-class Controls:
+class Movement:
     def __init__(self, screen, machine_player, human_player, ufo, settings, statistics, scale_factor_y):
         self._screen = screen
         self._machine_player = machine_player
