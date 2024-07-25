@@ -22,6 +22,8 @@ class Stats:
         self.config_file = 'Config/playerData.ini'
         self.config = configparser.ConfigParser()
 
+        self.score = 0
+
         self.high_score_machine_war = 0
         self.bosses_killed = 0
         self.red_bots_killed = 0

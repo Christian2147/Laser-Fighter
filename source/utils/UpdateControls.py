@@ -43,6 +43,10 @@ class ControlsConfig:
         elif self.key_check[3] == 'space':
             self.jump_key = 'space'
 
+    def __del__(self):
+        del self.config_file
+        del self.check_config_file
+
     def load(self):
         self.config.read(self.config_file)
 

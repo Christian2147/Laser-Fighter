@@ -92,325 +92,6 @@ text_refresh = TextRefresh(screen, button, panel,
                            shop_config, controls, controls_toggle,
                            refresh_variables)
 
-
-def update_text():
-    """
-        Refreshes and updates the text on the screen.
-        When VSync is on, this function is only run at the refresh rate times a second.
-        Part of the "screen refresher" section in the main game loop.
-        This function includes both the button text and the text boxes on the screen.
-
-        :return: None
-    """
-
-    global screen
-    global refresh_variables
-    # Update based on the current mode
-    if screen.mode == "Title_Mode":
-        if refresh_variables.refresh_button == 1 or refresh_variables.refresh_button == 2:
-            for bu in button.buttons_on_screen_list:
-                bu.write_lines()
-        if refresh_variables.refresh_button == 1:
-            refresh_variables.refresh_button = 2
-        elif refresh_variables.refresh_button == 2:
-            refresh_variables.refresh_button = 0
-        for t in textbox.text_on_screen_list:
-            if t.id == 1:
-                t.write("Laser Fighter", 72, "bold")
-            elif t.id == 2:
-                t.write("Beta 1.1.0b", 24, "normal")
-            elif t.id == 3:
-                t.write("God Mode Is On!", 24, "normal")
-    elif screen.mode == "Machine_Mode":
-        if refresh_variables.refresh_button == 1:
-            for bu in button.buttons_on_screen_list:
-                bu.write_lines()
-        if refresh_variables.refresh_button == 1:
-            refresh_variables.refresh_button = 0
-        for t in textbox.text_on_screen_list:
-            if t.id == 1:
-                t.write("Score: {}  High Score: {}".format(score, statistics.high_score_machine_war), 24, "normal")
-            elif t.id == 2:
-                for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
-                    if yi.get_power_up_active() == 1:
-                        t.write("{}".format(yi.get_power_up_timer()), 24, "normal")
-                    else:
-                        t.write("0", 24, "normal")
-            elif t.id == 3:
-                for bi in blue_power_up_indicator.blue_power_up_indicator_turtle:
-                    if bi.get_power_up_active() == 1:
-                        t.write("{}".format(bi.get_power_up_timer()), 24, "normal")
-                    else:
-                        t.write("0", 24, "normal")
-            elif t.id == 4:
-                for ei in extra_power_up_indicator.extra_power_up_indicator_turtle:
-                    if ei.get_power_up_active() == 1:
-                        t.write("{}".format(ei.get_power_up_timer()), 24, "normal")
-                    else:
-                        t.write("0", 24, "normal")
-            elif t.id == 5:
-                t.write_left("{}".format(shop_config.total_coins), 24, "normal")
-            elif t.id == 6:
-                t.write("God Mode Is On!", 24, "normal")
-    elif screen.mode == "Alien_Mode":
-        if refresh_variables.refresh_button == 1:
-            for bu in button.buttons_on_screen_list:
-                bu.write_lines()
-        if refresh_variables.refresh_button == 1:
-            refresh_variables.refresh_button = 0
-        for t in textbox.text_on_screen_list:
-            if t.id == 1:
-                t.write("Score: {}  High Score: {}".format(score, statistics.high_score_alien_mode), 24, "normal")
-            elif t.id == 2:
-                for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
-                    if yi.get_power_up_active() == 1:
-                        t.write("{}".format(yi.get_power_up_timer()), 24, "normal")
-                    else:
-                        t.write("0", 24, "normal")
-            elif t.id == 3:
-                for bi in blue_power_up_indicator.blue_power_up_indicator_turtle:
-                    if bi.get_power_up_active() == 1:
-                        t.write("{}".format(bi.get_power_up_timer()), 24, "normal")
-                    else:
-                        t.write("0", 24, "normal")
-            elif t.id == 4:
-                for ei in extra_power_up_indicator.extra_power_up_indicator_turtle:
-                    if ei.get_power_up_active() == 1:
-                        t.write("{}".format(ei.get_power_up_timer()), 24, "normal")
-                    else:
-                        t.write("0", 24, "normal")
-            elif t.id == 5:
-                t.write_left("{}".format(shop_config.total_coins), 24, "normal")
-            elif t.id == 6:
-                t.write("God Mode Is On!", 24, "normal")
-    elif screen.mode == "Shop":
-        if refresh_variables.refresh_button == 1:
-            for bu in button.buttons_on_screen_list:
-                if bu.get_type() != "Shop_Slot" and bu.get_type() != "Buy":
-                    bu.write_lines()
-                if bu.get_type() == "Power_Up_Slot":
-                    if bu.get_id() == 1:
-                        bu.write_indicator(shop_config.yellow_power_up_level)
-                    elif bu.get_id() == 2:
-                        bu.write_indicator(shop_config.blue_power_up_level)
-                    elif bu.get_id() == 3:
-                        bu.write_indicator(shop_config.green_power_up_level)
-                    elif bu.get_id() == 4:
-                        bu.write_indicator(shop_config.red_power_up_level)
-                if bu.get_type() == "Buy":
-                    bu.write_buy(shop.price_displayed)
-        if refresh_variables.refresh_button == 1:
-            refresh_variables.refresh_button = 0
-        if refresh_variables.refresh_panel == 1:
-            for pa in panel.panel_turtle:
-                pa.write_text()
-            refresh_variables.refresh_panel = 0
-        for t in textbox.text_on_screen_list:
-            if t.id == 1:
-                t.write("Shop", 72, "bold")
-            elif t.id == 2:
-                t.write_left("{}".format(shop_config.total_coins), 24, "normal")
-            if refresh_variables.refresh_text == 1:
-                if screen.page == "Machine_Mode":
-                    if t.id == 3:
-                        t.write_left("Machine Mode", 36, "bold")
-                    elif t.id == 5:
-                        t.write_left(" 5000", 22, "normal")
-                    elif t.id == 6:
-                        t.write_left(" 15000", 22, "normal")
-                    elif t.id == 7:
-                        t.write_left(" 40000", 22, "normal")
-                    elif t.id == 8:
-                        t.write_left(" 100000", 22, "normal")
-                elif screen.page == "Alien_Mode":
-                    if t.id == 3:
-                        t.write_left("Alien Mode", 36, "bold")
-                    elif t.id == 5:
-                        t.write_left(" 5000", 22, "normal")
-                    elif t.id == 6:
-                        t.write_left(" 15000", 22, "normal")
-                    elif t.id == 7:
-                        t.write_left(" 40000", 22, "normal")
-                    elif t.id == 8:
-                        t.write_left(" 100000", 22, "normal")
-                elif screen.page == "Power_Ups":
-                    if t.id == 3:
-                        t.write_left("Power Ups", 36, "bold")
-                    elif t.id == 4:
-                        if shop_config.yellow_power_up_level == 1:
-                            t.write_left(" 1000", 22, "normal")
-                        elif shop_config.yellow_power_up_level == 2:
-                            t.write_left(" 5000", 22, "normal")
-                        elif shop_config.yellow_power_up_level == 3:
-                            t.write_left(" 15000", 22, "normal")
-                        elif shop_config.yellow_power_up_level == 4:
-                            t.write_left(" 30000", 22, "normal")
-                    elif t.id == 5:
-                        if shop_config.blue_power_up_level == 1:
-                            t.write_left(" 1000", 22, "normal")
-                        elif shop_config.blue_power_up_level == 2:
-                            t.write_left(" 5000", 22, "normal")
-                        elif shop_config.blue_power_up_level == 3:
-                            t.write_left(" 15000", 22, "normal")
-                        elif shop_config.blue_power_up_level == 4:
-                            t.write_left(" 30000", 22, "normal")
-                    elif t.id == 6:
-                        if shop_config.green_power_up_level == 1:
-                            t.write_left(" 1000", 22, "normal")
-                        elif shop_config.green_power_up_level == 2:
-                            t.write_left(" 5000", 22, "normal")
-                        elif shop_config.green_power_up_level == 3:
-                            t.write_left(" 15000", 22, "normal")
-                        elif shop_config.green_power_up_level == 4:
-                            t.write_left(" 30000", 22, "normal")
-                    elif t.id == 7:
-                        if shop_config.red_power_up_level == 1:
-                            t.write_left(" 1000", 22, "normal")
-                        elif shop_config.red_power_up_level == 2:
-                            t.write_left(" 5000", 22, "normal")
-                        elif shop_config.red_power_up_level == 3:
-                            t.write_left(" 15000", 22, "normal")
-                        elif shop_config.red_power_up_level == 4:
-                            t.write_left(" 30000", 22, "normal")
-        if refresh_variables.refresh_text == 1:
-            refresh_variables.refresh_text = 0
-    elif screen.mode == "Stats":
-        if refresh_variables.refresh_button == 1:
-            for bu in button.buttons_on_screen_list:
-                bu.write_lines()
-        if refresh_variables.refresh_button == 1:
-            refresh_variables.refresh_button = 0
-        for t in textbox.text_on_screen_list:
-            if t.id == 1:
-                t.write("Statistics", 72, "bold")
-            if refresh_variables.refresh_text == 1:
-                if t.id == 2:
-                    t.write("Machine Mode", 48, "bold")
-                elif t.id == 3:
-                    t.write("Alien Mode", 48, "bold")
-                elif t.id == 4:
-                    t.write("High Score: {}".format(statistics.high_score_machine_war), 24, "normal")
-                elif t.id == 5:
-                    t.write("Bosses Killed: {}".format(statistics.bosses_killed), 24, "normal")
-                elif t.id == 6:
-                    t.write("Red Bots Killed: {}".format(statistics.red_bots_killed), 24, "normal")
-                elif t.id == 7:
-                    t.write("Yellow Bots Killed: {}".format(statistics.yellow_bots_killed), 24, "normal")
-                elif t.id == 8:
-                    t.write("Blue Bots Killed: {}".format(statistics.blue_bots_killed), 24, "normal")
-                elif t.id == 9:
-                    t.write("Deaths: {}".format(statistics.classic_deaths), 24, "normal")
-                elif t.id == 10:
-                    t.write("Damage Taken: {}".format(statistics.machine_damage_taken), 24, "normal")
-                elif t.id == 11:
-                    t.write("Lasers Fired: {}".format(statistics.classic_lasers_fired), 24, "normal")
-                elif t.id == 12:
-                    t.write("Power Ups Picked Up: {}".format(statistics.classic_power_ups_picked_up), 24, "normal")
-                elif t.id == 13:
-                    t.write("Coins Collected: {}".format(statistics.machine_coins_collected), 24, "normal")
-                elif t.id == 14:
-                    t.write("High Score: {}".format(statistics.high_score_alien_mode), 24, "normal")
-                elif t.id == 15:
-                    t.write("UFOs Killed: {}".format(statistics.ufos_killed), 24, "normal")
-                elif t.id == 16:
-                    t.write("Big Aliens Killed: {}".format(statistics.big_aliens_killed), 24, "normal")
-                elif t.id == 17:
-                    t.write("Medium Aliens Killed: {}".format(statistics.medium_aliens_killed), 24, "normal")
-                elif t.id == 18:
-                    t.write("Small Aliens Killed: {}".format(statistics.small_aliens_killed), 24, "normal")
-                elif t.id == 19:
-                    t.write("Deaths: {}".format(statistics.alien_deaths), 24, "normal")
-                elif t.id == 20:
-                    t.write("Damage Taken: {}".format(statistics.damage_taken), 24, "normal")
-                elif t.id == 21:
-                    t.write("Lasers Fired: {}".format(statistics.alien_lasers_fired), 24, "normal")
-                elif t.id == 22:
-                    t.write("Jumps: {}".format(statistics.jumps), 24, "normal")
-                elif t.id == 23:
-                    t.write("Power Ups Picked Up: {}".format(statistics.alien_power_ups_picked_up), 24, "normal")
-                elif t.id == 24:
-                    t.write("Coins Collected: {}".format(statistics.alien_coins_collected), 24, "normal")
-                    refresh_variables.refresh_text = 0
-            if t.id == 25:
-                t.write("God Mode Is On!", 24, "normal")
-    elif screen.mode == "Settings":
-        for bu in button.buttons_on_screen_list:
-            if refresh_variables.refresh_button == 1:
-                bu.write_lines()
-            if refresh_variables.refresh_indicator == 1 or refresh_variables.refresh_indicator == 2:
-                if bu.type == "Settings_Toggle":
-                    if bu.id == 1:
-                        bu.write_indicator(settings.button_sound)
-                    elif bu.id == 2:
-                        bu.write_indicator(settings.player_shooting_sound)
-                    elif bu.id == 3:
-                        bu.write_indicator(settings.enemy_shooting_sound)
-                    elif bu.id == 4:
-                        bu.write_indicator(settings.player_death_sound)
-                    elif bu.id == 5:
-                        bu.write_indicator(settings.enemy_death_sound)
-                    elif bu.id == 6:
-                        bu.write_indicator(settings.player_hit_sound)
-                    elif bu.id == 7:
-                        bu.write_indicator(settings.enemy_hit_sound)
-                    elif bu.id == 8:
-                        bu.write_indicator(settings.power_up_pickup_sound)
-                    elif bu.id == 9:
-                        bu.write_indicator(settings.power_up_spawn_sound)
-                    elif bu.id == 10:
-                        bu.write_indicator(settings.coin_pickup_sound)
-                    elif bu.id == 11:
-                        bu.write_fullscreen_indicator(settings.fullscreen, settings_toggle.fullscreen_toggled)
-                    elif bu.id == 12:
-                        bu.write_indicator(settings.vsync)
-        if refresh_variables.refresh_button == 1:
-            refresh_variables.refresh_button = 0
-        if refresh_variables.refresh_indicator == 2:
-            refresh_variables.refresh_indicator = 0
-        elif refresh_variables.refresh_indicator == 1:
-            refresh_variables.refresh_indicator = 2
-        for t in textbox.text_on_screen_list:
-            if t.id == 1:
-                t.write("Settings", 72, "bold")
-            elif t.id == 2:
-                t.write("God Mode Is On!", 24, "normal")
-    elif screen.mode == "Controls":
-        if refresh_variables.refresh_button == 1 or refresh_variables.refresh_button == 2:
-            for bu in button.buttons_on_screen_list:
-                if bu.type != "Controls_Toggle":
-                    bu.write_lines()
-                else:
-                    bu.write_control(controls_toggle.go_right_key, controls_toggle.go_left_key, controls_toggle.shoot_key, controls_toggle.jump_key)
-                    if bu.id == 1:
-                        if controls.go_right_key_alert == 1:
-                            bu.update_controls_text_color(bu.id)
-                        else:
-                            bu.update_controls_text_color(0)
-                    elif bu.id == 2:
-                        if controls.go_left_key_alert == 1:
-                            bu.update_controls_text_color(bu.id)
-                        else:
-                            bu.update_controls_text_color(0)
-                    elif bu.id == 3:
-                        if controls.shoot_key_alert == 1:
-                            bu.update_controls_text_color(bu.id)
-                        else:
-                            bu.update_controls_text_color(0)
-                    elif bu.id == 4:
-                        if controls.jump_key_alert == 1:
-                            bu.update_controls_text_color(bu.id)
-                        else:
-                            bu.update_controls_text_color(0)
-        if refresh_variables.refresh_button == 1:
-            refresh_variables.refresh_button = 2
-        elif refresh_variables.refresh_button == 2:
-            refresh_variables.refresh_button = 0
-        for t in textbox.text_on_screen_list:
-            if t.id == 1:
-                t.write("Controls", 72, "bold")
-            elif t.id == 2:
-                t.write("God Mode Is On!", 24, "normal")
-
 # Set the keybinds for the turtle graphics window:
 # Bind the current keybinds to their appropriate functions
 wn.listen()
@@ -442,7 +123,7 @@ while True:
         elapsed_time = (current_ticks - start_ticks) / 1000.0
 
         if elapsed_time >= MONITOR_DELAY:
-            update_text()
+            text_refresh.update_text()
             wn.update()
             start_ticks = pygame.time.get_ticks()
     # If VSync is off
@@ -455,19 +136,19 @@ while True:
         # "tick_update" is used for updating text because the game lags when the text is updated too often
         # The frequency of updating depends on the screen
         if screen.mode == "Title_Mode":
-            update_text()
+            text_refresh.update_text()
         elif screen.mode == "Machine_Mode" or screen.mode == "Alien_Mode":
             if tick_update % 15 == 0:
-                update_text()
+                text_refresh.update_text()
         elif screen.mode == "Stats":
             if tick_update % 4 == 0:
-                update_text()
+                text_refresh.update_text()
         elif screen.mode == "Settings" or screen.mode == "Shop":
             if tick_update % 3 == 0:
-                update_text()
+                text_refresh.update_text()
         elif screen.mode == "Controls":
             if tick_update % 5 == 0:
-                update_text()
+                text_refresh.update_text()
         wn.update()
 
     """
@@ -524,7 +205,7 @@ while True:
             s.remove()
         selector.selectors_on_screen_list.clear()
         selector.current_selector_index = 0
-        score = 0
+        statistics.score = 0
         refresh_variables.refresh_button = 1
         refresh_variables.refresh_indicator = 1
         refresh_variables.refresh_text = 1
@@ -668,9 +349,9 @@ while True:
 
         # Check if the players score is greater than the current high score
         if settings.god_mode == 0:
-            if score > statistics.high_score_machine_war:
+            if statistics.score > statistics.high_score_machine_war:
                 # Update the high score in the game and the ini file if it is
-                statistics.high_score_machine_war = score
+                statistics.high_score_machine_war = statistics.score
                 statistics.save()
 
         # Spawn the player
@@ -688,34 +369,34 @@ while True:
         # Spawn Machine enemies based on the players score
         # At its peak, there will be 5 blue machines, 5 yellow machines, 5 red machines, and 1 machine boss attacking
         #   the player
-        if score >= 10 and blue_machine.blue_machine_index == 3:
+        if statistics.score >= 10 and blue_machine.blue_machine_index == 3:
             blue_machine.spawn_blue_machine(4)
-        elif score >= 20 and blue_machine.blue_machine_index == 4:
+        elif statistics.score >= 20 and blue_machine.blue_machine_index == 4:
             blue_machine.spawn_blue_machine(5)
-        elif score >= 30 and yellow_machine.yellow_machine_index == 0:
+        elif statistics.score >= 30 and yellow_machine.yellow_machine_index == 0:
             yellow_machine.spawn_yellow_machine(1)
-        elif score >= 40 and yellow_machine.yellow_machine_index == 1:
+        elif statistics.score >= 40 and yellow_machine.yellow_machine_index == 1:
             yellow_machine.spawn_yellow_machine(2)
-        elif score >= 50 and yellow_machine.yellow_machine_index == 2:
+        elif statistics.score >= 50 and yellow_machine.yellow_machine_index == 2:
             yellow_machine.spawn_yellow_machine(3)
-        elif score >= 60 and yellow_machine.yellow_machine_index == 3:
+        elif statistics.score >= 60 and yellow_machine.yellow_machine_index == 3:
             yellow_machine.spawn_yellow_machine(4)
-        elif score >= 70 and yellow_machine.yellow_machine_index == 4:
+        elif statistics.score >= 70 and yellow_machine.yellow_machine_index == 4:
             yellow_machine.spawn_yellow_machine(5)
-        elif score >= 80 and red_machine.red_machine_index == 0:
+        elif statistics.score >= 80 and red_machine.red_machine_index == 0:
             red_machine.spawn_red_machine(1)
-        elif score >= 100 and red_machine.red_machine_index == 1:
+        elif statistics.score >= 100 and red_machine.red_machine_index == 1:
             red_machine.spawn_red_machine(2)
-        elif score >= 120 and red_machine.red_machine_index == 2:
+        elif statistics.score >= 120 and red_machine.red_machine_index == 2:
             red_machine.spawn_red_machine(3)
-        elif score >= 140 and red_machine.red_machine_index == 3:
+        elif statistics.score >= 140 and red_machine.red_machine_index == 3:
             red_machine.spawn_red_machine(4)
-        elif score >= 160 and red_machine.red_machine_index == 4:
+        elif statistics.score >= 160 and red_machine.red_machine_index == 4:
             red_machine.spawn_red_machine(5)
-        elif score >= 200 and machine_boss.boss_index == 0:
+        elif statistics.score >= 200 and machine_boss.boss_index == 0:
             machine_boss.spawn_boss()
         # If score is 0, reset the number of enemies back down to 3
-        elif score == 0:
+        elif statistics.score == 0:
             for bm in blue_machine.blue_machines:
                 if bm.get_id() == 4 or bm.get_id() == 5:
                     bm.remove()
@@ -810,9 +491,9 @@ while True:
                         # Increase the players score
                         # When the blue power up is active, the score increases are doubled (This is universal)
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                            score = score + 2
+                            statistics.score = statistics.score + 2
                         else:
-                            score = score + 1
+                            statistics.score = statistics.score + 1
                         # Update the stats if god mode is off
                         if settings.god_mode == 0:
                             statistics.blue_bots_killed = statistics.blue_bots_killed + 1
@@ -835,9 +516,9 @@ while True:
                         coin.coin_pickup_delay = 1
                     if yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                            score = score + 4
+                            statistics.score = statistics.score + 4
                         else:
-                            score = score + 2
+                            statistics.score = statistics.score + 2
                         if settings.god_mode == 0:
                             statistics.yellow_bots_killed = statistics.yellow_bots_killed + 1
                             statistics.save()
@@ -858,9 +539,9 @@ while True:
                         coin.coin_pickup_delay = 1
                     if red_machine.red_machines_update_values[current_red_update_value_index] == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                            score = score + 10
+                            statistics.score = statistics.score + 10
                         else:
-                            score = score + 5
+                            statistics.score = statistics.score + 5
                         if settings.god_mode == 0:
                             statistics.red_bots_killed = statistics.red_bots_killed + 1
                             statistics.save()
@@ -878,9 +559,9 @@ while True:
                     if red_machine.red_machines_hit_values[current_red_hit_value_index] == 1:
                         # Increase the players score for hitting the red machine
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                            score = score + 2
+                            statistics.score = statistics.score + 2
                         else:
-                            score = score + 1
+                            statistics.score = statistics.score + 1
                         # Confirm that the players laser has attacked and make it disappear
                         p.set_laser_has_attacked(1)
                 current_red_hit_value_index = current_red_hit_value_index + 1
@@ -897,9 +578,9 @@ while True:
                         coin.coin_pickup_delay = 1
                     if machine_boss.boss_update_value == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                            score = score + 100
+                            statistics.score = statistics.score + 100
                         else:
-                            score = score + 50
+                            statistics.score = statistics.score + 50
                         if settings.god_mode == 0:
                             statistics.bosses_killed = statistics.bosses_killed + 1
                             statistics.save()
@@ -917,14 +598,14 @@ while True:
                         #   one boss is 60 (120 with blue power up)
                         if b.health_bar == 9:
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                score = score + 4
+                                statistics.score = statistics.score + 4
                             else:
-                                score = score + 2
+                                statistics.score = statistics.score + 2
                         else:
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                score = score + 2
+                                statistics.score = statistics.score + 2
                             else:
-                                score = score + 1
+                                statistics.score = statistics.score + 1
                         p.set_laser_has_attacked(1)
 
         # Player Killer
@@ -956,7 +637,7 @@ while True:
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and settings.god_mode == 0:
                                 # If so kill the player and set the score down to 0 to reset the game
                                 p.kill_player(settings.player_death_sound)
-                                score = 0
+                                statistics.score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
 
                 for ym in yellow_machine.yellow_machines:
@@ -965,7 +646,7 @@ while True:
                             ym.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and settings.god_mode == 0:
                                 p.kill_player(settings.player_death_sound)
-                                score = 0
+                                statistics.score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
 
                 for rm in red_machine.red_machines:
@@ -974,7 +655,7 @@ while True:
                             rm.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and settings.god_mode == 0:
                                 p.kill_player(settings.player_death_sound)
-                                score = 0
+                                statistics.score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
 
                 for b in machine_boss.boss:
@@ -983,7 +664,7 @@ while True:
                             b.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and settings.god_mode == 0:
                                 p.kill_player(settings.player_death_sound)
-                                score = 0
+                                statistics.score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
 
             # If the player has more than 1 health, only deal 1 health of damage
@@ -1253,9 +934,9 @@ while True:
 
         # Check if the players score is greater than the current high score
         if settings.god_mode == 0:
-            if score > statistics.high_score_alien_mode:
+            if statistics.score > statistics.high_score_alien_mode:
                 # Update the high score in the game and the ini file if it is
-                statistics.high_score_alien_mode = score
+                statistics.high_score_alien_mode = statistics.score
                 statistics.save()
 
         # Check if the power ups are active or not
@@ -1358,34 +1039,34 @@ while True:
 
         # Spawn aliens based on the players score
         # At its peak, there will be 5 small aliens, 5 medium aliens, 5 large aliens, and 1 UFO attacking the player
-        if score > 20 and small_alien.small_alien_index == 3:
+        if statistics.score > 20 and small_alien.small_alien_index == 3:
             small_alien.spawn_small_alien(4)
-        elif score > 40 and small_alien.small_alien_index == 4:
+        elif statistics.score > 40 and small_alien.small_alien_index == 4:
             small_alien.spawn_small_alien(5)
-        elif score > 60 and medium_alien.medium_alien_index == 0:
+        elif statistics.score > 60 and medium_alien.medium_alien_index == 0:
             medium_alien.spawn_medium_alien(1)
-        elif score > 80 and medium_alien.medium_alien_index == 1:
+        elif statistics.score > 80 and medium_alien.medium_alien_index == 1:
             medium_alien.spawn_medium_alien(2)
-        elif score > 100 and medium_alien.medium_alien_index == 2:
+        elif statistics.score > 100 and medium_alien.medium_alien_index == 2:
             medium_alien.spawn_medium_alien(3)
-        elif score > 120 and medium_alien.medium_alien_index == 3:
+        elif statistics.score > 120 and medium_alien.medium_alien_index == 3:
             medium_alien.spawn_medium_alien(4)
-        elif score > 140 and medium_alien.medium_alien_index == 4:
+        elif statistics.score > 140 and medium_alien.medium_alien_index == 4:
             medium_alien.spawn_medium_alien(5)
-        elif score > 160 and large_alien.large_alien_index == 0:
+        elif statistics.score > 160 and large_alien.large_alien_index == 0:
             large_alien.spawn_large_alien(1)
-        elif score > 180 and large_alien.large_alien_index == 1:
+        elif statistics.score > 180 and large_alien.large_alien_index == 1:
             large_alien.spawn_large_alien(2)
-        elif score > 200 and large_alien.large_alien_index == 2:
+        elif statistics.score > 200 and large_alien.large_alien_index == 2:
             large_alien.spawn_large_alien(3)
-        elif score > 220 and large_alien.large_alien_index == 3:
+        elif statistics.score > 220 and large_alien.large_alien_index == 3:
             large_alien.spawn_large_alien(4)
-        elif score > 240 and large_alien.large_alien_index == 4:
+        elif statistics.score > 240 and large_alien.large_alien_index == 4:
             large_alien.spawn_large_alien(5)
-        elif score >= 300 and ufo.ufo_index == 0:
+        elif statistics.score >= 300 and ufo.ufo_index == 0:
             ufo.spawn_alien_boss()
         # If score is less than 7, reset the number of aliens back down to 3
-        elif score < 7:
+        elif statistics.score < 7:
             if small_alien.small_alien_index == 4 or small_alien.small_alien_index == 5:
                 for sa in small_alien.small_aliens:
                     sa.remove()
@@ -1535,9 +1216,9 @@ while True:
                         # Increase the players score
                         # When the blue power up is active, the score increases are doubled (This is universal)
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                            score = score + 2
+                            statistics.score = statistics.score + 2
                         else:
-                            score = score + 1
+                            statistics.score = statistics.score + 1
                         # Update the stats if god mode is off
                         if settings.god_mode == 0:
                             statistics.small_aliens_killed = statistics.small_aliens_killed + 1
@@ -1562,9 +1243,9 @@ while True:
                         medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = 0
                     if ma.get_death_animation() == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                            score = score + 4
+                            statistics.score = statistics.score + 4
                         else:
-                            score = score + 2
+                            statistics.score = statistics.score + 2
                         if settings.god_mode == 0:
                             statistics.medium_aliens_killed = statistics.medium_aliens_killed + 1
                             statistics.save()
@@ -1586,9 +1267,9 @@ while True:
                     if ma.get_hit_delay() == 1:
                         # Increase the players score for hitting the medium alien
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                            score = score + 2
+                            statistics.score = statistics.score + 2
                         else:
-                            score = score + 1
+                            statistics.score = statistics.score + 1
                         # Confirm that the players laser has attacked and count it as an enemy pierced
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
@@ -1608,9 +1289,9 @@ while True:
                         large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = 0
                     if la.get_death_animation() == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                            score = score + 8
+                            statistics.score = statistics.score + 8
                         else:
-                            score = score + 4
+                            statistics.score = statistics.score + 4
                         if settings.god_mode == 0:
                             statistics.big_aliens_killed = statistics.big_aliens_killed + 1
                             statistics.save()
@@ -1630,9 +1311,9 @@ while True:
                         large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = 0
                     if la.get_hit_delay() == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                            score = score + 2
+                            statistics.score = statistics.score + 2
                         else:
-                            score = score + 1
+                            statistics.score = statistics.score + 1
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             laser_update = laser_update + 1
@@ -1649,9 +1330,9 @@ while True:
                         ufo.ufo_kill_value = 0
                     if u.get_death_animation() == 1:
                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                            score = score + 100
+                            statistics.score = statistics.score + 100
                         else:
-                            score = score + 50
+                            statistics.score = statistics.score + 50
                         if settings.god_mode == 0:
                             statistics.ufos_killed = statistics.ufos_killed + 1
                             statistics.save()
@@ -1670,19 +1351,19 @@ while True:
                     if u.get_hit_delay() == 1:
                         if u.get_ufo_health() == 2 or u.get_ufo_health() == 1:
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                score = score + 6
+                                statistics.score = statistics.score + 6
                             else:
-                                score = score + 3
+                                statistics.score = statistics.score + 3
                         elif u.get_ufo_health() == 5 or u.get_ufo_health() == 4 or u.get_ufo_health() == 3:
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                score = score + 4
+                                statistics.score = statistics.score + 4
                             else:
-                                score = score + 2
+                                statistics.score = statistics.score + 2
                         else:
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                score = score + 2
+                                statistics.score = statistics.score + 2
                             else:
-                                score = score + 1
+                                statistics.score = statistics.score + 1
                         h.get_laser().hideturtle()
                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             laser_update = laser_update + 1
@@ -1701,7 +1382,7 @@ while True:
                         statistics.damage_taken = statistics.damage_taken + 1
                         statistics.save()
                     # Set the store to 0 and reset the game
-                    score = 0
+                    statistics.score = 0
                 # Check if the death animation has finished
                 if h.get_death_iterator() == 0:
                     human_player.human_update_value = 0

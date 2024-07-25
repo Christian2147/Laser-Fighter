@@ -30,9 +30,6 @@ from utils.UpdateControls import ControlsConfig
 from utils.UpdateStatsData import Stats
 from utils.UpdateShopData import ShopConfig
 
-# Current Score
-score = 0
-
 # Laser piercing in alien mode (Can only pierce through 2 enemies by default)
 laser_update = 0
 
