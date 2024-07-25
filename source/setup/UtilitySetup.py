@@ -67,3 +67,20 @@ text_refresh = TextRefresh(screen, button, panel,
                            settings_toggle, statistics, shop,
                            shop_config, controls, controls_toggle,
                            refresh_variables)
+
+# Set the keybinds for the turtle graphics window:
+# Bind the current keybinds to their appropriate functions
+wn.listen()
+wn.onkeypress(movement.go_left, controls_toggle.go_left_key)
+wn.onkeypress(movement.go_right, controls_toggle.go_right_key)
+wn.onkeypress(movement.shoot, controls_toggle.shoot_key)
+wn.onkeypress(movement.jump, controls_toggle.jump_key)
+
+# Detect when the user wants to close the window and terminate the game loop.
+# "WM_DELETE_WINDOW" is the parameter used to determine if the user has clicked the red x in the corner of the window
+# If so, run the "on_quit" function which terminates the window
+wn._root.protocol("WM_DELETE_WINDOW", screen.on_quit)
+
+# The two lines of code below are used to collect the position of the users mouse on the canvas
+mouse_position = wn.getcanvas()
+mouse_position.bind('<Motion>', hover.hover)
