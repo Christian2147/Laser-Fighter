@@ -55,42 +55,13 @@ from setup.SpriteSetup import small_alien
 from setup.SpriteSetup import medium_alien
 from setup.SpriteSetup import large_alien
 from setup.SpriteSetup import ufo
-from utils.ScreenManager import ScreenUpdate
-from utils.MovementManager import Movement
-from utils.HoverManager import Hover
-from utils.ShopManager import Shop
-from utils.SettingsManager import SettingsToggle
-from utils.ControlsManager import Controls
-from utils.UpdateText import TextRefresh
-
-screen = ScreenUpdate(wn, button, settings, refresh_variables,
-                      scale_factor_X, scale_factor_Y)
-
-movement = Movement(screen, machine_player, human_player,
-                    ufo, settings, statistics,
-                    scale_factor_Y)
-
-hover = Hover(screen, button)
-
-shop = Shop(wn, screen, button,
-            panel, textbox, price_label,
-            settings, refresh_variables, shop_config,
-            scale_factor_X, scale_factor_Y)
-
-settings_toggle = SettingsToggle(wn, screen, button,
-                                 settings, refresh_variables, scale_factor_X,
-                                 scale_factor_Y)
-
-controls = Controls(wn, screen, settings,
-                    controls_toggle, refresh_variables, scale_factor_X,
-                    scale_factor_Y)
-
-text_refresh = TextRefresh(screen, button, panel,
-                           textbox, yellow_power_up_indicator, blue_power_up_indicator,
-                           extra_power_up_indicator, settings,
-                           settings_toggle, statistics, shop,
-                           shop_config, controls, controls_toggle,
-                           refresh_variables)
+from setup.UtilitySetup import screen
+from setup.UtilitySetup import movement
+from setup.UtilitySetup import hover
+from setup.UtilitySetup import shop
+from setup.UtilitySetup import settings_toggle
+from setup.UtilitySetup import controls
+from setup.UtilitySetup import text_refresh
 
 # Set the keybinds for the turtle graphics window:
 # Bind the current keybinds to their appropriate functions
