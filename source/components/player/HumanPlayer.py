@@ -457,8 +457,8 @@ class Human:
                 self.move_update = 1
                 if self.player.xcor() < (self.Start_X + 100 * self.scale_factor_x):
                     # Calculate the delta movement and add it as additional movement required
-                    delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                    self.player.setx(self.player.xcor() + 4 * self.scale_factor_x + delta_movement)
+                    delta_movement = alien_mode_setup.player_movement * ((elapsed_time - 0.012) / 0.012)
+                    self.player.setx(self.player.xcor() + alien_mode_setup.player_movement + delta_movement)
                     self.oxygen_tank.goto(self.player.xcor() - 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
                     self.gun.goto(self.player.xcor() + alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
                     self.moving_right = 1
@@ -485,8 +485,8 @@ class Human:
                 self.move_update = 1
                 if self.player.xcor() > (self.Start_X - 100 * self.scale_factor_x):
                     # Calculate the delta movement and add it as additional movement required
-                    delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                    self.player.setx(self.player.xcor() - 4 * self.scale_factor_x - delta_movement)
+                    delta_movement = alien_mode_setup.player_movement * ((elapsed_time - 0.012) / 0.012)
+                    self.player.setx(self.player.xcor() - alien_mode_setup.player_movement - delta_movement)
                     self.oxygen_tank.goto(self.player.xcor() + 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
                     self.gun.goto(self.player.xcor() - alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
                     self.moving_left = 1
@@ -511,9 +511,9 @@ class Human:
             if (self.direction == 1 and self.jump_direction == 0) or (self.jump_direction == 1):
                 current_time = time.time()
                 elapsed_time = current_time - self.jump_start_time
-                if elapsed_time >= 0.006:
+                if elapsed_time >= alien_mode_setup.jump_frequency:
                     # Find the delta time (How ,much more time has passed since 0.006 seconds)
-                    delta_movement = (elapsed_time - 0.006) / 0.006
+                    delta_movement = (elapsed_time - alien_mode_setup.jump_frequency) / alien_mode_setup.jump_frequency
                     # Convert this value to an integer to get the whole number amounts of
                     #   "0.006 seconds" that have passed
                     delta_movement = int(delta_movement)
@@ -564,9 +564,9 @@ class Human:
             elif (self.direction == 2 and self.jump_direction == 0) or (self.jump_direction == 2):
                 current_time = time.time()
                 elapsed_time = current_time - self.jump_start_time
-                if elapsed_time >= 0.006:
+                if elapsed_time >= alien_mode_setup.jump_frequency:
                     # Same process as above to find the delta time
-                    delta_movement = (elapsed_time - 0.006) / 0.006
+                    delta_movement = (elapsed_time - alien_mode_setup.jump_frequency) / alien_mode_setup.jump_frequency
                     delta_movement = int(delta_movement)
                     iterations = 1 + delta_movement
                     for i in range(iterations):

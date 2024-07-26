@@ -65,7 +65,8 @@ class AlienModeSetup:
         self.piercing = 0
         self.laser_count = 0
 
-        self.player_movement = 1
+        self.player_movement = 4
+        self.jump_frequency = 0.006
         self.power_up_spawn_rate = 1
 
         self.setup_alien_mode()
@@ -90,6 +91,7 @@ class AlienModeSetup:
         del self.piercing
         del self.laser_count
         del self.player_movement
+        del self.jump_frequency
         del self.power_up_spawn_rate
 
     @property
@@ -186,6 +188,7 @@ class AlienModeSetup:
             self.regular_score_multiplier = 2
 
             self.player_movement = self.player_movement * 1.25
+            self.jump_frequency = self.jump_frequency / 1.25
             self.power_up_spawn_rate = 2
 
         self.yellow_power_up_speed = self.laser_speed * self._power_up_setup.yellow_power_up_speed_increase
@@ -193,3 +196,6 @@ class AlienModeSetup:
         self.blue_power_up_score_multiplier = self.regular_score_multiplier * self._power_up_setup.blue_power_up_multiplier
 
         self.player_movement = self.player_movement * self._power_up_setup.yellow_power_up_movement_increase
+        self.player_movement = self.player_movement * self._scale_factor_x
+
+        self.jump_frequency = self.jump_frequency / self._power_up_setup.yellow_power_up_movement_increase
