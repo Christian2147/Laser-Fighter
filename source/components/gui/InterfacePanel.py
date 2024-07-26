@@ -34,6 +34,10 @@ from setup.data.ShopDescriptions import RED_POWER_UP_DESCRIPTIONS
 from setup.TextureSetup import SIDE_PANEL_SHOP_TEXTURE
 from setup.TextureSetup import MACHINE_DEFAULT_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import ALIEN_DEFAULT_DISPLAY_ICON_TEXTURE
+from setup.TextureSetup import THE_COOKER_DISPLAY_ICON_TEXTURE
+from setup.TextureSetup import POISON_DART_DISPLAY_ICON_TEXTURE
+from setup.TextureSetup import METEOR_GUN_DISPLAY_ICON_TEXTURE
+from setup.TextureSetup import SUPERNOVA_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import YELLOW_POWER_UP_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import BLUE_POWER_UP_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import GREEN_POWER_UP_DISPLAY_ICON_TEXTURE
@@ -224,8 +228,14 @@ class Panel:
             elif self.catigory == "Alien_Mode":
                 if self.id == 1:
                     self.panel_indicator.shape(ALIEN_DEFAULT_DISPLAY_ICON_TEXTURE)
-                else:
-                    self.panel_indicator.shape(PLAYER_GUN_RIGHT_TEXTURE)
+                elif self.id == 2:
+                    self.panel_indicator.shape(THE_COOKER_DISPLAY_ICON_TEXTURE)
+                elif self.id == 3:
+                    self.panel_indicator.shape(POISON_DART_DISPLAY_ICON_TEXTURE)
+                elif self.id == 4:
+                    self.panel_indicator.shape(METEOR_GUN_DISPLAY_ICON_TEXTURE)
+                elif self.id == 5:
+                    self.panel_indicator.shape(SUPERNOVA_DISPLAY_ICON_TEXTURE)
             elif self.catigory == "Yellow_Power_Up":
                 self.panel_indicator.shape(YELLOW_POWER_UP_DISPLAY_ICON_TEXTURE)
             elif self.catigory == "Blue_Power_Up":
