@@ -31,6 +31,7 @@ import pygame
 import random
 import time
 from components.ItemCoin import Coin
+from setup.ModeSetupMaster import alien_mode_setup
 from setup.TextureSetup import ALIEN_STILL_RIGHT_11_15_TEXTURE
 from setup.TextureSetup import ALIEN_STILL_LEFT_11_15_TEXTURE
 from setup.TextureSetup import ALIEN_WALKING_RIGHT_11_15_TEXTURE
@@ -414,9 +415,10 @@ class LargeAlien:
 
         if self.death_animation == 0:
             # Decrease the aliens health by 1
-            if self.health == 3:
+            self.health = self.health - alien_mode_setup.damage
+            if self.health == 2:
                 self.large_alien_health_bar.shape(HEALTH_BAR_23_TEXTURE)
-            elif self.health == 2:
+            elif self.health == 1:
                 self.large_alien_health_bar.shape(HEALTH_BAR_13_TEXTURE)
             # Play the hit sound
             if hit_sound == 1:
@@ -425,7 +427,6 @@ class LargeAlien:
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0
-            self.health = self.health - 1
             self.hit_delay = 1
             self.hit_start_time = time.time()
             return

@@ -106,6 +106,10 @@ class AlienModeSetup:
             raise ValueError("Value must be an integer")
 
     def setup_alien_mode(self):
+        self.player_movement = 4
+        self.jump_frequency = 0.006
+        self.power_up_spawn_rate = 1
+
         if self._shop_config.alien_slot_selected == 1:
             self.gun_right_texture = PLAYER_GUN_RIGHT_TEXTURE
             self.gun_left_texture = PLAYER_GUN_LEFT_TEXTURE

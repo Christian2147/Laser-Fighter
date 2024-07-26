@@ -32,6 +32,7 @@ import pygame
 import random
 import time
 from components.ItemCoin import Coin
+from setup.ModeSetupMaster import alien_mode_setup
 from setup.TextureSetup import ALIEN_BOSS_TEXTURE
 from setup.TextureSetup import YELLOW_MACHINE_LASER_TEXTURE
 from setup.TextureSetup import EXPLOSION_1_TEXTURE
@@ -446,24 +447,25 @@ class UFO:
             return
 
         if self.death_animation == 0:
-            # Decrease the aliens health by 1
-            if self.health == 10:
+            # Decrease the ufos health by the damage amount
+            self.health = self.health - alien_mode_setup.damage
+            if self.health == 9:
                 self.ufo_health_bar.shape(HEALTH_BAR_910_TEXTURE)
-            elif self.health == 9:
-                self.ufo_health_bar.shape(HEALTH_BAR_810_TEXTURE)
             elif self.health == 8:
-                self.ufo_health_bar.shape(HEALTH_BAR_710_TEXTURE)
+                self.ufo_health_bar.shape(HEALTH_BAR_810_TEXTURE)
             elif self.health == 7:
-                self.ufo_health_bar.shape(HEALTH_BAR_610_TEXTURE)
+                self.ufo_health_bar.shape(HEALTH_BAR_710_TEXTURE)
             elif self.health == 6:
-                self.ufo_health_bar.shape(HEALTH_BAR_510_TEXTURE)
+                self.ufo_health_bar.shape(HEALTH_BAR_610_TEXTURE)
             elif self.health == 5:
-                self.ufo_health_bar.shape(HEALTH_BAR_410_TEXTURE)
+                self.ufo_health_bar.shape(HEALTH_BAR_510_TEXTURE)
             elif self.health == 4:
-                self.ufo_health_bar.shape(HEALTH_BAR_310_TEXTURE)
+                self.ufo_health_bar.shape(HEALTH_BAR_410_TEXTURE)
             elif self.health == 3:
-                self.ufo_health_bar.shape(HEALTH_BAR_210_TEXTURE)
+                self.ufo_health_bar.shape(HEALTH_BAR_310_TEXTURE)
             elif self.health == 2:
+                self.ufo_health_bar.shape(HEALTH_BAR_210_TEXTURE)
+            elif self.health == 1:
                 self.ufo_health_bar.shape(HEALTH_BAR_110_TEXTURE)
             # Play the hit sound
             if hit_sound == 1:
@@ -472,7 +474,6 @@ class UFO:
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0
-            self.health = self.health - 1
             self.hit_delay = 1
             self.hit_start_time = time.time()
             return
