@@ -54,6 +54,10 @@ class AlienModeSetup:
         self.laser_left_texture = ""
         self.laser_offset = 0
 
+        self.yellow_power_up_speed_increase = 0
+        self.laser_speed = 0
+        self.yellow_power_up_speed = 0
+
         self.setup_alien_mode()
 
     def __del__(self):
@@ -80,6 +84,13 @@ class AlienModeSetup:
             raise ValueError("Value must be an integer")
 
     def setup_alien_mode(self):
+        if self._shop_config.yellow_power_up_level == 1:
+            self.yellow_power_up_speed_increase = 2
+        elif self._shop_config.yellow_power_up_level == 2 or self._shop_config.yellow_power_up_level == 3:
+            self.yellow_power_up_speed_increase = 3
+        elif self._shop_config.yellow_power_up_level == 4 or self._shop_config.yellow_power_up_level == 5:
+            self.yellow_power_up_speed_increase = 4
+
         if self._shop_config.alien_slot_selected == 1:
             self.gun_right_texture = PLAYER_GUN_RIGHT_TEXTURE
             self.gun_left_texture = PLAYER_GUN_LEFT_TEXTURE
@@ -88,6 +99,8 @@ class AlienModeSetup:
             self.laser_right_texture = PLAYER_HEAD_LASER_TEXTURE
             self.laser_left_texture = PLAYER_HEAD_LASER_TEXTURE
             self.laser_offset = 35 * self._scale_factor_x
+
+            self.laser_speed = 13 * self._scale_factor_x
         elif self._shop_config.alien_slot_selected == 2:
             self.gun_right_texture = THE_COOKER_RIGHT_TEXTURE
             self.gun_left_texture = THE_COOKER_LEFT_TEXTURE
@@ -96,6 +109,8 @@ class AlienModeSetup:
             self.laser_right_texture = THE_COOKER_LASER_TEXTURE
             self.laser_left_texture = THE_COOKER_LASER_TEXTURE
             self.laser_offset = 35 * self._scale_factor_x
+
+            self.laser_speed = 15 * self._scale_factor_x
         elif self._shop_config.alien_slot_selected == 3:
             self.gun_right_texture = POISON_DART_GUN_RIGHT_TEXTURE
             self.gun_left_texture = POISON_DART_GUN_LEFT_TEXTURE
@@ -104,6 +119,8 @@ class AlienModeSetup:
             self.laser_right_texture = POISON_DART_LASER_TEXTURE
             self.laser_left_texture = POISON_DART_LASER_TEXTURE
             self.laser_offset = 35 * self._scale_factor_x
+
+            self.laser_speed = 25 * self._scale_factor_x
         elif self._shop_config.alien_slot_selected == 4:
             self.gun_right_texture = METEOR_GUN_RIGHT_TEXTURE
             self.gun_left_texture = METEOR_GUN_LEFT_TEXTURE
@@ -112,6 +129,8 @@ class AlienModeSetup:
             self.laser_right_texture = METEOR_GUN_LASER_RIGHT_TEXTURE
             self.laser_left_texture = METEOR_GUN_LASER_LEFT_TEXTURE
             self.laser_offset = 65 * self._scale_factor_x
+
+            self.laser_speed = 24 * self._scale_factor_x
         elif self._shop_config.alien_slot_selected == 5:
             self.gun_right_texture = SUPERNOVA_RIGHT_TEXTURE
             self.gun_left_texture = SUPERNOVA_LEFT_TEXTURE
@@ -121,22 +140,7 @@ class AlienModeSetup:
             self.laser_left_texture = SUPERNOVA_LASER_LEFT_TEXTURE
             self.laser_offset = 65 * self._scale_factor_x
 
+            self.laser_speed = 30 * self._scale_factor_x
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        self.yellow_power_up_speed = self.laser_speed * self.yellow_power_up_speed_increase
 

@@ -639,11 +639,11 @@ class Human:
                     # Calculate the delta movement
                     # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
-                    delta_movement = 32 * self.scale_factor_x * ((elapsed_time - 0.01) / 0.01)
-                    self.laser.setx(self.laser.xcor() + 32 * self.scale_factor_x + delta_movement)
+                    delta_movement = alien_mode_setup.yellow_power_up_speed * ((elapsed_time - 0.01) / 0.01)
+                    self.laser.setx(self.laser.xcor() + alien_mode_setup.yellow_power_up_speed + delta_movement)
                 else:
-                    delta_movement = 13 * self.scale_factor_x * ((elapsed_time - 0.01) / 0.01)
-                    self.laser.setx(self.laser.xcor() + 13 * self.scale_factor_x + delta_movement)
+                    delta_movement = alien_mode_setup.laser_speed * ((elapsed_time - 0.01) / 0.01)
+                    self.laser.setx(self.laser.xcor() + alien_mode_setup.laser_speed + delta_movement)
                 self.laser_start_time = time.time()
         # If the direction is left
         elif -1080 * self.scale_factor_x < self.laser.xcor() < 1080 * self.scale_factor_x and self.laser_direction == 2:
@@ -656,11 +656,11 @@ class Human:
             # Move the laser every 0.01 seconds
             if elapsed_time >= 0.01:
                 if yellow_power_up == 1:
-                    delta_movement = 32 * self.scale_factor_x * ((elapsed_time - 0.01) / 0.01)
-                    self.laser.setx(self.laser.xcor() - 32 * self.scale_factor_x - delta_movement)
+                    delta_movement = alien_mode_setup.yellow_power_up_speed * ((elapsed_time - 0.01) / 0.01)
+                    self.laser.setx(self.laser.xcor() - alien_mode_setup.yellow_power_up_speed - delta_movement)
                 else:
-                    delta_movement = 13 * self.scale_factor_x * ((elapsed_time - 0.01) / 0.01)
-                    self.laser.setx(self.laser.xcor() - 13 * self.scale_factor_x - delta_movement)
+                    delta_movement = alien_mode_setup.laser_speed * ((elapsed_time - 0.01) / 0.01)
+                    self.laser.setx(self.laser.xcor() - alien_mode_setup.laser_speed - delta_movement)
                 self.laser_start_time = time.time()
         # If the laser has finished moving
         else:
