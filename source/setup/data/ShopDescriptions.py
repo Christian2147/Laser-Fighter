@@ -147,7 +147,7 @@ ALIEN_DESCRIPTIONS = [
     Description("left", [
         "Meteor Gun",
         "",
-        "Laser Speed: 24",
+        "Laser Speed: 27",
         "Laser Color: Multicolor",
         "Laser Size: XL",
         "Lasers Per Round: 1",

@@ -47,6 +47,10 @@ class AlienModeSetup:
 
         self._setup = 0
 
+        self.regular_score_multiplier = 0
+        self.blue_power_up_multiplier = 0
+        self.blue_power_up_score_multiplier = 0
+
         self.gun_right_texture = ""
         self.gun_left_texture = ""
         self.gun_offset = 0
@@ -58,6 +62,10 @@ class AlienModeSetup:
         self.laser_speed = 0
         self.yellow_power_up_speed = 0
 
+        self.damage = 0
+        self.piercing = 0
+        self.laser_count = 0
+
         self.setup_alien_mode()
 
     def __del__(self):
@@ -65,12 +73,21 @@ class AlienModeSetup:
         del self._scale_factor_x
         del self._scale_factor_y
         del self._setup
+        del self.regular_score_multiplier
+        del self.blue_power_up_multiplier
+        del self.blue_power_up_score_multiplier
         del self.gun_right_texture
         del self.gun_left_texture
         del self.gun_offset
         del self.laser_right_texture
         del self.laser_left_texture
         del self.laser_offset
+        del self.yellow_power_up_speed_increase
+        del self.laser_speed
+        del self.yellow_power_up_speed
+        del self.damage
+        del self.piercing
+        del self.laser_count
 
     @property
     def setup(self):
@@ -91,6 +108,15 @@ class AlienModeSetup:
         elif self._shop_config.yellow_power_up_level == 4 or self._shop_config.yellow_power_up_level == 5:
             self.yellow_power_up_speed_increase = 4
 
+        if self._shop_config.blue_power_up_level == 1:
+            self.blue_power_up_multiplier = 2
+        elif self._shop_config.blue_power_up_level == 2 or self._shop_config.blue_power_up_level == 3:
+            self.blue_power_up_multiplier = 3
+        elif self._shop_config.blue_power_up_level == 4:
+            self.blue_power_up_multiplier = 4
+        elif self._shop_config.blue_power_up_level == 5:
+            self.blue_power_up_multiplier = 5
+
         if self._shop_config.alien_slot_selected == 1:
             self.gun_right_texture = PLAYER_GUN_RIGHT_TEXTURE
             self.gun_left_texture = PLAYER_GUN_LEFT_TEXTURE
@@ -101,6 +127,12 @@ class AlienModeSetup:
             self.laser_offset = 35 * self._scale_factor_x
 
             self.laser_speed = 13 * self._scale_factor_x
+
+            self.damage = 1
+            self.piercing = 2
+            self.laser_count = 1
+
+            self.regular_score_multiplier = 1
         elif self._shop_config.alien_slot_selected == 2:
             self.gun_right_texture = THE_COOKER_RIGHT_TEXTURE
             self.gun_left_texture = THE_COOKER_LEFT_TEXTURE
@@ -111,6 +143,12 @@ class AlienModeSetup:
             self.laser_offset = 35 * self._scale_factor_x
 
             self.laser_speed = 15 * self._scale_factor_x
+
+            self.damage = 1
+            self.piercing = 3
+            self.laser_count = 1
+
+            self.regular_score_multiplier = 1
         elif self._shop_config.alien_slot_selected == 3:
             self.gun_right_texture = POISON_DART_GUN_RIGHT_TEXTURE
             self.gun_left_texture = POISON_DART_GUN_LEFT_TEXTURE
@@ -121,6 +159,12 @@ class AlienModeSetup:
             self.laser_offset = 35 * self._scale_factor_x
 
             self.laser_speed = 25 * self._scale_factor_x
+
+            self.damage = 2
+            self.piercing = 2
+            self.laser_count = 2
+
+            self.regular_score_multiplier = 1
         elif self._shop_config.alien_slot_selected == 4:
             self.gun_right_texture = METEOR_GUN_RIGHT_TEXTURE
             self.gun_left_texture = METEOR_GUN_LEFT_TEXTURE
@@ -130,7 +174,13 @@ class AlienModeSetup:
             self.laser_left_texture = METEOR_GUN_LASER_LEFT_TEXTURE
             self.laser_offset = 65 * self._scale_factor_x
 
-            self.laser_speed = 24 * self._scale_factor_x
+            self.laser_speed = 27 * self._scale_factor_x
+
+            self.damage = 3
+            self.piercing = 3
+            self.laser_count = 1
+
+            self.regular_score_multiplier = 2
         elif self._shop_config.alien_slot_selected == 5:
             self.gun_right_texture = SUPERNOVA_RIGHT_TEXTURE
             self.gun_left_texture = SUPERNOVA_LEFT_TEXTURE
@@ -142,5 +192,14 @@ class AlienModeSetup:
 
             self.laser_speed = 30 * self._scale_factor_x
 
+            self.damage = 3
+            self.piercing = 4
+            self.laser_count = 2
+
+            self.regular_score_multiplier = 2
+
         self.yellow_power_up_speed = self.laser_speed * self.yellow_power_up_speed_increase
+
+        self.blue_power_up_score_multiplier = self.regular_score_multiplier * self.blue_power_up_multiplier
+
 
