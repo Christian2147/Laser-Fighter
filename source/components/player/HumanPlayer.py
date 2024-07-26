@@ -29,6 +29,7 @@ import turtle
 import pygame
 import math
 import time
+from setup.ModeSetupMaster import alien_mode_setup
 from setup.TextureSetup import HUMAN_STILL_RIGHT_TEXTURE
 from setup.TextureSetup import HUMAN_STILL_LEFT_TEXTURE
 from setup.TextureSetup import HUMAN_WALKING_RIGHT_TEXTURE
@@ -129,7 +130,7 @@ class Human:
         self.oxygen_tank.direction = "stop"
 
         self.gun = turtle.Turtle()
-        self.gun.shape(PLAYER_GUN_RIGHT_TEXTURE)
+        self.gun.shape(alien_mode_setup.gun_right_texture)
         self.gun.shapesize(0.67 * scale_factor_y, 2 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.gun.penup()
@@ -138,7 +139,7 @@ class Human:
         self.gun.hideturtle()
 
         self.laser = turtle.Turtle()
-        self.laser.shape(PLAYER_HEAD_LASER_TEXTURE)
+        self.laser.shape(alien_mode_setup.laser_right_texture)
         self.laser.shapesize(0.33 * scale_factor_y, 2 * scale_factor_x)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.laser.penup()
@@ -224,10 +225,11 @@ class Human:
         self.oxygen_tank.direction = "stop"
         self.oxygen_tank.showturtle()
 
-        self.gun.shape(PLAYER_GUN_RIGHT_TEXTURE)
+        self.gun.shape(alien_mode_setup.gun_right_texture)
         self.gun.goto(self.player.xcor(), self.player.ycor() + 12 * self.scale_factor_y)
         self.gun.direction = "stop"
 
+        self.laser.shape(alien_mode_setup.laser_right_texture)
         self.laser.goto(self.gun.xcor(), self.gun.ycor())
         self.laser.showturtle()
 
@@ -360,7 +362,7 @@ class Human:
             self.gun.direction = "right"
             self.direction = 1
             self.gun_direction = 1
-            self.gun.goto(self.player.xcor() + 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
+            self.gun.goto(self.player.xcor() + alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
             self.gun.showturtle()
             # Mark the starting point
             self.Start_X = self.player.xcor()
@@ -382,7 +384,7 @@ class Human:
             self.gun.direction = "left"
             self.direction = 2
             self.gun_direction = 2
-            self.gun.goto(self.player.xcor() - 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
+            self.gun.goto(self.player.xcor() - alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
             self.gun.showturtle()
             # Mark the starting point
             self.Start_X = self.player.xcor()
@@ -420,8 +422,9 @@ class Human:
         if self.direction == 1:
             # Shoot to the right
             self.laser_direction = 1
-            self.laser.setx(self.gun.xcor() + 30 * self.scale_factor_x)
+            self.laser.setx(self.gun.xcor() + alien_mode_setup.laser_offset)
             self.laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
+            self.laser.shape(alien_mode_setup.laser_right_texture)
             if shooting_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
                 sound.play()
@@ -430,8 +433,9 @@ class Human:
         elif self.direction == 2:
             # Shoot to the left
             self.laser_direction = 2
-            self.laser.setx(self.gun.xcor() - 30 * self.scale_factor_x)
+            self.laser.setx(self.gun.xcor() - alien_mode_setup.laser_offset)
             self.laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
+            self.laser.shape(alien_mode_setup.laser_left_texture)
             if shooting_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
                 sound.play()
@@ -456,7 +460,7 @@ class Human:
                     delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
                     self.player.setx(self.player.xcor() + 4 * self.scale_factor_x + delta_movement)
                     self.oxygen_tank.goto(self.player.xcor() - 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
-                    self.gun.goto(self.player.xcor() + 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
+                    self.gun.goto(self.player.xcor() + alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
                     self.moving_right = 1
                 else:
                     # Once finished, reset the movement variables
@@ -484,7 +488,7 @@ class Human:
                     delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
                     self.player.setx(self.player.xcor() - 4 * self.scale_factor_x - delta_movement)
                     self.oxygen_tank.goto(self.player.xcor() + 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
-                    self.gun.goto(self.player.xcor() - 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
+                    self.gun.goto(self.player.xcor() - alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
                     self.moving_left = 1
                 else:
                     # Once finished, reset the movement variables
@@ -525,7 +529,7 @@ class Human:
                         self.player.sety(self.player.ycor() + self.current_velocity)
                         self.player.setx(self.player.xcor() + 7 * self.scale_factor_x)
                         self.oxygen_tank.goto(self.player.xcor() - 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
-                        self.gun.goto(self.player.xcor() + 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
+                        self.gun.goto(self.player.xcor() + alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
                         self.jump_start_time = time.time()
                         # Finding the new velocity:
                         # If the highest point has not been reached yet
@@ -554,7 +558,7 @@ class Human:
                             self.current_velocity = 23.84848 * self.scale_factor_y
                             self.player.sety(-141 * self.scale_factor_y)
                             self.oxygen_tank.goto(self.player.xcor() - 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
-                            self.gun.goto(self.player.xcor() + 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
+                            self.gun.goto(self.player.xcor() + alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
                             break
             # If the direction is left
             elif (self.direction == 2 and self.jump_direction == 0) or (self.jump_direction == 2):
@@ -574,7 +578,7 @@ class Human:
                         self.player.sety(self.player.ycor() + self.current_velocity)
                         self.player.setx(self.player.xcor() - 7 * self.scale_factor_x)
                         self.oxygen_tank.goto(self.player.xcor() + 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
-                        self.gun.goto(self.player.xcor() - 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
+                        self.gun.goto(self.player.xcor() - alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
                         self.jump_start_time = time.time()
                         # Finding the new velocity:
                         # If the highest point has not been reached yet
@@ -602,7 +606,7 @@ class Human:
                             self.current_velocity = 23.84848 * self.scale_factor_y
                             self.player.sety(-141 * self.scale_factor_y)
                             self.oxygen_tank.goto(self.player.xcor() + 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
-                            self.gun.goto(self.player.xcor() - 20 * self.scale_factor_x, self.player.ycor() + 12 * self.scale_factor_y)
+                            self.gun.goto(self.player.xcor() - alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
                             break
 
     def execute_shoot(self, yellow_power_up, laser_update):
@@ -713,10 +717,10 @@ class Human:
         if elapsed_time >= 0.005:
             # If the players direction is right, make the gun face right
             if self.gun_direction == 1:
-                self.gun.shape(PLAYER_GUN_RIGHT_TEXTURE)
+                self.gun.shape(alien_mode_setup.gun_right_texture)
             # If the players direction is left, make the gun face left
             elif self.gun_direction == 2:
-                self.gun.shape(PLAYER_GUN_LEFT_TEXTURE)
+                self.gun.shape(alien_mode_setup.gun_left_texture)
             self.gun_start_time = time.time()
 
     def kill_player(self, death_sound):

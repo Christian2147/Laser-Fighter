@@ -15,12 +15,12 @@
 
 import ctypes
 import configparser
+from utils.PlayerDataManager import ConfigManager
 
 
 class Stats:
     def __init__(self, god_mode):
-        self.config_file = 'Config/playerData.ini'
-        self.config = configparser.ConfigParser()
+        self.config_manager = ConfigManager()
 
         self.score = 0
 
@@ -52,80 +52,65 @@ class Stats:
         self.load()
 
     def __del__(self):
-        del self.config_file
+        del self.config_manager
 
     def load(self):
-        self.config.read(self.config_file)
+        # Machine Mode Statistics
+        if self.god_mode == 1:
+            self.high_score_machine_war = "NA"
+        else:
+            self.high_score_machine_war = self.config_manager.getint('High_Score', 'High_Score_Machine_War')
+        self.bosses_killed = self.config_manager.getint('Statistics_Machine_Mode', 'Bosses_Killed')
+        self.red_bots_killed = self.config_manager.getint('Statistics_Machine_Mode', 'Red_Bots_Killed')
+        self.yellow_bots_killed = self.config_manager.getint('Statistics_Machine_Mode', 'Yellow_Bots_Killed')
+        self.blue_bots_killed = self.config_manager.getint('Statistics_Machine_Mode', 'Blue_Bots_Killed')
+        self.classic_deaths = self.config_manager.getint('Statistics_Machine_Mode', 'Deaths')
+        self.machine_damage_taken = self.config_manager.getint('Statistics_Machine_Mode', 'Damage_Taken')
+        self.classic_lasers_fired = self.config_manager.getint('Statistics_Machine_Mode', 'Lasers_Fired')
+        self.classic_power_ups_picked_up = self.config_manager.getint('Statistics_Machine_Mode', 'Power_Ups_Picked_Up')
+        self.machine_coins_collected = self.config_manager.getint('Statistics_Machine_Mode', 'Coins_Collected')
 
-        try:
-            # Machine Mode Statistics
-            if self.god_mode == 1:
-                self.high_score_machine_war = "NA"
-            else:
-                self.high_score_machine_war = self.config['High_Score'].getint('High_Score_Machine_War')
-            self.bosses_killed = self.config['Statistics_Machine_Mode'].getint('Bosses_Killed')
-            self.red_bots_killed = self.config['Statistics_Machine_Mode'].getint('Red_Bots_Killed')
-            self.yellow_bots_killed = self.config['Statistics_Machine_Mode'].getint('Yellow_Bots_Killed')
-            self.blue_bots_killed = self.config['Statistics_Machine_Mode'].getint('Blue_Bots_Killed')
-            self.classic_deaths = self.config['Statistics_Machine_Mode'].getint('Deaths')
-            self.machine_damage_taken = self.config['Statistics_Machine_Mode'].getint('Damage_Taken')
-            self.classic_lasers_fired = self.config['Statistics_Machine_Mode'].getint('Lasers_Fired')
-            self.classic_power_ups_picked_up = self.config['Statistics_Machine_Mode'].getint('Power_Ups_Picked_Up')
-            self.machine_coins_collected = self.config['Statistics_Machine_Mode'].getint('Coins_Collected')
-
-            # Alien Mode Statistics
-            if self.god_mode == 1:
-                self.high_score_alien_mode = "NA"
-            else:
-                self.high_score_alien_mode = self.config['High_Score'].getint('High_Score_Alien_Mode')
-            self.ufos_killed = self.config['Statistics_Alien_Mode'].getint('Ufos_Killed')
-            self.big_aliens_killed = self.config['Statistics_Alien_Mode'].getint('Big_Aliens_Killed')
-            self.medium_aliens_killed = self.config['Statistics_Alien_Mode'].getint('Medium_Aliens_Killed')
-            self.small_aliens_killed = self.config['Statistics_Alien_Mode'].getint('Small_Aliens_Killed')
-            self.alien_deaths = self.config['Statistics_Alien_Mode'].getint('Deaths')
-            self.damage_taken = self.config['Statistics_Alien_Mode'].getint('Damage_Taken')
-            self.alien_lasers_fired = self.config['Statistics_Alien_Mode'].getint('Lasers_Fired')
-            self.jumps = self.config['Statistics_Alien_Mode'].getint('Jumps')
-            self.alien_power_ups_picked_up = self.config['Statistics_Alien_Mode'].getint('Power_Ups_Picked_Up')
-            self.alien_coins_collected = self.config['Statistics_Alien_Mode'].getint('Coins_Collected')
-        except configparser.Error as e:
-            ctypes.windll.user32.MessageBoxW(0, f"Error reading config file: {e}", "Error", 0x10)
+        # Alien Mode Statistics
+        if self.god_mode == 1:
+            self.high_score_alien_mode = "NA"
+        else:
+            self.high_score_machine_war = self.config_manager.getint('High_Score', 'High_Score_Alien_Mode')
+        self.ufos_killed = self.config_manager.getint('Statistics_Alien_Mode', 'Ufos_Killed')
+        self.big_aliens_killed = self.config_manager.getint('Statistics_Alien_Mode', 'Big_Aliens_Killed')
+        self.medium_aliens_killed = self.config_manager.getint('Statistics_Alien_Mode', 'Medium_Aliens_Killed')
+        self.small_aliens_killed = self.config_manager.getint('Statistics_Alien_Mode', 'Small_Aliens_Killed')
+        self.alien_deaths = self.config_manager.getint('Statistics_Alien_Mode', 'Deaths')
+        self.damage_taken = self.config_manager.getint('Statistics_Alien_Mode', 'Damage_Taken')
+        self.alien_lasers_fired = self.config_manager.getint('Statistics_Alien_Mode', 'Lasers_Fired')
+        self.jumps = self.config_manager.getint('Statistics_Alien_Mode', 'Jumps')
+        self.alien_power_ups_picked_up = self.config_manager.getint('Statistics_Alien_Mode', 'Power_Ups_Picked_Up')
+        self.alien_coins_collected = self.config_manager.getint('Statistics_Alien_Mode', 'Coins_Collected')
 
     def save(self):
-        try:
-            if self.god_mode != 1:
-                self.config['High_Score']['High_Score_Machine_War'] = str(self.high_score_machine_war)
-                self.config['High_Score']['High_Score_Alien_Mode'] = str(self.high_score_alien_mode)
+        if self.god_mode != 1:
+            self.config_manager.set('High_Score', 'High_Score_Machine_War', str(self.high_score_machine_war))
+            self.config_manager.set('High_Score', 'High_Score_Alien_Mode', str(self.high_score_alien_mode))
 
-            self.config['Statistics_Machine_Mode'] = {
-                'Bosses_Killed': str(self.bosses_killed),
-                'Red_Bots_Killed': str(self.red_bots_killed),
-                'Yellow_Bots_Killed': str(self.yellow_bots_killed),
-                'Blue_Bots_Killed': str(self.blue_bots_killed),
-                'Deaths': str(self.classic_deaths),
-                'Damage_Taken': str(self.machine_damage_taken),
-                'Lasers_Fired': str(self.classic_lasers_fired),
-                'Power_Ups_Picked_Up': str(self.classic_power_ups_picked_up),
-                'Coins_Collected': str(self.machine_coins_collected)
-            }
+        self.config_manager.set('Statistics_Machine_Mode', 'Bosses_Killed', str(self.bosses_killed))
+        self.config_manager.set('Statistics_Machine_Mode', 'Red_Bots_Killed', str(self.red_bots_killed))
+        self.config_manager.set('Statistics_Machine_Mode', 'Yellow_Bots_Killed', str(self.yellow_bots_killed))
+        self.config_manager.set('Statistics_Machine_Mode', 'Blue_Bots_Killed', str(self.blue_bots_killed))
+        self.config_manager.set('Statistics_Machine_Mode', 'Deaths', str(self.classic_deaths))
+        self.config_manager.set('Statistics_Machine_Mode', 'Damage_Taken', str(self.machine_damage_taken))
+        self.config_manager.set('Statistics_Machine_Mode', 'Lasers_Fired', str(self.classic_lasers_fired))
+        self.config_manager.set('Statistics_Machine_Mode', 'Power_Ups_Picked_Up', str(self.classic_power_ups_picked_up))
+        self.config_manager.set('Statistics_Machine_Mode', 'Coins_Collected', str(self.machine_coins_collected))
 
-            self.config['Statistics_Alien_Mode'] = {
-                'Ufos_Killed': str(self.ufos_killed),
-                'Big_Aliens_Killed': str(self.big_aliens_killed),
-                'Medium_Aliens_Killed': str(self.medium_aliens_killed),
-                'Small_Aliens_Killed': str(self.small_aliens_killed),
-                'Deaths': str(self.alien_deaths),
-                'Damage_Taken': str(self.damage_taken),
-                'Lasers_Fired': str(self.alien_lasers_fired),
-                'Jumps': str(self.jumps),
-                'Power_Ups_Picked_Up': str(self.alien_power_ups_picked_up),
-                'Coins_Collected': str(self.alien_coins_collected)
-            }
-
-            with open(self.config_file, 'w') as configfile:
-                self.config.write(configfile)
-        except configparser.Error as e:
-            ctypes.windll.user32.MessageBoxW(0, f"Error saving config file: {e}", "Error", 0x10)
+        self.config_manager.set('Statistics_Alien_Mode', 'Ufos_Killed', str(self.ufos_killed))
+        self.config_manager.set('Statistics_Alien_Mode', 'Big_Aliens_Killed', str(self.big_aliens_killed))
+        self.config_manager.set('Statistics_Alien_Mode', 'Medium_Aliens_Killed', str(self.medium_aliens_killed))
+        self.config_manager.set('Statistics_Alien_Mode', 'Small_Aliens_Killed', str(self.small_aliens_killed))
+        self.config_manager.set('Statistics_Alien_Mode', 'Deaths', str(self.alien_deaths))
+        self.config_manager.set('Statistics_Alien_Mode', 'Damage_Taken', str(self.damage_taken))
+        self.config_manager.set('Statistics_Alien_Mode', 'Lasers_Fired', str(self.alien_lasers_fired))
+        self.config_manager.set('Statistics_Alien_Mode', 'Jumps', str(self.jumps))
+        self.config_manager.set('Statistics_Alien_Mode', 'Power_Ups_Picked_Up', str(self.alien_power_ups_picked_up))
+        self.config_manager.set('Statistics_Alien_Mode', 'Coins_Collected', str(self.alien_coins_collected))
 
     def __repr__(self):
         return (f"Statistics("
