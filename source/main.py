@@ -54,6 +54,7 @@ from setup.SpriteSetup import small_alien
 from setup.SpriteSetup import medium_alien
 from setup.SpriteSetup import large_alien
 from setup.SpriteSetup import ufo
+from setup.ModeSetupMaster import power_up_setup
 from physics.CollisionMaster import alien_collision
 from setup.UtilitySetup import screen
 from setup.UtilitySetup import shop
@@ -322,7 +323,8 @@ def main():
                 p.shoot(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active())
 
             # Spawn Machine enemies based on the players score
-            # At its peak, there will be 5 blue machines, 5 yellow machines, 5 red machines, and 1 machine boss attacking
+            # At its peak, there will be 5 blue machines, 5 yellow machines, 5 red machines,
+            #   and 1 machine boss attacking
             #   the player
             if statistics.score >= 10 and blue_machine.blue_machine_index == 3:
                 blue_machine.spawn_blue_machine(4)
@@ -406,17 +408,33 @@ def main():
                         c.remove()
                         # Increase the amount of coins based on the type of coin picked up
                         if c.get_type() == "copper":
-                            shop_config.total_coins = shop_config.total_coins + 1
-                            statistics.machine_coins_collected = statistics.machine_coins_collected + 1
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_blue_value
+                            else:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_value
                         elif c.get_type() == "silver":
-                            shop_config.total_coins = shop_config.total_coins + 5
-                            statistics.machine_coins_collected = statistics.machine_coins_collected + 5
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_blue_value
+                            else:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_value
                         elif c.get_type() == "gold":
-                            shop_config.total_coins = shop_config.total_coins + 10
-                            statistics.machine_coins_collected = statistics.machine_coins_collected + 10
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_blue_value
+                            else:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_value
                         elif c.get_type() == "platinum":
-                            shop_config.total_coins = shop_config.total_coins + 25
-                            statistics.machine_coins_collected = statistics.machine_coins_collected + 25
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_blue_value
+                            else:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_value
                         shop_config.save()
                         statistics.save()
                         coin.coins_on_screen_list.pop(hit_coin)
@@ -1133,17 +1151,33 @@ def main():
                         c.remove()
                         # Increase the amount of coins based on the type of coin picked up
                         if c.get_type() == "copper":
-                            shop_config.total_coins = shop_config.total_coins + 1
-                            statistics.alien_coins_collected = statistics.alien_coins_collected + 1
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
+                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_blue_value
+                            else:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
+                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_value
                         elif c.get_type() == "silver":
-                            shop_config.total_coins = shop_config.total_coins + 5
-                            statistics.alien_coins_collected = statistics.alien_coins_collected + 5
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
+                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.silver_coin_blue_value
+                            else:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
+                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.silver_coin_value
                         elif c.get_type() == "gold":
-                            shop_config.total_coins = shop_config.total_coins + 10
-                            statistics.alien_coins_collected = statistics.alien_coins_collected + 10
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
+                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.gold_coin_blue_value
+                            else:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
+                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.gold_coin_value
                         elif c.get_type() == "platinum":
-                            shop_config.total_coins = shop_config.total_coins + 25
-                            statistics.alien_coins_collected = statistics.alien_coins_collected + 25
+                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
+                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.platinum_coin_blue_value
+                            else:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
+                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.platinum_coin_value
                         shop_config.save()
                         statistics.save()
                         coin.coins_on_screen_list.pop(hit_coin)

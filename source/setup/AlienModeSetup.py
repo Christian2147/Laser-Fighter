@@ -40,15 +40,15 @@ class AlienModeSetup:
             cls._instance = super(AlienModeSetup, cls).__new__(cls)
         return cls._instance
 
-    def __init__(self, shop_config, scale_factor_x, scale_factor_y):
+    def __init__(self, shop_config, power_up_setup, scale_factor_x, scale_factor_y):
         self._shop_config = shop_config
+        self._power_up_setup = power_up_setup
         self._scale_factor_x = scale_factor_x
         self._scale_factor_y = scale_factor_y
 
         self._setup = 0
 
         self.regular_score_multiplier = 0
-        self.blue_power_up_multiplier = 0
         self.blue_power_up_score_multiplier = 0
 
         self.gun_right_texture = ""
@@ -58,7 +58,6 @@ class AlienModeSetup:
         self.laser_left_texture = ""
         self.laser_offset = 0
 
-        self.yellow_power_up_speed_increase = 0
         self.laser_speed = 0
         self.yellow_power_up_speed = 0
 
@@ -66,15 +65,18 @@ class AlienModeSetup:
         self.piercing = 0
         self.laser_count = 0
 
+        self.player_movement = 1
+        self.power_up_spawn_rate = 1
+
         self.setup_alien_mode()
 
     def __del__(self):
         del self._shop_config
+        del self._power_up_setup
         del self._scale_factor_x
         del self._scale_factor_y
         del self._setup
         del self.regular_score_multiplier
-        del self.blue_power_up_multiplier
         del self.blue_power_up_score_multiplier
         del self.gun_right_texture
         del self.gun_left_texture
@@ -82,12 +84,13 @@ class AlienModeSetup:
         del self.laser_right_texture
         del self.laser_left_texture
         del self.laser_offset
-        del self.yellow_power_up_speed_increase
         del self.laser_speed
         del self.yellow_power_up_speed
         del self.damage
         del self.piercing
         del self.laser_count
+        del self.player_movement
+        del self.power_up_spawn_rate
 
     @property
     def setup(self):
@@ -101,22 +104,6 @@ class AlienModeSetup:
             raise ValueError("Value must be an integer")
 
     def setup_alien_mode(self):
-        if self._shop_config.yellow_power_up_level == 1:
-            self.yellow_power_up_speed_increase = 2
-        elif self._shop_config.yellow_power_up_level == 2 or self._shop_config.yellow_power_up_level == 3:
-            self.yellow_power_up_speed_increase = 3
-        elif self._shop_config.yellow_power_up_level == 4 or self._shop_config.yellow_power_up_level == 5:
-            self.yellow_power_up_speed_increase = 4
-
-        if self._shop_config.blue_power_up_level == 1:
-            self.blue_power_up_multiplier = 2
-        elif self._shop_config.blue_power_up_level == 2 or self._shop_config.blue_power_up_level == 3:
-            self.blue_power_up_multiplier = 3
-        elif self._shop_config.blue_power_up_level == 4:
-            self.blue_power_up_multiplier = 4
-        elif self._shop_config.blue_power_up_level == 5:
-            self.blue_power_up_multiplier = 5
-
         if self._shop_config.alien_slot_selected == 1:
             self.gun_right_texture = PLAYER_GUN_RIGHT_TEXTURE
             self.gun_left_texture = PLAYER_GUN_LEFT_TEXTURE
@@ -198,8 +185,11 @@ class AlienModeSetup:
 
             self.regular_score_multiplier = 2
 
-        self.yellow_power_up_speed = self.laser_speed * self.yellow_power_up_speed_increase
+            self.player_movement = self.player_movement * 1.25
+            self.power_up_spawn_rate = 2
 
-        self.blue_power_up_score_multiplier = self.regular_score_multiplier * self.blue_power_up_multiplier
+        self.yellow_power_up_speed = self.laser_speed * self._power_up_setup.yellow_power_up_speed_increase
 
+        self.blue_power_up_score_multiplier = self.regular_score_multiplier * self._power_up_setup.blue_power_up_multiplier
 
+        self.player_movement = self.player_movement * self._power_up_setup.yellow_power_up_movement_increase

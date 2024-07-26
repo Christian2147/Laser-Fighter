@@ -74,7 +74,7 @@ class Stats:
         if self.god_mode == 1:
             self.high_score_alien_mode = "NA"
         else:
-            self.high_score_machine_war = self.config_manager.getint('High_Score', 'High_Score_Alien_Mode')
+            self.high_score_alien_mode = self.config_manager.getint('High_Score', 'High_Score_Alien_Mode')
         self.ufos_killed = self.config_manager.getint('Statistics_Alien_Mode', 'Ufos_Killed')
         self.big_aliens_killed = self.config_manager.getint('Statistics_Alien_Mode', 'Big_Aliens_Killed')
         self.medium_aliens_killed = self.config_manager.getint('Statistics_Alien_Mode', 'Medium_Aliens_Killed')

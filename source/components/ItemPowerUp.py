@@ -28,6 +28,7 @@ import turtle
 import random
 import time
 import pygame
+from setup.ModeSetupMaster import power_up_setup
 from setup.TextureSetup import YELLOW_LIGHTNING_POWER_UP_TEXTURE
 from setup.TextureSetup import BLUE_LIGHTNING_POWER_UP_TEXTURE
 from setup.TextureSetup import GREEN_LIGHTNING_POWER_UP_TEXTURE
@@ -327,7 +328,7 @@ class YellowIndicator:
 
         self.yellow_power_up_active = new_value
         self.activate_time = time.time()
-        self.time_value = 20
+        self.time_value = power_up_setup.yellow_power_up_duration
 
     def remove(self):
         """
@@ -484,7 +485,7 @@ class BlueIndicator:
 
         self.blue_power_up_active = new_value
         self.activate_time = time.time()
-        self.time_value = 45
+        self.time_value = power_up_setup.blue_power_up_duration
 
     def remove(self):
         """
@@ -653,7 +654,10 @@ class ExtraIndicator:
 
         self.extra_power_up_active = new_value
         self.activate_time = time.time()
-        self.time_value = 15
+        if self.mode == 1:
+            self.time_value = power_up_setup.green_power_up_duration
+        else:
+            self.time_value = power_up_setup.red_power_up_duration
 
     def remove(self):
         """
