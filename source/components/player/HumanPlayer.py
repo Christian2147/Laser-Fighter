@@ -628,7 +628,7 @@ class Human:
         # If the direction is right
         if -1080 * self.scale_factor_x < self.laser.xcor() < 1080 * self.scale_factor_x and self.laser_direction == 1:
             self.shoot_update = 1
-            if laser_update == 0 or laser_update == 1:
+            if laser_update < alien_mode_setup.piercing:
                 self.laser.showturtle()
             self.laser.direction = "right"
             # Move the laser every 0.01 seconds
@@ -648,7 +648,7 @@ class Human:
         # If the direction is left
         elif -1080 * self.scale_factor_x < self.laser.xcor() < 1080 * self.scale_factor_x and self.laser_direction == 2:
             self.shoot_update = 1
-            if laser_update == 0 or laser_update == 1:
+            if laser_update < alien_mode_setup.piercing:
                 self.laser.showturtle()
             self.laser.direction = "left"
             current_time = time.time()

@@ -13,3 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+
+class MachineModeSetup:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(MachineModeSetup, cls).__new__(cls)
+        return cls._instance
+

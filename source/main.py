@@ -823,7 +823,7 @@ def main():
                 p.remove()
             machine_player.current_player.clear()
             machine_player.current_player_index = 0
-            player_update_value = 0
+            machine_player.player_update_value = 0
             for bm in blue_machine.blue_machines:
                 bm.remove()
             blue_machine.blue_machines.clear()
@@ -944,7 +944,7 @@ def main():
 
             # If the RNG hits the 1/200, then spawn the power ups
             # 1 for yellow power up
-            if power_up.power_up_update == 1 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
+            if (power_up.power_up_update == 1 or (alien_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 2)) and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
                 if power_up.power_up_index[0] == 0:
                     power_up.spawn_power_up(1, screen.mode, settings.power_up_spawn_sound)
                 else:
@@ -953,7 +953,7 @@ def main():
                             pu.spawn(settings.power_up_spawn_sound)
 
             # 50 for blue power up
-            if power_up.power_up_update == 50 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
+            if (power_up.power_up_update == 50 or (alien_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 51)) and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
                 if power_up.power_up_index[1] == 0:
                     power_up.spawn_power_up(2, screen.mode, settings.power_up_spawn_sound)
                 else:
@@ -962,7 +962,7 @@ def main():
                             pu.spawn(settings.power_up_spawn_sound)
 
             # 100 for the extra power up
-            if power_up.power_up_update == 100 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+            if (power_up.power_up_update == 100 or (alien_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 101)) and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                 if power_up.power_up_index[3] == 0:
                     power_up.spawn_power_up(4, screen.mode, settings.power_up_spawn_sound)
                 else:
@@ -1206,9 +1206,9 @@ def main():
                             # Increase the players score
                             # When the blue power up is active, the score increases are doubled (This is universal)
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                statistics.score = statistics.score + 2
+                                statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
                             else:
-                                statistics.score = statistics.score + 1
+                                statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
                             # Update the stats if god mode is off
                             if settings.god_mode == 0:
                                 statistics.small_aliens_killed = statistics.small_aliens_killed + 1
@@ -1233,9 +1233,9 @@ def main():
                             medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = 0
                         if ma.get_death_animation() == 1:
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                statistics.score = statistics.score + 4
+                                statistics.score = statistics.score + 2 * alien_mode_setup.blue_power_up_score_multiplier
                             else:
-                                statistics.score = statistics.score + 2
+                                statistics.score = statistics.score + 2 * alien_mode_setup.regular_score_multiplier
                             if settings.god_mode == 0:
                                 statistics.medium_aliens_killed = statistics.medium_aliens_killed + 1
                                 statistics.save()
@@ -1257,9 +1257,9 @@ def main():
                         if ma.get_hit_delay() == 1:
                             # Increase the players score for hitting the medium alien
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                statistics.score = statistics.score + 2
+                                statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
                             else:
-                                statistics.score = statistics.score + 1
+                                statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
                             # Confirm that the players laser has attacked and count it as an enemy pierced
                             h.get_laser().hideturtle()
                             if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
@@ -1279,9 +1279,9 @@ def main():
                             large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = 0
                         if la.get_death_animation() == 1:
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                statistics.score = statistics.score + 8
+                                statistics.score = statistics.score + 4 * alien_mode_setup.blue_power_up_score_multiplier
                             else:
-                                statistics.score = statistics.score + 4
+                                statistics.score = statistics.score + 4 * alien_mode_setup.regular_score_multiplier
                             if settings.god_mode == 0:
                                 statistics.big_aliens_killed = statistics.big_aliens_killed + 1
                                 statistics.save()
@@ -1301,9 +1301,9 @@ def main():
                             large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = 0
                         if la.get_hit_delay() == 1:
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                statistics.score = statistics.score + 2
+                                statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
                             else:
-                                statistics.score = statistics.score + 1
+                                statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
                             h.get_laser().hideturtle()
                             if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                                 human_player.laser_update = human_player.laser_update + 1
@@ -1320,9 +1320,9 @@ def main():
                             ufo.ufo_kill_value = 0
                         if u.get_death_animation() == 1:
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                statistics.score = statistics.score + 100
+                                statistics.score = statistics.score + 50 * alien_mode_setup.blue_power_up_score_multiplier
                             else:
-                                statistics.score = statistics.score + 50
+                                statistics.score = statistics.score + 50 * alien_mode_setup.regular_score_multiplier
                             if settings.god_mode == 0:
                                 statistics.ufos_killed = statistics.ufos_killed + 1
                                 statistics.save()
@@ -1341,19 +1341,19 @@ def main():
                         if u.get_hit_delay() == 1:
                             if u.get_ufo_health() == 2 or u.get_ufo_health() == 1:
                                 if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                    statistics.score = statistics.score + 6
+                                    statistics.score = statistics.score + 3 * alien_mode_setup.blue_power_up_score_multiplier
                                 else:
-                                    statistics.score = statistics.score + 3
+                                    statistics.score = statistics.score + 3 * alien_mode_setup.regular_score_multiplier
                             elif u.get_ufo_health() == 5 or u.get_ufo_health() == 4 or u.get_ufo_health() == 3:
                                 if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                    statistics.score = statistics.score + 4
+                                    statistics.score = statistics.score + 2 * alien_mode_setup.blue_power_up_score_multiplier
                                 else:
-                                    statistics.score = statistics.score + 2
+                                    statistics.score = statistics.score + 2 * alien_mode_setup.regular_score_multiplier
                             else:
                                 if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                    statistics.score = statistics.score + 2
+                                    statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
                                 else:
-                                    statistics.score = statistics.score + 1
+                                    statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
                             h.get_laser().hideturtle()
                             if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                                 human_player.laser_update = human_player.laser_update + 1
