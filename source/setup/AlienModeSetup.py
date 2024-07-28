@@ -119,7 +119,7 @@ class AlienModeSetup:
             self.laser_left_texture = PLAYER_HEAD_LASER_TEXTURE
             self.laser_offset = 35 * self._scale_factor_x
 
-            self.laser_speed = 13 * self._scale_factor_x
+            self.laser_speed = 12 * self._scale_factor_x
 
             self.damage = 1
             self.piercing = 2
@@ -135,7 +135,7 @@ class AlienModeSetup:
             self.laser_left_texture = THE_COOKER_LASER_TEXTURE
             self.laser_offset = 35 * self._scale_factor_x
 
-            self.laser_speed = 15 * self._scale_factor_x
+            self.laser_speed = 14 * self._scale_factor_x
 
             self.damage = 1
             self.piercing = 3
@@ -151,7 +151,7 @@ class AlienModeSetup:
             self.laser_left_texture = POISON_DART_LASER_TEXTURE
             self.laser_offset = 35 * self._scale_factor_x
 
-            self.laser_speed = 25 * self._scale_factor_x
+            self.laser_speed = 20 * self._scale_factor_x
 
             self.damage = 2
             self.piercing = 2
@@ -167,7 +167,7 @@ class AlienModeSetup:
             self.laser_left_texture = METEOR_GUN_LASER_LEFT_TEXTURE
             self.laser_offset = 65 * self._scale_factor_x
 
-            self.laser_speed = 27 * self._scale_factor_x
+            self.laser_speed = 24 * self._scale_factor_x
 
             self.damage = 3
             self.piercing = 3
@@ -183,7 +183,7 @@ class AlienModeSetup:
             self.laser_left_texture = SUPERNOVA_LASER_LEFT_TEXTURE
             self.laser_offset = 65 * self._scale_factor_x
 
-            self.laser_speed = 30 * self._scale_factor_x
+            self.laser_speed = 27 * self._scale_factor_x
 
             self.damage = 3
             self.piercing = 4

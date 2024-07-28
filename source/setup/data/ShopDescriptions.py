@@ -111,7 +111,7 @@ ALIEN_DESCRIPTIONS = [
     Description("left", [
         "Default",
         "",
-        "Laser Speed: 13",
+        "Laser Speed: 12",
         "Laser Color: Red",
         "Laser Size: L",
         "Lasers Per Round: 1",
@@ -123,7 +123,7 @@ ALIEN_DESCRIPTIONS = [
     Description("left", [
         "The Cooker",
         "",
-        "Laser Speed: 15",
+        "Laser Speed: 14",
         "Laser Color: Orange",
         "Laser Size: M",
         "Lasers Per Round: 1",
@@ -135,7 +135,7 @@ ALIEN_DESCRIPTIONS = [
     Description("left", [
         "Poison Dart Gun",
         "",
-        "Laser Speed: 25",
+        "Laser Speed: 20",
         "Laser Color: Green",
         "Laser Size: L",
         "Lasers Per Round: 2",
@@ -147,7 +147,7 @@ ALIEN_DESCRIPTIONS = [
     Description("left", [
         "Meteor Gun",
         "",
-        "Laser Speed: 27",
+        "Laser Speed: 24",
         "Laser Color: Multicolor",
         "Laser Size: XL",
         "Lasers Per Round: 1",
@@ -159,7 +159,7 @@ ALIEN_DESCRIPTIONS = [
     Description("left", [
         "The Supernova",
         "",
-        "Laser Speed: 30",
+        "Laser Speed: 27",
         "Laser Color: Multicolor",
         "Laser Size: XL",
         "Lasers Per Round: 2",
