@@ -456,11 +456,13 @@ class Human:
         if self.direction == 1:
             # Shoot to the right
             self.laser_direction = 1
-            self.laser_list[0].laser.setx(self.gun.xcor() + alien_mode_setup.laser_offset)
-            self.laser_list[0].laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
-            self.laser_list[0].laser.shape(alien_mode_setup.laser_right_texture)
+            for l in self.laser_list:
+                l.laser.setx(self.gun.xcor() + alien_mode_setup.laser_offset)
+                l.laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
+                l.laser.shape(alien_mode_setup.laser_right_texture)
             if len(self.laser_list) > 1:
                 self.laser_start_X = self.laser_list[0].laser.xcor()
+                self.laser_list[1].laser_update = 100
             if shooting_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
                 sound.play()
@@ -470,11 +472,13 @@ class Human:
         elif self.direction == 2:
             # Shoot to the left
             self.laser_direction = 2
-            self.laser_list[0].laser.setx(self.gun.xcor() - alien_mode_setup.laser_offset)
-            self.laser_list[0].laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
-            self.laser_list[0].laser.shape(alien_mode_setup.laser_left_texture)
+            for l in self.laser_list:
+                l.laser.setx(self.gun.xcor() - alien_mode_setup.laser_offset)
+                l.laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
+                l.laser.shape(alien_mode_setup.laser_left_texture)
             if len(self.laser_list) > 1:
                 self.laser_start_X = self.laser_list[0].laser.xcor()
+                self.laser_list[1].laser_update = 100
             if shooting_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
                 sound.play()
@@ -667,9 +671,7 @@ class Human:
                 l.laser.direction = "right"
             if len(self.laser_list) > 1 and self.laser_fire == 0 and self.laser_list[0].laser.xcor() >= self.laser_start_X + 100 * self.scale_factor_x:
                 self.laser_fire = 1
-                self.laser_list[1].laser.setx(self.gun.xcor() + alien_mode_setup.laser_offset)
-                self.laser_list[1].laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
-                self.laser_list[1].laser.shape(alien_mode_setup.laser_right_texture)
+                self.laser_list[1].laser_update = 0
             # Move the laser every 0.01 seconds
             current_time = time.time()
             elapsed_time = current_time - self.laser_start_time
@@ -702,9 +704,7 @@ class Human:
                 l.laser.direction = "left"
             if len(self.laser_list) > 1 and self.laser_fire == 0 and self.laser_list[0].laser.xcor() <= self.laser_start_X - 100 * self.scale_factor_x:
                 self.laser_fire = 1
-                self.laser_list[1].laser.setx(self.gun.xcor() - alien_mode_setup.laser_offset)
-                self.laser_list[1].laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
-                self.laser_list[1].laser.shape(alien_mode_setup.laser_left_texture)
+                self.laser_list[1].laser_update = 0
             current_time = time.time()
             elapsed_time = current_time - self.laser_start_time
             # Move the laser every 0.01 seconds
