@@ -67,7 +67,6 @@ class SpawnHumanPlayer:
         self.human_update_value = 0
         self.right_update = 0
         self.left_update = 0
-        self.laser_update = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -80,7 +79,6 @@ class SpawnHumanPlayer:
         del self.human_update_value
         del self.right_update
         del self.left_update
-        del self.laser_update
 
     def spawn_human_player(self, god_mode):
         """

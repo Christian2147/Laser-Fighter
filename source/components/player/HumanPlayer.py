@@ -29,15 +29,13 @@ import turtle
 import pygame
 import math
 import time
+from components.player.HumanLaser import HumanLaser
 from setup.ModeSetupMaster import alien_mode_setup
 from setup.TextureSetup import HUMAN_STILL_RIGHT_TEXTURE
 from setup.TextureSetup import HUMAN_STILL_LEFT_TEXTURE
 from setup.TextureSetup import HUMAN_WALKING_RIGHT_TEXTURE
 from setup.TextureSetup import HUMAN_WALKING_LEFT_TEXTURE
 from setup.TextureSetup import OXYGEN_TANK_TEXTURE
-from setup.TextureSetup import PLAYER_GUN_RIGHT_TEXTURE
-from setup.TextureSetup import PLAYER_GUN_LEFT_TEXTURE
-from setup.TextureSetup import PLAYER_HEAD_LASER_TEXTURE
 from setup.TextureSetup import PLAYER_DEATH_1_TEXTURE
 from setup.TextureSetup import PLAYER_DEATH_2_TEXTURE
 from setup.TextureSetup import HEALTH_BAR_1010_TEXTURE
@@ -138,12 +136,17 @@ class Human:
         self.gun.direction = "stop"
         self.gun.hideturtle()
 
-        self.laser = turtle.Turtle()
-        self.laser.shape(alien_mode_setup.laser_right_texture)
-        self.laser.shapesize(0.33 * scale_factor_y, 2 * scale_factor_x)
-        # Ensure that the turtle does not draw lines on the screen while moving
-        self.laser.penup()
-        self.laser.goto(self.gun.xcor(), self.gun.ycor())
+        self.laser_list = []
+        self.all_laser_list = []
+
+        for i in range(alien_mode_setup.laser_count):
+            laser = HumanLaser(self.gun.xcor(), self.gun.ycor(), scale_factor_x, scale_factor_y)
+            laser.laser.hideturtle()
+            self.laser_list.append(laser)
+            self.all_laser_list.append(laser)
+
+        #if len(self.laser_list) > 1:
+            #self.laser_list[1].laser.goto(-1080, self.gun.ycor())
 
         self.health_bar = turtle.Turtle()
         self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
@@ -154,6 +157,8 @@ class Human:
         # If god mode is on, the health bar is not visible
         if god_mode == 1:
             self.health_bar.hideturtle()
+
+        self.laser_count = alien_mode_setup.laser_count
 
         self.initial_velocity = 23.84848 * scale_factor_y
         self.current_velocity = 23.84848 * scale_factor_y
@@ -169,6 +174,8 @@ class Human:
         self.jump_update = 0
         self.shoot_update = 0
         self.laser_direction = 0
+        self.laser_fire = 0
+        self.laser_start_X = 0
         self.Start_X = 0
         self.Start_Y = 0
         self.move_right = 0
@@ -197,13 +204,19 @@ class Human:
         self.player.clear()
         self.oxygen_tank.clear()
         self.gun.clear()
-        self.laser.clear()
+        for l in self.laser_list:
+            l.remove()
+            del l
+        self.laser_list.clear()
+        self.all_laser_list.clear()
         self.health_bar.clear()
         del self.player
         del self.oxygen_tank
         del self.gun
-        del self.laser
+        del self.laser_list
         del self.health_bar
+        del self.laser_list
+        del self.all_laser_list
 
     def reinstate(self, god_mode):
         """
@@ -229,9 +242,25 @@ class Human:
         self.gun.goto(self.player.xcor(), self.player.ycor() + 12 * self.scale_factor_y)
         self.gun.direction = "stop"
 
-        self.laser.shape(alien_mode_setup.laser_right_texture)
-        self.laser.goto(self.gun.xcor(), self.gun.ycor())
-        self.laser.showturtle()
+        self.laser_count = alien_mode_setup.laser_count
+
+        if self.laser_count >= len(self.all_laser_list):
+            for l in self.all_laser_list:
+                l.reinstate(self.gun.xcor(), self.gun.ycor())
+                self.laser_list.append(l)
+
+            remaining_lasers = self.laser_count - len(self.all_laser_list)
+            for i in range(remaining_lasers):
+                laser = HumanLaser(self.gun.xcor(), self.gun.ycor(), self.scale_factor_x, self.scale_factor_y)
+                self.laser_list.append(laser)
+                self.all_laser_list.append(laser)
+        else:
+            for i in range(self.laser_count):
+                self.all_laser_list[i].reinstate(self.gun.xcor(), self.gun.ycor())
+                self.laser_list.append(self.all_laser_list[i])
+
+        #if len(self.laser_list) > 1:
+            #self.laser_list[1].laser.goto(-1080, self.gun.ycor())
 
         self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
         # If god mode is off, show the health bar
@@ -256,7 +285,7 @@ class Human:
             :type: turtle.Turtle()
         """
 
-        return self.laser
+        return self.laser_list
 
     def get_health_bar(self):
         """
@@ -318,8 +347,11 @@ class Human:
         self.player.hideturtle()
         self.oxygen_tank.hideturtle()
         self.gun.hideturtle()
-        self.laser.hideturtle()
         self.health_bar.hideturtle()
+        for l in self.laser_list:
+            l.remove()
+        self.laser_list.clear()
+        self.laser_count = 0
         self.current_velocity = 23.84848 * self.scale_factor_y
         self.death_animation = 0
         self.death_iterator = 0
@@ -332,6 +364,8 @@ class Human:
         self.jump_update = 0
         self.shoot_update = 0
         self.laser_direction = 0
+        self.laser_fire = 0
+        self.laser_start_X = 0
         self.Start_X = 0
         self.Start_Y = 0
         self.move_right = 0
@@ -422,23 +456,29 @@ class Human:
         if self.direction == 1:
             # Shoot to the right
             self.laser_direction = 1
-            self.laser.setx(self.gun.xcor() + alien_mode_setup.laser_offset)
-            self.laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
-            self.laser.shape(alien_mode_setup.laser_right_texture)
+            self.laser_list[0].laser.setx(self.gun.xcor() + alien_mode_setup.laser_offset)
+            self.laser_list[0].laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
+            self.laser_list[0].laser.shape(alien_mode_setup.laser_right_texture)
+            if len(self.laser_list) > 1:
+                self.laser_start_X = self.laser_list[0].laser.xcor()
             if shooting_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
                 sound.play()
+            self.laser_fire = 0
             self.laser_start_time = time.time()
         # If the player is facing left
         elif self.direction == 2:
             # Shoot to the left
             self.laser_direction = 2
-            self.laser.setx(self.gun.xcor() - alien_mode_setup.laser_offset)
-            self.laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
-            self.laser.shape(alien_mode_setup.laser_left_texture)
+            self.laser_list[0].laser.setx(self.gun.xcor() - alien_mode_setup.laser_offset)
+            self.laser_list[0].laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
+            self.laser_list[0].laser.shape(alien_mode_setup.laser_left_texture)
+            if len(self.laser_list) > 1:
+                self.laser_start_X = self.laser_list[0].laser.xcor()
             if shooting_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
                 sound.play()
+            self.laser_fire = 0
             self.laser_start_time = time.time()
 
     def execute_right_movement(self):
@@ -609,28 +649,27 @@ class Human:
                             self.gun.goto(self.player.xcor() - alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
                             break
 
-    def execute_shoot(self, yellow_power_up, laser_update):
+    def execute_shoot(self, yellow_power_up):
         """
             Move thr laser across the screen in the specified direction after it has been shot
 
             :param yellow_power_up: Determines if the yellow power up is currently active or not
             :type yellow_power_up: int
 
-            :param laser_update: Determines if the laser should disappear based on how many enemies it
-                has already pierced through (2 maximum)
-            :type laser_update: int
-
-            :return: laser_update: Determines if the laser should disappear based on how many enemies it
-                has already pierced through (2 maximum)
-            :type: int
+            :return: None
         """
-
         # If the direction is right
-        if -1080 * self.scale_factor_x < self.laser.xcor() < 1080 * self.scale_factor_x and self.laser_direction == 1:
+        if -1080 * self.scale_factor_x < self.laser_list[0].laser.xcor() < 1080 * self.scale_factor_x and self.laser_direction == 1:
             self.shoot_update = 1
-            if laser_update < alien_mode_setup.piercing:
-                self.laser.showturtle()
-            self.laser.direction = "right"
+            for l in self.laser_list:
+                if l.laser_update < alien_mode_setup.piercing:
+                    l.laser.showturtle()
+                l.laser.direction = "right"
+            if len(self.laser_list) > 1 and self.laser_fire == 0 and self.laser_list[0].laser.xcor() >= self.laser_start_X + 100 * self.scale_factor_x:
+                self.laser_fire = 1
+                self.laser_list[1].laser.setx(self.gun.xcor() + alien_mode_setup.laser_offset)
+                self.laser_list[1].laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
+                self.laser_list[1].laser.shape(alien_mode_setup.laser_right_texture)
             # Move the laser every 0.01 seconds
             current_time = time.time()
             elapsed_time = current_time - self.laser_start_time
@@ -640,35 +679,58 @@ class Human:
                     # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
                     delta_movement = alien_mode_setup.yellow_power_up_speed * ((elapsed_time - 0.01) / 0.01)
-                    self.laser.setx(self.laser.xcor() + alien_mode_setup.yellow_power_up_speed + delta_movement)
+                    if self.laser_fire == 0:
+                        self.laser_list[0].laser.setx(self.laser_list[0].laser.xcor() + alien_mode_setup.yellow_power_up_speed + delta_movement)
+                    else:
+                        for l in self.laser_list:
+                            l.laser.setx(l.laser.xcor() + alien_mode_setup.yellow_power_up_speed + delta_movement)
                 else:
                     delta_movement = alien_mode_setup.laser_speed * ((elapsed_time - 0.01) / 0.01)
-                    self.laser.setx(self.laser.xcor() + alien_mode_setup.laser_speed + delta_movement)
+                    if self.laser_fire == 0:
+                        self.laser_list[0].laser.setx(self.laser_list[0].laser.xcor() + alien_mode_setup.laser_speed + delta_movement)
+                    else:
+                        for l in self.laser_list:
+                            l.laser.setx(l.laser.xcor() + alien_mode_setup.laser_speed + delta_movement)
                 self.laser_start_time = time.time()
         # If the direction is left
-        elif -1080 * self.scale_factor_x < self.laser.xcor() < 1080 * self.scale_factor_x and self.laser_direction == 2:
+        elif -1080 * self.scale_factor_x < self.laser_list[0].laser.xcor() < 1080 * self.scale_factor_x and self.laser_direction == 2:
             self.shoot_update = 1
-            if laser_update < alien_mode_setup.piercing:
-                self.laser.showturtle()
-            self.laser.direction = "left"
+            for l in self.laser_list:
+                if l.laser_update < alien_mode_setup.piercing:
+                    print(l.laser_update)
+                    l.laser.showturtle()
+                l.laser.direction = "left"
+            if len(self.laser_list) > 1 and self.laser_fire == 0 and self.laser_list[0].laser.xcor() <= self.laser_start_X - 100 * self.scale_factor_x:
+                self.laser_fire = 1
+                self.laser_list[1].laser.setx(self.gun.xcor() - alien_mode_setup.laser_offset)
+                self.laser_list[1].laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
+                self.laser_list[1].laser.shape(alien_mode_setup.laser_left_texture)
             current_time = time.time()
             elapsed_time = current_time - self.laser_start_time
             # Move the laser every 0.01 seconds
             if elapsed_time >= 0.01:
                 if yellow_power_up == 1:
                     delta_movement = alien_mode_setup.yellow_power_up_speed * ((elapsed_time - 0.01) / 0.01)
-                    self.laser.setx(self.laser.xcor() - alien_mode_setup.yellow_power_up_speed - delta_movement)
+                    if self.laser_fire == 0:
+                        self.laser_list[0].laser.setx(self.laser_list[0].laser.xcor() - alien_mode_setup.yellow_power_up_speed - delta_movement)
+                    else:
+                        for l in self.laser_list:
+                            l.laser.setx(l.laser.xcor() - alien_mode_setup.yellow_power_up_speed - delta_movement)
                 else:
                     delta_movement = alien_mode_setup.laser_speed * ((elapsed_time - 0.01) / 0.01)
-                    self.laser.setx(self.laser.xcor() - alien_mode_setup.laser_speed - delta_movement)
+                    if self.laser_fire == 0:
+                        self.laser_list[0].laser.setx(self.laser_list[0].laser.xcor() - alien_mode_setup.laser_speed - delta_movement)
+                    else:
+                        for l in self.laser_list:
+                            l.laser.setx(l.laser.xcor() - alien_mode_setup.laser_speed - delta_movement)
                 self.laser_start_time = time.time()
         # If the laser has finished moving
         else:
             # reset the variables
             self.shoot_update = 0
-            laser_update = 0
-            self.laser.hideturtle()
-        return laser_update
+            for l in self.laser_list:
+                l.laser.hideturtle()
+                l.laser_update = 0
 
     def set_player_texture(self, right_update, left_update):
         """
