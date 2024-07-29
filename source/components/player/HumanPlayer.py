@@ -145,9 +145,6 @@ class Human:
             self.laser_list.append(laser)
             self.all_laser_list.append(laser)
 
-        #if len(self.laser_list) > 1:
-            #self.laser_list[1].laser.goto(-1080, self.gun.ycor())
-
         self.health_bar = turtle.Turtle()
         self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
         self.health_bar.shapesize(1 * scale_factor_y, 1 * scale_factor_x)
@@ -258,9 +255,6 @@ class Human:
             for i in range(self.laser_count):
                 self.all_laser_list[i].reinstate(self.gun.xcor(), self.gun.ycor())
                 self.laser_list.append(self.all_laser_list[i])
-
-        #if len(self.laser_list) > 1:
-            #self.laser_list[1].laser.goto(-1080, self.gun.ycor())
 
         self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
         # If god mode is off, show the health bar
@@ -460,6 +454,7 @@ class Human:
                 l.laser.setx(self.gun.xcor() + alien_mode_setup.laser_offset)
                 l.laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
                 l.laser.shape(alien_mode_setup.laser_right_texture)
+                l.laser_update = 0
             if len(self.laser_list) > 1:
                 self.laser_start_X = self.laser_list[0].laser.xcor()
                 self.laser_list[1].laser_update = 100
@@ -476,6 +471,7 @@ class Human:
                 l.laser.setx(self.gun.xcor() - alien_mode_setup.laser_offset)
                 l.laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
                 l.laser.shape(alien_mode_setup.laser_left_texture)
+                l.laser_update = 0
             if len(self.laser_list) > 1:
                 self.laser_start_X = self.laser_list[0].laser.xcor()
                 self.laser_list[1].laser_update = 100
@@ -730,7 +726,7 @@ class Human:
             self.shoot_update = 0
             for l in self.laser_list:
                 l.laser.hideturtle()
-                l.laser_update = 0
+                #l.laser_update = 0
 
     def set_player_texture(self, right_update, left_update):
         """
@@ -848,6 +844,8 @@ class Human:
         if self.health == 1 and self.death_animation != 1:
             # The players health goes down to 0
             self.health = 0
+            for l in self.laser_list:
+                l.laser_update = 20
             # Set the players texture to the first frame of the explosion
             self.player.shape(PLAYER_DEATH_1_TEXTURE)
             if death_sound == 1:

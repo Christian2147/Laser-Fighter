@@ -86,20 +86,20 @@ class PowerUpSetup:
             self.yellow_power_up_movement_increase = 1
             self.yellow_power_up_duration = 15
         elif self._shop_config.yellow_power_up_level == 2:
-            self.yellow_power_up_speed_increase = 3
+            self.yellow_power_up_speed_increase = 2.5
             self.yellow_power_up_movement_increase = 1
             self.yellow_power_up_duration = 20
         elif self._shop_config.yellow_power_up_level == 3:
-            self.yellow_power_up_speed_increase = 3
-            self.yellow_power_up_movement_increase = 1
+            self.yellow_power_up_speed_increase = 2.5
+            self.yellow_power_up_movement_increase = 1.5
             self.yellow_power_up_duration = 30
         elif self._shop_config.yellow_power_up_level == 4:
-            self.yellow_power_up_speed_increase = 4
-            self.yellow_power_up_movement_increase = 1
+            self.yellow_power_up_speed_increase = 2.75
+            self.yellow_power_up_movement_increase = 1.5
             self.yellow_power_up_duration = 45
         elif self._shop_config.yellow_power_up_level == 5:
-            self.yellow_power_up_speed_increase = 4
-            self.yellow_power_up_movement_increase = 1.5
+            self.yellow_power_up_speed_increase = 3
+            self.yellow_power_up_movement_increase = 2
             self.yellow_power_up_duration = 60
 
         if self._shop_config.blue_power_up_level == 1:

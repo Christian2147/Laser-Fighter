@@ -1207,9 +1207,10 @@ def main():
                     if small_alien.small_aliens_kill_values[current_small_alien_update_value_index] == 0:
                         if sa.got_hit == 0 and sa.get_small_alien().isvisible():
                             for l in h.get_laser():
-                                if l.laser.isvisible() and alien_collision.SMALL_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.SMALL_ALIEN_Y_RANGE[1] and (
-                                    (l.laser.xcor() > sa.get_small_alien().xcor() + alien_collision.SMALL_ALIEN_X_DISTANCE * sa.collision_point and h.direction == 1 and sa.already_ahead == 0) or
-                                    (l.laser.xcor() < sa.get_small_alien().xcor() + alien_collision.SMALL_ALIEN_X_DISTANCE * sa.collision_point and h.direction == 2 and sa.already_behind == 0)
+                                if l.laser_update < alien_mode_setup.piercing and \
+                                    alien_collision.SMALL_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.SMALL_ALIEN_Y_RANGE[1] and (
+                                    (l.laser.xcor() > sa.get_small_alien().xcor() + alien_collision.SMALL_ALIEN_X_DISTANCE * sa.collision_point and h.laser_direction == 1 and sa.already_ahead == 0) or
+                                    (l.laser.xcor() < sa.get_small_alien().xcor() + alien_collision.SMALL_ALIEN_X_DISTANCE * sa.collision_point and h.laser_direction == 2 and sa.already_behind == 0)
                                 ):
                                     small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = small_alien.small_aliens_kill_values[current_small_alien_update_value_index] + 1
 
@@ -1246,9 +1247,10 @@ def main():
                     if medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] == 0:
                         if ma.got_hit == 0 and ma.health <= alien_mode_setup.damage and ma.get_medium_alien().isvisible() and ma.hit_delay == 0:
                             for l in h.get_laser():
-                                if l.laser.isvisible() and alien_collision.MEDIUM_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.MEDIUM_ALIEN_Y_RANGE[1] and (
-                                    (l.laser.xcor() > ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.direction == 1 and ma.already_ahead == 0) or
-                                    (l.laser.xcor() < ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.direction == 2 and ma.already_behind == 0)
+                                if l.laser_update < alien_mode_setup.piercing and \
+                                    alien_collision.MEDIUM_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.MEDIUM_ALIEN_Y_RANGE[1] and (
+                                    (l.laser.xcor() > ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 1 and ma.already_ahead == 0) or
+                                    (l.laser.xcor() < ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 2 and ma.already_behind == 0)
                                 ):
                                     medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
 
@@ -1281,9 +1283,10 @@ def main():
                     if medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] == 0:
                         if ma.got_hit == 0 and ma.get_medium_alien_health() > alien_mode_setup.damage and ma.get_medium_alien().isvisible():
                             for l in h.get_laser():
-                                if l.laser.isvisible() and alien_collision.MEDIUM_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.MEDIUM_ALIEN_Y_RANGE[1] and (
-                                    (l.laser.xcor() > ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.direction == 1 and ma.already_ahead == 0) or
-                                    (l.laser.xcor() < ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.direction == 2 and ma.already_behind == 0)
+                                if l.laser_update < alien_mode_setup.piercing and \
+                                    alien_collision.MEDIUM_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.MEDIUM_ALIEN_Y_RANGE[1] and (
+                                    (l.laser.xcor() > ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 1 and ma.already_ahead == 0) or
+                                    (l.laser.xcor() < ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 2 and ma.already_behind == 0)
                                 ):
                                     medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
 
@@ -1315,9 +1318,10 @@ def main():
                     if large_alien.large_aliens_kill_values[current_large_alien_update_value_index] == 0:
                         if la.got_hit == 0 and la.health <= alien_mode_setup.damage and la.get_large_alien().isvisible() and la.hit_delay == 0:
                             for l in h.get_laser():
-                                if l.laser.isvisible() and alien_collision.LARGE_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.LARGE_ALIEN_Y_RANGE[1] and (
-                                    (l.laser.xcor() > la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.direction == 1 and la.already_ahead == 0) or
-                                    (l.laser.xcor() < la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.direction == 2 and la.already_behind == 0)
+                                if l.laser_update < alien_mode_setup.piercing and \
+                                    alien_collision.LARGE_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.LARGE_ALIEN_Y_RANGE[1] and (
+                                    (l.laser.xcor() > la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.laser_direction == 1 and la.already_ahead == 0) or
+                                    (l.laser.xcor() < la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.laser_direction == 2 and la.already_behind == 0)
                                 ):
                                     large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = large_alien.large_aliens_kill_values[current_large_alien_update_value_index] + 1
 
@@ -1350,9 +1354,10 @@ def main():
                     if large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] == 0:
                         if la.got_hit == 0 and la.get_large_alien_health() > alien_mode_setup.damage and la.get_large_alien().isvisible():
                             for l in h.get_laser():
-                                if l.laser.isvisible() and alien_collision.LARGE_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.LARGE_ALIEN_Y_RANGE[1] and (
-                                    (l.laser.xcor() > la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.direction == 1 and la.already_ahead == 0) or
-                                    (l.laser.xcor() < la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.direction == 2 and la.already_behind == 0)
+                                if l.laser_update < alien_mode_setup.piercing and \
+                                    alien_collision.LARGE_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.LARGE_ALIEN_Y_RANGE[1] and (
+                                    (l.laser.xcor() > la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.laser_direction == 1 and la.already_ahead == 0) or
+                                    (l.laser.xcor() < la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.laser_direction == 2 and la.already_behind == 0)
                                 ):
                                     large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] + 1
 
@@ -1382,9 +1387,10 @@ def main():
                     if ufo.ufo_kill_value == 0:
                         if u.got_hit == 0 and u.get_ufo_health() <= alien_mode_setup.damage and u.get_ufo().isvisible() and u.hit_delay == 0:
                             for l in h.get_laser():
-                                if l.laser.isvisible() and alien_collision.UFO_Y_RANGE[0] < l.laser.ycor() < alien_collision.UFO_Y_RANGE[1] and (
-                                    (l.laser.xcor() > u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.direction == 1 and u.already_ahead == 0) or
-                                    (l.laser.xcor() < u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.direction == 2 and u.already_behind == 0)
+                                if l.laser_update < alien_mode_setup.piercing and \
+                                    alien_collision.UFO_Y_RANGE[0] < l.laser.ycor() < alien_collision.UFO_Y_RANGE[1] and (
+                                    (l.laser.xcor() > u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.laser_direction == 1 and u.already_ahead == 0) or
+                                    (l.laser.xcor() < u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.laser_direction == 2 and u.already_behind == 0)
                                 ):
                                     ufo.ufo_kill_value = ufo.ufo_kill_value + 1
 
@@ -1416,9 +1422,10 @@ def main():
                     if ufo.ufo_hit_value == 0:
                         if u.got_hit == 0 and u.get_ufo_health() > alien_mode_setup.damage and u.get_ufo().isvisible():
                             for l in h.get_laser():
-                                if l.laser.isvisible() and alien_collision.UFO_Y_RANGE[0] < l.laser.ycor() < alien_collision.UFO_Y_RANGE[1] and (
-                                    (l.laser.xcor() > u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.direction == 1 and u.already_ahead == 0) or
-                                    (l.laser.xcor() < u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.direction == 2 and u.already_behind == 0)
+                                if l.laser_update < alien_mode_setup.piercing and \
+                                    alien_collision.UFO_Y_RANGE[0] < l.laser.ycor() < alien_collision.UFO_Y_RANGE[1] and (
+                                    (l.laser.xcor() > u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.laser_direction == 1 and u.already_ahead == 0) or
+                                    (l.laser.xcor() < u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.laser_direction == 2 and u.already_behind == 0)
                                 ):
                                     ufo.ufo_hit_value = ufo.ufo_hit_value + 1
 

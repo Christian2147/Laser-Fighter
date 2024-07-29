@@ -177,7 +177,7 @@ YELLOW_POWER_UP_DESCRIPTIONS = [
     Description("left", [
         "Level 2",
         "",
-        "Speed Increase: 3x",
+        "Speed Increase: 2.5x",
         "Duration: 20",
         "Special:",
         "None"
@@ -185,26 +185,26 @@ YELLOW_POWER_UP_DESCRIPTIONS = [
     Description("left", [
         "Level 3",
         "",
-        "Speed Increase: 3x",
+        "Speed Increase: 2.5x",
         "Duration: 30",
         "Special:",
-        "None"
+        "Player movement 1.5x"
     ], 20, "Courier"),
     Description("left", [
         "Level 4",
         "",
-        "Speed Increase: 4x",
+        "Speed Increase: 2.75x",
         "Duration: 45",
         "Special:",
-        "None"
+        "Player movement 1.5x"
     ], 20, "Courier"),
     Description("left", [
         "Level 5",
         "",
-        "Speed Increase: 4x",
+        "Speed Increase: 3x",
         "Duration: 60",
         "Special:",
-        "Player movement 1.5x"
+        "Player movement 2x"
     ], 20, "Courier"),
     Description("left", [
         "Max Level Reached!"

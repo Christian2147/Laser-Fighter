@@ -26,7 +26,7 @@ class HumanLaser:
         self.laser.penup()
         self.laser.goto(x, y)
 
-        self.laser_update = 0
+        self.laser_update = 20
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -39,6 +39,7 @@ class HumanLaser:
         del self.scale_factor_y
 
     def reinstate(self, x, y):
+        self.laser_update = 20
         self.laser.shape(alien_mode_setup.laser_right_texture)
         self.laser.goto(x, y)
         self.laser.showturtle()

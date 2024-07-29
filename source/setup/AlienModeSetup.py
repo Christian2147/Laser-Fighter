@@ -46,8 +46,6 @@ class AlienModeSetup:
         self._scale_factor_x = scale_factor_x
         self._scale_factor_y = scale_factor_y
 
-        self._setup = 0
-
         self.regular_score_multiplier = 0
         self.blue_power_up_score_multiplier = 0
 
@@ -76,7 +74,6 @@ class AlienModeSetup:
         del self._power_up_setup
         del self._scale_factor_x
         del self._scale_factor_y
-        del self._setup
         del self.regular_score_multiplier
         del self.blue_power_up_score_multiplier
         del self.gun_right_texture
@@ -93,17 +90,6 @@ class AlienModeSetup:
         del self.player_movement
         del self.jump_frequency
         del self.power_up_spawn_rate
-
-    @property
-    def setup(self):
-        return self._setup
-
-    @setup.setter
-    def setup(self, value):
-        if isinstance(value, int):
-            self._setup = value
-        else:
-            raise ValueError("Value must be an integer")
 
     def setup_alien_mode(self):
         self.player_movement = 4
