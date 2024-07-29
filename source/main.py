@@ -171,9 +171,16 @@ def main():
             button.buy_button_pressed = 0
             print(len(wn.turtles()))
 
-        # The Alien Mode background objects are created right when the game is launched.
+        # The game background objects are created right when the game is launched.
         # This is done to make sure that they are truly in the background and that nothing lies behind these sprites.
-        # Since turtle does not allow a way to push a turtle in front of another turtle, this is the only way to do this.
+        # Since turtle does not allow a way to push a turtle in front of another turtle,
+        #   this is the only way to do this.
+        if len(panel.panel_turtle) == 0:
+            panel.spawn_panel("Shop")
+            for pa in panel.panel_turtle:
+                pa.remove()
+            panel.panel_index = 0
+
         if len(background_objects.background_objects_turtle) == 0:
             background_objects.spawn_background_objects()
             for bo in background_objects.background_objects_turtle:
