@@ -17,6 +17,10 @@ from setup.ConfigurationSetup import settings
 fullscreen = settings.fullscreen
 
 MACHINE_PLAYER_TEXTURE = "Textures/Player/Player.gif" if fullscreen == 0 else "Textures/Player/Player_Scaled.gif"
+MACHINE_WASHER_TEXTURE = "Textures/Player/Machine_Washer.gif" if fullscreen == 0 else "Textures/Player/Machine_Washer_Scaled.gif"
+THE_INCINERATOR_TEXTURE = "Textures/Player/The_Incinerator.gif" if fullscreen == 0 else "Textures/Player/The_Incinerator_Scaled.gif"
+THE_BLACK_HOLE_TEXTURE = "Textures/Player/The_Black_Hole.gif" if fullscreen == 0 else "Textures/Player/The_Black_Hole_Scaled.gif"
+THE_STAR_KILLER_TEXTURE = "Textures/Player/The_Star_Killer.gif" if fullscreen == 0 else "Textures/Player/The_Star_Killer_Scaled.gif"
 MACHINE_PLAYER_LASER_TEXTURE = "Textures/Lasers/Player_Laser.gif" if fullscreen == 0 else "Textures/Lasers/Player_Laser_Scaled.gif"
 MACHINE_WASHER_LASER_TEXTURE = "Textures/Lasers/Machine_Washer_Laser.gif" if fullscreen == 0 else "Textures/Lasers/Machine_Washer_Laser_Scaled.gif"
 INCINERATOR_LASER_TEXTURE = "Textures/Lasers/Incinerator_Laser.gif" if fullscreen == 0 else "Textures/Lasers/Incinerator_Laser_Scaled.gif"

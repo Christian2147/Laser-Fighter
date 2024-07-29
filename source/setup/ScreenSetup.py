@@ -112,6 +112,10 @@ wn.tracer(0)
 # List of paths to all textures that need to be loaded
 texture_paths = [
     "Textures/Player/Player.gif",
+    "Textures/Player/Machine_Washer.gif",
+    "Textures/Player/The_Incinerator.gif",
+    "Textures/Player/The_Black_Hole.gif",
+    "Textures/Player/The_Star_Killer.gif",
     "Textures/Lasers/Player_Laser.gif",
     "Textures/Lasers/Machine_Washer_Laser.gif",
     "Textures/Lasers/Incinerator_Laser.gif",
