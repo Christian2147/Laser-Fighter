@@ -13,12 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-from utils.PlayerDataManager import ConfigManager
+from utils.PlayerDataManager import PlayerDataManager
 
 
 class ShopConfig:
     def __init__(self):
-        self.config_manager = ConfigManager()
+        self.player_data_manager = PlayerDataManager()
 
         self.total_coins = 0
         self.machine_slot_selected = 0
@@ -33,35 +33,35 @@ class ShopConfig:
         self.load()
 
     def __del__(self):
-        del self.config_manager
+        del self.player_data_manager
 
     def load(self):
-        self.total_coins = self.config_manager.getint('Coins', 'coins')
+        self.total_coins = self.player_data_manager.getint('Coins', 'coins')
 
-        self.machine_slot_selected = self.config_manager.getint('Machine_Player_Enabled', 'type_enabled')
-        self.alien_slot_selected = self.config_manager.getint('Alien_Mode_Gun_Enabled', 'type_enabled')
+        self.machine_slot_selected = self.player_data_manager.getint('Machine_Player_Enabled', 'type_enabled')
+        self.alien_slot_selected = self.player_data_manager.getint('Alien_Mode_Gun_Enabled', 'type_enabled')
 
-        self.machine_slots_unlocked = [self.config_manager.getint('Machine_Unlocked', f'slot_{i + 1}') for i in range(5)]
-        self.alien_slots_unlocked = [self.config_manager.getint('Alien_Unlocked', f'slot_{i + 1}') for i in range(5)]
-        self.yellow_power_up_level = self.config_manager.getint('Power_Up_Levels', 'Yellow_Power_Up')
-        self.blue_power_up_level = self.config_manager.getint('Power_Up_Levels', 'Blue_Power_Up')
-        self.green_power_up_level = self.config_manager.getint('Power_Up_Levels', 'Green_Power_Up')
-        self.red_power_up_level = self.config_manager.getint('Power_Up_Levels', 'Red_Power_Up')
+        self.machine_slots_unlocked = [self.player_data_manager.getint('Machine_Unlocked', f'slot_{i + 1}') for i in range(5)]
+        self.alien_slots_unlocked = [self.player_data_manager.getint('Alien_Unlocked', f'slot_{i + 1}') for i in range(5)]
+        self.yellow_power_up_level = self.player_data_manager.getint('Power_Up_Levels', 'Yellow_Power_Up')
+        self.blue_power_up_level = self.player_data_manager.getint('Power_Up_Levels', 'Blue_Power_Up')
+        self.green_power_up_level = self.player_data_manager.getint('Power_Up_Levels', 'Green_Power_Up')
+        self.red_power_up_level = self.player_data_manager.getint('Power_Up_Levels', 'Red_Power_Up')
 
     def save(self):
-        self.config_manager.set('Coins', 'coins', str(self.total_coins))
+        self.player_data_manager.set('Coins', 'coins', str(self.total_coins))
 
-        self.config_manager.set('Machine_Player_Enabled', 'type_enabled', str(self.machine_slot_selected))
-        self.config_manager.set('Alien_Mode_Gun_Enabled', 'type_enabled', str(self.alien_slot_selected))
+        self.player_data_manager.set('Machine_Player_Enabled', 'type_enabled', str(self.machine_slot_selected))
+        self.player_data_manager.set('Alien_Mode_Gun_Enabled', 'type_enabled', str(self.alien_slot_selected))
 
         for i in range(5):
-            self.config_manager.set('Machine_Unlocked', f'slot_{i + 1}', str(self.machine_slots_unlocked[i]))
-            self.config_manager.set('Alien_Unlocked', f'slot_{i + 1}', str(self.alien_slots_unlocked[i]))
+            self.player_data_manager.set('Machine_Unlocked', f'slot_{i + 1}', str(self.machine_slots_unlocked[i]))
+            self.player_data_manager.set('Alien_Unlocked', f'slot_{i + 1}', str(self.alien_slots_unlocked[i]))
 
-        self.config_manager.set('Power_Up_Levels', 'Yellow_Power_Up', str(self.yellow_power_up_level))
-        self.config_manager.set('Power_Up_Levels', 'Blue_Power_Up', str(self.blue_power_up_level))
-        self.config_manager.set('Power_Up_Levels', 'Green_Power_Up', str(self.green_power_up_level))
-        self.config_manager.set('Power_Up_Levels', 'Red_Power_Up', str(self.red_power_up_level))
+        self.player_data_manager.set('Power_Up_Levels', 'Yellow_Power_Up', str(self.yellow_power_up_level))
+        self.player_data_manager.set('Power_Up_Levels', 'Blue_Power_Up', str(self.blue_power_up_level))
+        self.player_data_manager.set('Power_Up_Levels', 'Green_Power_Up', str(self.green_power_up_level))
+        self.player_data_manager.set('Power_Up_Levels', 'Red_Power_Up', str(self.red_power_up_level))
 
     def __repr__(self):
         return (f"PlayerConfig(total_coins={self.total_coins}, "

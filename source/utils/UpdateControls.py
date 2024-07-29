@@ -15,13 +15,14 @@
 
 import ctypes
 import configparser
+from utils.ConfigManager import ConfigManager
 
 
 class ControlsConfig:
     def __init__(self):
-        self.config_file = 'Config/config.ini'
         self.check_config_file = 'Config/keyUpdate.ini'
-        self.config = configparser.ConfigParser()
+        self.config = ConfigManager()
+        self.key_update = configparser.ConfigParser()
 
         self.go_right_key = ''
         self.go_left_key = ''
@@ -44,46 +45,46 @@ class ControlsConfig:
             self.jump_key = 'space'
 
     def __del__(self):
-        del self.config_file
         del self.check_config_file
+        del self.config
+        del self.key_update
+        del self.go_right_key
+        del self.go_left_key
+        del self.shoot_key
+        del self.jump_key
 
     def load(self):
-        self.config.read(self.config_file)
-
-        self.go_right_key = self.config['Controls'].get('Go_Right')
-        self.go_left_key = self.config['Controls'].get('Go_Left')
-        self.shoot_key = self.config['Controls'].get('Shoot')
-        self.jump_key = self.config['Controls'].get('Jump')
+        self.go_right_key = self.config.get('Controls', 'Go_Right')
+        self.go_left_key = self.config.get('Controls', 'Go_Left')
+        self.shoot_key = self.config.get('Controls', 'Shoot')
+        self.jump_key = self.config.get('Controls', 'Jump')
 
     def check_load(self):
-        self.config.read(self.check_config_file)
+        try:
+            self.key_update.read(self.check_config_file)
 
-        self.key_check[0] = self.config['Key_Update'].get('Key_1')
-        self.key_check[1] = self.config['Key_Update'].get('Key_2')
-        self.key_check[2] = self.config['Key_Update'].get('Key_3')
-        self.key_check[3] = self.config['Key_Update'].get('Key_4')
+            self.key_check[0] = self.key_update['Key_Update'].get('Key_1')
+            self.key_check[1] = self.key_update['Key_Update'].get('Key_2')
+            self.key_check[2] = self.key_update['Key_Update'].get('Key_3')
+            self.key_check[3] = self.key_update['Key_Update'].get('Key_4')
+        except configparser.Error as e:
+            ctypes.windll.user32.MessageBoxW(0, f"Error reading config file: {e}", "Error", 0x10)
 
     def save(self):
-        try:
-            self.config['Controls']['Go_Right'] = self.go_right_key
-            self.config['Controls']['Go_Left'] = self.go_left_key
-            self.config['Controls']['Shoot'] = self.shoot_key
-            self.config['Controls']['Jump'] = self.jump_key
-
-            with open(self.config_file, 'w') as configfile:
-                self.config.write(configfile)
-        except configparser.Error as e:
-            ctypes.windll.user32.MessageBoxW(0, f"Error saving config file: {e}", "Error", 0x10)
+        self.config.set('Controls', 'Go_Right', self.go_right_key)
+        self.config.set('Controls', 'Go_Left', self.go_left_key)
+        self.config.set('Controls', 'Shoot', self.shoot_key)
+        self.config.set('Controls', 'Jump', self.jump_key)
 
     def save_check(self):
         try:
-            self.config['Key_Update']['Key_1'] = self.key_check[0]
-            self.config['Key_Update']['Key_2'] = self.key_check[1]
-            self.config['Key_Update']['Key_3'] = self.key_check[2]
-            self.config['Key_Update']['Key_4'] = self.key_check[3]
+            self.key_update['Key_Update']['Key_1'] = self.key_check[0]
+            self.key_update['Key_Update']['Key_2'] = self.key_check[1]
+            self.key_update['Key_Update']['Key_3'] = self.key_check[2]
+            self.key_update['Key_Update']['Key_4'] = self.key_check[3]
 
             with open(self.check_config_file, 'w') as checkconfigfile:
-                self.config.write(checkconfigfile)
+                self.key_update.write(checkconfigfile)
         except configparser.Error as e:
             ctypes.windll.user32.MessageBoxW(0, f"Error saving config file: {e}", "Error", 0x10)
 

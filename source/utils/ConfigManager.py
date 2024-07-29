@@ -18,14 +18,14 @@ import configparser
 import threading
 
 
-class PlayerDataManager:
+class ConfigManager:
     _instance = None
     _lock = threading.Lock()  # Ensure thread-safe access
 
-    def __new__(cls, file_path='Config/playerData.ini'):
+    def __new__(cls, file_path='Config/config.ini'):
         with cls._lock:
             if cls._instance is None:
-                cls._instance = super(PlayerDataManager, cls).__new__(cls)
+                cls._instance = super(ConfigManager, cls).__new__(cls)
                 cls._instance._file_path = file_path
                 cls._instance.config = configparser.ConfigParser()
                 cls._instance.load()
@@ -60,17 +60,3 @@ class PlayerDataManager:
         except configparser.Error as e:
             ctypes.windll.user32.MessageBoxW(0, f"Error reading config file: {e}", "Error", 0x10)
             return 0
-
-    def getfloat(self, section, key):
-        try:
-            return self.config.getfloat(section, key, fallback=0)
-        except configparser.Error as e:
-            ctypes.windll.user32.MessageBoxW(0, f"Error reading config file: {e}", "Error", 0x10)
-            return 0.0
-
-    def getboolean(self, section, key):
-        try:
-            return self.config.getboolean(section, key, fallback=False)
-        except configparser.Error as e:
-            ctypes.windll.user32.MessageBoxW(0, f"Error reading config file: {e}", "Error", 0x10)
-            return False

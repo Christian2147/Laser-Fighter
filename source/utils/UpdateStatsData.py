@@ -13,14 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import ctypes
-import configparser
-from utils.PlayerDataManager import ConfigManager
+from utils.PlayerDataManager import PlayerDataManager
 
 
 class Stats:
     def __init__(self, god_mode):
-        self.config_manager = ConfigManager()
+        self.player_data_manager = PlayerDataManager()
 
         self.score = 0
 
@@ -52,65 +50,65 @@ class Stats:
         self.load()
 
     def __del__(self):
-        del self.config_manager
+        del self.player_data_manager
 
     def load(self):
         # Machine Mode Statistics
         if self.god_mode == 1:
             self.high_score_machine_war = "NA"
         else:
-            self.high_score_machine_war = self.config_manager.getint('High_Score', 'High_Score_Machine_War')
-        self.bosses_killed = self.config_manager.getint('Statistics_Machine_Mode', 'Bosses_Killed')
-        self.red_bots_killed = self.config_manager.getint('Statistics_Machine_Mode', 'Red_Bots_Killed')
-        self.yellow_bots_killed = self.config_manager.getint('Statistics_Machine_Mode', 'Yellow_Bots_Killed')
-        self.blue_bots_killed = self.config_manager.getint('Statistics_Machine_Mode', 'Blue_Bots_Killed')
-        self.classic_deaths = self.config_manager.getint('Statistics_Machine_Mode', 'Deaths')
-        self.machine_damage_taken = self.config_manager.getint('Statistics_Machine_Mode', 'Damage_Taken')
-        self.classic_lasers_fired = self.config_manager.getint('Statistics_Machine_Mode', 'Lasers_Fired')
-        self.classic_power_ups_picked_up = self.config_manager.getint('Statistics_Machine_Mode', 'Power_Ups_Picked_Up')
-        self.machine_coins_collected = self.config_manager.getint('Statistics_Machine_Mode', 'Coins_Collected')
+            self.high_score_machine_war = self.player_data_manager.getint('High_Score', 'High_Score_Machine_War')
+        self.bosses_killed = self.player_data_manager.getint('Statistics_Machine_Mode', 'Bosses_Killed')
+        self.red_bots_killed = self.player_data_manager.getint('Statistics_Machine_Mode', 'Red_Bots_Killed')
+        self.yellow_bots_killed = self.player_data_manager.getint('Statistics_Machine_Mode', 'Yellow_Bots_Killed')
+        self.blue_bots_killed = self.player_data_manager.getint('Statistics_Machine_Mode', 'Blue_Bots_Killed')
+        self.classic_deaths = self.player_data_manager.getint('Statistics_Machine_Mode', 'Deaths')
+        self.machine_damage_taken = self.player_data_manager.getint('Statistics_Machine_Mode', 'Damage_Taken')
+        self.classic_lasers_fired = self.player_data_manager.getint('Statistics_Machine_Mode', 'Lasers_Fired')
+        self.classic_power_ups_picked_up = self.player_data_manager.getint('Statistics_Machine_Mode', 'Power_Ups_Picked_Up')
+        self.machine_coins_collected = self.player_data_manager.getint('Statistics_Machine_Mode', 'Coins_Collected')
 
         # Alien Mode Statistics
         if self.god_mode == 1:
             self.high_score_alien_mode = "NA"
         else:
-            self.high_score_alien_mode = self.config_manager.getint('High_Score', 'High_Score_Alien_Mode')
-        self.ufos_killed = self.config_manager.getint('Statistics_Alien_Mode', 'Ufos_Killed')
-        self.big_aliens_killed = self.config_manager.getint('Statistics_Alien_Mode', 'Big_Aliens_Killed')
-        self.medium_aliens_killed = self.config_manager.getint('Statistics_Alien_Mode', 'Medium_Aliens_Killed')
-        self.small_aliens_killed = self.config_manager.getint('Statistics_Alien_Mode', 'Small_Aliens_Killed')
-        self.alien_deaths = self.config_manager.getint('Statistics_Alien_Mode', 'Deaths')
-        self.damage_taken = self.config_manager.getint('Statistics_Alien_Mode', 'Damage_Taken')
-        self.alien_lasers_fired = self.config_manager.getint('Statistics_Alien_Mode', 'Lasers_Fired')
-        self.jumps = self.config_manager.getint('Statistics_Alien_Mode', 'Jumps')
-        self.alien_power_ups_picked_up = self.config_manager.getint('Statistics_Alien_Mode', 'Power_Ups_Picked_Up')
-        self.alien_coins_collected = self.config_manager.getint('Statistics_Alien_Mode', 'Coins_Collected')
+            self.high_score_alien_mode = self.player_data_manager.getint('High_Score', 'High_Score_Alien_Mode')
+        self.ufos_killed = self.player_data_manager.getint('Statistics_Alien_Mode', 'Ufos_Killed')
+        self.big_aliens_killed = self.player_data_manager.getint('Statistics_Alien_Mode', 'Big_Aliens_Killed')
+        self.medium_aliens_killed = self.player_data_manager.getint('Statistics_Alien_Mode', 'Medium_Aliens_Killed')
+        self.small_aliens_killed = self.player_data_manager.getint('Statistics_Alien_Mode', 'Small_Aliens_Killed')
+        self.alien_deaths = self.player_data_manager.getint('Statistics_Alien_Mode', 'Deaths')
+        self.damage_taken = self.player_data_manager.getint('Statistics_Alien_Mode', 'Damage_Taken')
+        self.alien_lasers_fired = self.player_data_manager.getint('Statistics_Alien_Mode', 'Lasers_Fired')
+        self.jumps = self.player_data_manager.getint('Statistics_Alien_Mode', 'Jumps')
+        self.alien_power_ups_picked_up = self.player_data_manager.getint('Statistics_Alien_Mode', 'Power_Ups_Picked_Up')
+        self.alien_coins_collected = self.player_data_manager.getint('Statistics_Alien_Mode', 'Coins_Collected')
 
     def save(self):
         if self.god_mode != 1:
-            self.config_manager.set('High_Score', 'High_Score_Machine_War', str(self.high_score_machine_war))
-            self.config_manager.set('High_Score', 'High_Score_Alien_Mode', str(self.high_score_alien_mode))
+            self.player_data_manager.set('High_Score', 'High_Score_Machine_War', str(self.high_score_machine_war))
+            self.player_data_manager.set('High_Score', 'High_Score_Alien_Mode', str(self.high_score_alien_mode))
 
-        self.config_manager.set('Statistics_Machine_Mode', 'Bosses_Killed', str(self.bosses_killed))
-        self.config_manager.set('Statistics_Machine_Mode', 'Red_Bots_Killed', str(self.red_bots_killed))
-        self.config_manager.set('Statistics_Machine_Mode', 'Yellow_Bots_Killed', str(self.yellow_bots_killed))
-        self.config_manager.set('Statistics_Machine_Mode', 'Blue_Bots_Killed', str(self.blue_bots_killed))
-        self.config_manager.set('Statistics_Machine_Mode', 'Deaths', str(self.classic_deaths))
-        self.config_manager.set('Statistics_Machine_Mode', 'Damage_Taken', str(self.machine_damage_taken))
-        self.config_manager.set('Statistics_Machine_Mode', 'Lasers_Fired', str(self.classic_lasers_fired))
-        self.config_manager.set('Statistics_Machine_Mode', 'Power_Ups_Picked_Up', str(self.classic_power_ups_picked_up))
-        self.config_manager.set('Statistics_Machine_Mode', 'Coins_Collected', str(self.machine_coins_collected))
+        self.player_data_manager.set('Statistics_Machine_Mode', 'Bosses_Killed', str(self.bosses_killed))
+        self.player_data_manager.set('Statistics_Machine_Mode', 'Red_Bots_Killed', str(self.red_bots_killed))
+        self.player_data_manager.set('Statistics_Machine_Mode', 'Yellow_Bots_Killed', str(self.yellow_bots_killed))
+        self.player_data_manager.set('Statistics_Machine_Mode', 'Blue_Bots_Killed', str(self.blue_bots_killed))
+        self.player_data_manager.set('Statistics_Machine_Mode', 'Deaths', str(self.classic_deaths))
+        self.player_data_manager.set('Statistics_Machine_Mode', 'Damage_Taken', str(self.machine_damage_taken))
+        self.player_data_manager.set('Statistics_Machine_Mode', 'Lasers_Fired', str(self.classic_lasers_fired))
+        self.player_data_manager.set('Statistics_Machine_Mode', 'Power_Ups_Picked_Up', str(self.classic_power_ups_picked_up))
+        self.player_data_manager.set('Statistics_Machine_Mode', 'Coins_Collected', str(self.machine_coins_collected))
 
-        self.config_manager.set('Statistics_Alien_Mode', 'Ufos_Killed', str(self.ufos_killed))
-        self.config_manager.set('Statistics_Alien_Mode', 'Big_Aliens_Killed', str(self.big_aliens_killed))
-        self.config_manager.set('Statistics_Alien_Mode', 'Medium_Aliens_Killed', str(self.medium_aliens_killed))
-        self.config_manager.set('Statistics_Alien_Mode', 'Small_Aliens_Killed', str(self.small_aliens_killed))
-        self.config_manager.set('Statistics_Alien_Mode', 'Deaths', str(self.alien_deaths))
-        self.config_manager.set('Statistics_Alien_Mode', 'Damage_Taken', str(self.damage_taken))
-        self.config_manager.set('Statistics_Alien_Mode', 'Lasers_Fired', str(self.alien_lasers_fired))
-        self.config_manager.set('Statistics_Alien_Mode', 'Jumps', str(self.jumps))
-        self.config_manager.set('Statistics_Alien_Mode', 'Power_Ups_Picked_Up', str(self.alien_power_ups_picked_up))
-        self.config_manager.set('Statistics_Alien_Mode', 'Coins_Collected', str(self.alien_coins_collected))
+        self.player_data_manager.set('Statistics_Alien_Mode', 'Ufos_Killed', str(self.ufos_killed))
+        self.player_data_manager.set('Statistics_Alien_Mode', 'Big_Aliens_Killed', str(self.big_aliens_killed))
+        self.player_data_manager.set('Statistics_Alien_Mode', 'Medium_Aliens_Killed', str(self.medium_aliens_killed))
+        self.player_data_manager.set('Statistics_Alien_Mode', 'Small_Aliens_Killed', str(self.small_aliens_killed))
+        self.player_data_manager.set('Statistics_Alien_Mode', 'Deaths', str(self.alien_deaths))
+        self.player_data_manager.set('Statistics_Alien_Mode', 'Damage_Taken', str(self.damage_taken))
+        self.player_data_manager.set('Statistics_Alien_Mode', 'Lasers_Fired', str(self.alien_lasers_fired))
+        self.player_data_manager.set('Statistics_Alien_Mode', 'Jumps', str(self.jumps))
+        self.player_data_manager.set('Statistics_Alien_Mode', 'Power_Ups_Picked_Up', str(self.alien_power_ups_picked_up))
+        self.player_data_manager.set('Statistics_Alien_Mode', 'Coins_Collected', str(self.alien_coins_collected))
 
     def __repr__(self):
         return (f"Statistics("
