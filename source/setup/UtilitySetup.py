@@ -23,6 +23,7 @@ from setup.SpriteSetup import blue_power_up_indicator
 from setup.SpriteSetup import extra_power_up_indicator
 from setup.SpriteSetup import machine_player
 from setup.SpriteSetup import human_player
+from setup.ModeSetupMaster import machine_mode_setup
 from setup.ModeSetupMaster import alien_mode_setup
 from setup.ConfigurationSetup import shop_config
 from setup.ConfigurationSetup import settings
@@ -40,7 +41,7 @@ from utils.ControlsManager import Controls
 from utils.UpdateText import TextRefresh
 
 screen = ScreenUpdate(wn, button, settings, refresh_variables,
-                      alien_mode_setup,
+                      machine_mode_setup, alien_mode_setup,
                       scale_factor_X, scale_factor_Y)
 
 movement = Movement(screen, machine_player, human_player,

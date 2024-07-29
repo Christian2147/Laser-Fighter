@@ -18,11 +18,12 @@ import pygame
 
 
 class ScreenUpdate:
-    def __init__(self, screen, button, settings, refresh, alien_mode_setup, scale_factor_x, scale_factor_y):
+    def __init__(self, screen, button, settings, refresh, machine_mode_setup, alien_mode_setup, scale_factor_x, scale_factor_y):
         self._screen = screen
         self._button = button
         self._settings = settings
         self._refresh = refresh
+        self._machine_mode_setup = machine_mode_setup
         self._alien_mode_setup = alien_mode_setup
         self._scale_factor_x = scale_factor_x
         self._scale_factor_y = scale_factor_y
@@ -40,6 +41,7 @@ class ScreenUpdate:
         del self._button
         del self._settings
         del self._refresh
+        del self._machine_mode_setup
         del self._alien_mode_setup
         del self._scale_factor_x
         del self._scale_factor_y
@@ -143,6 +145,7 @@ class ScreenUpdate:
                 # Set the mode to "Title_Mode" to change the screen
                 self._mode = "Title_Mode"
                 self._screen_update = 1
+                self._machine_mode_setup.setup_machine_mode()
                 self._alien_mode_setup.setup_alien_mode()
                 self._screen.onscreenclick(None)
         # If coming from settings or controls, there may be a special procedure needed
@@ -165,12 +168,14 @@ class ScreenUpdate:
                         # Set the mode to "Title_Mode" to change the screen
                         self._mode = "Title_Mode"
                         self._screen_update = 1
+                        self._machine_mode_setup.setup_machine_mode()
                         self._alien_mode_setup.setup_alien_mode()
                         self._screen.onscreenclick(None)
                         self._updated_controls = 0
                 else:
                     self._mode = "Title_Mode"
                     self._screen_update = 1
+                    self._machine_mode_setup.setup_machine_mode()
                     self._alien_mode_setup.setup_alien_mode()
                     self._screen.onscreenclick(None)
 

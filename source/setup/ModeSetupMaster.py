@@ -18,7 +18,10 @@ from setup.ScreenSetup import scale_factor_Y
 from setup.ConfigurationSetup import shop_config
 from setup.PowerUpSetup import PowerUpSetup
 from setup.AlienModeSetup import AlienModeSetup
+from setup.MachineModeSetup import MachineModeSetup
 
 power_up_setup = PowerUpSetup(shop_config)
 
 alien_mode_setup = AlienModeSetup(shop_config, power_up_setup, scale_factor_X, scale_factor_Y)
+
+machine_mode_setup = MachineModeSetup(shop_config, power_up_setup, scale_factor_X, scale_factor_Y)

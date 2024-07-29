@@ -27,8 +27,7 @@
 import turtle
 import pygame
 import time
-from setup.TextureSetup import MACHINE_PLAYER_TEXTURE
-from setup.TextureSetup import MACHINE_PLAYER_LASER_TEXTURE
+from setup.ModeSetupMaster import machine_mode_setup
 from setup.TextureSetup import EXPLOSION_1_TEXTURE
 from setup.TextureSetup import EXPLOSION_2_TEXTURE
 from setup.TextureSetup import HEALTH_BAR_1010_TEXTURE
@@ -80,14 +79,14 @@ class Player:
         """
 
         self.player = turtle.Turtle()
-        self.player.shape(MACHINE_PLAYER_TEXTURE)
+        self.player.shape(machine_mode_setup.player_texture)
         self.player.shapesize(5, 2)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.player.penup()
         self.player.goto(0, -300 * scale_factor_y)
 
         self.laser = turtle.Turtle()
-        self.laser.shape(MACHINE_PLAYER_LASER_TEXTURE)
+        self.laser.shape(machine_mode_setup.laser_texture)
         self.laser.direction = "down"
         # Ensure that the turtle does not draw lines on the screen while moving
         self.laser.penup()
@@ -142,9 +141,12 @@ class Player:
             :return: None
         """
 
+        self.player.shape(machine_mode_setup.player_texture)
         self.player.goto(0, -300 * self.scale_factor_y)
         self.player.direction = "stop"
         self.player.showturtle()
+
+        self.laser.shape(machine_mode_setup.laser_texture)
         self.laser.goto(0, 360 * self.scale_factor_y)
         self.laser.direction = "down"
         self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
@@ -387,7 +389,7 @@ class Player:
         # Respawns the player at the origin
         if self.update == 3:
             self.player.hideturtle()
-            self.player.shape(MACHINE_PLAYER_TEXTURE)
+            self.player.shape(machine_mode_setup.player_texture)
             self.player.goto(0, -300 * self.scale_factor_y)
             self.update = 3.5
 
