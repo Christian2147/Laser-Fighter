@@ -54,6 +54,8 @@ class MachineModeSetup:
         self.damage = 0
         self.laser_count = 0
 
+        self.player_movement = 30
+        self.yellow_player_movement = 30
         self.power_up_spawn_rate = 1
 
         self.setup_machine_mode()
@@ -73,6 +75,8 @@ class MachineModeSetup:
         del self.yellow_power_up_speed
         del self.damage
         del self.laser_count
+        del self.player_movement
+        del self.yellow_player_movement
         del self.power_up_spawn_rate
 
     @property
@@ -87,23 +91,70 @@ class MachineModeSetup:
             raise ValueError("Value must be an integer")
 
     def setup_machine_mode(self):
+        self.player_movement = 30
+        self.yellow_player_movement = 30
+        self.power_up_spawn_rate = 1
+
         if self._shop_config.machine_slot_selected == 1:
             self.player_texture = MACHINE_PLAYER_TEXTURE
 
             self.laser_texture = MACHINE_PLAYER_LASER_TEXTURE
+            self.laser_offset = 130 * self._scale_factor_y
+            self.laser_speed = 14.5 * self._scale_factor_y
+
+            self.damage = 1
+            self.laser_count = 1
+
+            self.regular_score_multiplier = 1
         elif self._shop_config.machine_slot_selected == 2:
             self.player_texture = MACHINE_WASHER_TEXTURE
 
             self.laser_texture = MACHINE_WASHER_LASER_TEXTURE
+            self.laser_offset = 135 * self._scale_factor_y
+            self.laser_speed = 25 * self._scale_factor_y
+
+            self.damage = 1
+            self.laser_count = 1
+
+            self.regular_score_multiplier = 1
         elif self._shop_config.machine_slot_selected == 3:
             self.player_texture = THE_INCINERATOR_TEXTURE
 
             self.laser_texture = INCINERATOR_LASER_TEXTURE
+            self.laser_offset = 135 * self._scale_factor_y
+            self.laser_speed = 20 * self._scale_factor_y
+
+            self.damage = 1
+            self.laser_count = 2
+
+            self.regular_score_multiplier = 1
         elif self._shop_config.machine_slot_selected == 4:
             self.player_texture = THE_BLACK_HOLE_TEXTURE
 
             self.laser_texture = BLACK_HOLE_LASER_TEXTURE
+            self.laser_offset = 145 * self._scale_factor_y
+            self.laser_speed = 27 * self._scale_factor_y
+
+            self.damage = 2
+            self.laser_count = 3
+
+            self.regular_score_multiplier = 2
         elif self._shop_config.machine_slot_selected == 5:
             self.player_texture = THE_STAR_KILLER_TEXTURE
 
             self.laser_texture = STAR_KILLER_LASER_TEXTURE
+            self.laser_offset = 145 * self._scale_factor_y
+            self.laser_speed = 30 * self._scale_factor_y
+
+            self.damage = 2
+            self.laser_count = 3
+
+            self.regular_score_multiplier = 2
+            self.power_up_spawn_rate = 2
+
+        self.yellow_power_up_speed = self.laser_speed * self._power_up_setup.yellow_power_up_speed_increase
+
+        self.blue_power_up_score_multiplier = self.regular_score_multiplier * self._power_up_setup.blue_power_up_multiplier
+
+        self.player_movement = self.player_movement * self._scale_factor_x
+        self.yellow_player_movement = self.player_movement * self._power_up_setup.yellow_power_up_movement_increase

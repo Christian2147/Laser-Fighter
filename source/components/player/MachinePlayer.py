@@ -284,7 +284,7 @@ class Player:
         self.player.direction = "right"
         self.direction = 2
 
-    def move_player(self):
+    def move_player(self, yellow_power_up):
         """
             Moves the player in the direction specified by the "direction" variable
 
@@ -292,10 +292,16 @@ class Player:
         """
 
         if self.direction == 1 and self.player.xcor() > -620 * self.scale_factor_x and self.death_animation == 0:
-            self.player.setx(self.player.xcor() - 30 * self.scale_factor_x)
+            if yellow_power_up == 1:
+                self.player.setx(self.player.xcor() - machine_mode_setup.yellow_player_movement)
+            else:
+                self.player.setx(self.player.xcor() - machine_mode_setup.player_movement)
 
         if self.direction == 2 and self.player.xcor() < 620 * self.scale_factor_x and self.death_animation == 0:
-            self.player.setx(self.player.xcor() + 30 * self.scale_factor_x)
+            if yellow_power_up == 1:
+                self.player.setx(self.player.xcor() + machine_mode_setup.yellow_player_movement)
+            else:
+                self.player.setx(self.player.xcor() + machine_mode_setup.player_movement)
 
     def fire(self, shooting_sound):
         """
@@ -313,7 +319,7 @@ class Player:
             sound.play()
         # Moves the laser back to the player to be fired
         self.laser.setx(self.player.xcor())
-        self.laser.sety(self.player.ycor() + 120 * self.scale_factor_y)
+        self.laser.sety(self.player.ycor() + machine_mode_setup.laser_offset)
         self.laser_start_time = time.time()
         self.laser_has_attacked = 0
 
@@ -341,11 +347,11 @@ class Player:
                     # Calculate the delta movement
                     # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
-                    delta_movement = 14.5 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                    self.laser.sety(self.laser.ycor() + 14.5 * self.scale_factor_y + delta_movement)
+                    delta_movement = machine_mode_setup.laser_speed * ((elapsed_time - 0.015) / 0.015)
+                    self.laser.sety(self.laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
                 elif yellow_power_up == 1:
-                    delta_movement = 43.5 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                    self.laser.sety(self.laser.ycor() + 43.5 * self.scale_factor_y + delta_movement)
+                    delta_movement = machine_mode_setup.yellow_power_up_speed * ((elapsed_time - 0.015) / 0.015)
+                    self.laser.sety(self.laser.ycor() + machine_mode_setup.yellow_power_up_speed + delta_movement)
                 self.laser_start_time = time.time()
         else:
             self.laser.hideturtle()

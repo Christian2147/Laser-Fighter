@@ -34,6 +34,7 @@ import pygame
 import random
 import time
 from components.ItemCoin import Coin
+from setup.ModeSetupMaster import machine_mode_setup
 from setup.TextureSetup import MACHINE_BOSS_TEXTURE
 from setup.TextureSetup import MACHINE_BOSS_LASER_TEXTURE
 from setup.TextureSetup import EXPLOSION_1_TEXTURE
@@ -461,30 +462,30 @@ class Boss:
                 self.hit_start_time = 0
 
         if self.hit_delay == 0 and no_hit == 0 and self.update == 0:
-            # Decrease the bosses health by 1
-            if self.health_bar == 10:
+            # Decrease the bosses health by the damage amount
+            self.health_bar = self.health_bar - machine_mode_setup.damage
+            if self.health_bar == 9:
                 self.boss_health_bar.shape(HEALTH_BAR_910_TEXTURE)
-            elif self.health_bar == 9:
-                self.boss_health_bar.shape(HEALTH_BAR_810_TEXTURE)
             elif self.health_bar == 8:
-                self.boss_health_bar.shape(HEALTH_BAR_710_TEXTURE)
+                self.boss_health_bar.shape(HEALTH_BAR_810_TEXTURE)
             elif self.health_bar == 7:
-                self.boss_health_bar.shape(HEALTH_BAR_610_TEXTURE)
+                self.boss_health_bar.shape(HEALTH_BAR_710_TEXTURE)
             elif self.health_bar == 6:
-                self.boss_health_bar.shape(HEALTH_BAR_510_TEXTURE)
+                self.boss_health_bar.shape(HEALTH_BAR_610_TEXTURE)
             elif self.health_bar == 5:
-                self.boss_health_bar.shape(HEALTH_BAR_410_TEXTURE)
+                self.boss_health_bar.shape(HEALTH_BAR_510_TEXTURE)
             elif self.health_bar == 4:
-                self.boss_health_bar.shape(HEALTH_BAR_310_TEXTURE)
+                self.boss_health_bar.shape(HEALTH_BAR_410_TEXTURE)
             elif self.health_bar == 3:
-                self.boss_health_bar.shape(HEALTH_BAR_210_TEXTURE)
+                self.boss_health_bar.shape(HEALTH_BAR_310_TEXTURE)
             elif self.health_bar == 2:
+                self.boss_health_bar.shape(HEALTH_BAR_210_TEXTURE)
+            elif self.health_bar == 1:
                 self.boss_health_bar.shape(HEALTH_BAR_110_TEXTURE)
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("Sound/Explosion2.wav")
                 sound.play()
             self.hit_delay = 1
-            self.health_bar = self.health_bar - 1
             self.hit_start_time = time.time()
 
     def float_effect(self):

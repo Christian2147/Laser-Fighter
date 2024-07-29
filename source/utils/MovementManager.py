@@ -17,10 +17,11 @@ from physics.CollisionMaster import alien_collision
 
 
 class Movement:
-    def __init__(self, screen, machine_player, human_player, settings, statistics, scale_factor_y):
+    def __init__(self, screen, machine_player, human_player, yellow_power_up_indicator, settings, statistics, scale_factor_y):
         self._screen = screen
         self._machine_player = machine_player
         self._human_player = human_player
+        self._yellow_power_up_indicator = yellow_power_up_indicator
         self._settings = settings
         self._statistics = statistics
         self._scale_factor_y = scale_factor_y
@@ -29,6 +30,7 @@ class Movement:
         del self._screen
         del self._machine_player
         del self._human_player
+        del self._yellow_power_up_indicator
         del self._settings
         del self._statistics
         del self._scale_factor_y
@@ -77,7 +79,8 @@ class Movement:
         # Player is moved in its current facing direction when this function is activated.
         if self._screen.mode == "Machine_Mode":
             for p in self._machine_player.current_player:
-                p.move_player()
+                for yi in self._yellow_power_up_indicator.yellow_power_up_indicator_turtle:
+                    p.move_player(yi.yellow_power_up_active)
 
     def jump(self):
         """

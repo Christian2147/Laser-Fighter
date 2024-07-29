@@ -84,7 +84,7 @@ MACHINE_DESCRIPTIONS = [
     Description("left", [
         "The Black Hole",
         "",
-        "Laser Speed: 28",
+        "Laser Speed: 27",
         "Laser Color: Purple",
         "Laser Size: XXL",
         "Lasers Per Round: 3",
