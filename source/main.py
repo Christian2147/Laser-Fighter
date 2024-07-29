@@ -1084,7 +1084,7 @@ def main():
 
             # Check if a right movement of the player needs to be executed
             for h in human_player.current_human:
-                h.execute_right_movement()
+                h.execute_right_movement(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active())
 
             # Update the time variable used to create the walking right animation
             human_player.right_update = time.perf_counter()
@@ -1092,7 +1092,7 @@ def main():
 
             # Check if a left movement of the player needs to be executed
             for h in human_player.current_human:
-                h.execute_left_movement()
+                h.execute_left_movement(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active())
 
             # Update the time variable used to create the walking left animation
             human_player.left_update = time.perf_counter()
@@ -1100,7 +1100,7 @@ def main():
 
             # Check if a player jump needs to be executed
             for h in human_player.current_human:
-                h.execute_jump()
+                h.execute_jump(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active())
 
             # Check if the players laser needs to be shot
             for h in human_player.current_human:

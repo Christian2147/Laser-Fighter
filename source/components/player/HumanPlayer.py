@@ -481,7 +481,7 @@ class Human:
             self.laser_fire = 0
             self.laser_start_time = time.time()
 
-    def execute_right_movement(self):
+    def execute_right_movement(self, yellow_power_up):
         """
             Move the player to the right 100 units in 0.012 seconds
 
@@ -493,12 +493,15 @@ class Human:
             # Move right in 0.012 seconds
             current_time = time.time()
             elapsed_time = current_time - self.move_start_time
+            player_movement = alien_mode_setup.player_movement
+            if yellow_power_up == 1:
+                player_movement = alien_mode_setup.yellow_player_movement
             if elapsed_time >= 0.012:
                 self.move_update = 1
                 if self.player.xcor() < (self.Start_X + 100 * self.scale_factor_x):
                     # Calculate the delta movement and add it as additional movement required
-                    delta_movement = alien_mode_setup.player_movement * ((elapsed_time - 0.012) / 0.012)
-                    self.player.setx(self.player.xcor() + alien_mode_setup.player_movement + delta_movement)
+                    delta_movement = player_movement * ((elapsed_time - 0.012) / 0.012)
+                    self.player.setx(self.player.xcor() + player_movement + delta_movement)
                     self.oxygen_tank.goto(self.player.xcor() - 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
                     self.gun.goto(self.player.xcor() + alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
                     self.moving_right = 1
@@ -509,7 +512,7 @@ class Human:
                 self.move_update = 0
                 self.move_start_time = time.time()
 
-    def execute_left_movement(self):
+    def execute_left_movement(self, yellow_power_up):
         """
             Move the player to the left 100 units in 0.012 seconds
 
@@ -521,12 +524,15 @@ class Human:
             # Move left in 0.012 seconds
             current_time = time.time()
             elapsed_time = current_time - self.move_start_time
+            player_movement = alien_mode_setup.player_movement
+            if yellow_power_up == 1:
+                player_movement = alien_mode_setup.yellow_player_movement
             if elapsed_time >= 0.012:
                 self.move_update = 1
                 if self.player.xcor() > (self.Start_X - 100 * self.scale_factor_x):
                     # Calculate the delta movement and add it as additional movement required
-                    delta_movement = alien_mode_setup.player_movement * ((elapsed_time - 0.012) / 0.012)
-                    self.player.setx(self.player.xcor() - alien_mode_setup.player_movement - delta_movement)
+                    delta_movement = player_movement * ((elapsed_time - 0.012) / 0.012)
+                    self.player.setx(self.player.xcor() - player_movement - delta_movement)
                     self.oxygen_tank.goto(self.player.xcor() + 30.5 * self.scale_factor_x, self.player.ycor() + 11 * self.scale_factor_y)
                     self.gun.goto(self.player.xcor() - alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
                     self.moving_left = 1
@@ -537,7 +543,7 @@ class Human:
                 self.move_update = 0
                 self.move_start_time = time.time()
 
-    def execute_jump(self):
+    def execute_jump(self, yellow_power_up):
         """
             Executes the jump movement of the player in the specified direction based on the variable "direction"
 
@@ -551,9 +557,12 @@ class Human:
             if (self.direction == 1 and self.jump_direction == 0) or (self.jump_direction == 1):
                 current_time = time.time()
                 elapsed_time = current_time - self.jump_start_time
-                if elapsed_time >= alien_mode_setup.jump_frequency:
+                jump_frequency = alien_mode_setup.jump_frequency
+                if yellow_power_up == 1:
+                    jump_frequency = alien_mode_setup.yellow_jump_frequency
+                if elapsed_time >= jump_frequency:
                     # Find the delta time (How ,much more time has passed since 0.006 seconds)
-                    delta_movement = (elapsed_time - alien_mode_setup.jump_frequency) / alien_mode_setup.jump_frequency
+                    delta_movement = (elapsed_time - jump_frequency) / jump_frequency
                     # Convert this value to an integer to get the whole number amounts of
                     #   "0.006 seconds" that have passed
                     delta_movement = int(delta_movement)
@@ -604,9 +613,12 @@ class Human:
             elif (self.direction == 2 and self.jump_direction == 0) or (self.jump_direction == 2):
                 current_time = time.time()
                 elapsed_time = current_time - self.jump_start_time
-                if elapsed_time >= alien_mode_setup.jump_frequency:
+                jump_frequency = alien_mode_setup.jump_frequency
+                if yellow_power_up == 1:
+                    jump_frequency = alien_mode_setup.yellow_jump_frequency
+                if elapsed_time >= jump_frequency:
                     # Same process as above to find the delta time
-                    delta_movement = (elapsed_time - alien_mode_setup.jump_frequency) / alien_mode_setup.jump_frequency
+                    delta_movement = (elapsed_time - jump_frequency) / jump_frequency
                     delta_movement = int(delta_movement)
                     iterations = 1 + delta_movement
                     for i in range(iterations):
