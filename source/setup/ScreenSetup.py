@@ -119,6 +119,8 @@ texture_paths = [
     "Textures/Lasers/Player_Laser.gif",
     "Textures/Lasers/Machine_Washer_Laser.gif",
     "Textures/Lasers/Incinerator_Laser.gif",
+    "Textures/Lasers/The_Black_Hole_Laser.gif",
+    "Textures/Lasers/The_Star_Killer_Laser.gif",
     "Textures/Enemies/Enemy(1-5).gif",
     "Textures/Lasers/Enemy(1-5)_Laser.gif",
     "Textures/Enemies/Enemy(6-10).gif",

@@ -24,6 +24,8 @@ THE_STAR_KILLER_TEXTURE = "Textures/Player/The_Star_Killer.gif" if fullscreen ==
 MACHINE_PLAYER_LASER_TEXTURE = "Textures/Lasers/Player_Laser.gif" if fullscreen == 0 else "Textures/Lasers/Player_Laser_Scaled.gif"
 MACHINE_WASHER_LASER_TEXTURE = "Textures/Lasers/Machine_Washer_Laser.gif" if fullscreen == 0 else "Textures/Lasers/Machine_Washer_Laser_Scaled.gif"
 INCINERATOR_LASER_TEXTURE = "Textures/Lasers/Incinerator_Laser.gif" if fullscreen == 0 else "Textures/Lasers/Incinerator_Laser_Scaled.gif"
+BLACK_HOLE_LASER_TEXTURE = "Textures/Lasers/The_Black_Hole_Laser.gif" if fullscreen == 0 else "Textures/Lasers/The_Black_Hole_Laser_Scaled.gif"
+STAR_KILLER_LASER_TEXTURE = "Textures/Lasers/The_Star_Killer_Laser.gif" if fullscreen == 0 else "Textures/Lasers/The_Star_Killer_Laser_Scaled.gif"
 BLUE_MACHINE_TEXTURE = "Textures/Enemies/Enemy(1-5).gif" if fullscreen == 0 else "Textures/Enemies/Enemy(1-5)_Scaled.gif"
 BLUE_MACHINE_LASER_TEXTURE = "Textures/Lasers/Enemy(1-5)_Laser.gif" if fullscreen == 0 else "Textures/Lasers/Enemy(1-5)_Laser_Scaled.gif"
 YELLOW_MACHINE_TEXTURE = "Textures/Enemies/Enemy(6-10).gif" if fullscreen == 0 else "Textures/Enemies/Enemy(6-10)_Scaled.gif"
