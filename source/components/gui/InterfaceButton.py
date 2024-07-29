@@ -49,6 +49,10 @@ from setup.TextureSetup import YELLOW_LIGHTNING_POWER_UP_TEXTURE
 from setup.TextureSetup import LOCKED_TEXTURE
 from setup.TextureSetup import COIN_INDICATOR_TEXTURE
 from setup.TextureSetup import MACHINE_DEFAULT_SLOT_ICON_TEXTURE
+from setup.TextureSetup import MACHINE_WASHER_SLOT_ICON_TEXTURE
+from setup.TextureSetup import THE_INCINERATOR_SLOT_ICON_TEXTURE
+from setup.TextureSetup import THE_BLACK_HOLE_SLOT_ICON_TEXTURE
+from setup.TextureSetup import THE_STAR_KILLER_SLOT_ICON_TEXTURE
 from setup.TextureSetup import ALIEN_DEFAULT_SLOT_ICON_TEXTURE
 from setup.TextureSetup import THE_COOKER_SLOT_ICON_TEXTURE
 from setup.TextureSetup import POISON_DART_SLOT_ICON_TEXTURE
@@ -180,26 +184,35 @@ class Button:
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor())
         elif type == "Shop_Slot" or type == "Power_Up_Slot":
             if page == "Machine_Mode":
-                self.button_text.shape(MACHINE_DEFAULT_SLOT_ICON_TEXTURE)
+                if id == 1:
+                    self.button_text.shape(MACHINE_DEFAULT_SLOT_ICON_TEXTURE)
+                elif id == 2:
+                    self.button_text.shape(MACHINE_WASHER_SLOT_ICON_TEXTURE)
+                elif id == 3:
+                    self.button_text.shape(THE_INCINERATOR_SLOT_ICON_TEXTURE)
+                elif id == 4:
+                    self.button_text.shape(THE_BLACK_HOLE_SLOT_ICON_TEXTURE)
+                elif id == 5:
+                    self.button_text.shape(THE_STAR_KILLER_SLOT_ICON_TEXTURE)
             elif page == "Alien_Mode":
-                if self.id == 1:
+                if id == 1:
                     self.button_text.shape(ALIEN_DEFAULT_SLOT_ICON_TEXTURE)
-                elif self.id == 2:
+                elif id == 2:
                     self.button_text.shape(THE_COOKER_SLOT_ICON_TEXTURE)
-                elif self.id == 3:
+                elif id == 3:
                     self.button_text.shape(POISON_DART_SLOT_ICON_TEXTURE)
-                elif self.id == 4:
+                elif id == 4:
                     self.button_text.shape(METEOR_GUN_SLOT_ICON_TEXTURE)
-                elif self.id == 5:
+                elif id == 5:
                     self.button_text.shape(SUPERNOVA_SLOT_ICON_TEXTURE)
             elif page == "Power_Ups":
-                if self.id == 1:
+                if id == 1:
                     self.button_text.shape(YELLOW_POWER_UP_SLOT_ICON_TEXTURE)
-                elif self.id == 2:
+                elif id == 2:
                     self.button_text.shape(BLUE_POWER_UP_SLOT_ICON_TEXTURE)
-                elif self.id == 3:
+                elif id == 3:
                     self.button_text.shape(GREEN_POWER_UP_SLOT_ICON_TEXTURE)
-                elif self.id == 4:
+                elif id == 4:
                     self.button_text.shape(RED_POWER_UP_SLOT_ICON_TEXTURE)
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
         elif type == "Buy":
@@ -407,26 +420,35 @@ class Button:
         self.button_frame.showturtle()
 
         if page == "Machine_Mode":
-            self.button_text.shape(MACHINE_DEFAULT_SLOT_ICON_TEXTURE)
+            if id == 1:
+                self.button_text.shape(MACHINE_DEFAULT_SLOT_ICON_TEXTURE)
+            elif id == 2:
+                self.button_text.shape(MACHINE_WASHER_SLOT_ICON_TEXTURE)
+            elif id == 3:
+                self.button_text.shape(THE_INCINERATOR_SLOT_ICON_TEXTURE)
+            elif id == 4:
+                self.button_text.shape(THE_BLACK_HOLE_SLOT_ICON_TEXTURE)
+            elif id == 5:
+                self.button_text.shape(THE_STAR_KILLER_SLOT_ICON_TEXTURE)
         elif page == "Alien_Mode":
-            if self.id == 1:
+            if id == 1:
                 self.button_text.shape(ALIEN_DEFAULT_SLOT_ICON_TEXTURE)
-            elif self.id == 2:
+            elif id == 2:
                 self.button_text.shape(THE_COOKER_SLOT_ICON_TEXTURE)
-            elif self.id == 3:
+            elif id == 3:
                 self.button_text.shape(POISON_DART_SLOT_ICON_TEXTURE)
-            elif self.id == 4:
+            elif id == 4:
                 self.button_text.shape(METEOR_GUN_SLOT_ICON_TEXTURE)
-            elif self.id == 5:
+            elif id == 5:
                 self.button_text.shape(SUPERNOVA_SLOT_ICON_TEXTURE)
         elif page == "Power_Ups":
-            if self.id == 1:
+            if id == 1:
                 self.button_text.shape(YELLOW_POWER_UP_SLOT_ICON_TEXTURE)
-            elif self.id == 2:
+            elif id == 2:
                 self.button_text.shape(BLUE_POWER_UP_SLOT_ICON_TEXTURE)
-            elif self.id == 3:
+            elif id == 3:
                 self.button_text.shape(GREEN_POWER_UP_SLOT_ICON_TEXTURE)
-            elif self.id == 4:
+            elif id == 4:
                 self.button_text.shape(RED_POWER_UP_SLOT_ICON_TEXTURE)
         self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
         self.button_text.showturtle()

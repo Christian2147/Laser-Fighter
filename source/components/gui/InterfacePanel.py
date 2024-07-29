@@ -33,6 +33,10 @@ from setup.data.ShopDescriptions import GREEN_POWER_UP_DESCRIPTIONS
 from setup.data.ShopDescriptions import RED_POWER_UP_DESCRIPTIONS
 from setup.TextureSetup import SIDE_PANEL_SHOP_TEXTURE
 from setup.TextureSetup import MACHINE_DEFAULT_DISPLAY_ICON_TEXTURE
+from setup.TextureSetup import MACHINE_WASHER_DISPLAY_ICON_TEXTURE
+from setup.TextureSetup import THE_INCINERATOR_DISPLAY_ICON_TEXTURE
+from setup.TextureSetup import THE_BLACK_HOLE_DISPLAY_ICON_TEXTURE
+from setup.TextureSetup import THE_STAR_KILLER_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import ALIEN_DEFAULT_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import THE_COOKER_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import POISON_DART_DISPLAY_ICON_TEXTURE
@@ -43,7 +47,6 @@ from setup.TextureSetup import BLUE_POWER_UP_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import GREEN_POWER_UP_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import RED_POWER_UP_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import MACHINE_PLAYER_TEXTURE
-from setup.TextureSetup import PLAYER_GUN_RIGHT_TEXTURE
 
 
 class Panel:
@@ -223,8 +226,14 @@ class Panel:
             if self.catigory == "Machine_Mode":
                 if self.id == 1:
                     self.panel_indicator.shape(MACHINE_DEFAULT_DISPLAY_ICON_TEXTURE)
-                else:
-                    self.panel_indicator.shape(MACHINE_PLAYER_TEXTURE)
+                elif self.id == 2:
+                    self.panel_indicator.shape(MACHINE_WASHER_DISPLAY_ICON_TEXTURE)
+                elif self.id == 3:
+                    self.panel_indicator.shape(THE_INCINERATOR_DISPLAY_ICON_TEXTURE)
+                elif self.id == 4:
+                    self.panel_indicator.shape(THE_BLACK_HOLE_DISPLAY_ICON_TEXTURE)
+                elif self.id == 5:
+                    self.panel_indicator.shape(THE_STAR_KILLER_DISPLAY_ICON_TEXTURE)
             elif self.catigory == "Alien_Mode":
                 if self.id == 1:
                     self.panel_indicator.shape(ALIEN_DEFAULT_DISPLAY_ICON_TEXTURE)
