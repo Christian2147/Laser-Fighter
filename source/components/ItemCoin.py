@@ -22,6 +22,7 @@
 """
 
 import turtle
+from setup.ScreenSetup import scale_factor_X
 from setup.TextureSetup import COPPER_COIN_TEXTURE
 from setup.TextureSetup import SILVER_COIN_TEXTURE
 from setup.TextureSetup import GOLD_COIN_TEXTURE
@@ -37,6 +38,8 @@ class Coin:
             type (str): The type of coin (copper, silver, gold, platinum)
             coin (turtle): The coin sprite
     """
+
+    COIN_DISTANCE = 48 * scale_factor_X
 
     def __init__(self, type, pos_x, pos_y):
         """
@@ -66,8 +69,8 @@ class Coin:
         self.coin.shapesize(2, 2)
         self.coin.goto(pos_x, pos_y)
 
-        self.range = (0, 0)
-        self.collision_coordinate = 0
+        self.range = (self.coin.xcor() - self.COIN_DISTANCE, self.coin.xcor() + self.COIN_DISTANCE)
+        self.collision_coordinate = self.coin.ycor() - self.COIN_DISTANCE
 
         self.type = type
 
@@ -98,8 +101,8 @@ class Coin:
         self.coin.goto(pos_x, pos_y)
         self.coin.showturtle()
 
-        self.range = (0, 0)
-        self.collision_coordinate = 0
+        self.range = (self.coin.xcor() - self.COIN_DISTANCE, self.coin.xcor() + self.COIN_DISTANCE)
+        self.collision_coordinate = self.coin.ycor() - self.COIN_DISTANCE
 
         self.type = "copper"
 
@@ -120,8 +123,8 @@ class Coin:
         self.coin.goto(pos_x, pos_y)
         self.coin.showturtle()
 
-        self.range = (0, 0)
-        self.collision_coordinate = 0
+        self.range = (self.coin.xcor() - self.COIN_DISTANCE, self.coin.xcor() + self.COIN_DISTANCE)
+        self.collision_coordinate = self.coin.ycor() - self.COIN_DISTANCE
 
         self.type = "silver"
 
@@ -142,8 +145,8 @@ class Coin:
         self.coin.goto(pos_x, pos_y)
         self.coin.showturtle()
 
-        self.range = (0, 0)
-        self.collision_coordinate = 0
+        self.range = (self.coin.xcor() - self.COIN_DISTANCE, self.coin.xcor() + self.COIN_DISTANCE)
+        self.collision_coordinate = self.coin.ycor() - self.COIN_DISTANCE
 
         self.type = "gold"
 
@@ -164,8 +167,8 @@ class Coin:
         self.coin.goto(pos_x, pos_y)
         self.coin.showturtle()
 
-        self.range = (0, 0)
-        self.collision_coordinate = 0
+        self.range = (self.coin.xcor() - self.COIN_DISTANCE, self.coin.xcor() + self.COIN_DISTANCE)
+        self.collision_coordinate = self.coin.ycor() - self.COIN_DISTANCE
 
         self.type = "platinum"
 

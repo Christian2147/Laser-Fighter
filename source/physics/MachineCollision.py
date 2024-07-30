@@ -27,8 +27,6 @@ class MachineCollision:
     RED_MACHINE_DISTANCE = 64 * scale_factor_X
     BOSS_DISTANCE = 75 * scale_factor_X
 
-    COIN_DISTANCE = 48 * scale_factor_X
-
     FLOAT_AMPLITUDE = 50 * scale_factor_Y
     PERIOD = 10
 
@@ -103,7 +101,10 @@ class MachineCollision:
 
             bm.x_range = (bm.blue_machine.xcor() + x_offset - self.BLUE_MACHINE_DISTANCE, bm.blue_machine.xcor() + x_offset + self.BLUE_MACHINE_DISTANCE)
 
-            collision_y_coordinate = self._machine_player.current_player[0].laser.ycor() + (self.laser_speed * intersection_time[0] * -1)
+            collision_y_coordinate = self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (intersection_time[0] * -1 + self.float_time_offset)) / self.PERIOD) + \
+                self.initial_distance + \
+                self._machine_player.current_player[0].laser.ycor()
+
             bm.collision_y_coordinate = collision_y_coordinate
 
         for ym in self._yellow_machine.yellow_machines:
@@ -140,7 +141,10 @@ class MachineCollision:
 
             ym.x_range = (ym.yellow_machine.xcor() + x_offset - self.YELLOW_MACHINE_DISTANCE, ym.yellow_machine.xcor() + x_offset + self.YELLOW_MACHINE_DISTANCE)
 
-            collision_y_coordinate = self._machine_player.current_player[0].laser.ycor() + (self.laser_speed * intersection_time[0] * -1)
+            collision_y_coordinate = self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (intersection_time[0] * -1 + self.float_time_offset)) / self.PERIOD) + \
+                self.initial_distance + \
+                self._machine_player.current_player[0].laser.ycor()
+
             ym.collision_y_coordinate = collision_y_coordinate
 
         for rm in self._red_machine.red_machines:
@@ -177,7 +181,10 @@ class MachineCollision:
 
             rm.x_range = (rm.red_machine.xcor() + x_offset - self.RED_MACHINE_DISTANCE, rm.red_machine.xcor() + x_offset + self.RED_MACHINE_DISTANCE)
 
-            collision_y_coordinate = self._machine_player.current_player[0].laser.ycor() + (self.laser_speed * intersection_time[0] * -1)
+            collision_y_coordinate = self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (intersection_time[0] * -1 + self.float_time_offset)) / self.PERIOD) + \
+                self.initial_distance + \
+                self._machine_player.current_player[0].laser.ycor()
+
             rm.collision_y_coordinate = collision_y_coordinate
 
         for b in self._machine_boss.boss:
@@ -214,14 +221,11 @@ class MachineCollision:
 
             b.x_range = (b.boss.xcor() + x_offset - self.BOSS_DISTANCE, b.boss.xcor() + x_offset + self.BOSS_DISTANCE)
 
-            collision_y_coordinate = self._machine_player.current_player[0].laser.ycor() + (self.laser_speed * intersection_time[0] * -1)
+            collision_y_coordinate = self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (intersection_time[0] * -1 + self.float_time_offset)) / self.PERIOD) + \
+                self.initial_distance + \
+                self._machine_player.current_player[0].laser.ycor()
+
             b.collision_y_coordinate = collision_y_coordinate
-
-        for c in self._coin.coins_on_screen_list:
-            c.range = (c.coin.xcor() - self.COIN_DISTANCE, c.coin.xcor() + self.COIN_DISTANCE)
-
-            collision_coordinate = c.coin.ycor() - self.COIN_DISTANCE
-            c.collision_coordinate = collision_coordinate
 
     def time_equation(self, t):
         return (self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (t + self.float_time_offset)) / self.PERIOD)) - (self.laser_speed * t + self.initial_distance)

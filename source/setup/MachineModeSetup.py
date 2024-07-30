@@ -96,7 +96,7 @@ class MachineModeSetup:
 
             self.laser_texture = MACHINE_PLAYER_LASER_TEXTURE
             self.laser_offset = 130 * self._scale_factor_y
-            self.laser_speed = 14.5 * self._scale_factor_y
+            self.laser_speed = 14.5 * self._scale_factor_y #14.5
 
             self.damage = 1
             self.laser_count = 1
