@@ -133,6 +133,10 @@ class BlueMachine:
         self.movement_activated = 0
         self.id = id
 
+        self.enemy_center = self.blue_machine.ycor()
+        self.float_time_offset = time.time()
+        self.x_range = (0, 0)
+
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -176,6 +180,8 @@ class BlueMachine:
         elif id == 5:
             self.blue_machine.goto(-400 * self.scale_factor_x, 220 * self.scale_factor_y)
             self.blue_machine_laser.goto(-400 * self.scale_factor_x, 170 * self.scale_factor_y)
+        self.enemy_center = self.blue_machine.ycor()
+        self.float_time_offset = time.time()
         self.blue_machine.direction = "down"
         self.blue_machine_laser.direction = "down"
         # Set the id to the new id
@@ -274,6 +280,7 @@ class BlueMachine:
         self.float_start_time = 0
         self.laser_has_attacked = 0
         self.movement_activated = 0
+        self.x_range = (0, 0)
 
     def shoot_laser(self, green_power_up, shooting_sound):
         """
@@ -377,6 +384,9 @@ class BlueMachine:
             self.blue_machine.shape(BLUE_MACHINE_TEXTURE)
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
             self.blue_machine.goto(random.randint(int(-640 * self.scale_factor_x), int(640 * self.scale_factor_x)), random.randint(int(120 * self.scale_factor_y), int(220 * self.scale_factor_y)))
+            self.float_activated = 0
+            self.float_time_offset = time.time()
+            self.enemy_center = self.blue_machine.ycor()
             self.update = 3.5
             self.start_time = time.time()
             return

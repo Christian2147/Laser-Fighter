@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+from physics.CollisionMaster import machine_collision
 from physics.CollisionMaster import alien_collision
 
 
@@ -112,6 +113,7 @@ class Movement:
                 if p.get_laser().ycor() > 359 * self._scale_factor_y and p.get_death_animation() == 0:
                     # The laser is fired
                     p.fire(self._settings.player_shooting_sound)
+                    machine_collision.calculate_collisions()
                     # Update the game statistics
                     if self._settings.god_mode == 0:
                         self._statistics.classic_lasers_fired = self._statistics.classic_lasers_fired + 1
