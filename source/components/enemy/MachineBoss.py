@@ -531,13 +531,13 @@ class Boss:
         if elapsed_time >= 0.0075:
             if self.float == 1:
                 # Calculate the delta movement and add it as additional movement required
-                delta_movement = 0.15 * self.scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
-                self.boss.goto(self.boss.xcor(), self.boss.ycor() + 0.15 * self.scale_factor_y + delta_movement)
+                delta_movement = machine_mode_setup.MACHINE_FLOAT * ((elapsed_time - 0.0075) / 0.0075)
+                self.boss.goto(self.boss.xcor(), self.boss.ycor() + machine_mode_setup.MACHINE_FLOAT + delta_movement)
                 self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
             elif self.float == -1:
                 # Calculate the delta movement and add it as additional movement required
-                delta_movement = 0.15 * self.scale_factor_y * ((elapsed_time - 0.0075) / 0.0075)
-                self.boss.goto(self.boss.xcor(), self.boss.ycor() - 0.15 * self.scale_factor_y - delta_movement)
+                delta_movement = machine_mode_setup.MACHINE_FLOAT * ((elapsed_time - 0.0075) / 0.0075)
+                self.boss.goto(self.boss.xcor(), self.boss.ycor() - machine_mode_setup.MACHINE_FLOAT - delta_movement)
                 self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
             self.float_start_time = time.time()
 
@@ -573,45 +573,45 @@ class Boss:
                     # Speeds up based on the death_count variable
                     if 4 <= self.death_count < 7:
                         # Calculate the delta movement as extra movement needed
-                        delta_movement = 2 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() + 2 * self.scale_factor_x + delta_movement)
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_2 * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + machine_mode_setup.MACHINE_MOVE_2 + delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 7 <= self.death_count < 10:
-                        delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() + 4 * self.scale_factor_x + delta_movement)
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_4 * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + machine_mode_setup.MACHINE_MOVE_4 + delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 10 <= self.death_count < 13:
-                        delta_movement = 6 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() + 6 * self.scale_factor_x + delta_movement)
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_6 * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + machine_mode_setup.MACHINE_MOVE_6 + delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 13 <= self.death_count < 16:
-                        delta_movement = 8 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() + 8 * self.scale_factor_x + delta_movement)
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_8 * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + machine_mode_setup.MACHINE_MOVE_8 + delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 16 <= self.death_count:
-                        delta_movement = 10 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() + 10 * self.scale_factor_x + delta_movement)
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_10 * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() + machine_mode_setup.MACHINE_MOVE_10 + delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                 elif self.movement == -1:
                     if 4 <= self.death_count < 7:
-                        delta_movement = 2 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() - 2 * self.scale_factor_x - delta_movement)
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_2 * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - machine_mode_setup.MACHINE_MOVE_2 - delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 7 <= self.death_count < 10:
-                        delta_movement = 4 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() - 4 * self.scale_factor_x - delta_movement)
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_4 * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - machine_mode_setup.MACHINE_MOVE_4 - delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 10 <= self.death_count < 13:
-                        delta_movement = 6 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() - 6 * self.scale_factor_x - delta_movement)
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_6 * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - machine_mode_setup.MACHINE_MOVE_6 - delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 13 <= self.death_count < 16:
-                        delta_movement = 8 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() - 8 * self.scale_factor_x - delta_movement)
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_8 * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - machine_mode_setup.MACHINE_MOVE_8 - delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                     elif 16 <= self.death_count:
-                        delta_movement = 10 * self.scale_factor_x * ((elapsed_time - 0.02) / 0.02)
-                        self.boss.setx(self.boss.xcor() - 10 * self.scale_factor_x - delta_movement)
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_10 * ((elapsed_time - 0.02) / 0.02)
+                        self.boss.setx(self.boss.xcor() - machine_mode_setup.MACHINE_MOVE_10 - delta_movement)
                         self.boss_health_bar.goto(self.boss.xcor(), self.boss.ycor() + 82 * self.scale_factor_y)
                 self.move_start_time = time.time()
         else:

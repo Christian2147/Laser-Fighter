@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+from setup.ScreenSetup import scale_factor_X
+from setup.ScreenSetup import scale_factor_Y
 from setup.TextureSetup import MACHINE_PLAYER_TEXTURE
 from setup.TextureSetup import MACHINE_PLAYER_LASER_TEXTURE
 from setup.TextureSetup import MACHINE_WASHER_TEXTURE
@@ -26,6 +28,14 @@ from setup.TextureSetup import STAR_KILLER_LASER_TEXTURE
 
 
 class MachineModeSetup:
+    MACHINE_MOVE_2 = 2 * scale_factor_X
+    MACHINE_MOVE_4 = 4 * scale_factor_X
+    MACHINE_MOVE_6 = 6 * scale_factor_X
+    MACHINE_MOVE_8 = 8 * scale_factor_X
+    MACHINE_MOVE_10 = 10 * scale_factor_X
+
+    MACHINE_FLOAT = 0.15 * scale_factor_Y
+
     _instance = None
 
     def __new__(cls, *args, **kwargs):
