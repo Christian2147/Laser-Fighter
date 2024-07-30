@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+from setup.SpriteSetup import coin
 from setup.SpriteSetup import machine_player
 from setup.SpriteSetup import blue_machine
 from setup.SpriteSetup import yellow_machine
@@ -26,6 +27,6 @@ from setup.SpriteSetup import ufo
 from physics.MachineCollision import MachineCollision
 from physics.AlienCollision import AlienCollision
 
-machine_collision = MachineCollision(machine_player, blue_machine, yellow_machine, red_machine, machine_boss)
+machine_collision = MachineCollision(machine_player, blue_machine, yellow_machine, red_machine, machine_boss, coin)
 
 alien_collision = AlienCollision(human_player, small_alien, medium_alien, large_alien, ufo)

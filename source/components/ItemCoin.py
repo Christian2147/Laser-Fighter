@@ -66,6 +66,9 @@ class Coin:
         self.coin.shapesize(2, 2)
         self.coin.goto(pos_x, pos_y)
 
+        self.range = (0, 0)
+        self.collision_coordinate = 0
+
         self.type = type
 
     def __del__(self):
@@ -95,6 +98,9 @@ class Coin:
         self.coin.goto(pos_x, pos_y)
         self.coin.showturtle()
 
+        self.range = (0, 0)
+        self.collision_coordinate = 0
+
         self.type = "copper"
 
     def reinstate_to_silver(self, pos_x, pos_y):
@@ -113,6 +119,9 @@ class Coin:
         self.coin.shape(SILVER_COIN_TEXTURE)
         self.coin.goto(pos_x, pos_y)
         self.coin.showturtle()
+
+        self.range = (0, 0)
+        self.collision_coordinate = 0
 
         self.type = "silver"
 
@@ -133,6 +142,9 @@ class Coin:
         self.coin.goto(pos_x, pos_y)
         self.coin.showturtle()
 
+        self.range = (0, 0)
+        self.collision_coordinate = 0
+
         self.type = "gold"
 
     def reinstate_to_platinum(self, pos_x, pos_y):
@@ -151,6 +163,9 @@ class Coin:
         self.coin.shape(PLATINUM_COIN_TEXTURE)
         self.coin.goto(pos_x, pos_y)
         self.coin.showturtle()
+
+        self.range = (0, 0)
+        self.collision_coordinate = 0
 
         self.type = "platinum"
 

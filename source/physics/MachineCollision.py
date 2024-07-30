@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import turtle
 import time
 import math
 from scipy.optimize import fsolve
@@ -28,6 +27,8 @@ class MachineCollision:
     RED_MACHINE_DISTANCE = 64 * scale_factor_X
     BOSS_DISTANCE = 75 * scale_factor_X
 
+    COIN_DISTANCE = 48 * scale_factor_X
+
     FLOAT_AMPLITUDE = 50 * scale_factor_Y
     PERIOD = 10
 
@@ -37,12 +38,13 @@ class MachineCollision:
     MACHINE_6_8_MOVEMENT_SPEED = (8 * scale_factor_X) / 0.02
     MACHINE_8_10_MOVEMENT_SPEED = (10 * scale_factor_X) / 0.02
 
-    def __init__(self, machine_player, blue_machine, yellow_machine, red_machine, machine_boss):
+    def __init__(self, machine_player, blue_machine, yellow_machine, red_machine, machine_boss, coin):
         self._machine_player = machine_player
         self._blue_machine = blue_machine
         self._yellow_machine = yellow_machine
         self._red_machine = red_machine
         self._machine_boss = machine_boss
+        self._coin = coin
 
         self.laser_speed = 0
         self.initial_distance = 0
@@ -55,6 +57,7 @@ class MachineCollision:
         del self._yellow_machine
         del self._red_machine
         del self._machine_boss
+        del self._coin
         del self.laser_speed
         del self.initial_distance
         del self.float_time_offset
@@ -102,12 +105,6 @@ class MachineCollision:
 
             collision_y_coordinate = self._machine_player.current_player[0].laser.ycor() + (self.laser_speed * intersection_time[0] * -1)
             bm.collision_y_coordinate = collision_y_coordinate
-
-            # dude = turtle.Turtle()
-            # dude.penup()
-            # dude.color("white")
-            # dude.shapesize(5, 5)
-            # dude.goto(bu.blue_machine.xcor() + x_offset, collision_y_coordinate)
 
         for ym in self._yellow_machine.yellow_machines:
             self.enemy_center = ym.enemy_center
@@ -219,6 +216,12 @@ class MachineCollision:
 
             collision_y_coordinate = self._machine_player.current_player[0].laser.ycor() + (self.laser_speed * intersection_time[0] * -1)
             b.collision_y_coordinate = collision_y_coordinate
+
+        for c in self._coin.coins_on_screen_list:
+            c.range = (c.coin.xcor() - self.COIN_DISTANCE, c.coin.xcor() + self.COIN_DISTANCE)
+
+            collision_coordinate = c.coin.ycor() - self.COIN_DISTANCE
+            c.collision_coordinate = collision_coordinate
 
     def time_equation(self, t):
         return (self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (t + self.float_time_offset)) / self.PERIOD)) - (self.laser_speed * t + self.initial_distance)
