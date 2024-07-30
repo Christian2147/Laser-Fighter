@@ -181,14 +181,18 @@ class BlueMachine:
         elif id == 5:
             self.blue_machine.goto(-400 * self.scale_factor_x, 220 * self.scale_factor_y)
             self.blue_machine_laser.goto(-400 * self.scale_factor_x, 170 * self.scale_factor_y)
+
         self.enemy_center = self.blue_machine.ycor()
         self.float_time_offset = time.time()
+
         self.blue_machine.direction = "down"
         self.blue_machine_laser.direction = "down"
+
         # Set the id to the new id
         self.id = id
         self.blue_machine.showturtle()
         self.blue_machine_laser.showturtle()
+
         self.move_start_time = time.time()
         self.float_start_time = time.time()
 

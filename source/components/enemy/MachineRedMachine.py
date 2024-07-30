@@ -162,6 +162,11 @@ class RedMachine:
         self.movement_activated = 0
         self.id = id
 
+        self.enemy_center = self.red_machine.ycor()
+        self.float_time_offset = time.time()
+        self.x_range = (0, 0)
+        self.collision_y_coordinate = 0
+
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -216,6 +221,8 @@ class RedMachine:
             self.red_machine.goto(275 * self.scale_factor_x, 220 * self.scale_factor_y)
             self.red_machine_laser.goto(275 * self.scale_factor_x, 150 * self.scale_factor_y)
             self.red_machine_health_bar.goto(275 * self.scale_factor_x, 295 * self.scale_factor_y)
+        self.enemy_center = self.red_machine.ycor()
+        self.float_time_offset = time.time()
         self.red_machine.direction = "down"
         self.red_machine_laser.direction = "down"
         # Set the id to the new id
@@ -314,6 +321,8 @@ class RedMachine:
         self.float_start_time = 0
         self.laser_has_attacked = 0
         self.movement_activated = 0
+        self.x_range = (0, 0)
+        self.collision_y_coordinate = 0
 
     def shoot_laser(self, green_power_up, shooting_sound):
         """
@@ -427,6 +436,11 @@ class RedMachine:
             self.red_machine.shape(RED_MACHINE_TEXTURE)
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
             self.red_machine.goto(random.randint(int(-640 * self.scale_factor_x), int(640 * self.scale_factor_x)), random.randint(int(120 * self.scale_factor_y), int(220 * self.scale_factor_y)))
+            self.float_activated = 0
+            self.float_time_offset = time.time()
+            self.enemy_center = self.red_machine.ycor()
+            self.x_range = (0, 0)
+            self.collision_y_coordinate = 0
             self.update = 3.5
             return
 
@@ -563,11 +577,11 @@ class RedMachine:
             elapsed_time = current_time - self.move_start_time
             if elapsed_time >= 0.02:
                 # Red machine reaches the right end of the screen
-                if 600 * self.scale_factor_x < self.red_machine.xcor() < 650 * self.scale_factor_x:
+                if 640 * self.scale_factor_x < self.red_machine.xcor():
                     # Move left
                     self.movement = -1
                 # Red machine reaches the left end of the screen
-                if -600 * self.scale_factor_x > self.red_machine.xcor() > -650 * self.scale_factor_x:
+                if -640 * self.scale_factor_x > self.red_machine.xcor():
                     # Move right
                     self.movement = 1
                 if self.movement == 1:

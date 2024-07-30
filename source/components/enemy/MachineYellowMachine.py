@@ -134,6 +134,11 @@ class YellowMachine:
         self.movement_activated = 0
         self.id = id
 
+        self.enemy_center = self.yellow_machine.ycor()
+        self.float_time_offset = time.time()
+        self.x_range = (0, 0)
+        self.collision_y_coordinate = 0
+
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -179,12 +184,17 @@ class YellowMachine:
         elif id == 5:
             self.yellow_machine.goto(350 * self.scale_factor_x, 220 * self.scale_factor_y)
             self.yellow_machine_laser.goto(350 * self.scale_factor_x, 158 * self.scale_factor_y)
+        self.enemy_center = self.yellow_machine.ycor()
+        self.float_time_offset = time.time()
+
         self.yellow_machine.direction = "down"
         self.yellow_machine_laser.direction = "down"
+
         # Set the id to the new id
         self.id = id
         self.yellow_machine.showturtle()
         self.yellow_machine_laser.showturtle()
+
         self.move_start_time = time.time()
         self.float_start_time = time.time()
 
@@ -252,6 +262,8 @@ class YellowMachine:
         self.float_start_time = 0
         self.laser_has_attacked = 0
         self.movement_activated = 0
+        self.x_range = (0, 0)
+        self.collision_y_coordinate = 0
 
     def shoot_laser(self, green_power_up, shooting_sound):
         """
@@ -355,6 +367,11 @@ class YellowMachine:
             self.yellow_machine.shape(YELLOW_MACHINE_TEXTURE)
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
             self.yellow_machine.goto(random.randint(int(-640 * self.scale_factor_x), int(640 * self.scale_factor_x)), random.randint(int(120 * self.scale_factor_y), int(220 * self.scale_factor_y)))
+            self.float_activated = 0
+            self.float_time_offset = time.time()
+            self.enemy_center = self.yellow_machine.ycor()
+            self.x_range = (0, 0)
+            self.collision_y_coordinate = 0
             self.update = 3.5
             self.start_time = time.time()
             return
@@ -452,11 +469,11 @@ class YellowMachine:
             elapsed_time = current_time - self.move_start_time
             if elapsed_time >= 0.02:
                 # Yellow machine reaches the right end of the screen
-                if 600 * self.scale_factor_x < self.yellow_machine.xcor() < 650 * self.scale_factor_x:
+                if 640 * self.scale_factor_x < self.yellow_machine.xcor():
                     # Move left
                     self.movement = -1
                 # Yellow machine reaches the left end of the screen
-                if -600 * self.scale_factor_x > self.yellow_machine.xcor() > -650 * self.scale_factor_x:
+                if -640 * self.scale_factor_x > self.yellow_machine.xcor():
                     # Move right
                     self.movement = 1
                 if self.movement == 1:
