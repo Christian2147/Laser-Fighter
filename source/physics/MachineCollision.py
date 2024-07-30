@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+import turtle
 import time
 import math
 from scipy.optimize import fsolve
@@ -27,7 +28,6 @@ class MachineCollision:
     RED_MACHINE_DISTANCE = 64 * scale_factor_X
     BOSS_DISTANCE = 75 * scale_factor_X
 
-    FLOAT_SPEED = 20 * scale_factor_Y
     FLOAT_AMPLITUDE = 50 * scale_factor_Y
     PERIOD = 10
 
@@ -59,18 +59,20 @@ class MachineCollision:
         del self.initial_distance
         del self.float_time_offset
 
-    def calculate_collisions(self):
-        self.laser_speed = machine_mode_setup.laser_speed
+    def calculate_collisions(self, yellow_power_up):
+        if yellow_power_up == 1:
+            self.laser_speed = machine_mode_setup.yellow_power_up_speed
+        else:
+            self.laser_speed = machine_mode_setup.laser_speed
         self.laser_speed = self.laser_speed/0.015
 
         for bu in self._blue_machine.blue_machines:
             self.enemy_center = bu.enemy_center
             current_time = time.time()
             self.float_time_offset = current_time - bu.float_time_offset
-            self.initial_distance = self.enemy_center - self._machine_player.current_player[0].laser.ycor()
+            self.initial_distance = self.enemy_center - self.BLUE_MACHINE_DISTANCE - self._machine_player.current_player[0].laser.ycor()
             intersection_time = self.calculate_time()
-            print("Dude")
-            print(intersection_time)
+
             x_offset = 0
             if 4 <= bu.death_count < 7:
                 x_offset = intersection_time[0] * self.MACHINE_0_2_MOVEMENT_SPEED * -1
@@ -82,7 +84,6 @@ class MachineCollision:
                 x_offset = intersection_time[0] * self.MACHINE_6_8_MOVEMENT_SPEED * -1
             elif 16 <= bu.death_count:
                 x_offset = intersection_time[0] * self.MACHINE_8_10_MOVEMENT_SPEED * -1
-            print(x_offset)
 
             if x_offset != 0:
                 if bu.movement == -1:
@@ -98,9 +99,15 @@ class MachineCollision:
                         x_offset = x_offset + (2 * distance_from_edge)
 
             bu.x_range = (bu.blue_machine.xcor() + x_offset - self.BLUE_MACHINE_DISTANCE, bu.blue_machine.xcor() + x_offset + self.BLUE_MACHINE_DISTANCE)
-            print("current_x_coordinate:" + str(bu.blue_machine.xcor()))
-            print("left_limit:" + str(bu.blue_machine.xcor() + x_offset - self.BLUE_MACHINE_DISTANCE))
-            print("right_limit:" + str(bu.blue_machine.xcor() + x_offset + self.BLUE_MACHINE_DISTANCE))
+
+            collision_y_coordinate = self._machine_player.current_player[0].laser.ycor() + (self.laser_speed * intersection_time[0] * -1)
+            bu.collision_y_coordinate = collision_y_coordinate
+
+            # dude = turtle.Turtle()
+            # dude.penup()
+            # dude.color("white")
+            # dude.shapesize(5, 5)
+            # dude.goto(bu.blue_machine.xcor() + x_offset, collision_y_coordinate)
 
     def time_equation(self, t):
         return (self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (t + self.float_time_offset)) / self.PERIOD)) - (self.laser_speed * t + self.initial_distance)

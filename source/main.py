@@ -462,7 +462,11 @@ def main():
                 current_blue_update_value_index = 0
                 for bm in blue_machine.blue_machines:
                     # If the player laser hits a blue machine that is visible and not dying
-                    if (bm.get_blue_machine().isvisible() and p.get_laser().isvisible() and p.get_laser().distance(bm.get_blue_machine()) < 55 * scale_factor and blue_machine.blue_machines_update_values[current_blue_update_value_index] == 0) or blue_machine.blue_machines_update_values[current_blue_update_value_index] != 0:
+                    if (bm.get_blue_machine().isvisible() and p.get_laser().isvisible() and
+                            (bm.x_range[0] < p.get_laser().xcor() < bm.x_range[1]) and
+                            p.get_laser().ycor() > bm.collision_y_coordinate and
+                            blue_machine.blue_machines_update_values[current_blue_update_value_index] == 0) or \
+                            blue_machine.blue_machines_update_values[current_blue_update_value_index] != 0:
                         # Kill the enemy
                         bm.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         blue_machine.blue_machines_update_values[current_blue_update_value_index] = blue_machine.blue_machines_update_values[current_blue_update_value_index] + 1

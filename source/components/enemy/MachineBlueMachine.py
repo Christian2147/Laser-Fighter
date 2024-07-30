@@ -136,6 +136,7 @@ class BlueMachine:
         self.enemy_center = self.blue_machine.ycor()
         self.float_time_offset = time.time()
         self.x_range = (0, 0)
+        self.collision_y_coordinate = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -281,6 +282,7 @@ class BlueMachine:
         self.laser_has_attacked = 0
         self.movement_activated = 0
         self.x_range = (0, 0)
+        self.collision_y_coordinate = 0
 
     def shoot_laser(self, green_power_up, shooting_sound):
         """
@@ -387,6 +389,8 @@ class BlueMachine:
             self.float_activated = 0
             self.float_time_offset = time.time()
             self.enemy_center = self.blue_machine.ycor()
+            self.x_range = (0, 0)
+            self.collision_y_coordinate = 0
             self.update = 3.5
             self.start_time = time.time()
             return
@@ -484,11 +488,11 @@ class BlueMachine:
             elapsed_time = current_time - self.move_start_time
             if elapsed_time >= 0.02:
                 # Blue machine reaches the right end of the screen
-                if 600 * self.scale_factor_x < self.blue_machine.xcor() < 650 * self.scale_factor_x:
+                if 640 * self.scale_factor_x < self.blue_machine.xcor():
                     # Move left
                     self.movement = -1
                 # Blue machine reaches the left end of the screen
-                if -600 * self.scale_factor_x > self.blue_machine.xcor() > -650 * self.scale_factor_x:
+                if -640 * self.scale_factor_x > self.blue_machine.xcor():
                     # Move right
                     self.movement = 1
                 if self.movement == 1:

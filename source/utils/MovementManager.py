@@ -113,7 +113,7 @@ class Movement:
                 if p.get_laser().ycor() > 359 * self._scale_factor_y and p.get_death_animation() == 0:
                     # The laser is fired
                     p.fire(self._settings.player_shooting_sound)
-                    machine_collision.calculate_collisions()
+                    machine_collision.calculate_collisions(self._yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].yellow_power_up_active)
                     # Update the game statistics
                     if self._settings.god_mode == 0:
                         self._statistics.classic_lasers_fired = self._statistics.classic_lasers_fired + 1
