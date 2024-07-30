@@ -1,6 +1,7 @@
 altgraph==0.17.2
 future==0.18.2
 importlib-metadata==4.10.0
+numpy==1.21.6
 pefile==2021.9.3
 Pillow==9.5.0
 pip==19.0.3
@@ -9,6 +10,7 @@ pyinstaller==4.7
 pyinstaller-hooks-contrib==2021.4
 pywin32==306
 pywin32-ctypes==0.2.0
+scipy==1.7.3
 setuptools==40.8.0
 typing-extensions==4.0.1
 zipp==3.6.0
