@@ -102,15 +102,6 @@ class Player:
 
         self.do_collision = 0
 
-        # self.laser = turtle.Turtle()
-        # self.laser.shape(machine_mode_setup.laser_texture)
-        # self.laser.direction = "down"
-        # # Ensure that the turtle does not draw lines on the screen while moving
-        # self.laser.penup()
-        # self.laser.shapesize(1, 1)
-        # self.laser.goto(0, 360 * scale_factor_y)
-        # self.laser.hideturtle()
-
         self.health_bar = turtle.Turtle()
         self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
@@ -126,7 +117,6 @@ class Player:
         self.hit_delay = 0
         self.update = 0
         self.direction = 0
-        # self.laser_has_attacked = 0
         self.laser_start_time = 0
         self.kill_start_time = 0
         self.hit_start_time = 0
@@ -175,10 +165,6 @@ class Player:
         self.player.goto(0, -300 * self.scale_factor_y)
         self.player.direction = "stop"
         self.player.showturtle()
-
-        # self.laser.shape(machine_mode_setup.laser_texture)
-        # self.laser.goto(0, 360 * self.scale_factor_y)
-        # self.laser.direction = "down"
 
         self.laser_count = machine_mode_setup.laser_count
 
@@ -305,7 +291,6 @@ class Player:
         """
 
         self.player.hideturtle()
-        #self.laser.hideturtle()
         for l in self.laser_list:
             l.remove()
         self.laser_list.clear()
@@ -382,7 +367,6 @@ class Player:
             :return: None
         """
 
-        #self.laser.showturtle()
         self.laser_list[index].laser.showturtle()
         if shooting_sound == 1:
             sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
@@ -397,7 +381,6 @@ class Player:
         self.lasers_fired_list[index] = 1
 
         self.do_collision = index + 1
-        #machine_collision.calculate_collisions(yellow_power_up, index)
 
     def shoot(self, shooting_sound, yellow_power_up):
         """

@@ -515,51 +515,31 @@ def main():
                         # Delay the coin pickup so it does not pick up the coin at the same time as killing the enemy
                         if bm.get_update_value() == 3:
                             coin.coin_pickup_delay = 1
-                    # if (bm.get_blue_machine().isvisible() and p.get_laser().isvisible() and
-                    #         (bm.x_range[0] < p.get_laser().xcor() < bm.x_range[1]) and
-                    #         p.get_laser().ycor() > bm.collision_y_coordinate and
-                    #         blue_machine.blue_machines_update_values[current_blue_update_value_index] == 0) or \
-                    #         blue_machine.blue_machines_update_values[current_blue_update_value_index] != 0:
-                    #
-                    #     # Kill the enemy
-                    #     bm.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
-                    #     blue_machine.blue_machines_update_values[current_blue_update_value_index] = blue_machine.blue_machines_update_values[current_blue_update_value_index] + 1
-                    #
-                    #     # Check if the death animation is finished
-                    #     if bm.get_update_value() == 0:
-                    #         blue_machine.blue_machines_update_values[current_blue_update_value_index] = 0
-                    #         coin.coin_pickup_delay = 0
-                    #
-                    #     # Delay the coin pickup so it does not pick up the coin at the same time as killing the enemy
-                    #     if bm.get_update_value() == 3:
-                    #         coin.coin_pickup_delay = 1
-                    #
-                    #     if blue_machine.blue_machines_update_values[current_blue_update_value_index] == 1:
-                    #         # Increase the players score
-                    #         # When the blue power up is active, the score increases are doubled (This is universal)
-                    #         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                    #             statistics.score = statistics.score + 1 * machine_mode_setup.blue_power_up_score_multiplier
-                    #         else:
-                    #             statistics.score = statistics.score + 1 * machine_mode_setup.regular_score_multiplier
-                    #
-                    #         # Update the stats if god mode is off
-                    #         if settings.god_mode == 0:
-                    #             statistics.blue_bots_killed = statistics.blue_bots_killed + 1
-                    #             statistics.save()
-                    #
-                    #         # Confirm that the players laser has attacked
-                    #         p.set_laser_has_attacked(1)
                     current_blue_update_value_index = current_blue_update_value_index + 1
 
                 current_yellow_update_value_index = 0
                 for ym in yellow_machine.yellow_machines:
                     # If the player laser hits a yellow machine that is visible and not dying
-                    if (ym.get_yellow_machine().isvisible() and p.get_laser().isvisible() and
-                            (ym.x_range[0] < p.get_laser().xcor() < ym.x_range[1]) and
-                            p.get_laser().ycor() > ym.collision_y_coordinate and
-                            yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] == 0) or \
-                            yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] != 0:
+                    if ym.get_yellow_machine().isvisible() and yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] == 0:
+                        for i in range(len(p.get_laser())):
+                            if p.get_laser()[i].laser.isvisible() and \
+                                    (ym.x_range_list[i][0] < p.get_laser()[i].laser.xcor() < ym.x_range_list[i][1]) and \
+                                    p.get_laser()[i].laser.ycor() > ym.collision_y_coordinate_list[i]:
+                                # Same procedure as before
+                                ym.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                                yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] = yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] + 1
 
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    statistics.score = statistics.score + 2 * machine_mode_setup.blue_power_up_score_multiplier
+                                else:
+                                    statistics.score = statistics.score + 2 * machine_mode_setup.regular_score_multiplier
+
+                                if settings.god_mode == 0:
+                                    statistics.yellow_bots_killed = statistics.yellow_bots_killed + 1
+                                    statistics.save()
+
+                                p.set_laser_has_attacked(1, i)
+                    elif yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] != 0:
                         # Same procedure as before
                         ym.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] = yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] + 1
@@ -570,31 +550,32 @@ def main():
 
                         if ym.get_update_value() == 3:
                             coin.coin_pickup_delay = 1
-
-                        if yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] == 1:
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                statistics.score = statistics.score + 2 * machine_mode_setup.blue_power_up_score_multiplier
-                            else:
-                                statistics.score = statistics.score + 2 * machine_mode_setup.regular_score_multiplier
-
-                            if settings.god_mode == 0:
-                                statistics.yellow_bots_killed = statistics.yellow_bots_killed + 1
-                                statistics.save()
-
-                            p.set_laser_has_attacked(1)
                     current_yellow_update_value_index = current_yellow_update_value_index + 1
 
                 current_red_update_value_index = 0
                 current_red_hit_value_index = 0
                 for rm in red_machine.red_machines:
                     # If the player laser hits a red machine that is visible and not dying with 1 health
-                    if (rm.get_red_machine().isvisible() and p.get_laser().isvisible() and
-                            (rm.x_range[0] < p.get_laser().xcor() < rm.x_range[1]) and
-                            p.get_laser().ycor() > rm.collision_y_coordinate and
-                            rm.health_bar <= machine_mode_setup.damage and rm.hit_delay == 0 and
-                            red_machine.red_machines_update_values[current_red_update_value_index] == 0) or \
-                            red_machine.red_machines_update_values[current_red_update_value_index] != 0:
+                    if rm.get_red_machine().isvisible() and red_machine.red_machines_update_values[current_red_update_value_index] == 0:
+                        if rm.health_bar <= machine_mode_setup.damage and rm.hit_delay == 0:
+                            for i in range(len(p.get_laser())):
+                                if p.get_laser()[i].laser.isvisible() and \
+                                        (rm.x_range_list[i][0] < p.get_laser()[i].laser.xcor() < rm.x_range_list[i][1]) and \
+                                        p.get_laser()[i].laser.ycor() > rm.collision_y_coordinate_list[i]:
+                                    rm.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                                    red_machine.red_machines_update_values[current_red_update_value_index] = red_machine.red_machines_update_values[current_red_update_value_index] + 1
 
+                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                        statistics.score = statistics.score + 5 * machine_mode_setup.blue_power_up_score_multiplier
+                                    else:
+                                        statistics.score = statistics.score + 5 * machine_mode_setup.regular_score_multiplier
+
+                                    if settings.god_mode == 0:
+                                        statistics.red_bots_killed = statistics.red_bots_killed + 1
+                                        statistics.save()
+
+                                    p.set_laser_has_attacked(1, i)
+                    elif red_machine.red_machines_update_values[current_red_update_value_index] != 0:
                         rm.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         red_machine.red_machines_update_values[current_red_update_value_index] = red_machine.red_machines_update_values[current_red_update_value_index] + 1
 
@@ -604,28 +585,28 @@ def main():
 
                         if rm.get_update_value() == 3:
                             coin.coin_pickup_delay = 1
-
-                        if red_machine.red_machines_update_values[current_red_update_value_index] == 1:
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                statistics.score = statistics.score + 5 * machine_mode_setup.blue_power_up_score_multiplier
-                            else:
-                                statistics.score = statistics.score + 5 * machine_mode_setup.regular_score_multiplier
-
-                            if settings.god_mode == 0:
-                                statistics.red_bots_killed = statistics.red_bots_killed + 1
-                                statistics.save()
-
-                            p.set_laser_has_attacked(1)
                     current_red_update_value_index = current_red_update_value_index + 1
 
                     # If the player laser hits a red machine that is visible and not dying with health > 1
-                    if (rm.get_red_machine().isvisible() and p.get_laser().isvisible() and
-                            (rm.x_range[0] < p.get_laser().xcor() < rm.x_range[1]) and
-                            p.get_laser().ycor() > rm.collision_y_coordinate and
-                            rm.health_bar > machine_mode_setup.damage and
-                            red_machine.red_machines_hit_values[current_red_hit_value_index] == 0) or \
-                            red_machine.red_machines_hit_values[current_red_hit_value_index] != 0:
+                    if rm.get_red_machine().isvisible() and red_machine.red_machines_hit_values[current_red_hit_value_index] == 0:
+                        if rm.health_bar > machine_mode_setup.damage:
+                            for i in range(len(p.get_laser())):
+                                if p.get_laser()[i].laser.isvisible() and \
+                                        (rm.x_range_list[i][0] < p.get_laser()[i].laser.xcor() < rm.x_range_list[i][1]) and \
+                                        p.get_laser()[i].laser.ycor() > rm.collision_y_coordinate_list[i]:
+                                    # Deal 1 health of damage to the red machine, but do not kill it yet
+                                    rm.hit_enemy(settings.enemy_hit_sound)
+                                    red_machine.red_machines_hit_values[current_red_hit_value_index] = red_machine.red_machines_hit_values[current_red_hit_value_index] + 1
 
+                                    # Increase the players score for hitting the red machine
+                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                        statistics.score = statistics.score + 1 * machine_mode_setup.blue_power_up_score_multiplier
+                                    else:
+                                        statistics.score = statistics.score + 1 * machine_mode_setup.regular_score_multiplier
+
+                                    # Confirm that the players laser has attacked and make it disappear
+                                    p.set_laser_has_attacked(1, i)
+                    elif red_machine.red_machines_hit_values[current_red_hit_value_index] != 0:
                         # Deal 1 health of damage to the red machine, but do not kill it yet
                         rm.hit_enemy(settings.enemy_hit_sound)
                         red_machine.red_machines_hit_values[current_red_hit_value_index] = red_machine.red_machines_hit_values[current_red_hit_value_index] + 1
@@ -633,27 +614,30 @@ def main():
                         # Check if hit delay is finished
                         if rm.get_hit_value() == 0:
                             red_machine.red_machines_hit_values[current_red_hit_value_index] = 0
-
-                        if red_machine.red_machines_hit_values[current_red_hit_value_index] == 1:
-                            # Increase the players score for hitting the red machine
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                statistics.score = statistics.score + 1 * machine_mode_setup.blue_power_up_score_multiplier
-                            else:
-                                statistics.score = statistics.score + 1 * machine_mode_setup.regular_score_multiplier
-
-                            # Confirm that the players laser has attacked and make it disappear
-                            p.set_laser_has_attacked(1)
                     current_red_hit_value_index = current_red_hit_value_index + 1
 
                 for b in machine_boss.boss:
                     # If the player laser hits the boss that is visible and not dying with 1 health
-                    if (b.get_boss().isvisible() and p.get_laser().isvisible() and
-                            (b.x_range[0] < p.get_laser().xcor() < b.x_range[1]) and
-                            p.get_laser().ycor() > b.collision_y_coordinate and
-                            b.health_bar <= machine_mode_setup.damage and b.hit_delay == 0 and
-                            machine_boss.boss_update_value == 0) or \
-                            machine_boss.boss_update_value != 0:
+                    if b.get_boss().isvisible() and machine_boss.boss_update_value == 0:
+                        if b.health_bar <= machine_mode_setup.damage and b.hit_delay == 0:
+                            for i in range(len(p.get_laser())):
+                                if p.get_laser()[i].laser.isvisible() and \
+                                        (b.x_range_list[i][0] < p.get_laser()[i].laser.xcor() < b.x_range_list[i][1]) and \
+                                        p.get_laser()[i].laser.ycor() > b.collision_y_coordinate_list[i]:
+                                    b.kill_boss(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                                    machine_boss.boss_update_value = machine_boss.boss_update_value + 1
 
+                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                        statistics.score = statistics.score + 50 * machine_mode_setup.blue_power_up_score_multiplier
+                                    else:
+                                        statistics.score = statistics.score + 50 * machine_mode_setup.regular_score_multiplier
+
+                                    if settings.god_mode == 0:
+                                        statistics.bosses_killed = statistics.bosses_killed + 1
+                                        statistics.save()
+
+                                    p.set_laser_has_attacked(1, i)
+                    elif machine_boss.boss_update_value != 0:
                         b.kill_boss(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         machine_boss.boss_update_value = machine_boss.boss_update_value + 1
 
@@ -664,47 +648,34 @@ def main():
                         if b.get_update_value() == 3:
                             coin.coin_pickup_delay = 1
 
-                        if machine_boss.boss_update_value == 1:
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                statistics.score = statistics.score + 50 * machine_mode_setup.blue_power_up_score_multiplier
-                            else:
-                                statistics.score = statistics.score + 50 * machine_mode_setup.regular_score_multiplier
-
-                            if settings.god_mode == 0:
-                                statistics.bosses_killed = statistics.bosses_killed + 1
-                                statistics.save()
-
-                            p.set_laser_has_attacked(1)
-
                     # If the player laser hits the boss that is visible and not dying with health > 1
-                    if (b.get_boss().isvisible() and p.get_laser().isvisible() and
-                            (b.x_range[0] < p.get_laser().xcor() < b.x_range[1]) and
-                            p.get_laser().ycor() > b.collision_y_coordinate and
-                            b.health_bar > machine_mode_setup.damage and
-                            machine_boss.boss_hit_value == 0) or \
-                            machine_boss.boss_hit_value != 0:
+                    if b.get_boss().isvisible() and machine_boss.boss_hit_value == 0:
+                        if b.health_bar > machine_mode_setup.damage:
+                            for i in range(len(p.get_laser())):
+                                if p.get_laser()[i].laser.isvisible() and \
+                                        (b.x_range_list[i][0] < p.get_laser()[i].laser.xcor() < b.x_range_list[i][1]) and \
+                                        p.get_laser()[i].laser.ycor() > b.collision_y_coordinate_list[i]:
+                                    b.hit_boss(settings.enemy_hit_sound)
+                                    machine_boss.boss_hit_value = machine_boss.boss_hit_value + 1
 
+                                    if b.health_bar == 9:
+                                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                            statistics.score = statistics.score + 2 * machine_mode_setup.blue_power_up_score_multiplier
+                                        else:
+                                            statistics.score = statistics.score + 2 * machine_mode_setup.regular_score_multiplier
+                                    else:
+                                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                            statistics.score = statistics.score + 1 * machine_mode_setup.blue_power_up_score_multiplier
+                                        else:
+                                            statistics.score = statistics.score + 1 * machine_mode_setup.regular_score_multiplier
+
+                                    p.set_laser_has_attacked(1, i)
+                    elif machine_boss.boss_hit_value != 0:
                         b.hit_boss(settings.enemy_hit_sound)
                         machine_boss.boss_hit_value = machine_boss.boss_hit_value + 1
 
                         if b.get_hit_value() == 0:
                             machine_boss.boss_hit_value = 0
-
-                        if machine_boss.boss_hit_value == 1:
-                            # First hit gets double the points, the rest are only 1 point
-                            # This means that the total points you can get from killing
-                            #   one boss is 60 (120 with blue power up)
-                            if b.health_bar == 9:
-                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                    statistics.score = statistics.score + 2 * machine_mode_setup.blue_power_up_score_multiplier
-                                else:
-                                    statistics.score = statistics.score + 2 * machine_mode_setup.regular_score_multiplier
-                            else:
-                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                    statistics.score = statistics.score + 1 * machine_mode_setup.blue_power_up_score_multiplier
-                                else:
-                                    statistics.score = statistics.score + 1 * machine_mode_setup.regular_score_multiplier
-                            p.set_laser_has_attacked(1)
 
             # Player Killer
             for p in machine_player.current_player:

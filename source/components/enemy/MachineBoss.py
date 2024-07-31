@@ -138,13 +138,9 @@ class Boss:
 
         self.enemy_center = self.boss.ycor()
         self.float_time_offset = time.time()
-        # self.x_range = (0, 0)
-        # self.collision_y_coordinate = 0
-        self.x_range_list = []
-        self.collision_y_coordinate_list = []
-        for i in range(machine_mode_setup.laser_count):
-            self.x_range_list[i] = (0, 0)
-            self.collision_y_coordinate_list[i] = 0
+
+        self.x_range_list = [(0, 0)] * machine_mode_setup.laser_count
+        self.collision_y_coordinate_list = [0] * machine_mode_setup.laser_count
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -182,9 +178,8 @@ class Boss:
         self.enemy_center = self.boss.ycor()
         self.float_time_offset = time.time()
 
-        for i in range(machine_mode_setup.laser_count):
-            self.x_range_list[i] = (0, 0)
-            self.collision_y_coordinate_list[i] = 0
+        self.x_range_list = [(0, 0)] * machine_mode_setup.laser_count
+        self.collision_y_coordinate_list = [0] * machine_mode_setup.laser_count
 
         self.boss.direction = "down"
         self.boss_laser.direction = "down"
@@ -284,17 +279,17 @@ class Boss:
         self.float_start_time = 0
         self.laser_has_attacked = 0
         self.movement_activated = 0
-        # self.x_range = (0, 0)
-        # self.collision_y_coordinate = 0
         self.x_range_list.clear()
         self.collision_y_coordinate_list.clear()
 
     def remove_collisions(self):
+        # Clear the lists
         self.x_range_list.clear()
         self.collision_y_coordinate_list.clear()
-        for i in range(machine_mode_setup.laser_count):
-            self.x_range_list[i] = (0, 0)
-            self.collision_y_coordinate_list[i] = 0
+
+        # Initialize lists with the required number of elements
+        self.x_range_list = [(0, 0)] * machine_mode_setup.laser_count
+        self.collision_y_coordinate_list = [0] * machine_mode_setup.laser_count
 
     def shoot_laser(self, green_power_up, shooting_sound):
         """
@@ -424,15 +419,13 @@ class Boss:
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
             self.boss.goto(random.randint(int(-640 * self.scale_factor_x), int(640 * self.scale_factor_x)), random.randint(int(120 * self.scale_factor_y), int(220 * self.scale_factor_y)))
             self.float_activated = 0
+            self.float = 1
             self.float_time_offset = time.time()
             self.enemy_center = self.boss.ycor()
-            # self.x_range = (0, 0)
-            # self.collision_y_coordinate = 0
             self.x_range_list.clear()
             self.collision_y_coordinate_list.clear()
-            for i in range(machine_mode_setup.laser_count):
-                self.x_range_list[i] = (0, 0)
-                self.collision_y_coordinate_list[i] = 0
+            self.x_range_list = [(0, 0)] * machine_mode_setup.laser_count
+            self.collision_y_coordinate_list = [0] * machine_mode_setup.laser_count
             self.update = 3.5
             return
 
