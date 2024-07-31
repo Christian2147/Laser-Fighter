@@ -1187,7 +1187,7 @@ def main():
 
             # Check if the players laser needs to be shot
             for h in human_player.current_human:
-                h.execute_shoot(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active())
+                h.execute_shoot(settings.player_shooting_sound, yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active())
 
             # Execute the walking animation for the player
             for h in human_player.current_human:

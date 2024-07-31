@@ -660,7 +660,7 @@ class Human:
                             self.gun.goto(self.player.xcor() - alien_mode_setup.gun_offset, self.player.ycor() + 12 * self.scale_factor_y)
                             break
 
-    def execute_shoot(self, yellow_power_up):
+    def execute_shoot(self, shooting_sound, yellow_power_up):
         """
             Move thr laser across the screen in the specified direction after it has been shot
 
@@ -679,6 +679,9 @@ class Human:
             if len(self.laser_list) > 1 and self.laser_fire == 0 and self.laser_list[0].laser.xcor() >= self.laser_start_X + 100 * self.scale_factor_x:
                 self.laser_fire = 1
                 self.laser_list[1].laser_update = 0
+                if shooting_sound == 1:
+                    sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
+                    sound.play()
             # Move the laser every 0.01 seconds
             current_time = time.time()
             elapsed_time = current_time - self.laser_start_time
