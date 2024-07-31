@@ -137,8 +137,13 @@ class YellowMachine:
 
         self.enemy_center = self.yellow_machine.ycor()
         self.float_time_offset = time.time()
-        self.x_range = (0, 0)
-        self.collision_y_coordinate = 0
+        # self.x_range = (0, 0)
+        # self.collision_y_coordinate = 0
+        self.x_range_list = []
+        self.collision_y_coordinate_list = []
+        for i in range(machine_mode_setup.laser_count):
+            self.x_range_list[i] = (0, 0)
+            self.collision_y_coordinate_list[i] = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -185,8 +190,13 @@ class YellowMachine:
         elif id == 5:
             self.yellow_machine.goto(350 * self.scale_factor_x, 220 * self.scale_factor_y)
             self.yellow_machine_laser.goto(350 * self.scale_factor_x, 158 * self.scale_factor_y)
+
         self.enemy_center = self.yellow_machine.ycor()
         self.float_time_offset = time.time()
+
+        for i in range(machine_mode_setup.laser_count):
+            self.x_range_list[i] = (0, 0)
+            self.collision_y_coordinate_list[i] = 0
 
         self.yellow_machine.direction = "down"
         self.yellow_machine_laser.direction = "down"
@@ -263,8 +273,17 @@ class YellowMachine:
         self.float_start_time = 0
         self.laser_has_attacked = 0
         self.movement_activated = 0
-        self.x_range = (0, 0)
-        self.collision_y_coordinate = 0
+        # self.x_range = (0, 0)
+        # self.collision_y_coordinate = 0
+        self.x_range_list.clear()
+        self.collision_y_coordinate_list.clear()
+
+    def remove_collisions(self):
+        self.x_range_list.clear()
+        self.collision_y_coordinate_list.clear()
+        for i in range(machine_mode_setup.laser_count):
+            self.x_range_list[i] = (0, 0)
+            self.collision_y_coordinate_list[i] = 0
 
     def shoot_laser(self, green_power_up, shooting_sound):
         """
@@ -371,8 +390,13 @@ class YellowMachine:
             self.float_activated = 0
             self.float_time_offset = time.time()
             self.enemy_center = self.yellow_machine.ycor()
-            self.x_range = (0, 0)
-            self.collision_y_coordinate = 0
+            # self.x_range = (0, 0)
+            # self.collision_y_coordinate = 0
+            self.x_range_list.clear()
+            self.collision_y_coordinate_list.clear()
+            for i in range(machine_mode_setup.laser_count):
+                self.x_range_list[i] = (0, 0)
+                self.collision_y_coordinate_list[i] = 0
             self.update = 3.5
             self.start_time = time.time()
             return

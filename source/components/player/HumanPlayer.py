@@ -210,7 +210,6 @@ class Human:
         del self.player
         del self.oxygen_tank
         del self.gun
-        del self.laser_list
         del self.health_bar
         del self.laser_list
         del self.all_laser_list

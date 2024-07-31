@@ -36,13 +36,12 @@ class MachineCollision:
     MACHINE_6_8_MOVEMENT_SPEED = (8 * scale_factor_X) / 0.02
     MACHINE_8_10_MOVEMENT_SPEED = (10 * scale_factor_X) / 0.02
 
-    def __init__(self, machine_player, blue_machine, yellow_machine, red_machine, machine_boss, coin):
+    def __init__(self, machine_player, blue_machine, yellow_machine, red_machine, machine_boss):
         self._machine_player = machine_player
         self._blue_machine = blue_machine
         self._yellow_machine = yellow_machine
         self._red_machine = red_machine
         self._machine_boss = machine_boss
-        self._coin = coin
 
         self.laser_speed = 0
         self.initial_distance = 0
@@ -55,12 +54,11 @@ class MachineCollision:
         del self._yellow_machine
         del self._red_machine
         del self._machine_boss
-        del self._coin
         del self.laser_speed
         del self.initial_distance
         del self.float_time_offset
 
-    def calculate_collisions(self, yellow_power_up):
+    def calculate_collisions(self, yellow_power_up, index):
         if yellow_power_up == 1:
             self.laser_speed = machine_mode_setup.yellow_power_up_speed
         else:
@@ -71,7 +69,7 @@ class MachineCollision:
             self.enemy_center = bm.enemy_center
             current_time = time.time()
             self.float_time_offset = current_time - bm.float_time_offset
-            self.initial_distance = self.enemy_center - self.BLUE_MACHINE_DISTANCE - self._machine_player.current_player[0].laser.ycor()
+            self.initial_distance = self.enemy_center - self.BLUE_MACHINE_DISTANCE - self._machine_player.current_player[0].laser_list[index].laser.ycor()
             intersection_time = self.calculate_time()
 
             x_offset = 0
@@ -99,19 +97,19 @@ class MachineCollision:
                     if distance_from_edge < 0:
                         x_offset = x_offset + (2 * distance_from_edge)
 
-            bm.x_range = (bm.blue_machine.xcor() + x_offset - self.BLUE_MACHINE_DISTANCE, bm.blue_machine.xcor() + x_offset + self.BLUE_MACHINE_DISTANCE)
+            bm.x_range_list[index] = (bm.blue_machine.xcor() + x_offset - self.BLUE_MACHINE_DISTANCE, bm.blue_machine.xcor() + x_offset + self.BLUE_MACHINE_DISTANCE)
 
             collision_y_coordinate = self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (intersection_time[0] * -1 + self.float_time_offset)) / self.PERIOD) + \
                 self.initial_distance + \
-                self._machine_player.current_player[0].laser.ycor()
+                self._machine_player.current_player[0].laser_list[index].laser.ycor()
 
-            bm.collision_y_coordinate = collision_y_coordinate
+            bm.collision_y_coordinate_list[index] = collision_y_coordinate
 
         for ym in self._yellow_machine.yellow_machines:
             self.enemy_center = ym.enemy_center
             current_time = time.time()
             self.float_time_offset = current_time - ym.float_time_offset
-            self.initial_distance = self.enemy_center - self.YELLOW_MACHINE_DISTANCE - self._machine_player.current_player[0].laser.ycor()
+            self.initial_distance = self.enemy_center - self.YELLOW_MACHINE_DISTANCE - self._machine_player.current_player[0].laser_list[index].laser.ycor()
             intersection_time = self.calculate_time()
 
             x_offset = 0
@@ -139,19 +137,19 @@ class MachineCollision:
                     if distance_from_edge < 0:
                         x_offset = x_offset + (2 * distance_from_edge)
 
-            ym.x_range = (ym.yellow_machine.xcor() + x_offset - self.YELLOW_MACHINE_DISTANCE, ym.yellow_machine.xcor() + x_offset + self.YELLOW_MACHINE_DISTANCE)
+            ym.x_range_list[index] = (ym.yellow_machine.xcor() + x_offset - self.YELLOW_MACHINE_DISTANCE, ym.yellow_machine.xcor() + x_offset + self.YELLOW_MACHINE_DISTANCE)
 
             collision_y_coordinate = self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (intersection_time[0] * -1 + self.float_time_offset)) / self.PERIOD) + \
                 self.initial_distance + \
-                self._machine_player.current_player[0].laser.ycor()
+                self._machine_player.current_player[0].laser_list[index].laser.ycor()
 
-            ym.collision_y_coordinate = collision_y_coordinate
+            ym.collision_y_coordinate_list[index] = collision_y_coordinate
 
         for rm in self._red_machine.red_machines:
             self.enemy_center = rm.enemy_center
             current_time = time.time()
             self.float_time_offset = current_time - rm.float_time_offset
-            self.initial_distance = self.enemy_center - self.RED_MACHINE_DISTANCE - self._machine_player.current_player[0].laser.ycor()
+            self.initial_distance = self.enemy_center - self.RED_MACHINE_DISTANCE - self._machine_player.current_player[0].laser_list[index].laser.ycor()
             intersection_time = self.calculate_time()
 
             x_offset = 0
@@ -179,19 +177,19 @@ class MachineCollision:
                     if distance_from_edge < 0:
                         x_offset = x_offset + (2 * distance_from_edge)
 
-            rm.x_range = (rm.red_machine.xcor() + x_offset - self.RED_MACHINE_DISTANCE, rm.red_machine.xcor() + x_offset + self.RED_MACHINE_DISTANCE)
+            rm.x_range_list[index] = (rm.red_machine.xcor() + x_offset - self.RED_MACHINE_DISTANCE, rm.red_machine.xcor() + x_offset + self.RED_MACHINE_DISTANCE)
 
             collision_y_coordinate = self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (intersection_time[0] * -1 + self.float_time_offset)) / self.PERIOD) + \
                 self.initial_distance + \
-                self._machine_player.current_player[0].laser.ycor()
+                self._machine_player.current_player[0].laser_list[index].laser.ycor()
 
-            rm.collision_y_coordinate = collision_y_coordinate
+            rm.collision_y_coordinate_list[index] = collision_y_coordinate
 
         for b in self._machine_boss.boss:
             self.enemy_center = b.enemy_center
             current_time = time.time()
             self.float_time_offset = current_time - b.float_time_offset
-            self.initial_distance = self.enemy_center - self.BOSS_DISTANCE - self._machine_player.current_player[0].laser.ycor()
+            self.initial_distance = self.enemy_center - self.BOSS_DISTANCE - self._machine_player.current_player[0].laser_list[index].laser.ycor()
             intersection_time = self.calculate_time()
 
             x_offset = 0
@@ -219,13 +217,26 @@ class MachineCollision:
                     if distance_from_edge < 0:
                         x_offset = x_offset + (2 * distance_from_edge)
 
-            b.x_range = (b.boss.xcor() + x_offset - self.BOSS_DISTANCE, b.boss.xcor() + x_offset + self.BOSS_DISTANCE)
+            b.x_range_list[index] = (b.boss.xcor() + x_offset - self.BOSS_DISTANCE, b.boss.xcor() + x_offset + self.BOSS_DISTANCE)
 
             collision_y_coordinate = self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (intersection_time[0] * -1 + self.float_time_offset)) / self.PERIOD) + \
                 self.initial_distance + \
-                self._machine_player.current_player[0].laser.ycor()
+                self._machine_player.current_player[0].laser_list[index].laser.ycor()
 
-            b.collision_y_coordinate = collision_y_coordinate
+            b.collision_y_coordinate_list[index] = collision_y_coordinate
+
+    def remove_collisions(self):
+        for bm in self._blue_machine.blue_machines:
+            bm.remove_collisions()
+
+        for ym in self._yellow_machine.yellow_machines:
+            ym.remove_collisions()
+
+        for rm in self._red_machine.red_machines:
+            rm.remove_collisions()
+
+        for b in self._machine_boss.boss:
+            b.remove_collisions()
 
     def time_equation(self, t):
         return (self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (t + self.float_time_offset)) / self.PERIOD)) - (self.laser_speed * t + self.initial_distance)

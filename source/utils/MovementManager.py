@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+from setup.ModeSetupMaster import machine_mode_setup
 from physics.CollisionMaster import machine_collision
 from physics.CollisionMaster import alien_collision
 
@@ -110,10 +111,11 @@ class Movement:
         if self._screen.mode == "Machine_Mode":
             for p in self._machine_player.current_player:
                 # If the laser is not currently moving across the screen and if the player is not dying
-                if p.get_laser().ycor() > 359 * self._scale_factor_y and p.get_death_animation() == 0:
+                if p.get_laser()[0].laser.ycor() > machine_mode_setup.laser_max_distance - 1 and p.get_death_animation() == 0:
                     # The laser is fired
+                    machine_collision.remove_collisions()
+                    p.remove_laser_start_y()
                     p.fire(self._settings.player_shooting_sound)
-                    machine_collision.calculate_collisions(self._yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].yellow_power_up_active)
                     # Update the game statistics
                     if self._settings.god_mode == 0:
                         self._statistics.classic_lasers_fired = self._statistics.classic_lasers_fired + 1

@@ -27,6 +27,8 @@
 import turtle
 import pygame
 import time
+from components.player.MachinePlayerLaser import MachineLaser
+#vfrom physics.CollisionMaster import machine_collision
 from setup.ModeSetupMaster import machine_mode_setup
 from setup.TextureSetup import EXPLOSION_1_TEXTURE
 from setup.TextureSetup import EXPLOSION_2_TEXTURE
@@ -85,14 +87,29 @@ class Player:
         self.player.penup()
         self.player.goto(0, -300 * scale_factor_y)
 
-        self.laser = turtle.Turtle()
-        self.laser.shape(machine_mode_setup.laser_texture)
-        self.laser.direction = "down"
-        # Ensure that the turtle does not draw lines on the screen while moving
-        self.laser.penup()
-        self.laser.shapesize(1, 1)
-        self.laser.goto(0, 360 * scale_factor_y)
-        self.laser.hideturtle()
+        self.laser_count = machine_mode_setup.laser_count
+
+        self.laser_list = []
+        self.all_laser_list = []
+        self.laser_start_y_list = [0] * self.laser_count
+        self.laser_has_attacked_list = [0] * self.laser_count
+        self.lasers_fired_list = [0] * self.laser_count
+
+        for i in range(machine_mode_setup.laser_count):
+            laser = MachineLaser(0, machine_mode_setup.laser_max_distance)
+            self.laser_list.append(laser)
+            self.all_laser_list.append(laser)
+
+        self.do_collision = 0
+
+        # self.laser = turtle.Turtle()
+        # self.laser.shape(machine_mode_setup.laser_texture)
+        # self.laser.direction = "down"
+        # # Ensure that the turtle does not draw lines on the screen while moving
+        # self.laser.penup()
+        # self.laser.shapesize(1, 1)
+        # self.laser.goto(0, 360 * scale_factor_y)
+        # self.laser.hideturtle()
 
         self.health_bar = turtle.Turtle()
         self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
@@ -109,7 +126,7 @@ class Player:
         self.hit_delay = 0
         self.update = 0
         self.direction = 0
-        self.laser_has_attacked = 0
+        # self.laser_has_attacked = 0
         self.laser_start_time = 0
         self.kill_start_time = 0
         self.hit_start_time = 0
@@ -125,11 +142,24 @@ class Player:
         """
 
         self.player.clear()
-        self.laser.clear()
+        # self.laser.clear()
+        for l in self.laser_list:
+            l.remove()
+            del l
+        self.laser_list.clear()
+        self.all_laser_list.clear()
+        self.laser_start_y_list.clear()
+        self.laser_has_attacked_list.clear()
+        self.lasers_fired_list.clear()
         self.health_bar.clear()
         del self.player
-        del self.laser
+        # del self.laser
         del self.health_bar
+        del self.laser_list
+        del self.all_laser_list
+        del self.laser_start_y_list
+        del self.laser_has_attacked_list
+        del self.lasers_fired_list
 
     def reinstate(self, god_mode):
         """
@@ -146,9 +176,31 @@ class Player:
         self.player.direction = "stop"
         self.player.showturtle()
 
-        self.laser.shape(machine_mode_setup.laser_texture)
-        self.laser.goto(0, 360 * self.scale_factor_y)
-        self.laser.direction = "down"
+        # self.laser.shape(machine_mode_setup.laser_texture)
+        # self.laser.goto(0, 360 * self.scale_factor_y)
+        # self.laser.direction = "down"
+
+        self.laser_count = machine_mode_setup.laser_count
+
+        if self.laser_count >= len(self.all_laser_list):
+            for l in self.all_laser_list:
+                l.reinstate(0, machine_mode_setup.laser_max_distance)
+                self.laser_list.append(l)
+
+            remaining_lasers = self.laser_count - len(self.all_laser_list)
+            for i in range(remaining_lasers):
+                laser = MachineLaser(0, machine_mode_setup.laser_max_distance)
+                self.laser_list.append(laser)
+                self.all_laser_list.append(laser)
+        else:
+            for i in range(self.laser_count):
+                self.all_laser_list[i].reinstate(0, machine_mode_setup.laser_max_distance)
+                self.laser_list.append(self.all_laser_list[i])
+
+        self.laser_start_y_list = [0] * self.laser_count
+        self.laser_has_attacked_list = [0] * self.laser_count
+        self.lasers_fired_list = [0] * self.laser_count
+
         self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
         if god_mode == 0:
             self.health_bar.showturtle()
@@ -171,7 +223,7 @@ class Player:
             :type: turtle.Turtle()
         """
 
-        return self.laser
+        return self.laser_list
 
     def get_health_bar(self):
         """
@@ -231,9 +283,9 @@ class Player:
             :type: int
         """
 
-        return self.laser_has_attacked
+        return self.laser_has_attacked_list
 
-    def set_laser_has_attacked(self, new_value):
+    def set_laser_has_attacked(self, new_value, index):
         """
             Sets the laser_has_attacked of the player (Used for when the player hits an enemy)
 
@@ -243,7 +295,7 @@ class Player:
             :return: None
         """
 
-        self.laser_has_attacked = new_value
+        self.laser_has_attacked_list[index] = new_value
 
     def remove(self):
         """
@@ -253,16 +305,33 @@ class Player:
         """
 
         self.player.hideturtle()
-        self.laser.hideturtle()
+        #self.laser.hideturtle()
+        for l in self.laser_list:
+            l.remove()
+        self.laser_list.clear()
+        self.laser_start_y_list.clear()
+        self.laser_has_attacked_list.clear()
+        self.lasers_fired_list.clear()
+        self.laser_count = 0
+        self.do_collision = 0
         self.health_bar.hideturtle()
         self.death_animation = 0
         self.hit_delay = 0
         self.health_bar_indicator = 10
         self.update = 0
-        self.laser_has_attacked = 0
+        # self.laser_has_attacked = 0
         self.laser_start_time = 0
         self.kill_start_time = 0
         self.hit_start_time = 0
+
+    def remove_laser_start_y(self):
+        self.laser_start_y_list.clear()
+        self.laser_has_attacked_list.clear()
+        self.lasers_fired_list.clear()
+        self.laser_start_y_list = [0] * self.laser_count
+        self.laser_has_attacked_list = [0] * self.laser_count
+        self.lasers_fired_list = [0] * self.laser_count
+        self.laser_start_time = time.time()
 
     def set_direction_left(self):
         """
@@ -303,7 +372,7 @@ class Player:
             else:
                 self.player.setx(self.player.xcor() + machine_mode_setup.player_movement)
 
-    def fire(self, shooting_sound):
+    def fire(self, shooting_sound, index=0):
         """
             Fires the players laser by resetting it to its original position
 
@@ -313,17 +382,24 @@ class Player:
             :return: None
         """
 
-        self.laser.showturtle()
+        #self.laser.showturtle()
+        self.laser_list[index].laser.showturtle()
         if shooting_sound == 1:
             sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
             sound.play()
         # Moves the laser back to the player to be fired
-        self.laser.setx(self.player.xcor())
-        self.laser.sety(self.player.ycor() + machine_mode_setup.laser_offset)
-        self.laser_start_time = time.time()
-        self.laser_has_attacked = 0
+        self.laser_list[index].laser.setx(self.player.xcor())
+        self.laser_list[index].laser.sety(self.player.ycor() + machine_mode_setup.laser_offset)
+        # self.laser_start_time = time.time()
+        # self.laser_has_attacked = 0
+        self.laser_start_y_list[index] = self.laser_list[index].laser.ycor()
+        self.laser_has_attacked_list[index] = 0
+        self.lasers_fired_list[index] = 1
 
-    def shoot(self, yellow_power_up):
+        self.do_collision = index + 1
+        #machine_collision.calculate_collisions(yellow_power_up, index)
+
+    def shoot(self, shooting_sound, yellow_power_up):
         """
             Moves the player's laser across the screen after it is fired
 
@@ -334,11 +410,18 @@ class Player:
         """
 
         # If the laser has hit an enemy, remove it from the screen
-        if self.laser_has_attacked == 1:
-            self.laser.hideturtle()
+        for i in range(len(self.laser_has_attacked_list)):
+            if self.laser_has_attacked_list[i] == 1:
+                self.laser_list[i].laser.hideturtle()
+
+        if len(self.laser_list) > 2 and self.lasers_fired_list[1] != 0 and self.lasers_fired_list[2] == 0 and self.laser_list[1].laser.ycor() >= self.laser_start_y_list[1] + 100 * self.scale_factor_y:
+            self.fire(shooting_sound, 2)
+
+        if len(self.laser_list) > 1 and self.lasers_fired_list[1] == 0 and self.laser_list[0].laser.ycor() >= self.laser_start_y_list[0] + 100 * self.scale_factor_y:
+            self.fire(shooting_sound, 1)
 
         # While the laser is still in the frame of the screen
-        if self.laser.ycor() < 360 * self.scale_factor_y:
+        if self.laser_list[0].laser.ycor() < machine_mode_setup.laser_max_distance:
             # Keep moving it 14.5 or 43.5 units every 0.015 seconds
             current_time = time.time()
             elapsed_time = current_time - self.laser_start_time
@@ -348,13 +431,30 @@ class Player:
                     # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
                     delta_movement = machine_mode_setup.laser_speed * ((elapsed_time - 0.015) / 0.015)
-                    self.laser.sety(self.laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
+                    if len(self.lasers_fired_list) == 3 and self.lasers_fired_list[2] == 1:
+                        self.laser_list[0].laser.sety(self.laser_list[0].laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
+                        self.laser_list[1].laser.sety(self.laser_list[1].laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
+                        self.laser_list[2].laser.sety(self.laser_list[2].laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
+                    elif len(self.lasers_fired_list) >= 2 and self.lasers_fired_list[1] == 1:
+                        self.laser_list[0].laser.sety(self.laser_list[0].laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
+                        self.laser_list[1].laser.sety(self.laser_list[1].laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
+                    elif len(self.lasers_fired_list) >= 1 or self.lasers_fired_list[1] == 0:
+                        self.laser_list[0].laser.sety(self.laser_list[0].laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
                 elif yellow_power_up == 1:
                     delta_movement = machine_mode_setup.yellow_power_up_speed * ((elapsed_time - 0.015) / 0.015)
-                    self.laser.sety(self.laser.ycor() + machine_mode_setup.yellow_power_up_speed + delta_movement)
+                    if len(self.lasers_fired_list) == 3 and self.lasers_fired_list[2] == 1:
+                        self.laser_list[0].laser.sety(self.laser_list[0].laser.ycor() + machine_mode_setup.yellow_power_up_speed + delta_movement)
+                        self.laser_list[1].laser.sety(self.laser_list[1].laser.ycor() + machine_mode_setup.yellow_power_up_speed + delta_movement)
+                        self.laser_list[2].laser.sety(self.laser_list[2].laser.ycor() + machine_mode_setup.yellow_power_up_speed + delta_movement)
+                    elif len(self.lasers_fired_list) >= 2 and self.lasers_fired_list[1] == 1:
+                        self.laser_list[0].laser.sety(self.laser_list[0].laser.ycor() + machine_mode_setup.yellow_power_up_speed + delta_movement)
+                        self.laser_list[1].laser.sety(self.laser_list[1].laser.ycor() + machine_mode_setup.yellow_power_up_speed + delta_movement)
+                    elif len(self.lasers_fired_list) >= 1 or self.lasers_fired_list[1] == 0:
+                        self.laser_list[0].laser.sety(self.laser_list[0].laser.ycor() + machine_mode_setup.yellow_power_up_speed + delta_movement)
                 self.laser_start_time = time.time()
         else:
-            self.laser.hideturtle()
+            for l in self.laser_list:
+                l.laser.hideturtle()
             self.laser_start_time = 0
 
     def kill_player(self, death_sound):

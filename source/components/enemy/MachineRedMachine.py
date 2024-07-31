@@ -165,8 +165,13 @@ class RedMachine:
 
         self.enemy_center = self.red_machine.ycor()
         self.float_time_offset = time.time()
-        self.x_range = (0, 0)
-        self.collision_y_coordinate = 0
+        # self.x_range = (0, 0)
+        # self.collision_y_coordinate = 0
+        self.x_range_list = []
+        self.collision_y_coordinate_list = []
+        for i in range(machine_mode_setup.laser_count):
+            self.x_range_list[i] = (0, 0)
+            self.collision_y_coordinate_list[i] = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -222,15 +227,23 @@ class RedMachine:
             self.red_machine.goto(275 * self.scale_factor_x, 220 * self.scale_factor_y)
             self.red_machine_laser.goto(275 * self.scale_factor_x, 150 * self.scale_factor_y)
             self.red_machine_health_bar.goto(275 * self.scale_factor_x, 295 * self.scale_factor_y)
+
         self.enemy_center = self.red_machine.ycor()
         self.float_time_offset = time.time()
+
+        for i in range(machine_mode_setup.laser_count):
+            self.x_range_list[i] = (0, 0)
+            self.collision_y_coordinate_list[i] = 0
+
         self.red_machine.direction = "down"
         self.red_machine_laser.direction = "down"
+
         # Set the id to the new id
         self.id = id
         self.red_machine.showturtle()
         self.red_machine_laser.showturtle()
         self.red_machine_health_bar.showturtle()
+
         self.move_start_time = time.time()
         self.float_start_time = time.time()
 
@@ -322,8 +335,17 @@ class RedMachine:
         self.float_start_time = 0
         self.laser_has_attacked = 0
         self.movement_activated = 0
-        self.x_range = (0, 0)
-        self.collision_y_coordinate = 0
+        # self.x_range = (0, 0)
+        # self.collision_y_coordinate = 0
+        self.x_range_list.clear()
+        self.collision_y_coordinate_list.clear()
+
+    def remove_collisions(self):
+        self.x_range_list.clear()
+        self.collision_y_coordinate_list.clear()
+        for i in range(machine_mode_setup.laser_count):
+            self.x_range_list[i] = (0, 0)
+            self.collision_y_coordinate_list[i] = 0
 
     def shoot_laser(self, green_power_up, shooting_sound):
         """
@@ -440,8 +462,13 @@ class RedMachine:
             self.float_activated = 0
             self.float_time_offset = time.time()
             self.enemy_center = self.red_machine.ycor()
-            self.x_range = (0, 0)
-            self.collision_y_coordinate = 0
+            # self.x_range = (0, 0)
+            # self.collision_y_coordinate = 0
+            self.x_range_list.clear()
+            self.collision_y_coordinate_list.clear()
+            for i in range(machine_mode_setup.laser_count):
+                self.x_range_list[i] = (0, 0)
+                self.collision_y_coordinate_list[i] = 0
             self.update = 3.5
             return
 

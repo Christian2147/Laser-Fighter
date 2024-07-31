@@ -57,6 +57,7 @@ from setup.SpriteSetup import ufo
 from setup.ModeSetupMaster import power_up_setup
 from setup.ModeSetupMaster import machine_mode_setup
 from setup.ModeSetupMaster import alien_mode_setup
+from physics.CollisionMaster import machine_collision
 from physics.CollisionMaster import alien_collision
 from setup.UtilitySetup import screen
 from setup.UtilitySetup import shop
@@ -333,7 +334,7 @@ def main():
 
             # Used to shoot the players laser
             for p in machine_player.current_player:
-                p.shoot(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active())
+                p.shoot(settings.player_shooting_sound, yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active())
 
             # Spawn Machine enemies based on the players score
             # At its peak, there will be 5 blue machines, 5 yellow machines, 5 red machines,
@@ -416,61 +417,92 @@ def main():
             hit_coin = 0
             for c in coin.coins_on_screen_list:
                 for p in machine_player.current_player:
-                    # If the player picks up a coin
-                    if p.get_laser().isvisible() and \
-                            (c.range[0] < p.get_laser().xcor() < c.range[1]) and \
-                            p.get_laser().ycor() > c.collision_coordinate and \
-                            coin.coin_pickup_delay == 0:
-                        c.remove()
-                        # Increase the amount of coins based on the type of coin picked up
-                        if c.get_type() == "copper":
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
-                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_blue_value
-                            else:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
-                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_value
-                        elif c.get_type() == "silver":
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
-                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_blue_value
-                            else:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
-                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_value
-                        elif c.get_type() == "gold":
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
-                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_blue_value
-                            else:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
-                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_value
-                        elif c.get_type() == "platinum":
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
-                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_blue_value
-                            else:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
-                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_value
-                        shop_config.save()
-                        statistics.save()
-                        coin.coins_on_screen_list.pop(hit_coin)
-                        # play the coin pickup sound
-                        if settings.coin_pickup_sound == 1:
-                            sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
-                            sound.play()
+                    for l in p.get_laser():
+                        # If the player picks up a coin
+                        if l.laser.isvisible() and \
+                                (c.range[0] < l.laser.xcor() < c.range[1]) and \
+                                l.laser.ycor() > c.collision_coordinate and \
+                                coin.coin_pickup_delay == 0:
+                            c.remove()
+                            # Increase the amount of coins based on the type of coin picked up
+                            if c.get_type() == "copper":
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
+                                    statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
+                                    statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_value
+                            elif c.get_type() == "silver":
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
+                                    statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
+                                    statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_value
+                            elif c.get_type() == "gold":
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
+                                    statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
+                                    statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_value
+                            elif c.get_type() == "platinum":
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
+                                    statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
+                                    statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_value
+                            shop_config.save()
+                            statistics.save()
+                            coin.coins_on_screen_list.pop(hit_coin)
+                            # play the coin pickup sound
+                            if settings.coin_pickup_sound == 1:
+                                sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
+                                sound.play()
+                            break
                     hit_coin = hit_coin + 1
+
+            for p in machine_player.current_player:
+                if p.do_collision == 1:
+                    machine_collision.calculate_collisions(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active(), 0)
+                    p.do_collision = 0
+                elif p.do_collision == 2:
+                    machine_collision.calculate_collisions(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active(), 1)
+                    p.do_collision = 0
+                elif p.do_collision == 3:
+                    machine_collision.calculate_collisions(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active(), 2)
+                    p.do_collision = 0
 
             # Enemy Killer
             for p in machine_player.current_player:
                 current_blue_update_value_index = 0
                 for bm in blue_machine.blue_machines:
                     # If the player laser hits a blue machine that is visible and not dying
-                    if (bm.get_blue_machine().isvisible() and p.get_laser().isvisible() and
-                            (bm.x_range[0] < p.get_laser().xcor() < bm.x_range[1]) and
-                            p.get_laser().ycor() > bm.collision_y_coordinate and
-                            blue_machine.blue_machines_update_values[current_blue_update_value_index] == 0) or \
-                            blue_machine.blue_machines_update_values[current_blue_update_value_index] != 0:
+                    if bm.get_blue_machine().isvisible() and blue_machine.blue_machines_update_values[current_blue_update_value_index] == 0:
+                        for i in range(len(p.get_laser())):
+                            if p.get_laser()[i].laser.isvisible() and \
+                                    (bm.x_range_list[i][0] < p.get_laser()[i].laser.xcor() < bm.x_range_list[i][1]) and \
+                                    p.get_laser()[i].laser.ycor() > bm.collision_y_coordinate_list[i]:
+                                # Kill the enemy
+                                bm.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                                blue_machine.blue_machines_update_values[current_blue_update_value_index] = blue_machine.blue_machines_update_values[current_blue_update_value_index] + 1
 
+                                # Increase the players score
+                                # When the blue power up is active, the score increases are doubled (This is universal)
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    statistics.score = statistics.score + 1 * machine_mode_setup.blue_power_up_score_multiplier
+                                else:
+                                    statistics.score = statistics.score + 1 * machine_mode_setup.regular_score_multiplier
+
+                                # Update the stats if god mode is off
+                                if settings.god_mode == 0:
+                                    statistics.blue_bots_killed = statistics.blue_bots_killed + 1
+                                    statistics.save()
+
+                                # Confirm that the players laser has attacked
+                                p.set_laser_has_attacked(1, i)
+                    elif blue_machine.blue_machines_update_values[current_blue_update_value_index] != 0:
                         # Kill the enemy
                         bm.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         blue_machine.blue_machines_update_values[current_blue_update_value_index] = blue_machine.blue_machines_update_values[current_blue_update_value_index] + 1
@@ -483,22 +515,40 @@ def main():
                         # Delay the coin pickup so it does not pick up the coin at the same time as killing the enemy
                         if bm.get_update_value() == 3:
                             coin.coin_pickup_delay = 1
-
-                        if blue_machine.blue_machines_update_values[current_blue_update_value_index] == 1:
-                            # Increase the players score
-                            # When the blue power up is active, the score increases are doubled (This is universal)
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                statistics.score = statistics.score + 1 * machine_mode_setup.blue_power_up_score_multiplier
-                            else:
-                                statistics.score = statistics.score + 1 * machine_mode_setup.regular_score_multiplier
-
-                            # Update the stats if god mode is off
-                            if settings.god_mode == 0:
-                                statistics.blue_bots_killed = statistics.blue_bots_killed + 1
-                                statistics.save()
-
-                            # Confirm that the players laser has attacked
-                            p.set_laser_has_attacked(1)
+                    # if (bm.get_blue_machine().isvisible() and p.get_laser().isvisible() and
+                    #         (bm.x_range[0] < p.get_laser().xcor() < bm.x_range[1]) and
+                    #         p.get_laser().ycor() > bm.collision_y_coordinate and
+                    #         blue_machine.blue_machines_update_values[current_blue_update_value_index] == 0) or \
+                    #         blue_machine.blue_machines_update_values[current_blue_update_value_index] != 0:
+                    #
+                    #     # Kill the enemy
+                    #     bm.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
+                    #     blue_machine.blue_machines_update_values[current_blue_update_value_index] = blue_machine.blue_machines_update_values[current_blue_update_value_index] + 1
+                    #
+                    #     # Check if the death animation is finished
+                    #     if bm.get_update_value() == 0:
+                    #         blue_machine.blue_machines_update_values[current_blue_update_value_index] = 0
+                    #         coin.coin_pickup_delay = 0
+                    #
+                    #     # Delay the coin pickup so it does not pick up the coin at the same time as killing the enemy
+                    #     if bm.get_update_value() == 3:
+                    #         coin.coin_pickup_delay = 1
+                    #
+                    #     if blue_machine.blue_machines_update_values[current_blue_update_value_index] == 1:
+                    #         # Increase the players score
+                    #         # When the blue power up is active, the score increases are doubled (This is universal)
+                    #         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                    #             statistics.score = statistics.score + 1 * machine_mode_setup.blue_power_up_score_multiplier
+                    #         else:
+                    #             statistics.score = statistics.score + 1 * machine_mode_setup.regular_score_multiplier
+                    #
+                    #         # Update the stats if god mode is off
+                    #         if settings.god_mode == 0:
+                    #             statistics.blue_bots_killed = statistics.blue_bots_killed + 1
+                    #             statistics.save()
+                    #
+                    #         # Confirm that the players laser has attacked
+                    #         p.set_laser_has_attacked(1)
                     current_blue_update_value_index = current_blue_update_value_index + 1
 
                 current_yellow_update_value_index = 0

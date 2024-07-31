@@ -55,6 +55,7 @@ class MachineModeSetup:
         self.player_texture = ""
         self.laser_texture = ""
         self.laser_offset = 0
+        self.laser_max_distance = 0
 
         self.laser_speed = 0
         self.yellow_power_up_speed = 0
@@ -78,6 +79,7 @@ class MachineModeSetup:
         del self.player_texture
         del self.laser_texture
         del self.laser_offset
+        del self.laser_max_distance
         del self.laser_speed
         del self.yellow_power_up_speed
         del self.damage
@@ -97,6 +99,7 @@ class MachineModeSetup:
             self.laser_texture = MACHINE_PLAYER_LASER_TEXTURE
             self.laser_offset = 130 * self._scale_factor_y
             self.laser_speed = 14.5 * self._scale_factor_y #14.5
+            self.laser_max_distance = 360 * self._scale_factor_y
 
             self.damage = 1
             self.laser_count = 1
@@ -108,6 +111,7 @@ class MachineModeSetup:
             self.laser_texture = MACHINE_WASHER_LASER_TEXTURE
             self.laser_offset = 135 * self._scale_factor_y
             self.laser_speed = 25 * self._scale_factor_y
+            self.laser_max_distance = 370 * self._scale_factor_y
 
             self.damage = 1
             self.laser_count = 1
@@ -119,6 +123,7 @@ class MachineModeSetup:
             self.laser_texture = INCINERATOR_LASER_TEXTURE
             self.laser_offset = 135 * self._scale_factor_y
             self.laser_speed = 20 * self._scale_factor_y
+            self.laser_max_distance = 470 * self._scale_factor_y
 
             self.damage = 1
             self.laser_count = 2
@@ -130,6 +135,7 @@ class MachineModeSetup:
             self.laser_texture = BLACK_HOLE_LASER_TEXTURE
             self.laser_offset = 145 * self._scale_factor_y
             self.laser_speed = 27 * self._scale_factor_y
+            self.laser_max_distance = 580 * self._scale_factor_y
 
             self.damage = 2
             self.laser_count = 3
@@ -141,6 +147,7 @@ class MachineModeSetup:
             self.laser_texture = STAR_KILLER_LASER_TEXTURE
             self.laser_offset = 145 * self._scale_factor_y
             self.laser_speed = 30 * self._scale_factor_y
+            self.laser_max_distance = 580 * self._scale_factor_y
 
             self.damage = 2
             self.laser_count = 3
