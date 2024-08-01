@@ -440,6 +440,8 @@ class RedMachine:
             self.red_machine.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
                 gold_coin = Coin(type="gold", pos_x=self.red_machine.xcor(), pos_y=self.red_machine.ycor())
+                gold_coin.range = (gold_coin.coin.xcor() - gold_coin.COIN_DISTANCE, gold_coin.coin.xcor() + gold_coin.COIN_DISTANCE)
+                gold_coin.collision_coordinate = gold_coin.coin.ycor() - gold_coin.COIN_DISTANCE
                 coins_on_screen.append(gold_coin)
                 all_coins.append(gold_coin)
             else:
@@ -448,6 +450,8 @@ class RedMachine:
                         continue
                     else:
                         coin.reinstate_to_gold(pos_x=self.red_machine.xcor(), pos_y=self.red_machine.ycor())
+                        coin.range = (coin.coin.xcor() - coin.COIN_DISTANCE, coin.coin.xcor() + coin.COIN_DISTANCE)
+                        coin.collision_coordinate = coin.coin.ycor() - coin.COIN_DISTANCE
                         coins_on_screen.append(coin)
                         break
             # Respawn the red machine in a different random location

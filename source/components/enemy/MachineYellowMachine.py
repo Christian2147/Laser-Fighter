@@ -368,6 +368,8 @@ class YellowMachine:
             self.yellow_machine.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
                 silver_coin = Coin(type="silver", pos_x=self.yellow_machine.xcor(), pos_y=self.yellow_machine.ycor())
+                silver_coin.range = (silver_coin.coin.xcor() - silver_coin.COIN_DISTANCE, silver_coin.coin.xcor() + silver_coin.COIN_DISTANCE)
+                silver_coin.collision_coordinate = silver_coin.coin.ycor() - silver_coin.COIN_DISTANCE
                 coins_on_screen.append(silver_coin)
                 all_coins.append(silver_coin)
             else:
@@ -376,6 +378,8 @@ class YellowMachine:
                         continue
                     else:
                         coin.reinstate_to_silver(pos_x=self.yellow_machine.xcor(), pos_y=self.yellow_machine.ycor())
+                        coin.range = (coin.coin.xcor() - coin.COIN_DISTANCE, coin.coin.xcor() + coin.COIN_DISTANCE)
+                        coin.collision_coordinate = coin.coin.ycor() - coin.COIN_DISTANCE
                         coins_on_screen.append(coin)
                         break
             # Respawn the yellow machine in a different random location
