@@ -50,6 +50,12 @@ class PowerUpSetup:
         self.setup_power_ups()
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self._shop_config
         del self._setup
         del self.yellow_power_up_speed_increase

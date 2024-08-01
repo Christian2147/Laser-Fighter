@@ -38,6 +38,12 @@ class SettingsToggle:
         self._fullscreen_toggled = 0
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self._window
         del self._screen
         del self._button

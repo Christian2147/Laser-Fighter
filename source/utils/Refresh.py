@@ -14,16 +14,33 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: ConfigManager.py
+    File: Refresh.py
     Author: Christian Marinkovich
     Date: 2024-08-01
     Description:
-
+    Controls the refreshing of text in Laser Fighter. These variables exist to ensure that the text is not
+        constantly being updated and causing performance issues.
 """
 
 
 class Refresh:
+    """
+        Holds the refresh variables for Laser Fighter.
+
+        Attributes:
+            refresh_button (int): Determines when the button text needs to be refreshed.
+            refresh_indicator (int): Determines when the button indicators text needs to be refreshed.
+            refresh_text (int): Determines when standalone text needs to be refreshed.
+            refresh_panel (int): Determines when the panels text needs to be refreshed.
+            move_tab_selector (int): Determines when the tab selector needs to be moved.
+            move_slot_selector (int): Determines when the slot selector needs to be moved.
+    """
+
     def __init__(self):
+        """
+            Creates an instance for the refresh variables to be held in.
+        """
+
         self.refresh_button = 1
         self.refresh_indicator = 0
         self.refresh_text = 0
@@ -32,6 +49,12 @@ class Refresh:
         self.move_slot_selector = 0
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.refresh_button
         del self.refresh_indicator
         del self.refresh_text
@@ -40,6 +63,13 @@ class Refresh:
         del self.move_slot_selector
 
     def __repr__(self):
+        """
+            Creates a print statement for the refresh variables where they are all listed out in order.
+
+            :return: Prints all of the refresh variables in a list.
+            :type: string
+        """
+
         return (f"MyClass(refresh_button={self.refresh_button}, "
                 f"refresh_indicator={self.refresh_indicator}, "
                 f"refresh_text={self.refresh_text}, "

@@ -13,9 +13,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: TextureSetup.py
+    Author: Christian Marinkovich
+    Date: 2024-08-01
+    Description:
+    This file is used to correctly load all of the textures into the game based off whether fullscreen mode is on
+        or off.
+"""
+
+# Import the current fullscreen configuration
 from setup.ConfigurationSetup import settings
 fullscreen = settings.fullscreen
 
+# Determine whether to use scaled textures or not based on if fullscreen is on or off
 MACHINE_PLAYER_TEXTURE = "textures/player/player.gif" if fullscreen == 0 else "textures/player/Player_Scaled.gif"
 MACHINE_WASHER_TEXTURE = "textures/player/Machine_Washer.gif" if fullscreen == 0 else "textures/player/Machine_Washer_Scaled.gif"
 THE_INCINERATOR_TEXTURE = "textures/player/The_Incinerator.gif" if fullscreen == 0 else "textures/player/The_Incinerator_Scaled.gif"

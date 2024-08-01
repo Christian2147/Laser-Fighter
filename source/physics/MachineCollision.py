@@ -49,6 +49,12 @@ class MachineCollision:
         self.float_time_offset = 0
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self._machine_player
         del self._blue_machine
         del self._yellow_machine

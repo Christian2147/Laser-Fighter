@@ -28,6 +28,12 @@ class SpawnPanel:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.panel_turtle
         del self.panel_index
 
@@ -64,6 +70,12 @@ class SpawnSelector:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_selector
         del self.selectors_on_screen_list
         del self.current_selector_index

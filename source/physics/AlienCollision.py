@@ -39,6 +39,12 @@ class AlienCollision:
         self._coin = coin
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self._human_player
         del self._small_alien
         del self._medium_alien

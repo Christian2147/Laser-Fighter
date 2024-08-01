@@ -72,6 +72,12 @@ class AlienModeSetup:
         self.setup_alien_mode()
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self._shop_config
         del self._power_up_setup
         del self._scale_factor_x

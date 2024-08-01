@@ -25,6 +25,12 @@ class SpawnCoin:
         self.coin_pickup_delay = 0
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_coins_list
         del self.all_coins_index
         del self.coins_on_screen_list
@@ -41,6 +47,12 @@ class SpawnCoinIndicator:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.coin_indicator_turtle
         del self.coin_indicator_index
 

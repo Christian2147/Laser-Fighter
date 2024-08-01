@@ -14,7 +14,7 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: ConfigManager.py
+    File: ControlsManager.py
     Author: Christian Marinkovich
     Date: 2024-08-01
     Description:
@@ -42,6 +42,12 @@ class Controls:
         self._jump_key_alert = 0
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self._window
         del self._screen
         del self._settings

@@ -53,6 +53,12 @@ class ControlsConfig:
             self.jump_key = 'space'
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.check_config_file
         del self.config
         del self.key_update

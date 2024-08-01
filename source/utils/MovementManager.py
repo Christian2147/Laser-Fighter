@@ -37,6 +37,12 @@ class Movement:
         self._scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self._screen
         del self._machine_player
         del self._human_player

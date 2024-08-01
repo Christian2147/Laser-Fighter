@@ -27,6 +27,12 @@ class MachineLaser:
         self._laser.hideturtle()
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         self._laser.clear()
         del self._laser
 

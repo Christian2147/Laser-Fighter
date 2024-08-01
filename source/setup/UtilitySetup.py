@@ -13,6 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: UtilitySetup.py
+    Author: Christian Marinkovich
+    Date: 2024-08-01
+    Description:
+    Master file for all the general utility controls and functions for Laser Fighter.
+"""
+
 from setup.WindowSetup import wn
 from setup.SpriteSetup import button
 from setup.SpriteSetup import textbox
@@ -40,29 +48,36 @@ from utils.SettingsManager import SettingsToggle
 from utils.ControlsManager import Controls
 from utils.UpdateText import TextRefresh
 
+# Screen Updater
 screen = ScreenUpdate(wn, button, settings, refresh_variables,
                       machine_mode_setup, alien_mode_setup,
                       scale_factor_X, scale_factor_Y)
 
+# Movement Detection
 movement = Movement(screen, machine_player, human_player,
                     yellow_power_up_indicator, settings, statistics,
                     scale_factor_Y)
 
+# Hover Detection
 hover = Hover(screen, button)
 
+# Shop Configuration
 shop = Shop(wn, screen, button,
             panel, textbox, price_label,
             settings, refresh_variables, shop_config,
             scale_factor_X, scale_factor_Y)
 
+# Settings Updater
 settings_toggle = SettingsToggle(wn, screen, button,
                                  settings, refresh_variables, scale_factor_X,
                                  scale_factor_Y)
 
+# Keybind Updater
 controls = Controls(wn, screen, settings,
                     controls_toggle, refresh_variables, scale_factor_X,
                     scale_factor_Y)
 
+# Text Refresher
 text_refresh = TextRefresh(screen, button, panel,
                            textbox, yellow_power_up_indicator, blue_power_up_indicator,
                            extra_power_up_indicator, settings,
@@ -70,7 +85,7 @@ text_refresh = TextRefresh(screen, button, panel,
                            shop_config, controls, controls_toggle,
                            refresh_variables)
 
-# Set the keybinds for the turtle graphics window:
+# Sets the keybinds for the turtle graphics window:
 # Bind the current keybinds to their appropriate functions
 wn.listen()
 wn.onkeypress(movement.go_left, controls_toggle.go_left_key)
@@ -80,9 +95,9 @@ wn.onkeypress(movement.jump, controls_toggle.jump_key)
 
 # Detect when the user wants to close the window and terminate the game loop.
 # "WM_DELETE_WINDOW" is the parameter used to determine if the user has clicked the red x in the corner of the window
-# If so, run the "on_quit" function which terminates the window
+# If so, run the "on_quit" function in the screen updater which terminates the window
 wn._root.protocol("WM_DELETE_WINDOW", screen.on_quit)
 
-# The two lines of code below are used to collect the position of the users mouse on the canvas
+# The two lines of code below are used to collect the position of the users cursor on the canvas
 mouse_position = wn.getcanvas()
 mouse_position.bind('<Motion>', hover.hover)

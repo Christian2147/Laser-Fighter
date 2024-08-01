@@ -32,6 +32,12 @@ class HumanLaser:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         self.laser.clear()
         del self._laser
         del self.laser_update

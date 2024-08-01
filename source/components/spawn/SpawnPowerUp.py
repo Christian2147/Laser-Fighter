@@ -31,6 +31,12 @@ class SpawnPowerUp:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_power_ups
         del self.current_power_ups
         del self.power_up_index
@@ -127,6 +133,12 @@ class SpawnYellowPowerUpIndicator:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.yellow_power_up_indicator_turtle
         del self.yellow_power_up_indicator_index
 
@@ -160,6 +172,12 @@ class SpawnBluePowerUpIndicator:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.blue_power_up_indicator_turtle
         del self.blue_power_up_indicator_index
 
@@ -193,6 +211,12 @@ class SpawnExtraPowerUpIndicator:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.extra_power_up_indicator_turtle
         del self.extra_power_up_indicator_index
 

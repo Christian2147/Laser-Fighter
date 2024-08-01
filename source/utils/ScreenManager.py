@@ -45,6 +45,12 @@ class ScreenUpdate:
         self._quit_loop = 0
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self._screen
         del self._button
         del self._settings

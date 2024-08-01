@@ -58,6 +58,12 @@ class Stats:
         self.load()
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.player_data_manager
 
     def load(self):

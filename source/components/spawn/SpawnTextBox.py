@@ -26,6 +26,12 @@ class SpawnTextbox:
         self.scale_factor_x = scale_factor_x
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_text_list
         del self.text_on_screen_list
         del self.current_text_index

@@ -30,6 +30,12 @@ class SpawnBlueMachine:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_blue_machines
         del self.blue_machines
         del self.blue_machines_update_values
@@ -74,6 +80,12 @@ class SpawnYellowMachine:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_yellow_machines
         del self.yellow_machines
         del self.yellow_machines_update_values
@@ -119,6 +131,12 @@ class SpawnRedMachine:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_red_machines
         del self.red_machines
         del self.red_machines_update_values
@@ -167,6 +185,12 @@ class SpawnMachineBoss:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_boss
         del self.boss
         del self.boss_update_value

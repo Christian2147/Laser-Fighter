@@ -14,27 +14,53 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: ConfigManager.py
+    File: Hover.py
     Author: Christian Marinkovich
     Date: 2024-08-01
     Description:
-
+    This file contains the logic for the hover detection on buttons.
+    Whenever the cursor is hovering over a specific button, a yellow highlight is created around the button frame.
 """
 
 
 class Hover:
+    """
+        Represents the hover effect on buttons in Laser Fighter.
+
+        Pointers:
+            _screen (ScreenUpdate()): A pointer to the screen updater.
+            _button (SpawnButton()): A pointer to the button container.
+    """
+
     def __init__(self, screen, button):
+        """
+            Holds the function for the hover effect on buttons in Laser Fighter.
+
+            :param screen: A pointer to the screen updater
+            :type screen: ScreenUpdate()
+
+            :param button: A pointer to the button container
+            :type button: SpawnButton()
+        """
+
         self._screen = screen
         self._button = button
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self._screen
         del self._button
 
     def hover(self, event):
         """
             Change the color of the button text to yellow when the mouse is hovering over it.
-            It also changes the colors to red/orange for the control buttons based on if there is a keybind conflict or not.
+            It also changes the colors to red/orange for the control buttons based on if there is a keybind conflict or
+                not.
 
             :param event: Holds the current position of the cursor on the screen
             :type event: tkinter.Event()
@@ -44,7 +70,7 @@ class Hover:
 
         # Extract x and y coordinate of the cursor
         a, b = event.x, event.y
-        # Update button text as needed
+        # Update button highlight as needed based on the cursors position
         if self._screen.mode == "Title_Mode":
             for bu in self._button.buttons_on_screen_list:
                 bu.update_highlight(a, b)

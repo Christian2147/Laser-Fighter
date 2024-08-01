@@ -29,6 +29,12 @@ class SpawnMachinePlayer:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_player
         del self.current_player
         del self.current_player_index
@@ -72,6 +78,12 @@ class SpawnHumanPlayer:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_human
         del self.current_human
         del self.current_human_index

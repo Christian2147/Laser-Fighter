@@ -48,6 +48,12 @@ class TextRefresh:
         self._refresh = refresh
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self._screen
         del self._button
         del self._panel
