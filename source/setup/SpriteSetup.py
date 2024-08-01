@@ -13,9 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-from setup.ScreenSetup import scale_factor
-from setup.ScreenSetup import scale_factor_X
-from setup.ScreenSetup import scale_factor_Y
+from setup.WindowSetup import scale_factor
+from setup.WindowSetup import scale_factor_X
+from setup.WindowSetup import scale_factor_Y
 from components.spawn.SpawnButton import SpawnButton
 from components.spawn.SpawnTextBox import SpawnTextbox
 from components.spawn.SpawnGUI import SpawnPanel

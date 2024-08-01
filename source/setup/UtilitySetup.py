@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-from setup.ScreenSetup import wn
+from setup.WindowSetup import wn
 from setup.SpriteSetup import button
 from setup.SpriteSetup import textbox
 from setup.SpriteSetup import panel
@@ -30,8 +30,8 @@ from setup.ConfigurationSetup import settings
 from setup.ConfigurationSetup import controls_toggle
 from setup.ConfigurationSetup import statistics
 from setup.ConfigurationSetup import refresh_variables
-from setup.ScreenSetup import scale_factor_X
-from setup.ScreenSetup import scale_factor_Y
+from setup.WindowSetup import scale_factor_X
+from setup.WindowSetup import scale_factor_Y
 from utils.ScreenManager import ScreenUpdate
 from utils.MovementManager import Movement
 from utils.HoverManager import Hover

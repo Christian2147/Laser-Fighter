@@ -29,7 +29,7 @@
 import time
 import random
 from setup.ConfigurationSetup import *
-from setup.ScreenSetup import *
+from setup.WindowSetup import *
 from setup.SpriteSetup import button
 from setup.SpriteSetup import textbox
 from setup.SpriteSetup import panel
@@ -67,7 +67,7 @@ from setup.UtilitySetup import text_refresh
 
 
 def main():
-    start_ticks = 0
+    start_ticks = pygame.time.get_ticks()
     # The main game loop:
     while True:
         """

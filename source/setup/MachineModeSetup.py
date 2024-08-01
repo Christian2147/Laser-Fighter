@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-from setup.ScreenSetup import scale_factor_X
-from setup.ScreenSetup import scale_factor_Y
+from setup.WindowSetup import scale_factor_X
+from setup.WindowSetup import scale_factor_Y
 from setup.TextureSetup import MACHINE_PLAYER_TEXTURE
 from setup.TextureSetup import MACHINE_PLAYER_LASER_TEXTURE
 from setup.TextureSetup import MACHINE_WASHER_TEXTURE

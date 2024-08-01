@@ -16,7 +16,7 @@
 # This file sets up the application window and initializes all necessary processes
 
 """
-    File: ScreenSetup.py
+    File: WindowSetup.py
     Author: Christian Marinkovich
     Date: 2024-07-06
     Description:
@@ -290,5 +290,4 @@ REFRESH_RATE = SETTINGS.DisplayFrequency
 # Unlimited FPS means that the game loop executes as fast as possible
 CLOCK = pygame.time.Clock()
 TARGET_FPS = REFRESH_RATE
-start_ticks = pygame.time.get_ticks()
 MONITOR_DELAY = 1.0/TARGET_FPS

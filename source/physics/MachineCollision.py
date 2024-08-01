@@ -16,8 +16,8 @@
 import time
 import math
 from scipy.optimize import fsolve
-from setup.ScreenSetup import scale_factor_X
-from setup.ScreenSetup import scale_factor_Y
+from setup.WindowSetup import scale_factor_X
+from setup.WindowSetup import scale_factor_Y
 from setup.ModeSetupMaster import machine_mode_setup
 
 

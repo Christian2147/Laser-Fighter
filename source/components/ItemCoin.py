@@ -22,7 +22,7 @@
 """
 
 import turtle
-from setup.ScreenSetup import scale_factor_X
+from setup.WindowSetup import scale_factor_X
 from setup.TextureSetup import COPPER_COIN_TEXTURE
 from setup.TextureSetup import SILVER_COIN_TEXTURE
 from setup.TextureSetup import GOLD_COIN_TEXTURE
