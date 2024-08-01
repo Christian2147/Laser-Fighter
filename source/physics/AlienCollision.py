@@ -30,12 +30,13 @@ class AlienCollision:
 
     PLAYER_LASER_GAP = 30 * scale_factor_X
 
-    def __init__(self, human_player, small_alien, medium_alien, large_alien, ufo):
+    def __init__(self, human_player, small_alien, medium_alien, large_alien, ufo, coin):
         self._human_player = human_player
         self._small_alien = small_alien
         self._medium_alien = medium_alien
         self._large_alien = large_alien
         self._ufo = ufo
+        self._coin = coin
 
     def __del__(self):
         del self._human_player
@@ -43,6 +44,7 @@ class AlienCollision:
         del self._medium_alien
         del self._large_alien
         del self._ufo
+        del self._coin
 
     def calculate_collision(self):
         for h in self._human_player.current_human:
@@ -106,3 +108,15 @@ class AlienCollision:
                     u.already_behind = 1
                 else:
                     u.already_behind = 0
+
+            for c in self._coin.coins_on_screen_list:
+                if h.direction == 1:
+                    if h.get_player().xcor() + self.PLAYER_LASER_GAP > c.coin.xcor():
+                        c.relative_laser_position = 1
+                    else:
+                        c.relative_laser_position = -1
+                elif h.direction == 2:
+                    if h.get_player().xcor() - self.PLAYER_LASER_GAP > c.coin.xcor():
+                        c.relative_laser_position = 1
+                    else:
+                        c.relative_laser_position = -1

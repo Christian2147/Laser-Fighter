@@ -346,6 +346,8 @@ class UFO:
             self.ufo.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
                 platinum_coin = Coin(type="platinum", pos_x=self.ufo.xcor(), pos_y=self.ufo.ycor())
+                platinum_coin.range = (platinum_coin.coin.ycor() - platinum_coin.COIN_DISTANCE, platinum_coin.coin.ycor() + platinum_coin.COIN_DISTANCE)
+                platinum_coin.collision_coordinate = platinum_coin.coin.xcor()
                 coins_on_screen.append(platinum_coin)
                 all_coins.append(platinum_coin)
             else:
@@ -354,6 +356,8 @@ class UFO:
                         continue
                     else:
                         coin.reinstate_to_platinum(pos_x=self.ufo.xcor(), pos_y=self.ufo.ycor())
+                        coin.range = (coin.coin.ycor() - coin.COIN_DISTANCE, coin.coin.ycor() + coin.COIN_DISTANCE)
+                        coin.collision_coordinate = coin.coin.xcor()
                         coins_on_screen.append(coin)
                         break
             # Respawn the UFO in a random location (side of the screen)

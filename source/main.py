@@ -1243,7 +1243,10 @@ def main():
             for c in coin.coins_on_screen_list:
                 for h in human_player.current_human:
                     # If the player picks up a coin
-                    if (any(l.laser.isvisible() and l.laser.distance(c.get_coin()) < 55 * scale_factor for l in h.get_laser())) or h.get_player().distance(c.get_coin()) < 55 * scale_factor:
+                    if (any(l.laser.isvisible() and (
+                        h.direction == 1 and c.relative_laser_position == -1 and l.laser.xcor() > c.collision_coordinate or
+                        h.direction == 2 and c.relative_laser_position == 1 and l.laser.xcor() < c.collision_coordinate
+                    ) for l in h.get_laser())) or h.get_player().distance(c.get_coin()) < 55 * scale_factor:
                         c.remove()
                         # Increase the amount of coins based on the type of coin picked up
                         if c.get_type() == "copper":

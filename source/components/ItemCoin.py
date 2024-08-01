@@ -71,6 +71,7 @@ class Coin:
 
         self.range = (0, 0)
         self.collision_coordinate = 0
+        self.relative_laser_position = 0
 
         self.type = type
 

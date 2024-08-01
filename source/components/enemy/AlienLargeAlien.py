@@ -315,6 +315,8 @@ class LargeAlien:
             self.large_alien.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
                 gold_coin = Coin(type="gold", pos_x=self.large_alien.xcor(), pos_y=self.large_alien.ycor())
+                gold_coin.range = (gold_coin.coin.ycor() - gold_coin.COIN_DISTANCE, gold_coin.coin.ycor() + gold_coin.COIN_DISTANCE)
+                gold_coin.collision_coordinate = gold_coin.coin.xcor()
                 coins_on_screen.append(gold_coin)
                 all_coins.append(gold_coin)
             else:
@@ -323,6 +325,8 @@ class LargeAlien:
                         continue
                     else:
                         coin.reinstate_to_gold(pos_x=self.large_alien.xcor(), pos_y=self.large_alien.ycor())
+                        coin.range = (coin.coin.ycor() - coin.COIN_DISTANCE, coin.coin.ycor() + coin.COIN_DISTANCE)
+                        coin.collision_coordinate = coin.coin.xcor()
                         coins_on_screen.append(coin)
                         break
             # Respawn the large alien in a random location (side of the screen)

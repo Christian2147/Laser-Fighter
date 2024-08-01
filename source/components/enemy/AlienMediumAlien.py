@@ -314,6 +314,8 @@ class MediumAlien:
             self.medium_alien.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
                 silver_coin = Coin(type="silver", pos_x=self.medium_alien.xcor(), pos_y=self.medium_alien.ycor())
+                silver_coin.range = (silver_coin.coin.ycor() - silver_coin.COIN_DISTANCE, silver_coin.coin.ycor() + silver_coin.COIN_DISTANCE)
+                silver_coin.collision_coordinate = silver_coin.coin.xcor()
                 coins_on_screen.append(silver_coin)
                 all_coins.append(silver_coin)
             else:
@@ -322,6 +324,8 @@ class MediumAlien:
                         continue
                     else:
                         coin.reinstate_to_silver(pos_x=self.medium_alien.xcor(), pos_y=self.medium_alien.ycor())
+                        coin.range = (coin.coin.ycor() - coin.COIN_DISTANCE, coin.coin.ycor() + coin.COIN_DISTANCE)
+                        coin.collision_coordinate = coin.coin.xcor()
                         coins_on_screen.append(coin)
                         break
             # Respawn the medium alien in a random location (side of the screen)

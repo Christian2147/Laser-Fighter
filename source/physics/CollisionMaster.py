@@ -23,9 +23,10 @@ from setup.SpriteSetup import small_alien
 from setup.SpriteSetup import medium_alien
 from setup.SpriteSetup import large_alien
 from setup.SpriteSetup import ufo
+from setup.SpriteSetup import coin
 from physics.MachineCollision import MachineCollision
 from physics.AlienCollision import AlienCollision
 
 machine_collision = MachineCollision(machine_player, blue_machine, yellow_machine, red_machine, machine_boss)
 
-alien_collision = AlienCollision(human_player, small_alien, medium_alien, large_alien, ufo)
+alien_collision = AlienCollision(human_player, small_alien, medium_alien, large_alien, ufo, coin)

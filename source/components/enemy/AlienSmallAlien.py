@@ -258,6 +258,8 @@ class SmallAlien:
             self.small_alien.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
                 copper_coin = Coin(type="copper", pos_x=self.small_alien.xcor(), pos_y=self.small_alien.ycor())
+                copper_coin.range = (copper_coin.coin.ycor() - copper_coin.COIN_DISTANCE, copper_coin.coin.ycor() + copper_coin.COIN_DISTANCE)
+                copper_coin.collision_coordinate = copper_coin.coin.xcor()
                 coins_on_screen.append(copper_coin)
                 all_coins.append(copper_coin)
             else:
@@ -266,6 +268,8 @@ class SmallAlien:
                         continue
                     else:
                         coin.reinstate_to_copper(pos_x=self.small_alien.xcor(), pos_y=self.small_alien.ycor())
+                        coin.range = (coin.coin.ycor() - coin.COIN_DISTANCE, coin.coin.ycor() + coin.COIN_DISTANCE)
+                        coin.collision_coordinate = coin.coin.xcor()
                         coins_on_screen.append(coin)
                         break
             # Respawn the small alien in a random location (side of the screen)
