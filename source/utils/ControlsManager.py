@@ -197,7 +197,7 @@ class Controls:
             type_string = "Jump"
         # Play the button click sound
         if self._settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+            sound = pygame.mixer.Sound("sound/Button_Sound.wav")
             sound.play()
         # Backup the original keybind
         key_backup = key_1

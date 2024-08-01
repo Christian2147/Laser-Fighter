@@ -381,7 +381,7 @@ class RedMachine:
                 self.red_machine_laser.sety(self.red_machine.ycor() - 70 * self.scale_factor_y)
                 self.laser_has_attacked = 0
                 if shooting_sound == 1:
-                    sound = pygame.mixer.Sound("Sound/Laser_Gun_Enemy.wav")
+                    sound = pygame.mixer.Sound("sound/Laser_Gun_Enemy.wav")
                     sound.play()
                 self.laser_start_time = time.time()
         # If the green power up is active, hide the laser and do not fire
@@ -503,7 +503,7 @@ class RedMachine:
             self.red_machine_health_bar.hideturtle()
             # Play the death sound
             if death_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Explosion.wav")
+                sound = pygame.mixer.Sound("sound/Explosion.wav")
                 sound.play()
             # Change the texture of the red machine to the first frame of the death explosion
             self.red_machine.shape(EXPLOSION_1_TEXTURE)
@@ -537,7 +537,7 @@ class RedMachine:
             # Decrease the enemies health by 1
             self.red_machine_health_bar.shape(HEALTH_BAR_12_TEXTURE)
             if hit_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Explosion2.wav")
+                sound = pygame.mixer.Sound("sound/Explosion2.wav")
                 sound.play()
             self.health_bar = 1
             self.hit_delay = 1

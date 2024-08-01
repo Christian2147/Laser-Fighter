@@ -140,7 +140,7 @@ class ScreenUpdate:
             # Check to see if the cursor is in the bound of the button to be clicked
             if (x > -634 * self._scale_factor_x) and (x < -442 * self._scale_factor_x) and (y > 323 * self._scale_factor_y) and (y < 355 * self._scale_factor_y):
                 if self._settings.button_sound == 1:
-                    sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                    sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                     sound.play()
                 # Set the mode to "Title_Mode" to change the screen
                 self._mode = "Title_Mode"
@@ -153,7 +153,7 @@ class ScreenUpdate:
             # Check to see if the cursor is in the bound of the button to be clicked
             if (x > 26 * self._scale_factor_x) and (x < 600 * self._scale_factor_x) and (y > -315 * self._scale_factor_y) and (y < -254 * self._scale_factor_y):
                 if self._settings.button_sound == 1:
-                    sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                    sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                     sound.play()
                 # If certain settings were updated, a restart may be required.
                 # "updated_controls" checks if this is the case.
@@ -196,7 +196,7 @@ class ScreenUpdate:
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -252 * self._scale_factor_x) and (x < 250 * self._scale_factor_x) and (y > 49 * self._scale_factor_y) and (y < 121 * self._scale_factor_y):
             if self._settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             # Enter Machine Mode
             self._mode = "Machine_Mode"
@@ -219,7 +219,7 @@ class ScreenUpdate:
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -252 * self._scale_factor_x) and (x < 250 * self._scale_factor_x) and (y > -42 * self._scale_factor_y) and (y < 30 * self._scale_factor_y):
             if self._settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             # Enter Alien Mode
             self._mode = "Alien_Mode"
@@ -242,7 +242,7 @@ class ScreenUpdate:
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -252 * self._scale_factor_x) and (x < 250 * self._scale_factor_x) and (y > -133 * self._scale_factor_y) and (y < -61 * self._scale_factor_y):
             if self._settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             # Enter The Shop
             self._mode = "Shop"
@@ -257,7 +257,7 @@ class ScreenUpdate:
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -641 * self._scale_factor_x) and (x < -566 * self._scale_factor_x) and (y > 99 * self._scale_factor_y) and (y < 201 * self._scale_factor_y):
             if self._settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             # Enter the Machine Mode page
             self._page = "Machine_Mode"
@@ -272,7 +272,7 @@ class ScreenUpdate:
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -641 * self._scale_factor_x) and (x < -566 * self._scale_factor_x) and (y > -21 * self._scale_factor_y) and (y < 81 * self._scale_factor_y):
             if self._settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             # Enter the Alien Mode page
             self._page = "Alien_Mode"
@@ -287,7 +287,7 @@ class ScreenUpdate:
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -641 * self._scale_factor_x) and (x < -566 * self._scale_factor_x) and (y > -141 * self._scale_factor_y) and (y < -39 * self._scale_factor_y):
             if self._settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             # Enter the Power Ups page
             self._page = "Power_Ups"
@@ -313,7 +313,7 @@ class ScreenUpdate:
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > 9 * self._scale_factor_x) and (x < 250 * self._scale_factor_x) and (y > -224 * self._scale_factor_y) and (y < -150 * self._scale_factor_y):
             if self._settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             # Go to the statistics screen
             self._mode = "Stats"
@@ -339,7 +339,7 @@ class ScreenUpdate:
             # Check to see if the cursor is in the bound of the button to be clicked
             if (x > -252 * self._scale_factor_x) and (x < -10 * self._scale_factor_x) and (y > -224 * self._scale_factor_y) and (y < -150 * self._scale_factor_y):
                 if self._settings.button_sound == 1:
-                    sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                    sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                     sound.play()
                 # Change to settings
                 self._mode = "Settings"
@@ -349,7 +349,7 @@ class ScreenUpdate:
             # Check to see if the cursor is in the bound of the button to be clicked
             if (x > 29 * self._scale_factor_x) and (x < 600 * self._scale_factor_x) and (y > -235 * self._scale_factor_y) and (y < -173 * self._scale_factor_y):
                 if self._settings.button_sound == 1:
-                    sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                    sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                     sound.play()
                 # Change to settings
                 self._mode = "Settings"
@@ -373,7 +373,7 @@ class ScreenUpdate:
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > 29 * self._scale_factor_x) and (x < 600 * self._scale_factor_x) and (y > -235 * self._scale_factor_y) and (y < -173 * self._scale_factor_y):
             if self._settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             # Go to the controls screen
             self._mode = "Controls"
@@ -398,7 +398,7 @@ class ScreenUpdate:
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -252 * self._scale_factor_x) and (x < 250 * self._scale_factor_x) and (y > -315 * self._scale_factor_y) and (y < -241 * self._scale_factor_y):
             if self._settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             # Quit the game and exit the application
             self.on_quit()

@@ -458,7 +458,7 @@ def main():
                             coin.coins_on_screen_list.pop(hit_coin)
                             # play the coin pickup sound
                             if settings.coin_pickup_sound == 1:
-                                sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
+                                sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
                                 sound.play()
                             break
                     hit_coin = hit_coin + 1
@@ -1282,7 +1282,7 @@ def main():
                         coin.coins_on_screen_list.pop(hit_coin)
                         # play the coin pickup sound
                         if settings.coin_pickup_sound == 1:
-                            sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
+                            sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
                             sound.play()
                     hit_coin = hit_coin + 1
 

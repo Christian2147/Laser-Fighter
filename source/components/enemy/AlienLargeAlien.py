@@ -380,7 +380,7 @@ class LargeAlien:
             self.large_alien_health_bar.hideturtle()
             # Play the death sound
             if death_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Alien_Death_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Alien_Death_Sound.wav")
                 sound.play()
             # Set the texture of the large alien to the first frame in the death scene
             self.large_alien.shape(ALIEN_DEATH_1_TEXTURE)
@@ -426,7 +426,7 @@ class LargeAlien:
                 self.large_alien_health_bar.shape(HEALTH_BAR_13_TEXTURE)
             # Play the hit sound
             if hit_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Alien_Hit_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Alien_Hit_Sound.wav")
                 sound.play()
             self.got_hit = 1
             self.already_ahead = 0

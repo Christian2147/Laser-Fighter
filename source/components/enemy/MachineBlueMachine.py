@@ -341,7 +341,7 @@ class BlueMachine:
                 self.blue_machine_laser.sety(self.blue_machine.ycor() - 50 * self.scale_factor_y)
                 self.laser_has_attacked = 0
                 if shooting_sound == 1:
-                    sound = pygame.mixer.Sound("Sound/Laser_Gun_Enemy.wav")
+                    sound = pygame.mixer.Sound("sound/Laser_Gun_Enemy.wav")
                     sound.play()
                 self.laser_start_time = time.time()
         # If the green power up is active, hide the laser and do not fire
@@ -451,7 +451,7 @@ class BlueMachine:
             self.death_count = self.death_count + 1
             # Play the death sound
             if death_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Explosion.wav")
+                sound = pygame.mixer.Sound("sound/Explosion.wav")
                 sound.play()
             # Change the texture of the blue machine to the first frame of the death explosion
             self.blue_machine.shape(EXPLOSION_1_TEXTURE)

@@ -319,7 +319,7 @@ class YellowMachine:
                 self.yellow_machine_laser.sety(self.yellow_machine.ycor() - 62 * self.scale_factor_y)
                 self.laser_has_attacked = 0
                 if shooting_sound == 1:
-                    sound = pygame.mixer.Sound("Sound/Laser_Gun_Enemy.wav")
+                    sound = pygame.mixer.Sound("sound/Laser_Gun_Enemy.wav")
                     sound.play()
                 self.laser_start_time = time.time()
         # If the green power up is active, hide the laser and do not fire
@@ -429,7 +429,7 @@ class YellowMachine:
             self.death_count = self.death_count + 1
             # Play the death sound
             if death_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Explosion.wav")
+                sound = pygame.mixer.Sound("sound/Explosion.wav")
                 sound.play()
             # Change the texture of the yellow machine to the first frame of the death explosion
             self.yellow_machine.shape(EXPLOSION_1_TEXTURE)

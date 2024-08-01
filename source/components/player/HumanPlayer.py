@@ -458,7 +458,7 @@ class Human:
                 self.laser_start_X = self.laser_list[0].laser.xcor()
                 self.laser_list[1].laser_update = 100
             if shooting_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
+                sound = pygame.mixer.Sound("sound/Laser_Gun_Player.wav")
                 sound.play()
             self.laser_fire = 0
             self.laser_start_time = time.time()
@@ -475,7 +475,7 @@ class Human:
                 self.laser_start_X = self.laser_list[0].laser.xcor()
                 self.laser_list[1].laser_update = 100
             if shooting_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
+                sound = pygame.mixer.Sound("sound/Laser_Gun_Player.wav")
                 sound.play()
             self.laser_fire = 0
             self.laser_start_time = time.time()
@@ -680,7 +680,7 @@ class Human:
                 self.laser_fire = 1
                 self.laser_list[1].laser_update = 0
                 if shooting_sound == 1:
-                    sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
+                    sound = pygame.mixer.Sound("sound/Laser_Gun_Player.wav")
                     sound.play()
             # Move the laser every 0.01 seconds
             current_time = time.time()
@@ -863,7 +863,7 @@ class Human:
             # Set the players texture to the first frame of the explosion
             self.player.shape(PLAYER_DEATH_1_TEXTURE)
             if death_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Player_Death_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Player_Death_Sound.wav")
                 sound.play()
             self.oxygen_tank.hideturtle()
             self.gun.hideturtle()
@@ -927,7 +927,7 @@ class Human:
             # Decrease the players health by 1
             self.health = self.health - 1
             if hit_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Player_Hit_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Player_Hit_Sound.wav")
                 sound.play()
             self.hit_delay = 1
             return

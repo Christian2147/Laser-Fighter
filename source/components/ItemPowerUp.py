@@ -96,7 +96,7 @@ class PowerUp:
         elif mode == 2:
             self.power_up.goto(random.randint(int(-620 * scale_factor_x), int(620 * scale_factor_x)), -150 * scale_factor_y)
         if spawn_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Power_Up_Spawn_Sound.wav")
+            sound = pygame.mixer.Sound("sound/Power_Up_Spawn_Sound.wav")
             sound.play()
 
         self.type = type
@@ -149,7 +149,7 @@ class PowerUp:
         elif mode == 2:
             self.power_up.goto(random.randint(int(-620 * self.scale_factor_x), int(620 * self.scale_factor_x)), -150 * self.scale_factor_y)
         if spawn_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Power_Up_Spawn_Sound.wav")
+            sound = pygame.mixer.Sound("sound/Power_Up_Spawn_Sound.wav")
             sound.play()
         self.power_up.showturtle()
 
@@ -201,7 +201,7 @@ class PowerUp:
             # Spawn it back
             self.power_up.showturtle()
             if spawn_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Power_Up_Spawn_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Power_Up_Spawn_Sound.wav")
                 sound.play()
 
     def pick_up(self, pickup_sound):
@@ -221,7 +221,7 @@ class PowerUp:
         elif self.mode == 2:
             self.power_up.goto(random.randint(int(-620 * self.scale_factor_x), int(620 * self.scale_factor_x)), -150 * self.scale_factor_y)
         if pickup_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Power_Up_Pickup_Sound.wav")
+            sound = pygame.mixer.Sound("sound/Power_Up_Pickup_Sound.wav")
             sound.play()
 
 

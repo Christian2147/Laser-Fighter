@@ -290,7 +290,7 @@ class UFO:
                 self.ufo_laser.setx(self.ufo.xcor() + 2 * self.scale_factor_x)
                 self.ufo_laser.sety(-90 * self.scale_factor_y)
                 if shooting_sound == 1:
-                    sound = pygame.mixer.Sound("Sound/Laser_Gun_Enemy.wav")
+                    sound = pygame.mixer.Sound("sound/Laser_Gun_Enemy.wav")
                     sound.play()
                 self.laser_start_time = time.time()
         # If the ufo is not visible, then stop firing the laser
@@ -413,7 +413,7 @@ class UFO:
             self.ufo_health_bar.hideturtle()
             # Play the death sound
             if death_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Explosion.wav")
+                sound = pygame.mixer.Sound("sound/Explosion.wav")
                 sound.play()
             # Set the texture of the large alien to the first frame in the death scene
             self.ufo.shape(EXPLOSION_1_TEXTURE)
@@ -473,7 +473,7 @@ class UFO:
                 self.ufo_health_bar.shape(HEALTH_BAR_110_TEXTURE)
             # Play the hit sound
             if hit_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Explosion2.wav")
+                sound = pygame.mixer.Sound("sound/Explosion2.wav")
                 sound.play()
             self.got_hit = 1
             self.already_ahead = 0

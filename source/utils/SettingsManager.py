@@ -288,7 +288,7 @@ class SettingsToggle:
         if (x > 29 * self._scale_factor_x) and (x < 600 * self._scale_factor_x) and (y > -75 * self._scale_factor_y) and (y < -14 * self._scale_factor_y):
             # Button sound is played
             if self._settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             # If fullscreen was originally off
             if self._settings.fullscreen == 0 and self._fullscreen_toggled == 0:
@@ -365,7 +365,7 @@ class SettingsToggle:
 
         # Button sound is played
         if self._settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+            sound = pygame.mixer.Sound("sound/Button_Sound.wav")
             sound.play()
         # The configuration file is updated
         self._settings.save()

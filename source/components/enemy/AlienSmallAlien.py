@@ -315,7 +315,7 @@ class SmallAlien:
             self.death_count = self.death_count + 1
             # Play the death sound
             if death_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Alien_Death_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Alien_Death_Sound.wav")
                 sound.play()
             # Set the texture of the small alien to the first frame in the death scene
             self.small_alien.shape(ALIEN_DEATH_1_TEXTURE)

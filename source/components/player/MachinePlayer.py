@@ -369,7 +369,7 @@ class Player:
 
         self.laser_list[index].laser.showturtle()
         if shooting_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Laser_Gun_Player.wav")
+            sound = pygame.mixer.Sound("sound/Laser_Gun_Player.wav")
             sound.play()
         # Moves the laser back to the player to be fired
         self.laser_list[index].laser.setx(self.player.xcor())
@@ -514,7 +514,7 @@ class Player:
             self.health_bar_indicator = 0
             # Death sound plays
             if death_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Explosion3.wav")
+                sound = pygame.mixer.Sound("sound/Explosion3.wav")
                 sound.play()
             # Sets the players texture to the first frame of the explosion
             self.player.shape(EXPLOSION_1_TEXTURE)
@@ -572,7 +572,7 @@ class Player:
             elif self.health_bar_indicator == 2:
                 self.health_bar.shape(HEALTH_BAR_110_TEXTURE)
             if hit_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Explosion4.wav")
+                sound = pygame.mixer.Sound("sound/Explosion4.wav")
                 sound.play()
             self.hit_delay = 1
             self.health_bar_indicator = self.health_bar_indicator - 1

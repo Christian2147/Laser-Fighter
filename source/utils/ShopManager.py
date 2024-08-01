@@ -117,7 +117,7 @@ class Shop:
     def execute_slot_function(self, current_page, slot_id):
         # Button sound is played
         if self._settings.button_sound == 1:
-            sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+            sound = pygame.mixer.Sound("sound/Button_Sound.wav")
             sound.play()
         if current_page != "Power_Ups":
             for pa in self._panel.panel_turtle:
@@ -204,7 +204,7 @@ class Shop:
         if (x > 299 * self._scale_factor_x) and (x < 600 * self._scale_factor_x) and (y > -328 * self._scale_factor_y) and (y < -212 * self._scale_factor_y):
             # Button sound is played
             if self._settings.button_sound == 1:
-                sound = pygame.mixer.Sound("Sound/Button_Sound.wav")
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             if self._price_displayed > self._shop_config.total_coins:
                 ctypes.windll.user32.MessageBoxW(0, "You do not have enough coins to purchase this item!", "Not Enough Coins!", 16)
@@ -214,7 +214,7 @@ class Shop:
                     max_level = 0
                     # Coin sound is played
                     if self._settings.button_sound == 1:
-                        sound = pygame.mixer.Sound("Sound/Coin_Pickup_Sound.wav")
+                        sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
                         sound.play()
                     self._shop_config.total_coins = self._shop_config.total_coins - self._price_displayed
                     self._shop_config.save()
