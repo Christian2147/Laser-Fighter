@@ -20,7 +20,7 @@ from utils.ConfigManager import ConfigManager
 
 class ControlsConfig:
     def __init__(self):
-        self.check_config_file = 'Config/keyUpdate.ini'
+        self.check_config_file = 'config/keyUpdate.ini'
         self.config = ConfigManager()
         self.key_update = configparser.ConfigParser()
 

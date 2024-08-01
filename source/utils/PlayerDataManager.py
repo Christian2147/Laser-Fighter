@@ -22,7 +22,7 @@ class PlayerDataManager:
     _instance = None
     _lock = threading.Lock()  # Ensure thread-safe access
 
-    def __new__(cls, file_path='Config/playerData.ini'):
+    def __new__(cls, file_path='config/playerData.ini'):
         with cls._lock:
             if cls._instance is None:
                 cls._instance = super(PlayerDataManager, cls).__new__(cls)

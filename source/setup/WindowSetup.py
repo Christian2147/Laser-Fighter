@@ -103,10 +103,10 @@ wn.cv.config(highlightthickness=0)
 # Make the window not resizable (Will hopefully change later)
 wn.cv._rootwindow.resizable(False, False)
 # Set the window icon
-img = tkinter.Image("photo", file="Icon/Icon.png")
+img = tkinter.Image("photo", file="icon/Icon.png")
 wn._root.iconphoto(True, img)
 tk_window = wn.getcanvas().winfo_toplevel()
-tk_window.iconbitmap('Icon/Icon.ico')
+tk_window.iconbitmap('icon/Icon.ico')
 wn.tracer(0)
 
 # List of paths to all textures that need to be loaded

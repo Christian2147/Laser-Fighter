@@ -22,7 +22,7 @@ class ConfigManager:
     _instance = None
     _lock = threading.Lock()  # Ensure thread-safe access
 
-    def __new__(cls, file_path='Config/config.ini'):
+    def __new__(cls, file_path='config/config.ini'):
         with cls._lock:
             if cls._instance is None:
                 cls._instance = super(ConfigManager, cls).__new__(cls)
