@@ -16,16 +16,16 @@
 """
     File: ShopDescriptions.py
     Author: Christian Marinkovich
-    Date: 2024-07-13
+    Date: 2024-08-01
     Description:
     This file contains the descriptions for each of the items in the shop.
-    When an item in the shop is clicked on, these descriptions are loaded in.
+    When an item in the shop is clicked on, these descriptions are loaded on the side panel.
     A .py file is used in this case because it is the quickest to access and the data does not need modifying.
 """
 
 from components.gui.GUIDataDescription import Description
 
-# Prices for each item in the shop
+# Prices for each item in the shop (Power Up Prices ordered by Level)
 MACHINE_PRICES = [0, 5000, 15000, 40000, 100000]
 ALIEN_PRICES = [0, 5000, 15000, 40000, 100000]
 POWER_UP_PRICES = [1000, 5000, 15000, 30000]
@@ -106,7 +106,7 @@ MACHINE_DESCRIPTIONS = [
     ], 16, "Courier")
 ]
 
-# For the alien gun upgrades
+# For the Alien Gun upgrades
 ALIEN_DESCRIPTIONS = [
     Description("left", [
         "Default",
@@ -172,7 +172,7 @@ ALIEN_DESCRIPTIONS = [
     ], 16, "Courier")
 ]
 
-# For the yellow power up upgrades
+# For the Yellow Power Up upgrades
 YELLOW_POWER_UP_DESCRIPTIONS = [
     Description("left", [
         "Level 2",
@@ -211,7 +211,7 @@ YELLOW_POWER_UP_DESCRIPTIONS = [
     ], 20, "Courier")
 ]
 
-# For the blue power up upgrades
+# For the Blue Power Up upgrades
 BLUE_POWER_UP_DESCRIPTIONS = [
     Description("left", [
         "Level 2",
@@ -246,7 +246,7 @@ BLUE_POWER_UP_DESCRIPTIONS = [
     ], 20, "Courier")
 ]
 
-# For the green power up upgrades
+# For the Green Power Up upgrades
 GREEN_POWER_UP_DESCRIPTIONS = [
     Description("left", [
         "Level 2",
@@ -273,7 +273,7 @@ GREEN_POWER_UP_DESCRIPTIONS = [
     ], 20, "Courier")
 ]
 
-# For the red power up upgrades
+# For the Red Power Up upgrades
 RED_POWER_UP_DESCRIPTIONS = [
     Description("left", [
         "Level 2",

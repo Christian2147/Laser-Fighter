@@ -31,6 +31,7 @@ from setup.SpriteSetup import blue_power_up_indicator
 from setup.SpriteSetup import extra_power_up_indicator
 from setup.SpriteSetup import machine_player
 from setup.SpriteSetup import human_player
+from setup.ModeSetupMaster import power_up_setup
 from setup.ModeSetupMaster import machine_mode_setup
 from setup.ModeSetupMaster import alien_mode_setup
 from setup.ConfigurationSetup import shop_config
@@ -50,7 +51,7 @@ from utils.UpdateText import TextRefresh
 
 # Screen Updater
 screen = ScreenUpdate(wn, button, settings, refresh_variables,
-                      machine_mode_setup, alien_mode_setup,
+                      power_up_setup, machine_mode_setup, alien_mode_setup,
                       scale_factor_X, scale_factor_Y)
 
 # Movement Detection

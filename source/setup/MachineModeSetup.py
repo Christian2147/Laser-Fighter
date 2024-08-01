@@ -13,6 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: MachineModeSetup.py
+    Author: Christian Marinkovich
+    Date: 2024-08-01
+    Description:
+    This file contains the setup logic for Machine Mode. This setup logic is run every time the title screen is launched.
+    Here, variables for Machine Mode are pre defined before the game starts to avoid in-game lag.
+"""
+
 from setup.WindowSetup import scale_factor_X
 from setup.WindowSetup import scale_factor_Y
 from setup.TextureSetup import MACHINE_PLAYER_TEXTURE
@@ -28,6 +37,45 @@ from setup.TextureSetup import STAR_KILLER_LASER_TEXTURE
 
 
 class MachineModeSetup:
+    """
+        Represents the setup logic for Machine Mode.
+
+        Class Variables:
+            MACHINE_MOVE_(Num) (float): Stores the speed at which the machine will move side to side depending on how
+                many times it has been killed.
+            MACHINE_FLOAT (float): Stores the speed at which the machine will float up and down.
+
+        Pointers:
+            _shop_config (ShopConfig()): A pointer to the Shop Configuration.
+            _power_up_setup (PowerUpSetup()): A pointer to the current power up configuration.
+            _scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            _scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+
+        Attributes:
+            regular_score_multiplier (int): Stores the default score multiplier for Alien Mode (How much does a point
+                increase your score)
+            blue_power_up_score_multiplier (int): Store the score multiplier when the blue power up is activated
+
+            player_texture (string): Stores the current player texture (depending on the shop selection)
+
+            laser_texture (string): Stores the current laser texture (depending on shop selection)
+            laser_offset (int): Stores the current offset of the lasers coordinate vs the players (bigger for
+                bigger lasers)
+            laser_max_distance (int): Stores the maximum distance the laser will travel before it disappears and is
+                able to be fired agian.
+
+            laser_speed (float): Stores the player lasers speed
+            yellow_power_up_speed (float): Stores the lasers speed when the yellow power up is activated
+
+            damage (int): Stores the current damage infliction of the player
+            laser_count (int): Stores the number of lasers fired each round
+
+            player_movement (float): Stores the players movement speed
+            yellow_player_movement (float): Stores the players movement speed when the yellow power up is active
+
+            power_up_spawn_rate (int): Stores the spawn rate of all power ups
+        """
+
     MACHINE_MOVE_2 = 2 * scale_factor_X
     MACHINE_MOVE_4 = 4 * scale_factor_X
     MACHINE_MOVE_6 = 6 * scale_factor_X
@@ -36,14 +84,41 @@ class MachineModeSetup:
 
     MACHINE_FLOAT = 0.15 * scale_factor_Y
 
+    # Set the instance to "None" at the beginning
     _instance = None
 
     def __new__(cls, *args, **kwargs):
+        """
+            Ensures only one instance of this class exists at all times.
+
+            :param args: NA
+            :param kwargs: NA
+
+            :return: The class instance (Which is created if it does nto already exist)
+        """
+
         if cls._instance is None:
             cls._instance = super(MachineModeSetup, cls).__new__(cls)
         return cls._instance
 
     def __init__(self, shop_config, power_up_setup, scale_factor_x, scale_factor_y):
+        """
+            Creates and configures the parameters for Machine Mode.
+
+            :param shop_config: A pointer to the shop configuration
+            :type shop_config: ShopConfig()
+
+            :param power_up_setup: A pointer to the current power up setup
+            :type power_up_setup: PowerUpSetup()
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        # Everything starts out initialized to 0
         self._shop_config = shop_config
         self._power_up_setup = power_up_setup
         self._scale_factor_x = scale_factor_x
@@ -67,6 +142,7 @@ class MachineModeSetup:
         self.yellow_player_movement = 30
         self.power_up_spawn_rate = 1
 
+        # Run the setup
         self.setup_machine_mode()
 
     def __del__(self):
@@ -95,10 +171,18 @@ class MachineModeSetup:
         del self.power_up_spawn_rate
 
     def setup_machine_mode(self):
+        """
+            Sets up the Machine Mode variables.
+
+            :return: None
+        """
+
+        # Initializes some variables to their default state (In case they do not need to change)
         self.player_movement = 30
         self.yellow_player_movement = 30
         self.power_up_spawn_rate = 1
 
+        # Sets the variables based on which items in the shop are selected
         if self._shop_config.machine_slot_selected == 1:
             self.player_texture = MACHINE_PLAYER_TEXTURE
 
@@ -161,6 +245,8 @@ class MachineModeSetup:
             self.regular_score_multiplier = 2
             self.power_up_spawn_rate = 2
 
+        # After the player selection is detected, the variables are modified again based on the current level of the
+        #   power ups
         self.yellow_power_up_speed = self.laser_speed * self._power_up_setup.yellow_power_up_speed_increase
 
         self.blue_power_up_score_multiplier = self.regular_score_multiplier * self._power_up_setup.blue_power_up_multiplier

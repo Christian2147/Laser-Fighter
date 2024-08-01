@@ -16,10 +16,9 @@
 """
     File: ConfigurationSetup.py
     Author: Christian Marinkovich
-    Date: 2024-07-23
+    Date: 2024-08-01
     Description:
-    This file contains all of the global variables needed for the game to run.
-    This also includes any external variables stored in the ini files.
+    This file initializes the containers for the current configuration settings and user progress in Laser Fighter.
 """
 
 import subprocess
@@ -30,16 +29,16 @@ from utils.UpdateControls import ControlsConfig
 from utils.UpdateStatsData import Stats
 from utils.UpdateShopData import ShopConfig
 
-# Initialize the update variables
+# Initialize the refresh variables
 refresh_variables = Refresh()
 
 # Create Settings Object to store the settings variables
 settings = Settings()
 
-# Create Controls Object to store the control keybinds
+# Create Controls Toggle Object to store the control keybinds
 controls_toggle = ControlsConfig()
 
-# Create a Stats PObject to store the statistics variables
+# Create a Stats Object to store the current statistics
 statistics = Stats(settings.god_mode)
 
 # Current Shop Configuration
