@@ -51,7 +51,7 @@ HEALTH_BAR_23_TEXTURE = "textures/healthbars/HealthBar_3.2.gif" if fullscreen ==
 HEALTH_BAR_13_TEXTURE = "textures/healthbars/HealthBar_3.1.gif" if fullscreen == 0 else "textures/healthbars/HealthBar_3.1_Scaled.gif"
 EXPLOSION_1_TEXTURE = "textures/explosions/Explosion1.gif" if fullscreen == 0 else "textures/explosions/Explosion1_Scaled.gif"
 EXPLOSION_2_TEXTURE = "textures/explosions/Explosion2.gif" if fullscreen == 0 else "textures/explosions/Explosion2_Scaled.gif"
-GROUND_TEXTURE = "textures/ground/ground.gif" if fullscreen == 0 else "textures/ground/Ground_Scaled.gif"
+GROUND_TEXTURE = "textures/ground/Ground.gif" if fullscreen == 0 else "textures/ground/Ground_Scaled.gif"
 SUN_TEXTURE = "textures/background/Sun.gif" if fullscreen == 0 else "textures/background/Sun_Scaled.gif"
 EARTH_TEXTURE = "textures/background/Earth.gif" if fullscreen == 0 else "textures/background/Earth_Scaled.gif"
 SPACE_SHIP_TEXTURE = "textures/background/Space_Ship.gif" if fullscreen == 0 else "textures/background/Space_Ship_Scaled.gif"

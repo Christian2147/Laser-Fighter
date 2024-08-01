@@ -64,6 +64,7 @@ from setup.UtilitySetup import shop
 from setup.UtilitySetup import settings_toggle
 from setup.UtilitySetup import controls
 from setup.UtilitySetup import text_refresh
+from utils.PreventSleep import MonitorSleepController
 
 
 def main():
@@ -2084,4 +2085,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    with MonitorSleepController():
+        main()

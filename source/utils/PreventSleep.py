@@ -36,5 +36,3 @@ class MonitorSleepController:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.allow_sleep()
-
-# Put game loop in: with MonitorSleepController():
