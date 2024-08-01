@@ -13,6 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: CollisionMaster.py
+    Author: Christian Marinkovich
+    Date: 2024-08-01
+    Description:
+    Creates the instances for collision detection in both Machine Mode and Alien Mode.
+    The collision for both modes can be accessed through this file.
+"""
+
 from setup.SpriteSetup import machine_player
 from setup.SpriteSetup import blue_machine
 from setup.SpriteSetup import yellow_machine
@@ -27,6 +36,8 @@ from setup.SpriteSetup import coin
 from physics.MachineCollision import MachineCollision
 from physics.AlienCollision import AlienCollision
 
+# Machine Collision Calculation
 machine_collision = MachineCollision(machine_player, blue_machine, yellow_machine, red_machine, machine_boss)
 
+# Alien Collision Calculation
 alien_collision = AlienCollision(human_player, small_alien, medium_alien, large_alien, ufo, coin)
