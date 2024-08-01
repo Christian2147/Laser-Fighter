@@ -146,7 +146,7 @@ texture_paths = [
     "textures/healthbars/HealthBar_3.1.gif",
     "textures/explosions/Explosion1.gif",
     "textures/explosions/Explosion2.gif",
-    "textures/ground/ground.gif",
+    "textures/ground/Ground.gif",
     "textures/background/Sun.gif",
     "textures/background/Earth.gif",
     "textures/background/Space_Ship.gif",

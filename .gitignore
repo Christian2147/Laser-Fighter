@@ -15,3 +15,6 @@ venv/
 # Ignore Python byte-compiled files
 __pycache__/
 *.py[cod]
+
+# Ignore Log Files
+*deletion_log.txt
