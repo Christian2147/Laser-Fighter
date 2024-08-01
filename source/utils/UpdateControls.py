@@ -13,6 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: ConfigManager.py
+    Author: Christian Marinkovich
+    Date: 2024-08-01
+    Description:
+
+"""
+
 import ctypes
 import configparser
 from utils.ConfigManager import ConfigManager

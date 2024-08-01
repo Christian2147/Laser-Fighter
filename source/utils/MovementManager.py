@@ -13,6 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: ConfigManager.py
+    Author: Christian Marinkovich
+    Date: 2024-08-01
+    Description:
+
+"""
+
 from setup.ModeSetupMaster import machine_mode_setup
 from physics.CollisionMaster import machine_collision
 from physics.CollisionMaster import alien_collision

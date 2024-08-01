@@ -13,26 +13,73 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: PreventSleep.py
+    Author: Christian Marinkovich
+    Date: 2024-08-01
+    Description:
+    This file contains the logic related to the system sleep settings.
+    If the game is running, this code will elt the system know that it is a critical application and to not enter
+        sleep mode.
+    When the program terminates, either normally or with an error, the setting will be reversed back to the
+        default state.
+"""
+
 import ctypes
 
-# Constants for preventing system sleep
+# Constants for preventing system sleep:
+# ES_CONTINUOUS: System should continue to use the current state
+# ES_SYSTEM_REQUIRED: Indicates that the system is in use
 ES_CONTINUOUS = 0x80000000
 ES_SYSTEM_REQUIRED = 0x00000001
 
 
 class MonitorSleepController:
+    """
+        Represents the sleep controller which prevents the system from entering sleep mode.
+    """
+
     def __init__(self):
         pass
 
     def prevent_sleep(self):
+        """
+            Lets the system know that this is a critical application and prevents it from entering sleep mode
+
+            :return: None
+        """
+
         ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED)
 
     def allow_sleep(self):
+        """
+            Allows the system to enter sleep mode once the application has terminated
+
+            :return: None
+        """
+
         ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)
 
     def __enter__(self):
+        """
+            Enter a non sleep state.
+
+            :return MonitorSleepController: The sleep controller
+            :type: MonitorSleepController()
+        """
+
         self.prevent_sleep()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        """
+            Exit the non sleep state.
+
+            :param exc_type: NA
+            :param exc_val: NA
+            :param exc_tb: NA
+
+            :return: None
+        """
+
         self.allow_sleep()
