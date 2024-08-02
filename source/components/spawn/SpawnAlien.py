@@ -81,6 +81,12 @@ class SpawnMediumAlien:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_medium_aliens
         del self.medium_aliens
         del self.medium_aliens_kill_values
@@ -129,6 +135,12 @@ class SpawnLargeAlien:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_large_aliens
         del self.large_aliens
         del self.large_aliens_kill_values
@@ -177,6 +189,12 @@ class SpawnUFO:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_ufos
         del self.ufos
         del self.ufo_kill_value

@@ -65,6 +65,12 @@ class SpawnEarth:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.earth_turtle
         del self.earth_index
 
@@ -98,6 +104,12 @@ class SpawnBackgroundObjects:
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.background_objects_turtle
         del self.background_objects_index
 

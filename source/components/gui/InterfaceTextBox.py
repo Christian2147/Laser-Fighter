@@ -33,10 +33,16 @@ class Text:
 
         Attributes:
             text_box (turtle): The text box turtle object
+
             moving (int): Determines the direction the text box will move
             start_time (float): Stores the timestamp for when the text box should move
+            movement_activated (int): determines if the movement of the textbox has been activated or not.
+
             id (int): The id value assigned to each textbox
             in_use (int): Determines whether a text box object is currently on the screen or not
+
+            scale_factor (float): The general scale factor used in fullscreen mode based off of the shortest axis
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
     """
 
     def __init__(self, id, x, y, color, scale_factor, scale_factor_x):
@@ -54,6 +60,12 @@ class Text:
 
             :param color: The color of the text box
             :type color: string
+
+            :param scale_factor: The general scale factor used in fullscreen mode based off of the shortest axis
+            :type scale_factor: float
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
         """
 
         self.text_box = turtle.Turtle()
@@ -152,7 +164,7 @@ class Text:
 
     def write_left(self, text, size, type):
         """
-            Writes the given text on the text box object and aligns it to the left then displays it on the screen.
+            Writes the given text on the text box object and aligns it to the left and then displays it on the screen.
 
             :param text: The text to be written
             :type text: string
@@ -170,6 +182,21 @@ class Text:
         self.text_box.write(text, align="left", font=("Courier", int(size * self.scale_factor), type))
 
     def write_right(self, text, size, type):
+        """
+            Writes the given text on the text box object and aligns it to the right and then displays it on the screen.
+
+            :param text: The text to be written
+            :type text: string
+
+            :param size: The font size of the text to be written
+            :type size: int
+
+            :param type: The type of text to be written (bold, underlines, normal, italic)
+            :type type: string
+
+            :return: None
+        """
+
         self.text_box.clear()
         self.text_box.write(text, align="right", font=("Courier", int(size * self.scale_factor), type))
 

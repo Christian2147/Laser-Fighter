@@ -107,6 +107,12 @@ class SpawnPriceLabel:
         self.current_price_index = 0
 
     def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
         del self.all_price_label
         del self.price_label_on_screen_list
         del self.current_price_index
