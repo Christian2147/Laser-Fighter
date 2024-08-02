@@ -73,8 +73,13 @@ class Button:
             button_text (turtle.Turtle()): Displays the buttons text
             button_indicator (turtle.Turtle()): (Only for the toggle buttons on the settings screen) Displays the
                 button indicator text
+
             type (string): Determines the type of button
             id (int): A unique identifier for the button to further determine and locate the button.
+
+            scale_factor (float): The general scale factor used in fullscreen mode based off of the shortest axis
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, type, id, scale_factor, scale_factor_x, scale_factor_y, page="None"):
@@ -92,6 +97,9 @@ class Button:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
+
+            :param page: The current page being displayed (Only applies to the Shop Slot and Power Up Slot)
+            :type page: string
         """
 
         self.button_frame = turtle.Turtle()
@@ -183,6 +191,7 @@ class Button:
                 self.button_text.shape(YELLOW_LIGHTNING_POWER_UP_TEXTURE)
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor())
         elif type == "Shop_Slot" or type == "Power_Up_Slot":
+            # Which icon is displayed depends on the page that the user is on.
             if page == "Machine_Mode":
                 if id == 1:
                     self.button_text.shape(MACHINE_DEFAULT_SLOT_ICON_TEXTURE)
@@ -370,6 +379,15 @@ class Button:
         self.id = 1
 
     def reinstate_to_tab(self, id):
+        """
+            Reuses the existing button sprite to spawn a tab button based on the id.
+
+            :param id: A unique identifier for the tab button
+            :type id: int
+
+            :return: None
+        """
+
         self.button_frame.shape(TAB_TEXTURE)
         if id < 5:
             self.button_frame.goto(-602.5 * self.scale_factor_x, (150 - (120 * (id - 1))) * self.scale_factor_y)
@@ -389,25 +407,52 @@ class Button:
         self.id = id
 
     def reinstate_to_shop_slot(self, id, page):
+        """
+            Reuses the existing button sprite to spawn a regular shop slot button based on the id and the currently
+                displayed page.
+
+            :param id: A unique identifier for the button
+            :type id: int
+
+            :param page: The current page in the shop that the user is on
+            :type page: string
+
+            :return: None
+        """
+
         self.reinstate_to_slot(id, page=page)
 
-        # Set the type to "Shop Slot"
+        # Set the type to "Shop_Slot"
         self.type = "Shop_Slot"
         self.id = id
 
     def reinstate_to_power_up_slot(self, id):
+        """
+            Reuses the existing button sprite to spawn a power up slot button based on the id.
+            The page is already known to be "Power_Ups" based on this.
+
+            :param id: A unique identifier for the button
+            :type id: int
+
+            :return: None
+        """
+
         self.reinstate_to_slot(id, "Power_Ups")
 
-        # Set the type to "Shop Slot"
+        # Set the type to "Power_Up_Slot"
         self.type = "Power_Up_Slot"
         self.id = id
 
     def reinstate_to_slot(self, id, page="None"):
         """
-            Reuses the existing button sprite to spawn a shop slot and place it in a location based on the id.
+            Reuses the existing button sprite to spawn a shop slot or power up slot and place it in a location on
+                the screen based on the id and the value of "page".
 
             :param id: A unique identifier for the shop slots location
             :type id: int
+
+            :param page: The current page in the shop that the user is on (Only for the regular shop slot)
+            :type page: string
 
             :return: None
         """
@@ -462,9 +507,16 @@ class Button:
         self.button_indicator.shape(LOCKED_TEXTURE)
         self.button_indicator.color("white")
         self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
+        # Used to check whether the item should have a lock on it or not.
         self.indicator_toggled = 0
 
     def reinstate_to_buy(self):
+        """
+            Reuses the existing button sprite to spawn a buy button on the side panel.
+
+            :return: None
+        """
+
         self.button_frame.shape(BUY_BUTTON_TEXTURE)
         self.button_frame.goto(450 * self.scale_factor_x, -270 * self.scale_factor_y)
         self.button_frame.showturtle()
@@ -472,14 +524,17 @@ class Button:
         self.button_text.goto(self.button_frame.xcor() - 80 * self.scale_factor_x, self.button_frame.ycor() + 10 * self.scale_factor_y)
         self.button_text.color("yellow")
 
+        # If the button indicator does not already exist, create one
         if self.indicator == 0:
             self.button_indicator = turtle.Turtle()
+            # Ensure that the turtle does not draw lines on the screen while moving
             self.button_indicator.penup()
             self.indicator = 1
         self.button_indicator.shape(COIN_INDICATOR_TEXTURE)
         self.button_indicator.goto(self.button_frame.xcor() - 125 * self.scale_factor_x, self.button_frame.ycor() - 28 * self.scale_factor_y)
         self.button_indicator.showturtle()
 
+        # Set the type top "Buy"
         self.type = "Buy"
         self.id = 1
 
@@ -625,12 +680,33 @@ class Button:
             return self.button_indicator
 
     def get_type(self):
+        """
+             Returns the type of button associated with the given button sprite.
+
+             :return: type: the button type
+             :type: string
+        """
+
         return self.type
 
     def get_id(self):
+        """
+             Returns the id of the button sprite.
+
+             :return: id: the button id
+             :type: int
+        """
+
         return self.id
 
     def get_indicator_toggled(self):
+        """
+             Returns whether or not the item associated with the slot is locked or not (For Shop_Slot only).
+
+             :return: indicator_toggled: whether or not the lock is visible or not
+             :type: int
+        """
+
         if self.type == "Shop_Slot":
             return self.indicator_toggled
 
@@ -711,6 +787,15 @@ class Button:
                 self.button_text.write("VSync:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
 
     def write_buy(self, price):
+        """
+            Writes the price text on the buy button based on the item that is currently selected.
+
+            :param price: The price of the current item selected
+            :type price: int
+
+            :return: None
+        """
+
         self.button_text.clear()
         self.button_text.goto(self.button_frame.xcor() - 80 * self.scale_factor_x, self.button_frame.ycor() + 10 * self.scale_factor_y)
         self.button_text.write("Buy: ", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
@@ -750,18 +835,16 @@ class Button:
 
     def write_indicator(self, setting):
         """
-            Writes the text for the button indicators tied to the settings toggle buttons.
+            Writes the text for the button indicators tied to the settings toggle buttons and the power up slots.
 
             :param setting: Stores the current configuration for the given setting.
             :type setting: int
-
-            :param scale_factor: The scale factor for fullscreen mode
-            :type scale_factor: float
 
             :return: None
         """
 
         if self.type == "Settings_Toggle":
+            # For the settings toggle buttons, make them show on/off in green/red
             if setting == 1:
                 self.button_indicator.color("green")
                 self.button_indicator.clear()
@@ -771,6 +854,7 @@ class Button:
                 self.button_indicator.clear()
                 self.button_indicator.write("Off", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
         elif self.type == "Power_Up_Slot":
+            # For the power up slots, write the current power up level.
             if setting != 0:
                 self.button_indicator.clear()
                 self.button_indicator.write("Level {}".format(setting), align="center", font=("Courier", int(18 * self.scale_factor), "normal"))
@@ -805,6 +889,15 @@ class Button:
                 self.button_indicator.write("Off", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
 
     def toggle_indicator(self, check_value):
+        """
+            Toggled the indicator on and off based on the value passed in. (Whether the item has been bought or not)
+
+            :param check_value: Value that determines whether then indicator is shown or not.
+            :type check_value: int
+
+            :return: None
+        """
+
         if check_value == 0:
             self.button_indicator.showturtle()
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
@@ -816,6 +909,12 @@ class Button:
             self.indicator_toggled = 0
 
     def set_indicator_location(self):
+        """
+            Set the location of the indicator based on whether it is toggled or not.
+
+            :return: None
+        """
+
         if self.indicator_toggled == 1:
             self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
         else:
@@ -1009,8 +1108,7 @@ class Button:
 
     def update_controls_text_color(self, alert):
         """
-            Used to change the color of the control toggle buttons text when the user decides to hover their mouse over
-                the area that the  button takes up.
+            Used to change the color of the control toggle buttons text to red when there is a keybind conflict.
 
             :param alert: Used to determine if there is a keybind conflict with the control setting
                 for this buttons control
@@ -1020,25 +1118,25 @@ class Button:
         """
 
         if self.id == 1:
-            # If the there is a keybind conflict, use red and orange as the colors rather than yellow and white
+            # If the there is a keybind conflict, use red as the color rather than yellow
             if alert == 1:
                 self.button_text.color("red")
             else:
                 self.button_text.color("white")
         elif self.id == 2:
-            # If the there is a keybind conflict, use red and orange as the colors rather than yellow and white
+            # If the there is a keybind conflict, use red as the color rather than yellow
             if alert == 2:
                 self.button_text.color("red")
             else:
                 self.button_text.color("white")
         elif self.id == 3:
-            # If the there is a keybind conflict, use red and orange as the colors rather than yellow and white
+            # If the there is a keybind conflict, use red as the color rather than yellow
             if alert == 3:
                 self.button_text.color("red")
             else:
                 self.button_text.color("white")
         elif self.id == 4:
-            # If the there is a keybind conflict, use red and orange as the colors rather than yellow and white
+            # If the there is a keybind conflict, use red as the color rather than yellow
             if alert == 4:
                 self.button_text.color("red")
             else:
@@ -1047,8 +1145,6 @@ class Button:
     def click_button(self):
         """
             Returns the required attributes of the shop slot to determine if it has been clicked or not.
-            This works differently than the button because the text is not highlighted yellow, rather, the entire
-                button is.
 
             :return: button_color: the current color of the buttons frame
             :type: string
