@@ -28,7 +28,6 @@ import turtle
 import pygame
 import time
 from components.player.MachinePlayerLaser import MachineLaser
-#vfrom physics.CollisionMaster import machine_collision
 from setup.ModeSetupMaster import machine_mode_setup
 from setup.TextureSetup import EXPLOSION_1_TEXTURE
 from setup.TextureSetup import EXPLOSION_2_TEXTURE
@@ -50,20 +49,34 @@ class Player:
 
         Attributes:
             player (turtle.Turtle()): The player sprite
-            laser (turtle.Turtle()): The player laser sprite
             health_bar (turtle.Turtle()): The players health bar sprite
-            death_animation (int): determines whether the player is currenly in the process of dying or not
+
+            laser_list (list): The list of the current lasers on the screen
+            all_laser_list (list): The list of all laser sprites created since the program began running (So that they
+                can be reused)
+            laser_start_y_list (list): The list of the lasers starting y-coordinates when they are fired
+            laser_has_attacked_list (list): The the list of whether each laser has hit a machine or not
+            lasers_fired_list (list): The list of whether or not each laser has been fired or not
+
+            do_collision (int): Determines whether or not hitboxes need to be calculated and for what laser based on
+                its value
+
+            death_animation (int): determines whether the player is currently in the process of dying or not
             health_bar_indicator (int): Stores the current health of the player
             hit_delay (int): Delays how often the player can be hit
             update (float): Value that is incremented during the death animation of the player.
+
             direction (int): Stores the direction of the player (1 = right and 2 = left)
-            laser_has_attacked (int): Determines whether the players laser has hit an enemy since it was fired.
+
             kill_start_time (float): Used as a timestamp for the death animation of the player (To make the animation
                 run in a consistent amount of time)
             laser_start_time (float): Used as a timestamp for the laser movement of the player (To make the movement
                 happen in a consistent amount of time)
             hit_start_time (float): Used as a timestamp for the hit duration of the player (To make sure that the hit
                 delay is constant)
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, god_mode, scale_factor_x, scale_factor_y):
@@ -132,7 +145,7 @@ class Player:
         """
 
         self.player.clear()
-        # self.laser.clear()
+        # Remove the lasers from the list first before clearing the list
         for l in self.laser_list:
             l.remove()
             del l
@@ -143,7 +156,6 @@ class Player:
         self.lasers_fired_list.clear()
         self.health_bar.clear()
         del self.player
-        # del self.laser
         del self.health_bar
         del self.laser_list
         del self.all_laser_list
@@ -168,17 +180,22 @@ class Player:
 
         self.laser_count = machine_mode_setup.laser_count
 
+        # If the laser count is greater than or equal to all available laser sprites
         if self.laser_count >= len(self.all_laser_list):
+            # Reuse the existing ones
             for l in self.all_laser_list:
                 l.reinstate(0, machine_mode_setup.laser_max_distance)
                 self.laser_list.append(l)
 
+            # Create the rest from scratch and add them to both lists
             remaining_lasers = self.laser_count - len(self.all_laser_list)
             for i in range(remaining_lasers):
                 laser = MachineLaser(0, machine_mode_setup.laser_max_distance)
                 self.laser_list.append(laser)
                 self.all_laser_list.append(laser)
+        # If the laser count is less than all available laser sprites
         else:
+            # Reuse only the ones necessary
             for i in range(self.laser_count):
                 self.all_laser_list[i].reinstate(0, machine_mode_setup.laser_max_distance)
                 self.laser_list.append(self.all_laser_list[i])
@@ -203,10 +220,10 @@ class Player:
 
     def get_laser(self):
         """
-            Returns the players laser sprite so that its class attributes can be accessed
+            Returns the list of the players laser sprites so that their class attributes can be accessed
 
-            :return: laser: The player laser sprite
-            :type: turtle.Turtle()
+            :return: laser_list: The list of the players laser sprites
+            :type: list
         """
 
         return self.laser_list
@@ -263,9 +280,9 @@ class Player:
 
     def get_laser_has_attacked(self):
         """
-            Returns whether the laser has hit an enemy since it was last fired
+            Returns the list of whether each laser has hit an enemy since it was last fired
 
-            :return: laser_last_attacked: Determines whether the player laser has hit an enemy since it was last fired
+            :return: laser_last_attacked_list: Determines whether each laser has hit an enemy since it was last fired
             :type: int
         """
 
@@ -273,10 +290,13 @@ class Player:
 
     def set_laser_has_attacked(self, new_value, index):
         """
-            Sets the laser_has_attacked of the player (Used for when the player hits an enemy)
+            For a specific laser specified by the index, this modifies its laser_has_attacked variable
 
             :param new_value: The new laser_has_attacked of the yellow machine.
             :type new_value: int
+
+            :param index: The index of the laser data to modify
+            :type index: int
 
             :return: None
         """
@@ -291,6 +311,7 @@ class Player:
         """
 
         self.player.hideturtle()
+        # Clear laser data
         for l in self.laser_list:
             l.remove()
         self.laser_list.clear()
@@ -310,6 +331,12 @@ class Player:
         self.hit_start_time = 0
 
     def remove_laser_start_y(self):
+        """
+            Resets the data of all the lasers so that their firing can be initiated again.
+
+            :return: None
+        """
+
         self.laser_start_y_list.clear()
         self.laser_has_attacked_list.clear()
         self.lasers_fired_list.clear()
@@ -342,10 +369,14 @@ class Player:
         """
             Moves the player in the direction specified by the "direction" variable
 
+            :param yellow_power_up: Determines if the yellow power up is currently active or not
+            :type yellow_power_up: int
+
             :return: None
         """
 
         if self.direction == 1 and self.player.xcor() > -620 * self.scale_factor_x and self.death_animation == 0:
+            # How fast the player moves is determined by whether or not the yellow power up is active
             if yellow_power_up == 1:
                 self.player.setx(self.player.xcor() - machine_mode_setup.yellow_player_movement)
             else:
@@ -364,6 +395,9 @@ class Player:
             :param shooting_sound: Determines if the player shooting sound is toggled on or off
             :type shooting_sound: int
 
+            :param index: The index of the laser to fire. (0 by default)
+            :type index: int
+
             :return: None
         """
 
@@ -371,20 +405,23 @@ class Player:
         if shooting_sound == 1:
             sound = pygame.mixer.Sound("sound/Laser_Gun_Player.wav")
             sound.play()
-        # Moves the laser back to the player to be fired
+        # Moves the specified laser back to the player to be fired
         self.laser_list[index].laser.setx(self.player.xcor())
         self.laser_list[index].laser.sety(self.player.ycor() + machine_mode_setup.laser_offset)
-        # self.laser_start_time = time.time()
-        # self.laser_has_attacked = 0
+        # Set the lasers attributes correctly
         self.laser_start_y_list[index] = self.laser_list[index].laser.ycor()
         self.laser_has_attacked_list[index] = 0
         self.lasers_fired_list[index] = 1
 
+        # Initiate the calculation of the hitboxes for the specified laser
         self.do_collision = index + 1
 
     def shoot(self, shooting_sound, yellow_power_up):
         """
-            Moves the player's laser across the screen after it is fired
+            Moves the player's lasers across the screen after they are fired.
+
+            :param shooting_sound: Determines if the player shooting sound is toggled on or off
+            :type shooting_sound: int
 
             :param yellow_power_up: Determines if the yellow power up is currently active or not
             :type yellow_power_up: int
@@ -392,35 +429,42 @@ class Player:
             :return: None
         """
 
-        # If the laser has hit an enemy, remove it from the screen
+        # If a specific laser has hit an enemy, remove it from the screen
         for i in range(len(self.laser_has_attacked_list)):
             if self.laser_has_attacked_list[i] == 1:
                 self.laser_list[i].laser.hideturtle()
 
+        # Fire the third laser when the second laser has travelled at least 100 units
         if len(self.laser_list) > 2 and self.lasers_fired_list[1] != 0 and self.lasers_fired_list[2] == 0 and self.laser_list[1].laser.ycor() >= self.laser_start_y_list[1] + 100 * self.scale_factor_y:
             self.fire(shooting_sound, 2)
 
+        # Fire the second laser when the first laser has travelled at least 100 units
         if len(self.laser_list) > 1 and self.lasers_fired_list[1] == 0 and self.laser_list[0].laser.ycor() >= self.laser_start_y_list[0] + 100 * self.scale_factor_y:
             self.fire(shooting_sound, 1)
 
-        # While the laser is still in the frame of the screen
+        # While the last laser is still in the frame of the screen
         if self.laser_list[0].laser.ycor() < machine_mode_setup.laser_max_distance:
-            # Keep moving it 14.5 or 43.5 units every 0.015 seconds
+            # Keep moving it a number of units every 0.015 seconds
+            # The number of units depends on the laser speed and the yellow power up
             current_time = time.time()
             elapsed_time = current_time - self.laser_start_time
             if elapsed_time >= 0.015:
+                # If the yellow power up is not activated/is activated
                 if yellow_power_up == 0:
                     # Calculate the delta movement
                     # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
                     delta_movement = machine_mode_setup.laser_speed * ((elapsed_time - 0.015) / 0.015)
+                    # If the third laser has been fired
                     if len(self.lasers_fired_list) == 3 and self.lasers_fired_list[2] == 1:
                         self.laser_list[0].laser.sety(self.laser_list[0].laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
                         self.laser_list[1].laser.sety(self.laser_list[1].laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
                         self.laser_list[2].laser.sety(self.laser_list[2].laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
+                    # If the second laser has been fired and not the third
                     elif len(self.lasers_fired_list) >= 2 and self.lasers_fired_list[1] == 1:
                         self.laser_list[0].laser.sety(self.laser_list[0].laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
                         self.laser_list[1].laser.sety(self.laser_list[1].laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
+                    # If only the first laser has been fired
                     elif len(self.lasers_fired_list) >= 1 or self.lasers_fired_list[1] == 0:
                         self.laser_list[0].laser.sety(self.laser_list[0].laser.ycor() + machine_mode_setup.laser_speed + delta_movement)
                 elif yellow_power_up == 1:
@@ -436,6 +480,7 @@ class Player:
                         self.laser_list[0].laser.sety(self.laser_list[0].laser.ycor() + machine_mode_setup.yellow_power_up_speed + delta_movement)
                 self.laser_start_time = time.time()
         else:
+            # Remove all lasers from the screen when they are done being fired
             for l in self.laser_list:
                 l.laser.hideturtle()
             self.laser_start_time = 0

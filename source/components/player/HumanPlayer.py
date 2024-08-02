@@ -58,29 +58,42 @@ class Human:
             player (turtle.Turtle()): The player sprite
             oxygen_tank (turtle.Turtle()): The players oxygen tank sprite
             gun (turtle.Turtle()): The player gun sprite
-            laser (turtle.Turtle()): The player laser sprite
             health_bar (turtle.Turtle()): The players health bar sprite
+
+            laser_list (list): The list of the current lasers on the screen
+            all_laser_list (list): The list of all laser sprites created since the program began running (So that they
+                can be reused)
+            laser_count (int): The amount of lasers to be fired per round
+            laser_direction (int): Determines the direction that the laser is moving and facing (1 = right and 2 = left)
+            laser_fire (int): Determines if the second laser has been fired or not
+            laser_start_X (float): The starting x-coordinate of the laser when it is fired
+
             initial_velocity (float): The players initial velocity when starting a jump.
             current_velocity (float): The players current velocity during a jump (Set to initial when jump is not\
                 being preformed)
+
             death_animation (int): Determines whether the player is currently in the process of dying or not
             death_iterator (float): Iterates during the players death animation
             health (int): Stores the players current health
             hit_delay (int): Iterates during the players hit delay and creates a delay between hits
+
             direction (int): Determines the current direction of the player (1 = right and 2 = left)
             gun_direction (int): Determines the current direction of the players gun (1 = right and 2 = left)
             jump_direction (int): Determines the direction that the player is jumping (1 = right and 2 = left)
+
             move_update (int): Determines if the player is currently moving
             jump_update (int): Determines if the player is currently jumping
             shoot_update (int): Determines if the players laser has been fired and is on the screen
-            laser_direction (int): Determines the direction that the laser is moving (1 = right and 2 = left)
+
             Start_X (float): The x-coordinate starting point when the player begins to move right or left
             Start_Y (float): The y-coordinate starting point when the player jumps
+
             move_right (int): Set to 1 when the player is to preform a rightward movement
             move_left (int): Set to 1 when the player is to preform a leftward movement
             moving_right (int): Set to 1 when the player is in the process of moving right
             moving_left (int): Set to 1 when the player is in the process of moving left
             do_jump (int): Set to 1 when the play is to jump
+
             kill_start_time (float): Used as a timestamp for the death animation of the player (To make the animation
                 run in a consistent amount of time)
             laser_start_time (float): Used as a timestamp for the laser movement of the player (To make the movement
@@ -95,6 +108,9 @@ class Human:
                 walking animation happens in a consistent amount of time)
             gun_start_time (float): Used as a timestamp for updating the guns texture when the player changes
                 direction (To make sure it stays consistent with frame rate)
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, god_mode, scale_factor_x, scale_factor_y):
@@ -136,9 +152,11 @@ class Human:
         self.gun.direction = "stop"
         self.gun.hideturtle()
 
+        # Set the laser lists
         self.laser_list = []
         self.all_laser_list = []
 
+        # Initiate the amount of lasers needed
         for i in range(alien_mode_setup.laser_count):
             laser = HumanLaser(self.gun.xcor(), self.gun.ycor(), scale_factor_x, scale_factor_y)
             laser.laser.hideturtle()
@@ -201,6 +219,7 @@ class Human:
         self.player.clear()
         self.oxygen_tank.clear()
         self.gun.clear()
+        # Clean up lasers before clearing the list
         for l in self.laser_list:
             l.remove()
             del l
@@ -240,17 +259,22 @@ class Human:
 
         self.laser_count = alien_mode_setup.laser_count
 
+        # If the laser count is greater than or equal to all available laser sprites
         if self.laser_count >= len(self.all_laser_list):
+            # Reuse the existing ones
             for l in self.all_laser_list:
                 l.reinstate(self.gun.xcor(), self.gun.ycor())
                 self.laser_list.append(l)
 
+            # Create the rest from scratch and add them to both lists
             remaining_lasers = self.laser_count - len(self.all_laser_list)
             for i in range(remaining_lasers):
                 laser = HumanLaser(self.gun.xcor(), self.gun.ycor(), self.scale_factor_x, self.scale_factor_y)
                 self.laser_list.append(laser)
                 self.all_laser_list.append(laser)
+        # If the laser count is less than all available laser sprites
         else:
+            # Reuse only the ones necessary
             for i in range(self.laser_count):
                 self.all_laser_list[i].reinstate(self.gun.xcor(), self.gun.ycor())
                 self.laser_list.append(self.all_laser_list[i])
@@ -272,10 +296,10 @@ class Human:
 
     def get_laser(self):
         """
-            Returns the players laser sprite so that its class attributes can be accessed
+            Returns the list of the players laser sprites so that their class attributes can be accessed
 
-            :return: laser: The player laser sprite
-            :type: turtle.Turtle()
+            :return: laser_list: The list of the players laser sprites
+            :type: list
         """
 
         return self.laser_list
@@ -437,7 +461,8 @@ class Human:
 
     def shoot(self, shooting_sound):
         """
-            Fires a laser from the players gun in the given direction that will fly across the screen
+            Fires a laser from the players gun in the given direction that will fly across the screen.
+            The amount of lasers fired depends on the laser count.
 
             :param shooting_sound: Variable that determines if the player shooting sound is toggled on or off
             :type shooting_sound: int
@@ -449,34 +474,42 @@ class Human:
         if self.direction == 1:
             # Shoot to the right
             self.laser_direction = 1
+            # Prepare all of the lasers in the current list to be fired
             for l in self.laser_list:
                 l.laser.setx(self.gun.xcor() + alien_mode_setup.laser_offset)
                 l.laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
+                # Set the texture to the laser facing right
                 l.laser.shape(alien_mode_setup.laser_right_texture)
                 l.laser_update = 0
+            # If there is more than 1 laser (Can only be 2, not 3), then halt the second laser.
             if len(self.laser_list) > 1:
                 self.laser_start_X = self.laser_list[0].laser.xcor()
                 self.laser_list[1].laser_update = 100
             if shooting_sound == 1:
                 sound = pygame.mixer.Sound("sound/Laser_Gun_Player.wav")
                 sound.play()
+            # Ensure that the second laser is not fired right when the first one is
             self.laser_fire = 0
             self.laser_start_time = time.time()
         # If the player is facing left
         elif self.direction == 2:
             # Shoot to the left
             self.laser_direction = 2
+            # Prepare all of the lasers in the current list to be fired
             for l in self.laser_list:
                 l.laser.setx(self.gun.xcor() - alien_mode_setup.laser_offset)
                 l.laser.sety(self.gun.ycor() + 5 * self.scale_factor_y)
+                # Set the texture to the laser facing left
                 l.laser.shape(alien_mode_setup.laser_left_texture)
                 l.laser_update = 0
+            # If there is more than 1 laser (Can only be 2, not 3), then halt the second laser.
             if len(self.laser_list) > 1:
                 self.laser_start_X = self.laser_list[0].laser.xcor()
                 self.laser_list[1].laser_update = 100
             if shooting_sound == 1:
                 sound = pygame.mixer.Sound("sound/Laser_Gun_Player.wav")
                 sound.play()
+            # Ensure that the second laser is not fired right when the first one is
             self.laser_fire = 0
             self.laser_start_time = time.time()
 
@@ -492,6 +525,7 @@ class Human:
             # Move right in 0.012 seconds
             current_time = time.time()
             elapsed_time = current_time - self.move_start_time
+            # How fast the player moves depends on if the yellow power up is activated or not
             player_movement = alien_mode_setup.player_movement
             if yellow_power_up == 1:
                 player_movement = alien_mode_setup.yellow_player_movement
@@ -523,6 +557,7 @@ class Human:
             # Move left in 0.012 seconds
             current_time = time.time()
             elapsed_time = current_time - self.move_start_time
+            # How fast the player moves depends on if the yellow power up is activated or not
             player_movement = alien_mode_setup.player_movement
             if yellow_power_up == 1:
                 player_movement = alien_mode_setup.yellow_player_movement
@@ -556,6 +591,7 @@ class Human:
             if (self.direction == 1 and self.jump_direction == 0) or (self.jump_direction == 1):
                 current_time = time.time()
                 elapsed_time = current_time - self.jump_start_time
+                # How fast the player jumps depends on if the yellow power up is active or not
                 jump_frequency = alien_mode_setup.jump_frequency
                 if yellow_power_up == 1:
                     jump_frequency = alien_mode_setup.yellow_jump_frequency
@@ -612,6 +648,7 @@ class Human:
             elif (self.direction == 2 and self.jump_direction == 0) or (self.jump_direction == 2):
                 current_time = time.time()
                 elapsed_time = current_time - self.jump_start_time
+                # How fast the player jumps depends on if the yellow power up is active or not
                 jump_frequency = alien_mode_setup.jump_frequency
                 if yellow_power_up == 1:
                     jump_frequency = alien_mode_setup.yellow_jump_frequency
@@ -662,7 +699,10 @@ class Human:
 
     def execute_shoot(self, shooting_sound, yellow_power_up):
         """
-            Move thr laser across the screen in the specified direction after it has been shot
+            Move the lasers across the screen in the specified direction after they have been shot
+
+            :param shooting_sound: Variable that determines if the player shooting sound is toggled on or off
+            :type shooting_sound: int
 
             :param yellow_power_up: Determines if the yellow power up is currently active or not
             :type yellow_power_up: int
@@ -672,10 +712,12 @@ class Human:
         # If the direction is right
         if -1080 * self.scale_factor_x < self.laser_list[0].laser.xcor() < 1080 * self.scale_factor_x and self.laser_direction == 1:
             self.shoot_update = 1
+            # Set all necessary lasers to face right
             for l in self.laser_list:
                 if l.laser_update < alien_mode_setup.piercing:
                     l.laser.showturtle()
                 l.laser.direction = "right"
+            # Fire the second laser after the first one has travelled at least 100 units (To have a gap)
             if len(self.laser_list) > 1 and self.laser_fire == 0 and self.laser_list[0].laser.xcor() >= self.laser_start_X + 100 * self.scale_factor_x:
                 self.laser_fire = 1
                 self.laser_list[1].laser_update = 0
@@ -686,11 +728,13 @@ class Human:
             current_time = time.time()
             elapsed_time = current_time - self.laser_start_time
             if elapsed_time >= 0.01:
+                # Check if the yellow power up is on
                 if yellow_power_up == 1:
                     # Calculate the delta movement
                     # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
                     delta_movement = alien_mode_setup.yellow_power_up_speed * ((elapsed_time - 0.01) / 0.01)
+                    # Check if the second laser has already been fired or not
                     if self.laser_fire == 0:
                         self.laser_list[0].laser.setx(self.laser_list[0].laser.xcor() + alien_mode_setup.yellow_power_up_speed + delta_movement)
                     else:
@@ -707,11 +751,13 @@ class Human:
         # If the direction is left
         elif -1080 * self.scale_factor_x < self.laser_list[0].laser.xcor() < 1080 * self.scale_factor_x and self.laser_direction == 2:
             self.shoot_update = 1
+            # Set all necessary lasers to face left
             for l in self.laser_list:
                 if l.laser_update < alien_mode_setup.piercing:
                     print(l.laser_update)
                     l.laser.showturtle()
                 l.laser.direction = "left"
+            # Fire the second laser after the first one has travelled at least 100 units (To have a gap)
             if len(self.laser_list) > 1 and self.laser_fire == 0 and self.laser_list[0].laser.xcor() <= self.laser_start_X - 100 * self.scale_factor_x:
                 self.laser_fire = 1
                 self.laser_list[1].laser_update = 0
@@ -719,8 +765,10 @@ class Human:
             elapsed_time = current_time - self.laser_start_time
             # Move the laser every 0.01 seconds
             if elapsed_time >= 0.01:
+                # Check if the yellow power up is on
                 if yellow_power_up == 1:
                     delta_movement = alien_mode_setup.yellow_power_up_speed * ((elapsed_time - 0.01) / 0.01)
+                    # Check if the second laser has already been fired or not
                     if self.laser_fire == 0:
                         self.laser_list[0].laser.setx(self.laser_list[0].laser.xcor() - alien_mode_setup.yellow_power_up_speed - delta_movement)
                     else:
@@ -740,7 +788,6 @@ class Human:
             self.shoot_update = 0
             for l in self.laser_list:
                 l.laser.hideturtle()
-                #l.laser_update = 0
 
     def set_player_texture(self, right_update, left_update):
         """
@@ -798,7 +845,7 @@ class Human:
     def kill_player(self, death_sound):
         """
             Kills the human player and plays the human players death animation. After that, it spawns the player back
-                at thecenter and resets the game.
+                at the center and resets the game.
 
             :param death_sound: Determines if the death sound for the player is toggled on or off
             :type death_sound: int
@@ -855,6 +902,7 @@ class Human:
                 self.move_right = 0
                 return
 
+        # The health of the player has to be 1 in order for it to die
         if self.health == 1 and self.death_animation != 1:
             # The players health goes down to 0
             self.health = 0
