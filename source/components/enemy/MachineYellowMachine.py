@@ -47,14 +47,17 @@ class YellowMachine:
         Attributes:
             yellow_machine (turtle.Turtle()): The yellow machine enemy sprite.
             yellow_machine_laser (turtle.Turtle()): The laser sprite for each yellow machine enemy.
+
             death_count (int): Stores the death count for the enemy since the player has last died.
             update (float): Value that is incremented during the death animation of the enemy.
+
             movement (int): Stores the direction that the enemy is supposed to move on
                 the x-axis (1 = right and -1 = left)
             float (int): Stores the direction that the enemy is supposed to move on the y-axis (1 = up and -1 == down)
             start_y_float (float): Stores the y-coordinate of the enemy when the float effect is starting or when
                 it is changing direction
             float_activated (int): Determines if the float effect is currently active or not (For timing purposes)
+
             start_time (float): Used as a timestamp for the death animation of the enemy (To make the animation run in
                 a consistent amount of time)
             laser_start_time (float): Used as a timestamp for the laser movement of the enemy (To make the movement
@@ -63,11 +66,25 @@ class YellowMachine:
                 happen in a consistent amount of time and not based on code execution speed)
             float_start_time (float): Used as a timestamp for the enemies floating effect movement (To make the
                 movement happen in a consistent amount of time)
+
             laser_has_attacked (int): Determines if the enemy has been hit by the players laser since it was last fired
                 (So that it does not get hit two times in a row)
             movement_activated (int): Check if the enemies side to side movement is currently happening or not. (So
                 that it can create a start time for it)
+
             id (int): The id of the current yellow machine (Used for counting how many are on the screen)
+
+            enemy_center (float): The y-axis center of the sine wave created by the machines float effect
+                (when t=0, where is it?)
+            float_time_offset (float): The timestamp when the float effect for the machine begins
+
+            x_range_list (tuple): The x-axis of the hitboxes for the machine. (The range of x-coordinates the laser
+                has to be in in order to hit the enemy)
+            collision_y_coordinate_list: The y-axis point that the players lasers have to pass in order to
+                hit the machine.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, id, scale_factor_x, scale_factor_y):
@@ -135,9 +152,9 @@ class YellowMachine:
         self.movement_activated = 0
         self.id = id
 
+        # For collision
         self.enemy_center = self.yellow_machine.ycor()
         self.float_time_offset = time.time()
-
         self.x_range_list = [(0, 0)] * machine_mode_setup.laser_count
         self.collision_y_coordinate_list = [0] * machine_mode_setup.laser_count
 
@@ -272,6 +289,12 @@ class YellowMachine:
         self.collision_y_coordinate_list.clear()
 
     def remove_collisions(self):
+        """
+            Clears and resets the machines hitboxes so they can be recreated.
+
+            :return: None
+        """
+
         # Clear the lists
         self.x_range_list.clear()
         self.collision_y_coordinate_list.clear()
@@ -368,6 +391,7 @@ class YellowMachine:
             self.yellow_machine.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
                 silver_coin = Coin(type="silver", pos_x=self.yellow_machine.xcor(), pos_y=self.yellow_machine.ycor())
+                # Set the hitbox for the coin
                 silver_coin.range = (silver_coin.coin.xcor() - silver_coin.COIN_DISTANCE, silver_coin.coin.xcor() + silver_coin.COIN_DISTANCE)
                 silver_coin.collision_coordinate = silver_coin.coin.ycor() - silver_coin.COIN_DISTANCE
                 coins_on_screen.append(silver_coin)
@@ -378,6 +402,7 @@ class YellowMachine:
                         continue
                     else:
                         coin.reinstate_to_silver(pos_x=self.yellow_machine.xcor(), pos_y=self.yellow_machine.ycor())
+                        # Set the hitbox for the coin
                         coin.range = (coin.coin.xcor() - coin.COIN_DISTANCE, coin.coin.xcor() + coin.COIN_DISTANCE)
                         coin.collision_coordinate = coin.coin.ycor() - coin.COIN_DISTANCE
                         coins_on_screen.append(coin)
@@ -386,10 +411,12 @@ class YellowMachine:
             self.yellow_machine.shape(YELLOW_MACHINE_TEXTURE)
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
             self.yellow_machine.goto(random.randint(int(-640 * self.scale_factor_x), int(640 * self.scale_factor_x)), random.randint(int(120 * self.scale_factor_y), int(220 * self.scale_factor_y)))
+            # Restart the float effect
             self.float_activated = 0
             self.float = 1
             self.float_time_offset = time.time()
             self.enemy_center = self.yellow_machine.ycor()
+            # Reset the hitboxes
             self.x_range_list.clear()
             self.collision_y_coordinate_list.clear()
             self.x_range_list = [(0, 0)] * machine_mode_setup.laser_count
@@ -450,10 +477,10 @@ class YellowMachine:
             self.float_activated = 1
             self.start_y_float = self.yellow_machine.ycor()
 
-        if self.start_y_float + 50 < self.yellow_machine.ycor():
+        if self.start_y_float + 50 * self.scale_factor_y < self.yellow_machine.ycor():
             # Move down
             self.float = -1
-        elif self.start_y_float - 50 > self.yellow_machine.ycor():
+        elif self.start_y_float - 50 * self.scale_factor_y > self.yellow_machine.ycor():
             # Move up
             self.float = 1
         current_time = time.time()

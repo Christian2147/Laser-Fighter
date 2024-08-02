@@ -45,17 +45,33 @@ class SmallAlien:
 
         Attributes:
             small_alien (turtle.Turtle()): The small alien sprite
+
             death_animation (float): Iterated during the small aliens death animation
             death_count (int): Stores the amount of times the small alien has died since the player has last died
+
             direction (int): Stores the direction that the small alien is facing (1 = right and 2 = left)
+
             kill_start_time (float): Used as a timestamp for the death animation of the small alien (To make the animation
                 run in a consistent amount of time)
             walk_start_time (float): Used as a timestamp for the small aliens walking texture update (To make sure the
                 walking animation happens in a consistent amount of time)
             move_start_time (float): Used as a timestamp for the small aliens movement (To make the small aliens
                 movement happen in a consistent amount of time and not based on code execution speed)
+
             movement_activated (int): Check if the aliens movement is currently happening or not. (So that
                 it can create a start time for it)
+
+            got_hit (int): Determines if the alien has already gotten hit or not
+            collision_point (int): Determines the x-axis collision line for the alien
+            already_ahead (int): Determines if the player is already ahead of the alien (larger x-cor) (This is used
+                for detecting what point the laser need to pass in order to kill the alien)
+            already_behind (int): Determines of the player is already behind the alien (smaller x-cor) (This is used
+                for detecting what point the laser need to pass in order to kill the alien)
+
+            id (int): The id of the alien
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, id, scale_factor_x, scale_factor_y):
@@ -97,6 +113,8 @@ class SmallAlien:
         self.walk_start_time = 0
         self.move_start_time = time.time()
         self.movement_activated = 0
+
+        # For collision
         self.got_hit = 0
         self.collision_point = 0
         self.already_ahead = 0
@@ -258,6 +276,7 @@ class SmallAlien:
             self.small_alien.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
                 copper_coin = Coin(type="copper", pos_x=self.small_alien.xcor(), pos_y=self.small_alien.ycor())
+                # Set the hitbox for the coin
                 copper_coin.range = (copper_coin.coin.ycor() - copper_coin.COIN_DISTANCE, copper_coin.coin.ycor() + copper_coin.COIN_DISTANCE)
                 copper_coin.collision_coordinate = copper_coin.coin.xcor()
                 coins_on_screen.append(copper_coin)
@@ -268,6 +287,7 @@ class SmallAlien:
                         continue
                     else:
                         coin.reinstate_to_copper(pos_x=self.small_alien.xcor(), pos_y=self.small_alien.ycor())
+                        # Set the hitbox for the coin
                         coin.range = (coin.coin.ycor() - coin.COIN_DISTANCE, coin.coin.ycor() + coin.COIN_DISTANCE)
                         coin.collision_coordinate = coin.coin.xcor()
                         coins_on_screen.append(coin)
@@ -319,6 +339,7 @@ class SmallAlien:
                 sound.play()
             # Set the texture of the small alien to the first frame in the death scene
             self.small_alien.shape(ALIEN_DEATH_1_TEXTURE)
+            # Reset collision variables
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0

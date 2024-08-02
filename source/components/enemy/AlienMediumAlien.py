@@ -49,11 +49,13 @@ class MediumAlien:
         Attributes:
             medium_alien (turtle.Turtle()): The medium alien sprite
             medium_alien_health_bar (turtle.Turtle()): The medium alien health bar sprite
+
             death_animation (float): Iterated during the medium aliens death animation
             death_count (int): Stores the amount of times the medium alien has died since the player has last died
             direction (int): Stores the direction that the medium alien is facing (1 = right and 2 = left)
             hit_delay (float):  Delays how often the medium alien can be hit
             health (int): Stores the medium aliens current health
+
             kill_start_time (float): Used as a timestamp for the death animation of the medium alien (To make the
                 animation run in a consistent amount of time)
             hit_start_time (float): Used as a timestamp for the hit delay of the medium alien (To make sure that the
@@ -62,8 +64,21 @@ class MediumAlien:
                 walking animation happens in a consistent amount of time)
             move_start_time (float): Used as a timestamp for the medium aliens movement (To make the medium aliens
                 movement happen in a consistent amount of time and not based on code execution speed)
+
             movement_activated (int): Check if the aliens movement is currently happening or not. (So that
                 it can create a start time for it)
+
+            got_hit (int): Determines if the alien has already gotten hit or not
+            collision_point (int): Determines the x-axis collision line for the alien
+            already_ahead (int): Determines if the player is already ahead of the alien (larger x-cor) (This is used
+                for detecting what point the laser need to pass in order to kill the alien)
+            already_behind (int): Determines of the player is already behind the alien (smaller x-cor) (This is used
+                for detecting what point the laser need to pass in order to kill the alien)
+
+            id (int): The id of the alien
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, id, scale_factor_x, scale_factor_y):
@@ -115,6 +130,8 @@ class MediumAlien:
         self.walk_start_time = 0
         self.move_start_time = time.time()
         self.movement_activated = 0
+
+        # For collision
         self.got_hit = 0
         self.collision_point = 0
         self.already_ahead = 0
@@ -314,6 +331,7 @@ class MediumAlien:
             self.medium_alien.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
                 silver_coin = Coin(type="silver", pos_x=self.medium_alien.xcor(), pos_y=self.medium_alien.ycor())
+                # Set the hitbox for the coin
                 silver_coin.range = (silver_coin.coin.ycor() - silver_coin.COIN_DISTANCE, silver_coin.coin.ycor() + silver_coin.COIN_DISTANCE)
                 silver_coin.collision_coordinate = silver_coin.coin.xcor()
                 coins_on_screen.append(silver_coin)
@@ -324,6 +342,7 @@ class MediumAlien:
                         continue
                     else:
                         coin.reinstate_to_silver(pos_x=self.medium_alien.xcor(), pos_y=self.medium_alien.ycor())
+                        # Set the hitbox for the coin
                         coin.range = (coin.coin.ycor() - coin.COIN_DISTANCE, coin.coin.ycor() + coin.COIN_DISTANCE)
                         coin.collision_coordinate = coin.coin.xcor()
                         coins_on_screen.append(coin)
@@ -383,6 +402,7 @@ class MediumAlien:
                 sound.play()
             # Set the texture of the medium alien to the first frame in the death scene
             self.medium_alien.shape(ALIEN_DEATH_1_TEXTURE)
+            # Reset collision variables
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0
@@ -423,6 +443,7 @@ class MediumAlien:
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("sound/Alien_Hit_Sound.wav")
                 sound.play()
+            # Reset collision variables
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0

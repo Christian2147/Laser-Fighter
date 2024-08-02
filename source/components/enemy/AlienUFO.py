@@ -57,13 +57,13 @@ class UFO:
             ufo (turtle.Turtle()): The UFO sprite
             ufo_laser (turtle.Turtle()): The UFO laser sprite
             ufo_health_bar (turtle.Turtle()): The UFO health bar sprite
+
             death_animation (float): Iterated during the UFOs death animation
             death_count (int): Stores the amount of times the UFO has died since the player has last died
             direction (int): Stores the direction that the UFO is facing (1 = right and 2 = left)
             hit_delay (float):  Delays how often the UFO can be hit
             health (int): Stores the UFOs current health
-            got_hit (int): Determines if the UFO has already been hit by the players laser since it was last fired
-                (To prevent double hitting).
+
             kill_start_time (float): Used as a timestamp for the death animation of the UFO (To make the
                 animation run in a consistent amount of time)
             hit_start_time (float): Used as a timestamp for the hit delay of the UFO (To make sure that the
@@ -72,8 +72,19 @@ class UFO:
                 happens in a consistent amount of time)
             move_start_time (float): Used as a timestamp for the UFOs movement (To make the UFOs
                 movement happen in a consistent amount of time and not based on code execution speed)
+
             movement_activated (int): Check if the aliens movement is currently happening or not. (So that
                 it can create a start time for it)
+
+            got_hit (int): Determines if the UFO has already been hit by the players laser since it was last fired
+            collision_point (int): Determines the x-axis collision line for the UFO
+            already_ahead (int): Determines if the player is already ahead of the UFO (larger x-cor) (This is used
+                for detecting what point the laser need to pass in order to kill the UFO)
+            already_behind (int): Determines of the player is already behind the UFO (smaller x-cor) (This is used
+                for detecting what point the laser need to pass in order to kill the UFO)
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, scale_factor_x, scale_factor_y):
@@ -120,6 +131,8 @@ class UFO:
         self.laser_start_time = 0
         self.move_start_time = time.time()
         self.movement_activated = 0
+
+        # For collision
         self.got_hit = 0
         self.collision_point = 0
         self.already_ahead = 0
@@ -346,6 +359,7 @@ class UFO:
             self.ufo.hideturtle()
             if len(all_coins) <= len(coins_on_screen):
                 platinum_coin = Coin(type="platinum", pos_x=self.ufo.xcor(), pos_y=self.ufo.ycor())
+                # Set the hitbox for the coin
                 platinum_coin.range = (platinum_coin.coin.ycor() - platinum_coin.COIN_DISTANCE, platinum_coin.coin.ycor() + platinum_coin.COIN_DISTANCE)
                 platinum_coin.collision_coordinate = platinum_coin.coin.xcor()
                 coins_on_screen.append(platinum_coin)
@@ -356,6 +370,7 @@ class UFO:
                         continue
                     else:
                         coin.reinstate_to_platinum(pos_x=self.ufo.xcor(), pos_y=self.ufo.ycor())
+                        # Set the hitbox for the coin
                         coin.range = (coin.coin.ycor() - coin.COIN_DISTANCE, coin.coin.ycor() + coin.COIN_DISTANCE)
                         coin.collision_coordinate = coin.coin.xcor()
                         coins_on_screen.append(coin)
@@ -417,6 +432,7 @@ class UFO:
                 sound.play()
             # Set the texture of the large alien to the first frame in the death scene
             self.ufo.shape(EXPLOSION_1_TEXTURE)
+            # Reset collision variables
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0
@@ -475,6 +491,7 @@ class UFO:
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("sound/Explosion2.wav")
                 sound.play()
+            # Reset collision variables
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0
