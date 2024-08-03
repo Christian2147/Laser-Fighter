@@ -878,7 +878,7 @@ def main():
                     if pu.get_power_up().isvisible():
                         # Check its type (1 = yellow, 2 = blue, and 3 = green)
                         # If the player runs to the power up
-                        if pu.type == 1 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if pu.type == 1 and pu.get_power_up().distance(p.get_player()) < 50 * scale_factor and p.get_death_animation() == 0 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             # Pick it up
                             pu.pick_up(settings.power_up_pickup_sound)
                             # Update the stats
@@ -888,14 +888,14 @@ def main():
                             # Activate the specified power up (In this case yellow)
                             yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].set_power_up_active(1)
 
-                        if pu.type == 2 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if pu.type == 2 and pu.get_power_up().distance(p.get_player()) < 50 * scale_factor and p.get_death_animation() == 0 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             pu.pick_up(settings.power_up_pickup_sound)
                             if settings.god_mode == 0:
                                 statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
                                 statistics.save()
                             blue_power_up_indicator.blue_power_up_indicator_turtle[0].set_power_up_active(1)
 
-                        if pu.type == 3 and pu.get_power_up().distance(p.get_player()) < 27 * scale_factor and p.get_death_animation() == 0 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if pu.type == 3 and pu.get_power_up().distance(p.get_player()) < 50 * scale_factor and p.get_death_animation() == 0 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             pu.pick_up(settings.power_up_pickup_sound)
                             if settings.god_mode == 0:
                                 statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
@@ -1073,7 +1073,7 @@ def main():
                     if pu.get_power_up().isvisible():
                         # Check its type (1 = yellow, 2 = blue, and 3 = green)
                         # If the player runs to the power up
-                        if pu.type == 1 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if pu.type == 1 and pu.get_power_up().distance(h.get_player()) < 50 * scale_factor and h.get_death_animation() == 0 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             # Pick it up
                             pu.pick_up(settings.power_up_pickup_sound)
                             # Update the stats
@@ -1083,14 +1083,14 @@ def main():
                             # Activate the specified power up (In this case yellow)
                             yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].set_power_up_active(1)
 
-                        if pu.type == 2 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if pu.type == 2 and pu.get_power_up().distance(h.get_player()) < 50 * scale_factor and h.get_death_animation() == 0 and blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             pu.pick_up(settings.power_up_pickup_sound)
                             if settings.god_mode == 0:
                                 statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1
                                 statistics.save()
                             blue_power_up_indicator.blue_power_up_indicator_turtle[0].set_power_up_active(1)
 
-                        if pu.type == 4 and pu.get_power_up().distance(h.get_player()) < 27 * scale_factor and h.get_death_animation() == 0 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                        if pu.type == 4 and pu.get_power_up().distance(h.get_player()) < 50 * scale_factor and h.get_death_animation() == 0 and extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             pu.pick_up(settings.power_up_pickup_sound)
                             if settings.god_mode == 0:
                                 statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1

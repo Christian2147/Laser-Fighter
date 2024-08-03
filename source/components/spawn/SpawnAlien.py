@@ -13,6 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: SpawnAlien.py
+    Author: Christian Marinkovich
+    Date: 2024-08-03
+    Description:
+    This file contains the spawning logic and the containers for Aliens in Laser Fighter.
+    These classes are used to access all 4 types of Aliens.
+"""
+
 from components.enemy.AlienSmallAlien import SmallAlien
 from components.enemy.AlienMediumAlien import MediumAlien
 from components.enemy.AlienLargeAlien import LargeAlien
@@ -20,7 +29,32 @@ from components.enemy.AlienUFO import UFO
 
 
 class SpawnSmallAlien:
+    """
+        Represents the Small Alien container in Laser Fighter.
+
+        Attributes:
+            all_small_aliens (list): Contains all of the small alien sprites created since the game has launched, even
+                ones removed from the screen
+            small_aliens (list): Contains all of the small alien sprites currently visible/active on the screen.
+            small_aliens_kill_values (list): Contains all of the death animation values for each small alien
+                on the screen.
+            small_alien_index (int): Stores the number of small aliens currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Small Alien.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.all_small_aliens = []
         self.small_aliens = []
         self.small_aliens_kill_values = []
@@ -70,7 +104,33 @@ class SpawnSmallAlien:
 
 
 class SpawnMediumAlien:
+    """
+        Represents the Medium Alien container in Laser Fighter.
+
+        Attributes:
+            all_medium_aliens (list): Contains all of the medium alien sprites created since the game has launched, even
+                ones removed from the screen
+            medium_aliens (list): Contains all of the medium alien sprites currently visible/active on the screen.
+            medium_aliens_kill_values (list): Contains all of the death animation values for each medium alien
+                on the screen.
+            medium_aliens_hit_values (list): Contains all of the hit delay values for each medium alien on the screen.
+            medium_alien_index (int): Stores the number of medium aliens currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Medium Alien.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.all_medium_aliens = []
         self.medium_aliens = []
         self.medium_aliens_kill_values = []
@@ -124,7 +184,33 @@ class SpawnMediumAlien:
 
 
 class SpawnLargeAlien:
+    """
+        Represents the Large Alien container in Laser Fighter.
+
+        Attributes:
+            all_large_aliens (list): Contains all of the large alien sprites created since the game has launched, even
+                ones removed from the screen
+            large_aliens (list): Contains all of the large alien sprites currently visible/active on the screen.
+            large_aliens_kill_values (list): Contains all of the death animation values for each large alien
+                on the screen.
+            large_aliens_hit_values (list): Contains all of the hit delay values for each large alien on the screen.
+            large_alien_index (int): Stores the number of large aliens currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Large Alien.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.all_large_aliens = []
         self.large_aliens = []
         self.large_aliens_kill_values = []
@@ -178,7 +264,31 @@ class SpawnLargeAlien:
 
 
 class SpawnUFO:
+    """
+        Represents the UFO container in Laser Fighter.
+
+        Attributes:
+            all_ufos (list): Contains the one ufo sprite that should be spawn throughout the entire game.
+            ufos (list): Contains the ufo sprite if it is visible on the screen
+            ufo_kill_value (list): Contains the death animation value for the ufo
+            ufo_hit_value (list): Contains the hit delay value for the ufo
+            ufo_index (int): Stores whether the ufo sprite has been created or not
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the UFO.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.all_ufos = []
         self.ufos = []
         self.ufo_kill_value = 0

@@ -13,11 +13,54 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: SpawnAlien.py
+    Author: Christian Marinkovich
+    Date: 2024-08-03
+    Description:
+    This file contains the spawning logic and the containers for Aliens in Laser Fighter.
+    These classes are used to access all 4 types of Aliens.
+"""
+
 from components.gui.InterfaceButton import Button
 
 
 class SpawnButton:
+    """
+        Represents the Button container in Laser Fighter.
+
+        Attributes:
+            all_button_list (list): Contains all of the button sprites created since the game has launched, even
+                ones removed from the screen
+            buttons_on_screen_list (list): Contains all of the button sprites currently visible/active on the screen.
+            current_button_index (int): Stores the number of buttons currently active and visible on the screen.
+
+            button_update (int): Used for the main menu button when being hovered over (Main Menu Button Can be in
+                different locations depending on the screen)
+            clickable (int): Used to ensure that certain buttons can be clicked right away when the screen is changed
+                (Without the mouse needing to move at all)
+            buy_button_pressed (int): Determines if the buy button in the shop side panel has been pressed or not
+
+            scale_factor (float): The general scale factor used in fullscreen mode based off of the shortest axis
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Buttons in Laser Fighter.
+            Also creates any other necessary variables for the button object.
+
+            :param scale_factor: The general scale factor used in fullscreen mode based off of the shortest axis
+            :type scale_factor: float
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.all_button_list = []
         self.buttons_on_screen_list = []
         self.current_button_index = 0
@@ -53,6 +96,9 @@ class SpawnButton:
 
             :param id: The id of the button to create
             :type id: int
+
+            :param page: The current page being displayed (Only applies to the Shop Slot)
+            :type page: string
 
             :return: None
         """

@@ -13,13 +13,43 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: SpawnButton.py
+    Author: Christian Marinkovich
+    Date: 2024-08-03
+    Description:
+    This file contains the spawning logic and the containers for buttons in Laser Fighter.
+    This includes any type of clickable button that may appear on the screen.
+"""
+
 from components.EffectBackgroundEffect import Earth
 from components.EffectBackgroundEffect import Sun
 from components.EffectBackgroundEffect import BackgroundObjects
 
 
 class SpawnSun:
+    """
+        Represents the Sun container in Laser Fighter.
+
+        Attributes:
+            sun_turtle (list): Contains the sun sprite once it is spawned
+            sun_index (list): Determines if the sun sprite has been spawned yet or not
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Sun background object.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.sun_turtle = []
         self.sun_index = 0
 
@@ -57,7 +87,28 @@ class SpawnSun:
 
 
 class SpawnEarth:
+    """
+        Represents the Earth container in Laser Fighter.
+
+        Attributes:
+            earth_turtle (list): Contains the earth sprite once it is spawned
+            earth_index (list): Determines if the earth sprite has been spawned yet or not
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Earth in the background.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.earth_turtle = []
         self.earth_index = 0
 
@@ -96,7 +147,29 @@ class SpawnEarth:
 
 
 class SpawnBackgroundObjects:
+    """
+        Represents the Background Objects container in Laser Fighter.
+        This includes both the ground and the player ship in Alien Mode.
+
+        Attributes:
+            background_objects_turtle (list): Contains the background objects sprites once they are spawned
+            background_objects_index (list): Determines if the background objects sprites have been spawned yet or not
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Ground and Player Ship in Alien Mode.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.background_objects_turtle = []
         self.background_objects_index = 0
 

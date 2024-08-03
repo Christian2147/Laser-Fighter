@@ -13,6 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: SpawnMachine.py
+    Author: Christian Marinkovich
+    Date: 2024-08-03
+    Description:
+    This file contains the spawning logic and the containers for Machines in Laser Fighter.
+    These classes are used to access all 4 types of Machines.
+"""
+
 from components.enemy.MachineBlueMachine import BlueMachine
 from components.enemy.MachineYellowMachine import YellowMachine
 from components.enemy.MachineRedMachine import RedMachine
@@ -20,7 +29,32 @@ from components.enemy.MachineBoss import Boss
 
 
 class SpawnBlueMachine:
+    """
+        Represents the Blue Machine container in Laser Fighter.
+
+        Attributes:
+            all_blue_machines (list): Contains all of the blue machine sprites created since the game has launched, even
+                ones removed from the screen
+            blue_machines (list): Contains all of the blue machine sprites currently visible/active on the screen.
+            blue_machines_update_values (list): Contains all of the death animation values for each blue machine
+                on the screen.
+            blue_machine_index (int): Stores the number of blue machines currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Blue Machine.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.all_blue_machines = []
         self.blue_machines = []
         self.blue_machines_update_values = []
@@ -70,7 +104,32 @@ class SpawnBlueMachine:
 
 
 class SpawnYellowMachine:
+    """
+        Represents the Yellow Machine container in Laser Fighter.
+
+        Attributes:
+            all_yellow_machines (list): Contains all of the yellow machine sprites created since the game has
+                launched, even ones removed from the screen
+            yellow_machines (list): Contains all of the yellow machine sprites currently visible/active on the screen.
+            yellow_machines_update_values (list): Contains all of the death animation values for each yellow machine
+                on the screen.
+            yellow_machine_index (int): Stores the number of yellow machines currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Yellow Machine.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.all_yellow_machines = []
         self.yellow_machines = []
         self.yellow_machines_update_values = []
@@ -120,7 +179,33 @@ class SpawnYellowMachine:
 
 
 class SpawnRedMachine:
+    """
+        Represents the Red Machine container in Laser Fighter.
+
+        Attributes:
+            all_red_machines (list): Contains all of the red machine sprites created since the game has
+                launched, even ones removed from the screen
+            red_machines (list): Contains all of the red machine sprites currently visible/active on the screen.
+            red_machines_update_values (list): Contains all of the death animation values for each red machine
+                on the screen.
+            red_machines_hit_values (list): Contains all of the hit delay values for each red machine on the screen.
+            red_machine_index (int): Stores the number of red machines currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Red Machine.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.all_red_machines = []
         self.red_machines = []
         self.red_machines_update_values = []
@@ -174,7 +259,31 @@ class SpawnRedMachine:
 
 
 class SpawnMachineBoss:
+    """
+        Represents the Machine Boss container in Laser Fighter.
+
+        Attributes:
+            all_boss (list): Contains the one boss sprite that should be spawn throughout the entire game.
+            boss (list): Contains the boss sprite if it is visible on the screen
+            boss_update_value (list): Contains the death animation value for the boss
+            boss_hit_value (list): Contains the hit delay value for the boss
+            boss_index (int): Stores whether the boss sprite has been created or not
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Machine Boss.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.all_boss = []
         self.boss = []
         self.boss_update_value = 0

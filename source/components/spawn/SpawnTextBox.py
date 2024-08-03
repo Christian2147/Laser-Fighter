@@ -13,11 +13,43 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: SpawnTextBox.py
+    Author: Christian Marinkovich
+    Date: 2024-08-03
+    Description:
+    This file contains the spawning logic and the containers for standalone text in Laser Fighter.
+    This includes the scoreboard, statistics, power up timers, or any other text outside of buttons and panels.
+"""
+
 from components.gui.InterfaceTextBox import Text
 
 
 class SpawnTextbox:
+    """
+        Represents the Text Box container in Laser Fighter.
+
+        Attributes:
+            all_text_list (list): Contains all of the text boxes created since the game has launched, even ones
+                removed from the screen
+            text_on_screen_list (list): Contains all of the text boxes currently visible/active on the screen.
+            current_text_index (int): Stores the number of text boxes currently active and visible on the screen.
+
+            scale_factor (float): The general scale factor used in fullscreen mode based off of the shortest axis
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+    """
+
     def __init__(self, scale_factor, scale_factor_x):
+        """
+            Creates the lists necessary to store the Text Boxes in Laser Fighter.
+
+            :param scale_factor: The general scale factor used in fullscreen mode based off of the shortest axis
+            :type scale_factor: float
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+        """
+
         self.all_text_list = []
         self.text_on_screen_list = []
         self.current_text_index = 0
