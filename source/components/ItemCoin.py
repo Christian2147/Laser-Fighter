@@ -34,9 +34,17 @@ class Coin:
     """
         Represents a coin in Laser Fighter.
 
+        Class Variables:
+            COIN_DISTANCE (float): The size of the coins hitbox (48 * 2 = 96 * 96 hitbox without fullscreen mode)
+
         Attributes:
-            type (str): The type of coin (copper, silver, gold, platinum)
-            coin (turtle): The coin sprite
+            type (string): The type of coin (copper, silver, gold, platinum)
+            coin (turtle.Turtle()): The coin sprite
+
+            range (tuple): The range of the coins hitbox (Distance between one side to another on a specified axis)
+            collision_coordinate (float): The point the laser has to pass in order to pick up the coin (Edge of the
+                hitbox on the opposite axis of the "range" variable)
+            relative_laser_position (int): Determines if the laser is in front of or behind the coin when it is fired
     """
 
     COIN_DISTANCE = 48 * scale_factor_X
@@ -69,6 +77,7 @@ class Coin:
         self.coin.shapesize(2, 2)
         self.coin.goto(pos_x, pos_y)
 
+        # Collision Variables
         self.range = (0, 0)
         self.collision_coordinate = 0
         self.relative_laser_position = 0

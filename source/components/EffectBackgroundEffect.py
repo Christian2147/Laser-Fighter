@@ -37,6 +37,9 @@ class Earth:
 
         Attributes:
             earth (turtle.Turtle()): The Earth sprite
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, scale_factor_x, scale_factor_y):
@@ -106,11 +109,17 @@ class Sun:
 
         Attributes:
             sun (turtle.Turtle()): The Sun sprite
+
             angle (int): The angle that the sun is currently moving at in the ellipse
             x-coordinate (float): Represents the current x-coordinate of the sun
             y-coordinate (float): Represents the current y-coordinate of the sun
+            movement_activated (int): Determines if the suns orbit has started or not
+
             start_time (float): Used as a timestamp for the suns movement (So that the movement is consistent
                 regardless of frame rate)
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, scale_factor_x, scale_factor_y):
@@ -130,15 +139,18 @@ class Sun:
         # Ensure that the turtle does not draw lines on the screen while moving
         self.sun.penup()
 
+        # The angle starts at 90
         self.angle = 90
         self.x_coordinate = 0
         self.y_coordinate = 0
         self.start_time = 0
         self.movement_activated = 0
 
+        # Find the new x and y coordinate of the sun given the new angle
         self.x_coordinate = 715 * math.cos(math.radians(self.angle))
         self.y_coordinate = 350 * math.sin(math.radians(self.angle)) - 150
 
+        # Move the un to the new location
         self.sun.goto(self.x_coordinate * scale_factor_x, self.y_coordinate * scale_factor_y)
 
         self.scale_factor_x = scale_factor_x
@@ -223,6 +235,9 @@ class BackgroundObjects:
         Attributes:
             ground (turtle.Turtle()): The ground sprite
             ship (turtle.Turtle()): The player's ship sprite
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, scale_factor_x, scale_factor_y):

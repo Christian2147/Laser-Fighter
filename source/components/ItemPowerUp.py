@@ -50,8 +50,12 @@ class PowerUp:
 
         Attributes:
             power_up (turtle.Turtle()): The power up sprite
+
             type (int): Determines the type of power up that this object is
             mode (int): Determines the current mode of the game (Machine mode or Alien mode)
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, type, mode, spawn_sound, scale_factor_x, scale_factor_y):
@@ -238,6 +242,9 @@ class YellowIndicator:
             current_time (float): Also used in the calculation of how long the yellow power up can be active for by
                 determining the current time at each iteration of the loop
             time_value (int): The amount of seconds left before the power up deactivates (0 when it is not active)
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, scale_factor_x, scale_factor_y):
@@ -395,6 +402,9 @@ class BlueIndicator:
             current_time (float): Also used in the calculation of how long the blue power up can be active for by
                 determining the current time at each iteration of the loop
             time_value (int): The amount of seconds left before the power up deactivates (0 when it is not active)
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, scale_factor_x, scale_factor_y):
@@ -553,11 +563,18 @@ class ExtraIndicator:
             current_time (float): Also used in the calculation of how long the third power up can be active for by
                 determining the current time at each iteration of the loop
             time_value (int): The amount of seconds left before the power up deactivates (0 when it is not active)
+            mode (int): The current mode of the game
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, mode, scale_factor_x, scale_factor_y):
         """
             Create a third power up indicator object and spawns it at the top of the screen.
+
+            :param mode: Determines the current mode of the game
+            :type mode: int
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -599,6 +616,9 @@ class ExtraIndicator:
     def reinstate(self, mode):
         """
             Reuses the existing indicator sprite to spawn a third power up indicator at the top of the screen.
+
+            :param mode: Determines the current mode of the game
+            :type mode: int
 
             :return: None
         """
