@@ -14,11 +14,12 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: ConfigManager.py
+    File: MovementManager.py
     Author: Christian Marinkovich
-    Date: 2024-08-01
+    Date: 2024-08-03
     Description:
-
+    This file contains the logic for triggering in game movements and functions based on the keybinds.
+    This includes shooting the laser and moving around in both Machine Mode and Alien Mode.
 """
 
 from setup.ModeSetupMaster import machine_mode_setup
@@ -27,13 +28,55 @@ from physics.CollisionMaster import alien_collision
 
 
 class Movement:
+    """
+        Represents the logic for triggering in game movements and functions from the keybinds.
+
+        Pointers:
+            _screen (ScreenUpdate()): Pointer to the current displayed screen and the screen changing functions.
+            _machine_player (MachinePlayer()): Pointer to the machine player object.
+            _human_player (HumanPlayer()): Pointer to the human player object.
+            _yellow_power_up_indicator (YellowPowerUpIndicator()): Pointer to the yellow power up indicator.
+            _settings (Settings()): Pointer to the current game settings.
+            _statistics (Statistics()): Pointer to the current game statistics.
+
+        Attributes:
+            _scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode.
+    """
+
     def __init__(self, screen, machine_player, human_player, yellow_power_up_indicator, settings, statistics, scale_factor_y):
+        """
+            Initializes all the necessary pointers for the Movement Manager.
+
+            :param screen: Pointer to the current displayed screen and the screen changing functions.
+            :type screen: ScreenUpdate
+
+            :param machine_player: Pointer to the machine player object.
+            :type machine_player: MachinePlayer
+
+            :param human_player: Pointer to the human player object.
+            :type human_player: HumanPlayer
+
+            :param yellow_power_up_indicator: Pointer to the yellow power up indicator.
+            :type yellow_power_up_indicator: YellowPowerUpIndicator
+
+            :param settings: Pointer to the current game settings.
+            :type settings: Settings
+
+            :param statistics: Pointer to the current game statistics.
+            :type statistics: Statistics
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode.
+            :type scale_factor_y: float
+        """
+
+        # Initialize all the pointers
         self._screen = screen
         self._machine_player = machine_player
         self._human_player = human_player
         self._yellow_power_up_indicator = yellow_power_up_indicator
         self._settings = settings
         self._statistics = statistics
+
         self._scale_factor_y = scale_factor_y
 
     def __del__(self):
@@ -126,9 +169,10 @@ class Movement:
             for p in self._machine_player.current_player:
                 # If the laser is not currently moving across the screen and if the player is not dying
                 if p.get_laser()[0].laser.ycor() > machine_mode_setup.laser_max_distance - 1 and p.get_death_animation() == 0:
-                    # The laser is fired
+                    # Reset the collision variables
                     machine_collision.remove_collisions()
                     p.remove_laser_start_y()
+                    # The laser is fired
                     p.fire(self._settings.player_shooting_sound)
                     # Update the game statistics
                     if self._settings.god_mode == 0:
@@ -141,7 +185,7 @@ class Movement:
                 if h.shoot_update == 0 and h.death_animation == 0 and h.direction != 0:
                     # Fire the laser
                     h.shoot(self._settings.player_shooting_sound)
-                    # Recalculate collision parameters based on new laser fired
+                    # Recalculate collision parameters based on the new laser fired
                     alien_collision.calculate_collision()
                     # Update the game statistics
                     if self._settings.god_mode == 0:

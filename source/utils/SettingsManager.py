@@ -14,11 +14,12 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: ConfigManager.py
+    File: SettingsManager.py
     Author: Christian Marinkovich
-    Date: 2024-08-01
+    Date: 2024-08-03
     Description:
-
+    This file contains the logic for updating and toggling the current game settings and configuration.
+    This includes all the execution functions for all the buttons on the settings page.
 """
 
 import ctypes
@@ -26,12 +27,57 @@ import pygame
 
 
 class SettingsToggle:
+    """
+        Represents the function and logic for the game settings.
+        This includes toggling the settings on and off.
+
+        Pointers:
+            _window (turtle.Screen()): Pointer to the application window.
+            _screen (ScreenUpdate()): Pointer to the current displayed screen and the screen changing functions
+            _button (SpawnButton()): Pointer to all the button objects currently on the screen
+            _settings (Settings()): Pointer to the current game settings
+            _refresh (Refresh()): Pointer to the game refresh variables
+
+        Attributes:
+            _scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            _scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+
+            _fullscreen_toggled (int): Determines if the fullscreen settings has been toggled while in-game.
+    """
+
     def __init__(self, window, screen, button, settings, refresh, scale_factor_x, scale_factor_y):
+        """
+            Initializes all the necessary pointers for the Settings Manager.
+
+            :param window: Pointer to the application window.
+            :type window: turtle.Screen
+
+            :param screen: Pointer to the current displayed screen and the screen changing functions.
+            :type screen: ScreenUpdate
+
+            :param button: Pointer to all the button objects currently on the screen.
+            :type button: SpawnButton
+
+            :param settings: Pointer to the current game settings.
+            :type settings: Settings
+
+            :param refresh: Pointer to the game refresh variables.
+            :type refresh: Refresh
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode.
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode.
+            :type scale_factor_y: float
+        """
+
+        # Initialize all the pointers
         self._window = window
         self._screen = screen
         self._button = button
         self._settings = settings
         self._refresh = refresh
+
         self._scale_factor_x = scale_factor_x
         self._scale_factor_y = scale_factor_y
 
@@ -55,10 +101,12 @@ class SettingsToggle:
 
     @property
     def fullscreen_toggled(self) -> int:
+        """fullscreen_toggled getter"""
         return self._fullscreen_toggled
 
     @fullscreen_toggled.setter
     def fullscreen_toggled(self, value: int) -> None:
+        """fullscreen_toggled setter"""
         if isinstance(value, int):
             self._fullscreen_toggled = value
         else:

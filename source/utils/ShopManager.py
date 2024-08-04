@@ -54,6 +54,8 @@ class Shop:
 
     def __init__(self, window, screen, button, panel, textbox, price_label, settings, refresh, shop_config, scale_factor_x, scale_factor_y):
         """
+            Initializes all the necessary pointers for the Shop Manager.
+
             :param window: Pointer to the application window.
             :type window: turtle.Screen()
 

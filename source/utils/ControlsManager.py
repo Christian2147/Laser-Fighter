@@ -16,9 +16,9 @@
 """
     File: ControlsManager.py
     Author: Christian Marinkovich
-    Date: 2024-08-01
+    Date: 2024-08-03
     Description:
-
+    This file contains the logic for changing and toggling the keybinds while in game.
 """
 
 import ctypes
@@ -26,7 +26,52 @@ import pygame
 
 
 class Controls:
+    """
+        Represents the Toggle functions for the keybinds in Laser Fighter.
+
+        Pointers:
+            _window (turtle.Screen()): Pointer to the application window.
+            _screen (ScreenUpdate()): Pointer to the current displayed screen and the screen changing functions.
+            _settings (Settings()): Pointer to the current game settings.
+            _controls_toggle (ControlsToggle()): Pointer to the current keybinds.
+            _refresh (Refresh()): Pointer to the game refresh variables.
+
+        Attributes:
+            _scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            _scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+
+            _go_right_key_alert (int): Determines of the go right keybind conflicts with any other keybind
+            _go_left_key_alert (int): Determines if the go left keybind conflicts with any other keybind.
+            _shoot_key_alert (int): Determines if the shoot keybind conflicts with any other keybind.
+            _jump_key_alert (int): Determines if the jump keybind conflicts with any other keybind.
+    """
+
     def __init__(self, window, screen, settings, controls_toggle, refresh, scale_factor_x, scale_factor_y):
+        """
+            Initializes all of the pointers necessary for the Controls Manager.
+
+            :param window: Pointer to the application window.
+            :type window: turtle.Screen()
+
+            :param screen: Pointer to the current displayed screen and the screen changing functions.
+            :type screen: ScreenUpdate()
+
+            :param settings: Pointer to the current game settings.
+            :type settings: Settings()
+
+            :param controls_toggle: Pointer to the current keybinds.
+            :type controls_toggle: ControlsToggle()
+
+            :param refresh: Pointer to the game refresh variables.
+            :type refresh: Refresh()
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode.
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode.
+            :type scale_factor_y: float
+        """
+
         self._window = window
         self._screen = screen
         self._settings = settings
@@ -62,10 +107,12 @@ class Controls:
 
     @property
     def go_right_key_alert(self):
+        """go_right_key_alert getter"""
         return self._go_right_key_alert
 
     @go_right_key_alert.setter
     def go_right_key_alert(self, value):
+        """go_right_key_alert setter"""
         if not isinstance(value, int):
             raise ValueError("Value must be an integer.")
         if value != 0 and value != 1:
@@ -74,10 +121,12 @@ class Controls:
 
     @property
     def go_left_key_alert(self):
+        """go_left_key_alert getter"""
         return self._go_left_key_alert
 
     @go_left_key_alert.setter
     def go_left_key_alert(self, value):
+        """go_left_key_alert setter"""
         if not isinstance(value, int):
             raise ValueError("Value must be an integer.")
         if value != 0 and value != 1:
@@ -86,10 +135,12 @@ class Controls:
 
     @property
     def shoot_key_alert(self):
+        """shoot_key_alert getter"""
         return self._shoot_key_alert
 
     @shoot_key_alert.setter
     def shoot_key_alert(self, value):
+        """shoot_key_alert setter"""
         if not isinstance(value, int):
             raise ValueError("Value must be an integer.")
         if value != 0 and value != 1:
@@ -98,10 +149,12 @@ class Controls:
 
     @property
     def jump_key_alert(self):
+        """jump_key_alert getter"""
         return self._jump_key_alert
 
     @jump_key_alert.setter
     def jump_key_alert(self, value):
+        """jump_key_alert setter"""
         if not isinstance(value, int):
             raise ValueError("Value must be an integer.")
         if value != 0 and value != 1:
@@ -301,4 +354,5 @@ class Controls:
                     self._controls_toggle.save()
                     # Alert that a restart is needed for changes to take effect
                     self._screen.updated_controls = 1
+        # Refresh all the buttons on the screen
         self._refresh.refresh_button = 1
