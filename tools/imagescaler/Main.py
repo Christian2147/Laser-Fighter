@@ -33,6 +33,7 @@ def main():
     app = ImageScalerApp(root)
     root.mainloop()
 
+
 # Program started
 if __name__ == "__main__":
     main()

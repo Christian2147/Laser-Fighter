@@ -39,6 +39,7 @@ class Shop:
         self._settings = settings
         self._refresh = refresh
         self._shop_config = shop_config
+
         self._scale_factor_x = scale_factor_x
         self._scale_factor_y = scale_factor_y
 

@@ -14,15 +14,37 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: ConfigManager.py
+    File: UpdateText.py
     Author: Christian Marinkovich
-    Date: 2024-08-01
+    Date: 2024-08-03
     Description:
-
+    This file contains the logic for the refreshing of all text on the screen.
+    It also contains the logic for initiating the printing of text on the screen.
 """
 
 
 class TextRefresh:
+    """
+        Represents the refreshing of all text on the screen.
+
+        Pointers:
+            _screen (ScreenUpdate()): Pointer to the current displayed screen and the screen changing functions
+            _button (SpawnButton()): Pointer to the all the button objects currently on the screen
+            _panel (SpawnPanel()): Pointer to all the panel objects currently on the screen
+            _textbox (SpawnTextBox()): Pointer to all the text boxes currently on the screen
+            _yellow_power_up_indicator (SpawnYellowPowerUpIndicator()): Pointer to the yellow power up indicator
+            _blue_power_up_indicator (SpawnBluePowerUpIndicator()): Pointer to the blue power up indicator
+            _extra_power_up_indicator (SpawnExtraPowerUpIndicator()): Pointer to the extra power up indicator
+            _settings (Settings()): Pointer to the current game settings
+            _settings_toggle (SettingsToggle()): Pointer to the settings updater
+            _statistics (Stats()): Pointer to the current game statistics
+            _shop (Shop()): Pointer to the shop manager and updater
+            _shop_config (ShopConfig()): Pointer to the current shop configuration
+            _controls (Controls()): Pointer to the controls manager and updater
+            _controls_toggle (ControlsToggle()): Pointer to the current keybinds
+            _refresh (Refresh()): Pointer to the game refresh variables
+    """
+
     def __init__(self, screen,
                  button, panel,
                  textbox, yellow_power_up_indicator,
@@ -31,6 +53,56 @@ class TextRefresh:
                  statistics, shop,
                  shop_config, controls,
                  controls_toggle, refresh):
+
+        """
+            Passes in all the necessary pointers to update and refresh the text.
+
+            :param screen: Pointer to the current displayed screen and the screen changing functions.
+            :type screen: ScreenUpdate()
+
+            :param button: Pointer to all the button objects currently on the screen.
+            :type button: SpawnButton()
+
+            :param panel: Pointer to all the panel objects currently on the screen.
+            :type panel: SpawnPanel()
+
+            :param textbox: Pointer to all the text boxes currently on the screen.
+            :type textbox: SpawnTextBox()
+
+            :param yellow_power_up_indicator: Pointer to the yellow power up indicator.
+            :type yellow_power_up_indicator: SpawnYellowPowerUpIndicator()
+
+            :param blue_power_up_indicator: Pointer to the blue power up indicator.
+            :type blue_power_up_indicator: SpawnBluePowerUpIndicator()
+
+            :param extra_power_up_indicator: Pointer to the extra power up indicator.
+            :type extra_power_up_indicator: SpawnExtraPowerUpIndicator()
+
+            :param settings: Pointer to the current game settings.
+            :type settings: Settings()
+
+            :param settings_toggle: Pointer to the settings updater.
+            :type settings_toggle: SettingsToggle()
+
+            :param statistics: Pointer to the current game statistics.
+            :type statistics: Stats()
+
+            :param shop: Pointer to the shop manager and updater.
+            :type shop: Shop()
+
+            :param shop_config: Pointer to the current shop configuration.
+            :type shop_config: ShopConfig()
+
+            :param controls: Pointer to the controls manager and updater.
+            :type controls: Controls()
+
+            :param controls_toggle: Pointer to the current keybinds.
+            :type controls_toggle: ControlsToggle()
+
+            :param refresh: Pointer to the game refresh variables.
+            :type refresh: Refresh()
+        """
+
         self._screen = screen
         self._button = button
         self._panel = panel
@@ -75,13 +147,14 @@ class TextRefresh:
             Refreshes and updates the text on the screen.
             When VSync is on, this function is only run at the refresh rate times a second.
             Part of the "screen refresher" section in the main game loop.
-            This function includes both the button text and the text boxes on the screen.
+            This function includes the button text, panel text, and the text boxes on the screen.
 
             :return: None
         """
 
         # Update based on the current mode
         if self._screen.mode == "Title_Mode":
+            # Refreshes button text
             if self._refresh.refresh_button == 1 or self._refresh.refresh_button == 2:
                 for bu in self._button.buttons_on_screen_list:
                     bu.write_lines()
@@ -89,6 +162,7 @@ class TextRefresh:
                 self._refresh.refresh_button = 2
             elif self._refresh.refresh_button == 2:
                 self._refresh.refresh_button = 0
+            # Refreshes text boxes
             for t in self._textbox.text_on_screen_list:
                 if t.id == 1:
                     t.write("Laser Fighter", 72, "bold")
@@ -163,6 +237,7 @@ class TextRefresh:
                 for bu in self._button.buttons_on_screen_list:
                     if bu.get_type() != "Shop_Slot" and bu.get_type() != "Buy":
                         bu.write_lines()
+                    # Refreshes indicators
                     if bu.get_type() == "Power_Up_Slot":
                         if bu.get_id() == 1:
                             bu.write_indicator(self._shop_config.yellow_power_up_level)
@@ -176,6 +251,7 @@ class TextRefresh:
                         bu.write_buy(self._shop.price_displayed)
             if self._refresh.refresh_button == 1:
                 self._refresh.refresh_button = 0
+            # Refreshes panel text
             if self._refresh.refresh_panel == 1:
                 for pa in self._panel.panel_turtle:
                     pa.write_text()

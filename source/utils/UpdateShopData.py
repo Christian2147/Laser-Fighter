@@ -14,20 +14,50 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: ConfigManager.py
+    File: UpdateShopData.py
     Author: Christian Marinkovich
-    Date: 2024-08-01
+    Date: 2024-08-03
     Description:
-
+    This file contains the logic for saving the shop configuration to the player data file and for loading the
+        current shop configuration from the player data file.
+    Data like the users coins, what items the user has bought, and what weapons the user has selected are
+        updated and saved here.
 """
 
 from utils.PlayerDataManager import PlayerDataManager
 
 
 class ShopConfig:
+    """
+        Represents the parser for the current game shop configuration.
+
+        Attributes:
+            player_data_manager (PlayerDataManager()): The parser for the playerData.ini file
+
+            total_coins (int): The total number of coins that the user currently owns
+            machine_slot_selected (int): The current machine player selected in the shop
+            alien_slot_selected (int): The current gun selected in the shop
+
+            machine_slots_unlocked (list): A list that determines if each machine player slot in the
+                shop is unlocked or not (1 = unlocked and 0 = locked)
+            alien_slots_unlocked (list): A list that determines if each alien gun slot in the
+                shop is unlocked or not (1 = unlocked and 0 = locked)
+
+            yellow_power_up_level (int): The current level of the yellow power up
+            blue_power_up_level (int): The current level of the blue power up
+            green_power_up_level (int): The current level of the green power up
+            red_power_up_level (int): The current level of the red power up
+    """
+
     def __init__(self):
+        """
+            Initializes and loads the current shop configuration.
+        """
+
+        # Initialize the playerData.ini parser
         self.player_data_manager = PlayerDataManager()
 
+        # Initialize the shop configuration variables
         self.total_coins = 0
         self.machine_slot_selected = 0
         self.alien_slot_selected = 0
@@ -38,6 +68,7 @@ class ShopConfig:
         self.green_power_up_level = 0
         self.red_power_up_level = 0
 
+        # Load the current shop configuration
         self.load()
 
     def __del__(self):
@@ -50,6 +81,12 @@ class ShopConfig:
         del self.player_data_manager
 
     def load(self):
+        """
+            Loads the current shop configuration from the player data file.
+
+            :return: None
+        """
+
         self.total_coins = self.player_data_manager.getint('Coins', 'coins')
 
         self.machine_slot_selected = self.player_data_manager.getint('Machine_Player_Enabled', 'type_enabled')
@@ -63,6 +100,12 @@ class ShopConfig:
         self.red_power_up_level = self.player_data_manager.getint('Power_Up_Levels', 'Red_Power_Up')
 
     def save(self):
+        """
+            Saves the current shop configuration to the player data file.
+
+            :return: None
+        """
+
         self.player_data_manager.set('Coins', 'coins', str(self.total_coins))
 
         self.player_data_manager.set('Machine_Player_Enabled', 'type_enabled', str(self.machine_slot_selected))
@@ -78,6 +121,13 @@ class ShopConfig:
         self.player_data_manager.set('Power_Up_Levels', 'Red_Power_Up', str(self.red_power_up_level))
 
     def __repr__(self):
+        """
+            Creates a print statement for the current shop configuration where they are all listed out in order.
+
+            :return: Prints the current shop configuration in a list.
+            :type: string
+        """
+
         return (f"PlayerConfig(total_coins={self.total_coins}, "
                 f"machine_slot_selected={self.machine_slot_selected}, "
                 f"alien_slot_selected={self.alien_slot_selected}, "
