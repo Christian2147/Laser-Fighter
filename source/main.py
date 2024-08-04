@@ -177,7 +177,6 @@ def main():
             screen.screen_update = 0
             screen.page_update = 0
             button.buy_button_pressed = 0
-            print(len(wn.turtles()))
 
         # The game background objects and the panel is created right when the game is launched.
         # This is done to make sure that they are truly in the background and that nothing lies behind these sprites.
