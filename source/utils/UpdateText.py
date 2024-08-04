@@ -29,7 +29,7 @@ class TextRefresh:
 
         Pointers:
             _screen (ScreenUpdate()): Pointer to the current displayed screen and the screen changing functions
-            _button (SpawnButton()): Pointer to the all the button objects currently on the screen
+            _button (SpawnButton()): Pointer to all the button objects currently on the screen
             _panel (SpawnPanel()): Pointer to all the panel objects currently on the screen
             _textbox (SpawnTextBox()): Pointer to all the text boxes currently on the screen
             _yellow_power_up_indicator (SpawnYellowPowerUpIndicator()): Pointer to the yellow power up indicator

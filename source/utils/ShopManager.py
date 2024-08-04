@@ -14,11 +14,12 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: ConfigManager.py
+    File: ShopManager.py
     Author: Christian Marinkovich
-    Date: 2024-08-01
+    Date: 2024-08-03
     Description:
-
+    This file contains the logic for updating the current shop configuration and navigating through the in game shop.
+    This includes all the execution functions for all the buttons in the shop.
 """
 
 import ctypes
@@ -29,7 +30,65 @@ from setup.data.ShopDescriptions import POWER_UP_PRICES
 
 
 class Shop:
+    """
+        Represents the function and logic for the in game Shop.
+        This includes navigating the shop and buying items in the shop.
+
+        Pointers:
+            _window (turtle.Screen()): Pointer to the application window.
+            _screen (ScreenUpdate()): Pointer to the current displayed screen and the screen changing functions
+            _button (SpawnButton()): Pointer to all the button objects currently on the screen
+            _panel (SpawnPanel()): Pointer to all the panel objects currently on the screen
+            _textbox (SpawnTextBox()): Pointer to all the text boxes currently on the screen
+            _price_label (SpawnPriceLabel()): Pointer to all the price label objects currently on the screen
+            _settings (Settings()): Pointer to the current game settings
+            _refresh (Refresh()): Pointer to the game refresh variables
+            _shop_config (ShopConfig()): Pointer to the current shop configuration
+
+        Attributes:
+            _scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            _scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+
+            _price_displayed (int): The current price displayed on the buy button in the shop
+    """
+
     def __init__(self, window, screen, button, panel, textbox, price_label, settings, refresh, shop_config, scale_factor_x, scale_factor_y):
+        """
+            :param window: Pointer to the application window.
+            :type window: turtle.Screen()
+
+            :param screen: Pointer to the current displayed screen and the screen changing functions.
+            :type screen: ScreenUpdate()
+
+            :param button: Pointer to all the button objects currently on the screen.
+            :type button: SpawnButton()
+
+            :param panel: Pointer to all the panel objects currently on the screen.
+            :type panel: SpawnPanel()
+
+            :param textbox: Pointer to all the text boxes currently on the screen.
+            :type textbox: SpawnTextBox()
+
+            :param price_label: Pointer to all the price label objects currently on the screen.
+            :type price_label: SpawnPriceLabel()
+
+            :param settings: Pointer to the current game settings.
+            :type settings: Settings()
+
+            :param refresh: Pointer to the game refresh variables.
+            :type refresh: Refresh()
+
+            :param shop_config: Pointer to the current shop configuration.
+            :type shop_config: ShopConfig()
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode.
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode.
+            :type scale_factor_y: float
+        """
+
+        # Initialize all the pointers
         self._window = window
         self._screen = screen
         self._button = button
@@ -67,19 +126,34 @@ class Shop:
 
     @property
     def price_displayed(self):
+        """price_displayed getter"""
         return self._price_displayed
 
     @price_displayed.setter
     def price_displayed(self, value):
+        """price_displayed setter"""
         if isinstance(value, int):
             self._price_displayed = value
         else:
             raise ValueError("price_displayed must be a integer")
 
     def slot_1_select(self, x, y):
+        """
+            Used to display the first slot on the page on the side panel and select it if the item is available.
+
+            :param x: The current x-coordinate of the cursor
+            :type x: float
+
+            :param y: The current y-coordinate of the cursor
+            :type y: float
+
+            :return: None
+        """
+
         self._window.onscreenclick(None)
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -503 * self._scale_factor_x) and (x < -352 * self._scale_factor_x) and (y > 11 * self._scale_factor_y) and (y < 182 * self._scale_factor_y):
+            # Which item is displayed depends on the current page of the shop displayed
             if self._screen.page == "Machine_Mode":
                 self.execute_slot_function("Machine_Mode", 1)
             elif self._screen.page == "Alien_Mode":
@@ -88,6 +162,18 @@ class Shop:
                 self.execute_slot_function("Power_Ups", 1)
 
     def slot_2_select(self, x, y):
+        """
+            Used to display the second slot on the page on the side panel and select it if the item is available.
+
+            :param x: The current x-coordinate of the cursor
+            :type x: float
+
+            :param y: The current y-coordinate of the cursor
+            :type y: float
+
+            :return: None
+        """
+
         self._window.onscreenclick(None)
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -333 * self._scale_factor_x) and (x < -182 * self._scale_factor_x) and (y > 11 * self._scale_factor_y) and (y < 182 * self._scale_factor_y):
@@ -99,6 +185,18 @@ class Shop:
                 self.execute_slot_function("Power_Ups", 2)
 
     def slot_3_select(self, x, y):
+        """
+            Used to display the third slot on the page on the side panel and select it if the item is available.
+
+            :param x: The current x-coordinate of the cursor
+            :type x: float
+
+            :param y: The current y-coordinate of the cursor
+            :type y: float
+
+            :return: None
+        """
+
         self._window.onscreenclick(None)
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -163 * self._scale_factor_x) and (x < -12 * self._scale_factor_x) and (y > 11 * self._scale_factor_y) and (y < 182 * self._scale_factor_y):
@@ -110,6 +208,18 @@ class Shop:
                 self.execute_slot_function("Power_Ups", 3)
 
     def slot_4_select(self, x, y):
+        """
+            Used to display the fourth slot on the page on the side panel and select it if the item is available.
+
+            :param x: The current x-coordinate of the cursor
+            :type x: float
+
+            :param y: The current y-coordinate of the cursor
+            :type y: float
+
+            :return: None
+        """
+
         self._window.onscreenclick(None)
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > 7 * self._scale_factor_x) and (x < 158 * self._scale_factor_x) and (y > 11 * self._scale_factor_y) and (y < 182 * self._scale_factor_y):
@@ -121,6 +231,18 @@ class Shop:
                 self.execute_slot_function("Power_Ups", 4)
 
     def slot_5_select(self, x, y):
+        """
+            Used to display the fifth slot on the page on the side panel and select it if the item is available.
+
+            :param x: The current x-coordinate of the cursor
+            :type x: float
+
+            :param y: The current y-coordinate of the cursor
+            :type y: float
+
+            :return: None
+        """
+
         self._window.onscreenclick(None)
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -503 * self._scale_factor_x) and (x < -352 * self._scale_factor_x) and (y > -179 * self._scale_factor_y) and (y < -8 * self._scale_factor_y):
@@ -130,23 +252,42 @@ class Shop:
                 self.execute_slot_function("Alien_Mode", 5)
 
     def execute_slot_function(self, current_page, slot_id):
+        """
+            Executes the displaying of the slot that was clicked on and also selects that slot if the item is available.
+
+            :param current_page: The current page displayed in the shop
+            :type current_page: string
+
+            :param slot_id: The id of the slot that was selected (1-5)
+            :type slot_id: int
+
+            :return: None
+        """
+
         # Button sound is played
         if self._settings.button_sound == 1:
             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
             sound.play()
+        # If the page is not "Power_Ups", the item has to be bought in order to be displayed
         if current_page != "Power_Ups":
+            # Display the slot item on the side panel in the shop
             for pa in self._panel.panel_turtle:
                 pa.set_panel_text(current_page, slot_id)
             if current_page == "Machine_Mode":
+                # if the item displayed in the slot is unlocked
                 if self._shop_config.machine_slots_unlocked[slot_id - 1] == 1:
+                    # Select the slot
                     self._shop_config.machine_slot_selected = slot_id
                     self._shop_config.save()
                     self._refresh.move_slot_selector = 1
+                    # Remove the buy button
                     for bu in self._button.buttons_on_screen_list:
                         if bu.get_type() == "Buy":
                             bu.remove()
                             self._button.buttons_on_screen_list.pop()
+                # If the item is not bought
                 else:
+                    # Recreate the buy button to show the price for the selected item
                     for bu in self._button.buttons_on_screen_list:
                         if bu.get_type() == "Buy":
                             bu.remove()
@@ -154,15 +295,20 @@ class Shop:
                     self._button.spawn_button("Buy", 1)
                     self._price_displayed = MACHINE_PRICES[slot_id - 1]
             elif current_page == "Alien_Mode":
+                # if the item displayed in the slot is unlocked
                 if self._shop_config.alien_slots_unlocked[slot_id - 1] == 1:
+                    # Select the slot
                     self._shop_config.alien_slot_selected = slot_id
                     self._shop_config.save()
                     self._refresh.move_slot_selector = 1
+                    # Remove the buy button
                     for bu in self._button.buttons_on_screen_list:
                         if bu.get_type() == "Buy":
                             bu.remove()
                             self._button.buttons_on_screen_list.pop()
+                # If the item is not bought
                 else:
+                    # Recreate the buy button to show the price for the selected item
                     for bu in self._button.buttons_on_screen_list:
                         if bu.get_type() == "Buy":
                             bu.remove()
@@ -170,9 +316,12 @@ class Shop:
                     self._button.spawn_button("Buy", 1)
                     self._price_displayed = ALIEN_PRICES[slot_id - 1]
         else:
+            # If the page is power ups, display the information for the next level up from the current
+            #   level of the power up selected
             if slot_id == 1:
                 for pa in self._panel.panel_turtle:
                     pa.set_panel_text("Yellow_Power_Up", slot_id)
+                # Display a price if there is still a level higher
                 if self._shop_config.yellow_power_up_level != 5:
                     self._price_displayed = POWER_UP_PRICES[self._shop_config.yellow_power_up_level - 1]
                 else:
@@ -198,6 +347,7 @@ class Shop:
                     self._price_displayed = POWER_UP_PRICES[self._shop_config.red_power_up_level - 1]
                 else:
                     self._price_displayed = 0
+            # If there is a price, create a buy button, if not, do not create one and remove any existing one
             if self._price_displayed != 0:
                 for bu in self._button.buttons_on_screen_list:
                     if bu.get_type() == "Buy":
@@ -211,31 +361,51 @@ class Shop:
                         bu.remove()
                         self._button.buttons_on_screen_list.pop()
                         self._button.current_button_index = self._button.current_button_index - 1
+        # Refresh the side panel and all buttons
         self._refresh.refresh_panel = 1
         self._refresh.refresh_button = 1
 
     def execute_buy_button(self, x, y):
+        """
+            Buys the item that is selected in the shop and selects the item to be used.
+
+            :param x: The current x-coordinate of the cursor
+            :type x: float
+
+            :param y: The current y-coordinate of the cursor
+            :type y: float
+
+            :return: None
+        """
+
         self._window.onscreenclick(None)
+        # Check to see if the cursor is in the bound of the button to be clicked
         if (x > 299 * self._scale_factor_x) and (x < 600 * self._scale_factor_x) and (y > -328 * self._scale_factor_y) and (y < -212 * self._scale_factor_y):
             # Button sound is played
             if self._settings.button_sound == 1:
                 sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
+            # If the player does not have enough coins, display an error message
             if self._price_displayed > self._shop_config.total_coins:
                 ctypes.windll.user32.MessageBoxW(0, "You do not have enough coins to purchase this item!", "Not Enough Coins!", 16)
+            # If the player does have enough coins
             else:
+                # Clarify if the user wants to purchase the item
                 message_output = ctypes.windll.user32.MessageBoxW(0, "Are you sure you want to purchase this item for {} coins?".format(self._price_displayed), "Are you sure?", 4 + 32)
+                # If the user says yes
                 if message_output != 7:
                     max_level = 0
                     # Coin sound is played
                     if self._settings.button_sound == 1:
                         sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
                         sound.play()
+                    # Subtract from the total coins
                     self._shop_config.total_coins = self._shop_config.total_coins - self._price_displayed
                     self._shop_config.save()
                     current_slot = 0
                     for pl in self._panel.panel_turtle:
                         current_slot = pl.get_panel_id()
+                    # Unlock the slot and select it
                     if self._screen.page == "Machine_Mode":
                         self._shop_config.machine_slots_unlocked[current_slot - 1] = 1
                         self._shop_config.machine_slot_selected = current_slot
@@ -244,7 +414,9 @@ class Shop:
                         self._shop_config.alien_slots_unlocked[current_slot - 1] = 1
                         self._shop_config.alien_slot_selected = current_slot
                         self._shop_config.save()
+                    # If the page is power ups
                     elif self._screen.page == "Power_Ups":
+                        # Increase the power up level by 1
                         if current_slot == 1:
                             self._shop_config.yellow_power_up_level = self._shop_config.yellow_power_up_level + 1
                             if self._shop_config.yellow_power_up_level == 5:
@@ -274,6 +446,7 @@ class Shop:
                                 self._price_displayed = POWER_UP_PRICES[self._shop_config.red_power_up_level - 1]
                                 max_level = 0
                         self._shop_config.save()
+                    # Remove the buy button is the page is not the power ups page or the max level as been reached
                     if self._screen.page != "Power_Ups" or max_level == 1:
                         for bu in self._button.buttons_on_screen_list:
                             if bu.get_type() == "Buy":
@@ -288,6 +461,7 @@ class Shop:
                         for pr in self._price_label.price_label_on_screen_list:
                             if pr.get_id() == current_slot + 3:
                                 pr.remove()
+                    # Refresh the panel, text, buttons, indicators, selectors, and set buy_button_pressed to 1
                     self._refresh.refresh_panel = 1
                     self._refresh.refresh_text = 1
                     self._refresh.refresh_button = 1
