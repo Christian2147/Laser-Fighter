@@ -14,16 +14,16 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 # Created By: Christian Marinkovich (@Christian2147 On GitHub) This is the main source file for Laser Fighter.
-# This is game version beta 1.1.0 released on 07/27/24
+# This is game version beta 1.1.0 released on 08/03/24
 
 """
     File: main.py
     Author: Christian Marinkovich
-    Date: 2024-07-11
+    Date: 2024-08-03
     Description:
     This file is the main file for Laser Fighter.
-    The main file contains the main game functions, like the controls and spawning sprites, and also includes of the
-        main game loop.
+    The main file contains the main function, which contains the game loop.
+    The game loop consists of three parts: The screen updater, the game quitter, and the event handler.
 """
 
 import time
@@ -68,6 +68,7 @@ from utils.PreventSleep import MonitorSleepController
 
 
 def main():
+    # Start the game tick counting
     start_ticks = pygame.time.get_ticks()
     # The main game loop:
     while True:
@@ -178,7 +179,7 @@ def main():
             button.buy_button_pressed = 0
             print(len(wn.turtles()))
 
-        # The game background objects are created right when the game is launched.
+        # The game background objects and the panel is created right when the game is launched.
         # This is done to make sure that they are truly in the background and that nothing lies behind these sprites.
         # Since turtle does not allow a way to push a turtle in front of another turtle,
         #   this is the only way to do this.
@@ -418,15 +419,18 @@ def main():
             hit_coin = 0
             for c in coin.coins_on_screen_list:
                 for p in machine_player.current_player:
+                    # Check each of the players lasers
                     for l in p.get_laser():
                         # If the player picks up a coin
                         if l.laser.isvisible() and \
                                 (c.range[0] < l.laser.xcor() < c.range[1]) and \
                                 l.laser.ycor() > c.collision_coordinate and \
                                 coin.coin_pickup_delay == 0:
+                            # Remove the coin from the screen
                             c.remove()
-                            # Increase the amount of coins based on the type of coin picked up
+                            # Increase the amount of coins the users has based on the type of coin picked up
                             if c.get_type() == "copper":
+                                # For each coin, check if the blue power up has a multiplier on it
                                 if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                     shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
                                     statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_blue_value
@@ -464,6 +468,7 @@ def main():
                             break
                     hit_coin = hit_coin + 1
 
+            # Create the machine hitboxes when requested (Value of do_collision is determined by the index of the laser)
             for p in machine_player.current_player:
                 if p.do_collision == 1:
                     machine_collision.calculate_collisions(yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active(), 0)
@@ -556,7 +561,8 @@ def main():
                 current_red_update_value_index = 0
                 current_red_hit_value_index = 0
                 for rm in red_machine.red_machines:
-                    # If the player laser hits a red machine that is visible and not dying with 1 health
+                    # If the player laser hits a red machine that is visible and not dying with health less
+                    #   than or equal to damage
                     if rm.get_red_machine().isvisible() and red_machine.red_machines_update_values[current_red_update_value_index] == 0:
                         if rm.health_bar <= machine_mode_setup.damage and rm.hit_delay == 0:
                             for i in range(len(p.get_laser())):
@@ -588,7 +594,7 @@ def main():
                             coin.coin_pickup_delay = 1
                     current_red_update_value_index = current_red_update_value_index + 1
 
-                    # If the player laser hits a red machine that is visible and not dying with health > 1
+                    # If the player laser hits a red machine that is visible and not dying with health > damage
                     if rm.get_red_machine().isvisible() and red_machine.red_machines_hit_values[current_red_hit_value_index] == 0:
                         if rm.health_bar > machine_mode_setup.damage:
                             for i in range(len(p.get_laser())):
@@ -618,7 +624,7 @@ def main():
                     current_red_hit_value_index = current_red_hit_value_index + 1
 
                 for b in machine_boss.boss:
-                    # If the player laser hits the boss that is visible and not dying with 1 health
+                    # If the player laser hits the boss that is visible and not dying with health <= damage
                     if b.get_boss().isvisible() and machine_boss.boss_update_value == 0:
                         if b.health_bar <= machine_mode_setup.damage and b.hit_delay == 0:
                             for i in range(len(p.get_laser())):
@@ -649,8 +655,9 @@ def main():
                         if b.get_update_value() == 3:
                             coin.coin_pickup_delay = 1
 
-                    # If the player laser hits the boss that is visible and not dying with health > 1
+                    # If the player laser hits the boss that is visible and not dying with health > damage
                     if b.get_boss().isvisible() and machine_boss.boss_hit_value == 0:
+                        # Same procedure as before
                         if b.health_bar > machine_mode_setup.damage:
                             for i in range(len(p.get_laser())):
                                 if p.get_laser()[i].laser.isvisible() and \
@@ -844,6 +851,7 @@ def main():
                 ei.set_texture()
 
             # If the RNG hits the 1/200, then spawn the power ups
+            # The chances are increased when the spawn rate is 2 up to 1/100 RNG
             # 1 for yellow power up
             if (power_up.power_up_update == 1 or (machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 2)) and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
                 if power_up.power_up_index[0] == 0:
@@ -1244,13 +1252,16 @@ def main():
             for c in coin.coins_on_screen_list:
                 for h in human_player.current_human:
                     # If the player picks up a coin
+                    # This can be done with any one of the players lasers
                     if (any(l.laser.isvisible() and (
                         h.direction == 1 and c.relative_laser_position == -1 and l.laser.xcor() > c.collision_coordinate or
                         h.direction == 2 and c.relative_laser_position == 1 and l.laser.xcor() < c.collision_coordinate
                     ) for l in h.get_laser())) or h.get_player().distance(c.get_coin()) < 55 * scale_factor:
+                        # Remove the coin
                         c.remove()
                         # Increase the amount of coins based on the type of coin picked up
                         if c.get_type() == "copper":
+                            # Check if the blue power up has a multiplier activated for the coins value and use it
                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                 shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
                                 statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_blue_value
@@ -1291,8 +1302,10 @@ def main():
             for h in human_player.current_human:
                 current_small_alien_update_value_index = 0
                 for sa in small_alien.small_aliens:
+                    # If the player laser hits a small alien that is visible and not dying
                     if small_alien.small_aliens_kill_values[current_small_alien_update_value_index] == 0:
                         if sa.got_hit == 0 and sa.get_small_alien().isvisible():
+                            # Check for all player lasers
                             for l in h.get_laser():
                                 if l.laser_update < alien_mode_setup.piercing and \
                                     alien_collision.SMALL_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.SMALL_ALIEN_Y_RANGE[1] and (
@@ -1304,6 +1317,7 @@ def main():
                                     # Increase the players score
                                     # When the blue power up is active, the score increases are doubled
                                     #   (This is universal)
+                                    # The player gun type may also have a score multiplier applied
                                     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                         statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
                                     else:
@@ -1314,6 +1328,7 @@ def main():
                                         statistics.small_aliens_killed = statistics.small_aliens_killed + 1
                                         statistics.save()
 
+                                    # Increase the lasers pierce by 1 and try hiding the laser
                                     l.laser.hideturtle()
                                     if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                                         l.laser_update = l.laser_update + 1
@@ -1323,6 +1338,8 @@ def main():
                         sa.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = small_alien.small_aliens_kill_values[current_small_alien_update_value_index] + 1
 
+                        # If the death animation has finished, reset the update value back to 0 to signal it
+                        #   being finished
                         if sa.get_death_animation() == 0:
                             small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = 0
                     current_small_alien_update_value_index = current_small_alien_update_value_index + 1
@@ -1330,7 +1347,9 @@ def main():
                 current_medium_alien_update_value_index = 0
                 current_medium_alien_hit_value_index = 0
                 for ma in medium_alien.medium_aliens:
-                    # If the player laser hits a medium alien that is visible and not dying and has 1 health
+                    # If the player laser hits a medium alien that is visible and not dying and has health less
+                    #   than or equal to damage
+                    # Same procedure as before
                     if medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] == 0:
                         if ma.got_hit == 0 and ma.health <= alien_mode_setup.damage and ma.get_medium_alien().isvisible() and ma.hit_delay == 0:
                             for l in h.get_laser():
@@ -1341,15 +1360,11 @@ def main():
                                 ):
                                     medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
 
-                                    # Increase the players score
-                                    # When the blue power up is active, the score increases are doubled
-                                    #   (This is universal)
                                     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                         statistics.score = statistics.score + 2 * alien_mode_setup.blue_power_up_score_multiplier
                                     else:
                                         statistics.score = statistics.score + 2 * alien_mode_setup.regular_score_multiplier
 
-                                    # Update the stats if god mode is off
                                     if settings.god_mode == 0:
                                         statistics.medium_aliens_killed = statistics.medium_aliens_killed + 1
                                         statistics.save()
@@ -1359,7 +1374,6 @@ def main():
                                         l.laser_update = l.laser_update + 1
                                     break
                     elif medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] != 0:
-                        # Kill the alien
                         ma.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
 
@@ -1367,6 +1381,8 @@ def main():
                             medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = 0
                     current_medium_alien_update_value_index = current_medium_alien_update_value_index + 1
 
+                    # If the player laser hits a medium alien that is visible and not dying and has health
+                    #   greater than damage
                     if medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] == 0:
                         if ma.got_hit == 0 and ma.get_medium_alien_health() > alien_mode_setup.damage and ma.get_medium_alien().isvisible():
                             for l in h.get_laser():
@@ -1377,14 +1393,16 @@ def main():
                                 ):
                                     medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
 
-                                    # Increase the players score
+                                    # Increase the players score by the hit amount
                                     # When the blue power up is active, the score increases are doubled
                                     #   (This is universal)
+                                    # The player gun type may also have a score multiplier applied
                                     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                         statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
                                     else:
                                         statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
 
+                                    # Increase the lasers pierce by 1 and try hiding the laser
                                     l.laser.hideturtle()
                                     if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                                         l.laser_update = l.laser_update + 1
@@ -1394,6 +1412,7 @@ def main():
                         ma.hit_alien(settings.enemy_hit_sound)
                         medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
 
+                        # If the hit delay is finished, reset the hit value back to 0 to signal the hit delay ending
                         if ma.get_hit_delay() == 0:
                             medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = 0
                     current_medium_alien_hit_value_index = current_medium_alien_hit_value_index + 1
@@ -1401,7 +1420,8 @@ def main():
                 current_large_alien_update_value_index = 0
                 current_large_alien_hit_value_index = 0
                 for la in large_alien.large_aliens:
-                    # If the player laser hits a large alien that is visible and not dying and has 1 health
+                    # If the player laser hits a large alien that is visible and not dying and has health less
+                    #   than or equal to damage
                     if large_alien.large_aliens_kill_values[current_large_alien_update_value_index] == 0:
                         if la.got_hit == 0 and la.health <= alien_mode_setup.damage and la.get_large_alien().isvisible() and la.hit_delay == 0:
                             for l in h.get_laser():
@@ -1412,15 +1432,11 @@ def main():
                                 ):
                                     large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = large_alien.large_aliens_kill_values[current_large_alien_update_value_index] + 1
 
-                                    # Increase the players score
-                                    # When the blue power up is active, the score increases are doubled
-                                    #   (This is universal)
                                     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                         statistics.score = statistics.score + 4 * alien_mode_setup.blue_power_up_score_multiplier
                                     else:
                                         statistics.score = statistics.score + 4 * alien_mode_setup.regular_score_multiplier
 
-                                    # Update the stats if god mode is off
                                     if settings.god_mode == 0:
                                         statistics.big_aliens_killed = statistics.big_aliens_killed + 1
                                         statistics.save()
@@ -1430,7 +1446,6 @@ def main():
                                         l.laser_update = l.laser_update + 1
                                     break
                     elif large_alien.large_aliens_kill_values[current_large_alien_update_value_index] != 0:
-                        # Kill the alien
                         la.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = large_alien.large_aliens_kill_values[current_large_alien_update_value_index] + 1
 
@@ -1438,6 +1453,9 @@ def main():
                             large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = 0
                     current_large_alien_update_value_index = current_large_alien_update_value_index + 1
 
+                    # If the player laser hits a large alien that is visible and not dying and has health
+                    #   greater than damage
+                    # Same procedure as before
                     if large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] == 0:
                         if la.got_hit == 0 and la.get_large_alien_health() > alien_mode_setup.damage and la.get_large_alien().isvisible():
                             for l in h.get_laser():
@@ -1448,9 +1466,6 @@ def main():
                                 ):
                                     large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] + 1
 
-                                    # Increase the players score
-                                    # When the blue power up is active, the score increases are doubled
-                                    #   (This is universal)
                                     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                         statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
                                     else:
@@ -1461,7 +1476,6 @@ def main():
                                         l.laser_update = l.laser_update + 1
                                     break
                     elif large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] != 0:
-                        # Hit the alien
                         la.hit_alien(settings.enemy_hit_sound)
                         large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] + 1
 
@@ -1470,7 +1484,8 @@ def main():
                     current_large_alien_hit_value_index = current_large_alien_hit_value_index + 1
 
                 for u in ufo.ufos:
-                    # If the player laser hits the ufo that is visible and not dying and has 1 health
+                    # If the player laser hits the ufo that is visible and not dying and has health less than
+                    #   or equal to damage
                     if ufo.ufo_kill_value == 0:
                         if u.got_hit == 0 and u.get_ufo_health() <= alien_mode_setup.damage and u.get_ufo().isvisible() and u.hit_delay == 0:
                             for l in h.get_laser():
@@ -1481,15 +1496,11 @@ def main():
                                 ):
                                     ufo.ufo_kill_value = ufo.ufo_kill_value + 1
 
-                                    # Increase the players score
-                                    # When the blue power up is active, the score increases are doubled
-                                    #   (This is universal)
                                     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                         statistics.score = statistics.score + 50 * alien_mode_setup.blue_power_up_score_multiplier
                                     else:
                                         statistics.score = statistics.score + 50 * alien_mode_setup.regular_score_multiplier
 
-                                    # Update the stats if god mode is off
                                     if settings.god_mode == 0:
                                         statistics.ufos_killed = statistics.ufos_killed + 1
                                         statistics.save()
@@ -1499,13 +1510,14 @@ def main():
                                         l.laser_update = l.laser_update + 1
                                     break
                     elif ufo.ufo_kill_value != 0:
-                        # Kill the ufo
                         u.kill_ufo(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         ufo.ufo_kill_value = ufo.ufo_kill_value + 1
 
                         if u.get_death_animation() == 0:
                             ufo.ufo_kill_value = 0
 
+                    # If the player laser hits a ufo that is visible and not dying and has health
+                    #   greater than damage
                     if ufo.ufo_hit_value == 0:
                         if u.got_hit == 0 and u.get_ufo_health() > alien_mode_setup.damage and u.get_ufo().isvisible():
                             for l in h.get_laser():
@@ -1516,9 +1528,6 @@ def main():
                                 ):
                                     ufo.ufo_hit_value = ufo.ufo_hit_value + 1
 
-                                    # Increase the players score
-                                    # When the blue power up is active, the score increases are doubled
-                                    #   (This is universal)
                                     if u.get_ufo_health() == 2 or u.get_ufo_health() == 1:
                                         if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                             statistics.score = statistics.score + 3 * alien_mode_setup.blue_power_up_score_multiplier
@@ -1540,7 +1549,6 @@ def main():
                                         l.laser_update = l.laser_update + 1
                                     break
                     elif ufo.ufo_hit_value != 0:
-                        # Hit the ufo
                         u.hit_ufo(settings.enemy_hit_sound)
                         ufo.ufo_hit_value = ufo.ufo_hit_value + 1
 
@@ -1710,6 +1718,7 @@ def main():
                 if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
                     wn.onscreenclick(screen.launch_title_mode)
 
+            # Check to see if the tabs have been click or not
             for bu in button.buttons_on_screen_list:
                 button_color, button_type, id = bu.click_button()
                 if button_type == "Tab":
@@ -1726,14 +1735,18 @@ def main():
                 textbox.spawn_text_box(2, -588 * scale_factor_X, 281 * scale_factor_Y, "yellow")
                 textbox.spawn_text_box(3, -500 * scale_factor_X, 190 * scale_factor_Y, "#ff5349")
 
+            # Spawn the tab selector if it does not exist
             if selector.current_selector_index == 0:
                 selector.spawn_selector("Tab")
 
+            # If the current page is "Machine_Mode"
             if screen.page == "Machine_Mode":
+                # Create 5 shop slots
                 if button.current_button_index == 4:
                     for i in range(5):
                         button.spawn_button("Shop_Slot", i + 1, screen.page)
 
+                # Create 0-4 price labels if needed (They are only needed if items are locked)
                 if textbox.current_text_index == 3 and button.buy_button_pressed == 0:
                     counter = 4
                     for bu in button.buttons_on_screen_list:
@@ -1743,9 +1756,11 @@ def main():
                                 price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                             counter = counter + 1
 
+                # Spawn the slot selector if it does not exist
                 if selector.current_selector_index == 1:
                     selector.spawn_selector("Slot")
 
+                # Check if the tab selector must be moved
                 if refresh_variables.move_tab_selector == 1:
                     for s in selector.selectors_on_screen_list:
                         if s.get_type() == "Tab":
@@ -1754,6 +1769,7 @@ def main():
                                     s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
                                     refresh_variables.move_tab_selector = 0
 
+                # Check if the slot selector must be moved
                 if refresh_variables.move_slot_selector == 1:
                     for s in selector.selectors_on_screen_list:
                         if s.get_type() == "Slot":
@@ -1762,6 +1778,7 @@ def main():
                                     s.new_select(bu.get_button_frame().xcor(), bu.get_button_frame().ycor())
                                     refresh_variables.move_slot_selector = 0
 
+                # Check if the slots are locked or not
                 for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Shop_Slot":
                         if bu.get_id() == 1:
@@ -1775,6 +1792,7 @@ def main():
                         elif bu.get_id() == 5:
                             bu.toggle_indicator(shop_config.machine_slots_unlocked[4])
 
+                # Check if the slots have been clicked or not
                 for bu in button.buttons_on_screen_list:
                     button_color, button_type, id = bu.click_button()
                     if bu.get_type() == "Shop_Slot":
@@ -1791,11 +1809,14 @@ def main():
                     elif bu.get_type() == "Buy":
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
                             wn.onscreenclick(shop.execute_buy_button)
+            # If the page is "Alien_Mode"
             elif screen.page == "Alien_Mode":
+                # Create 5 shop slots
                 if button.current_button_index == 4:
                     for i in range(5):
                         button.spawn_button("Shop_Slot", i + 1, screen.page)
 
+                # Create 0-4 price labels if needed (They are only needed if items are locked)
                 if textbox.current_text_index == 3 and button.buy_button_pressed == 0:
                     counter = 4
                     for bu in button.buttons_on_screen_list:
@@ -1805,9 +1826,11 @@ def main():
                                 price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                             counter = counter + 1
 
+                # Spawn a slot selector if one does not exist already
                 if selector.current_selector_index == 1:
                     selector.spawn_selector("Slot")
 
+                # Check to see if the tab selector needs to be moved
                 if refresh_variables.move_tab_selector == 1:
                     for s in selector.selectors_on_screen_list:
                         if s.get_type() == "Tab":
@@ -1816,6 +1839,7 @@ def main():
                                     s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
                                     refresh_variables.move_tab_selector = 0
 
+                # Check to see if the slot selector needs to be moved
                 if refresh_variables.move_slot_selector == 1:
                     for s in selector.selectors_on_screen_list:
                         if s.get_type() == "Slot":
@@ -1824,6 +1848,7 @@ def main():
                                     s.new_select(bu.get_button_frame().xcor(), bu.get_button_frame().ycor())
                                     refresh_variables.move_slot_selector = 0
 
+                # Check to see if each slot is locked or not
                 for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Shop_Slot":
                         if bu.get_id() == 1:
@@ -1837,6 +1862,7 @@ def main():
                         elif bu.get_id() == 5:
                             bu.toggle_indicator(shop_config.alien_slots_unlocked[4])
 
+                # Check to see if each slot has been clicked or not
                 for bu in button.buttons_on_screen_list:
                     button_color, button_type, id = bu.click_button()
                     if bu.get_type() == "Shop_Slot":
@@ -1853,11 +1879,14 @@ def main():
                     elif bu.get_type() == "Buy":
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
                             wn.onscreenclick(shop.execute_buy_button)
+            # If the page is "Power_Ups"
             elif screen.page == "Power_Ups":
+                # Spawn 4 shop slots
                 if button.current_button_index == 4:
                     for i in range(4):
                         button.spawn_button("Power_Up_Slot", i + 1)
 
+                # Check to see if a price label is still needed and if the power ups are on their max level or not
                 if textbox.current_text_index == 3 and button.buy_button_pressed == 0:
                     counter = 4
                     for bu in button.buttons_on_screen_list:
@@ -1880,6 +1909,7 @@ def main():
                                     price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                             counter = counter + 1
 
+                # Check to see if the tab selector needs to be moved
                 if refresh_variables.move_tab_selector == 1:
                     for s in selector.selectors_on_screen_list:
                         if s.get_type() == "Tab":
@@ -1888,6 +1918,7 @@ def main():
                                     s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
                                     refresh_variables.move_tab_selector = 0
 
+                # Check what level each power up is at
                 for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Power_Up_Slot":
                         if bu.get_id() == 1:
@@ -1900,6 +1931,7 @@ def main():
                             bu.toggle_indicator(shop_config.red_power_up_level)
                         bu.set_indicator_location()
 
+                # Check if the slots have been clicked on or not
                 for bu in button.buttons_on_screen_list:
                     button_color, button_type, id = bu.click_button()
                     if bu.get_type() == "Power_Up_Slot":
@@ -2085,5 +2117,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # Make sure the computer does not enter sleep mode while the game is running
     with MonitorSleepController():
         main()
