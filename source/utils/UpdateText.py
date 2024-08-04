@@ -167,7 +167,7 @@ class TextRefresh:
                 if t.id == 1:
                     t.write("Laser Fighter", 72, "bold")
                 elif t.id == 2:
-                    t.write("Beta 1.1.0b", 24, "normal")
+                    t.write("Beta 1.1.1b", 24, "normal")
                 elif t.id == 3:
                     t.write("God Mode Is On!", 24, "normal")
         elif self._screen.mode == "Machine_Mode":
