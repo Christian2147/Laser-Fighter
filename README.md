@@ -2,46 +2,35 @@
 
 # Laser-Fighter
 
-[![Stable Release: v1.0.1b](https://img.shields.io/badge/Stable-v1.0.1b-brightgreen.svg)](https://github.com/Christian2147/Laser-Fighter/releases/download/v1.0.1/Laser.Fighter.v1.0.1b.zip) [![Latest Release: v1.0.1b](https://img.shields.io/badge/Latest-v1.0.1b-red.svg)](https://github.com/Christian2147/Laser-Fighter/releases/download/v1.0.1/Laser.Fighter.v1.0.1b.zip)
-
 Laser Fighter is a 2D laser shooting game and is the first game that I have created. The first versions was finished in December of 2021 and it has been growing ever since. About 500 hours of work have so far been put into this game and more is along the way. I created this game not only because it was fun but also because I wanted to learn more about the software development process by actually creating a real piece of software. Considering I am really familiter with gaming and indie games, I felt that a 2D pixel shooting game would be a good place to start. If you want to know more about the timeline of Laser Fighter, check out its [history](./docs/HISTORY.md).
 
-## Releases
 
-Check out the [Releases](https://github.com/Christian2147/Laser-Fighter/releases) section for downloadable binaries and release notes for each version. See below for direct links to major versions:
+## Version 1.1.0b:
 
-|    Releases    |
-| -------------- |
-| [Version 0.0.1a](https://github.com/Christian2147/Laser-Fighter/releases/tag/v0.0.1) |
-| [Version 0.2.0a](https://github.com/Christian2147/Laser-Fighter/releases/tag/v0.2.0) |
-| [Version 0.3.0a](https://github.com/Christian2147/Laser-Fighter/releases/tag/v0.3.0) |
-| [Version 0.4.0a](https://github.com/Christian2147/Laser-Fighter/releases/tag/v0.4.0) |
-| [Version 1.0.0b](https://github.com/Christian2147/Laser-Fighter/releases/tag/v1.0.0) |
-| [Version 1.0.1b](https://github.com/Christian2147/Laser-Fighter/releases/tag/v1.0.1) |
+This branch contains the source code for Laser Fighter v1.1.0b. This version was completed in August of 2024. This update was one of the biggest feature updates the game has ever had. This update added the shop. With the shop came player upgrade for machine mode, gun upgrades for alien mode, and power up upgrades for the whole game. This darastically changed the gameplay and made the game a lot bigger than it already was. This version also fixed several bug and preformance issues, especially for users who were not able to enjoy the preformance improvements from the previous updates.
 
-## Installing Laser Fighter
+NOTE: The exe file for this application is unsigned and has an unverified publisher. This means that windows defender and other antiviruses may be suspicious of the file. If this happens, simply select "Run Anyway". Make sure you are downloading Laser Figher from the [Laser Fighter GitHub](https://github.com/Christian2147/Laser-Fighter) and no other external source. If you download Laser Fighter from any other source, I am not responsible for any damage that the executable may cause. Outside of this GitHub page, anyone is allowed to make whatever modifications they want to this software.
 
-Here are the steps for installing Laser Fighter onto your computer:
+## Changelog:
 
-1. Download Laser Fighter from the "Releases" page on this GitHub Repository.
-2. Go to your downloads and open the zip file named "Laser.Fighter.(Your version number).zip" and extract the contents to a desired folder.
-3. If you want a shortcut for your application:
-    - Right click the executable named "Laser_Fighter.exe" and click "Create Shortcut"
-    - Rename the shortcut to whatever you want
-    - Drag the shortcut to your desktop
-4. Double click either the application or the shortcut to run the game!
-5. Do not forget to read the disclaimer in the Read_Me.txt file!
+### Additions
++ Added The Shop! The Shop is a place where you can upgrade your player or weapons, as well as your power ups abilities!
++ Added 4 new player skins for the Machine Player!
++ Added 4 new gun skins for Alien Mode!
 
-## Specifications
+### Changes
+* Major preformance improvements, especially for those not running in a traditional windows environment
+* Changed the look of the button highlight when hovering over a button
+* Fixed an issue with enemy collisions that caused the players laser to phase through enemies when there was intense lag
+* Fixed a bug that caused the game to crash when VSync was off
+* Fixed intense lag in both the settings screen and the statistics screen
+* Fixed several other minor in game bugs
 
-Laser Fighter is currently a windows only application. Linux support is planned in the future but not here yet :(.
-For more specific requirements and design specifications, visit the [specifications page](./docs/SPECIFICATIONS.md).
+## Helpful Links
 
-If you want to work with the source code and create your own virtual environment, go to the [instructions page](./docs/INSTRUCTIONS.md).
-
-## What Laser Fighter Offers:
-
-Laser Fighter is a 2D shooting game created in Python. It currently offers two gameplay modes: Machine Mode and Alien Mode. In both modes, you are in space, shooting lasers, and trying to defend yourself from monsters. If you want to learn more about Laser Fighters features, check out the [features page](./docs/FEATURES.md).
+For a full list of specifications and requirements, go to the [specifications page](./docs/SPECIFICATIONS.md)<br>
+For instructions on how to install the game or use the source code, go to the [instructions page](./docs/INSTRUCTIONS.md)<br>
+For a list of features that the game offers, go to the [features page](./docs/FEATURES.md)<br>
 
 ## License
 
