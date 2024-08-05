@@ -340,13 +340,13 @@ GADGET_DESCRIPTIONS = [
     Description("left", [
         "Heart Power Up",
         "",
-        "Makes it so"
-        "that a 4th"
-        "heart power up"
-        "can spawn during"
-        "gameplay. When picked"
-        "up, The heart"
-        "power up grants "
+        "Makes it so",
+        "that a 4th",
+        "heart power up",
+        "can spawn during",
+        "gameplay. When picked",
+        "up, The heart",
+        "power up grants",
         "the player 2 health"
     ], 16, "Courier")
 ]
