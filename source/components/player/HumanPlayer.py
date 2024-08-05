@@ -754,7 +754,6 @@ class Human:
             # Set all necessary lasers to face left
             for l in self.laser_list:
                 if l.laser_update < alien_mode_setup.piercing:
-                    print(l.laser_update)
                     l.laser.showturtle()
                 l.laser.direction = "left"
             # Fire the second laser after the first one has travelled at least 100 units (To have a gap)
