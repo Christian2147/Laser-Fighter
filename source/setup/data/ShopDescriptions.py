@@ -29,6 +29,7 @@ from components.gui.GUIDataDescription import Description
 MACHINE_PRICES = [0, 5000, 15000, 40000, 100000]
 ALIEN_PRICES = [0, 5000, 15000, 40000, 100000]
 POWER_UP_PRICES = [1000, 5000, 15000, 30000]
+GADGET_PRICE = 50000
 
 # Shop Welcome Message
 MAIN_DESCRIPTION = [
@@ -298,4 +299,54 @@ RED_POWER_UP_DESCRIPTIONS = [
     Description("left", [
         "Max Level Reached!"
     ], 20, "Courier")
+]
+
+# For the Gadgets
+GADGET_DESCRIPTIONS = [
+    Description("left", [
+        "Coin Magnet",
+        "",
+        "The Coin Magnet",
+        "makes all coins",
+        "that spawn during",
+        "gameplay move towards",
+        "the player. As",
+        "a drawback, coins",
+        "cannot be picked",
+        "up by getting",
+        "hit with a",
+        "laser."
+    ], 16, "Courier"),
+    Description("left", [
+        "Shield",
+        "",
+        "The shield gives",
+        "the player 10",
+        "extra health in",
+        "the form of",
+        "armor."
+    ], 16, "Courier"),
+    Description("left", [
+        "Thorns",
+        "",
+        "Causes damage to",
+        "the enemy whenever",
+        "it hits the",
+        "player. The amount",
+        "of damage done",
+        "depends on the",
+        "weapon used"
+    ], 16, "Courier"),
+    Description("left", [
+        "Heart Power Up",
+        "",
+        "Makes it so"
+        "that a 4th"
+        "heart power up"
+        "can spawn during"
+        "gameplay. When picked"
+        "up, The heart"
+        "power up grants "
+        "the player 2 health"
+    ], 16, "Courier")
 ]

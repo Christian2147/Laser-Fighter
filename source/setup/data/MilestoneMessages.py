@@ -13,3 +13,52 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+from components.gui.GUIDataDescription import Description
+
+# When the player enters Machine Mode for the first time
+MILESTONE_1_MESSAGE = [
+    Description("center", [
+        "Welcome To Laser Fighter",
+        "",
+        "You have just left Earth",
+        "after the region got taken",
+        "over by mysterious aliens. You",
+        "know that the aliens central",
+        "base is located on the",
+        "moon. Your goal is to",
+        "make it there, destroy their",
+        "base, and make it back",
+        "all in one piece!"
+    ], 16, "Courier"),
+]
+
+# When the player beats the boss in Machine Mode for the first time
+MILESTONE_2_MESSAGE = [
+    Description("center", [
+        "Congratulations!",
+        "",
+        "You have successfully made it",
+        "to the moon! Now, you",
+        "must find a way to",
+        "the aliens central base. It",
+        "is said that the UFOs",
+        "the aliens use not only",
+        "carry a map to the base,",
+        "but also carry a key",
+        "to get inside."
+    ], 16, "Courier"),
+]
+
+# When the player beats the boss in Alien Mode for the first time
+MILESTONE_3_MESSAGE = [
+    Description("center", [
+        "Congratulations!",
+        "",
+        "You have successfully killed an",
+        "alien UFO and therefore found",
+        "a map and a key",
+        "to the base. Your next",
+        "goal is to get inside",
+        "and destroy it!"
+    ], 16, "Courier"),
+]
