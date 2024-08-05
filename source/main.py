@@ -1753,6 +1753,7 @@ def main():
                             if bu.get_indicator_toggled() == 1:
                                 textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                                 price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                refresh_variables.refresh_text = 1
                             counter = counter + 1
 
                 # Spawn the slot selector if it does not exist
@@ -1823,6 +1824,7 @@ def main():
                             if bu.get_indicator_toggled() == 1:
                                 textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                                 price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                refresh_variables.refresh_text = 1
                             counter = counter + 1
 
                 # Spawn a slot selector if one does not exist already
@@ -1894,18 +1896,22 @@ def main():
                                 if shop_config.yellow_power_up_level != 5 and shop_config.yellow_power_up_level != 0:
                                     textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                                     price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                    refresh_variables.refresh_text = 1
                             elif bu.get_id() == 2:
                                 if shop_config.blue_power_up_level != 5 and shop_config.blue_power_up_level != 0:
                                     textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                                     price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                    refresh_variables.refresh_text = 1
                             elif bu.get_id() == 3:
                                 if shop_config.green_power_up_level != 5 and shop_config.green_power_up_level != 0:
                                     textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                                     price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                    refresh_variables.refresh_text = 1
                             elif bu.get_id() == 4:
                                 if shop_config.red_power_up_level != 5 and shop_config.red_power_up_level != 0:
                                     textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                                     price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                    refresh_variables.refresh_text = 1
                             counter = counter + 1
 
                 # Check to see if the tab selector needs to be moved
