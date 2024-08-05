@@ -62,6 +62,10 @@ from setup.TextureSetup import YELLOW_POWER_UP_SLOT_ICON_TEXTURE
 from setup.TextureSetup import BLUE_POWER_UP_SLOT_ICON_TEXTURE
 from setup.TextureSetup import GREEN_POWER_UP_SLOT_ICON_TEXTURE
 from setup.TextureSetup import RED_POWER_UP_SLOT_ICON_TEXTURE
+from setup.TextureSetup import COIN_MAGNET_SLOT_ICON_TEXTURE
+from setup.TextureSetup import ARMOR_SLOT_ICON_TEXTURE
+from setup.TextureSetup import THORNS_SLOT_ICON_TEXTURE
+from setup.TextureSetup import HEART_POWER_UP_SLOT_ICON_TEXTURE
 
 
 class Button:
