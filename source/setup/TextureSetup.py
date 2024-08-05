@@ -131,6 +131,7 @@ INVENTORY_SLOT_FRAME_HIGHLIGHTED_TEXTURE = "textures/buttons/Inventory_Slot_Fram
 TAB_TEXTURE = "textures/buttons/Tab.gif" if fullscreen == 0 else "textures/buttons/Tab_Scaled.gif"
 TAB_HIGHLIGHTED_TEXTURE = "textures/buttons/Tab_Highlighted.gif" if fullscreen == 0 else "textures/buttons/Tab_Highlighted_Scaled.gif"
 SIDE_PANEL_SHOP_TEXTURE = "textures/gui/Side_Panel_Shop.gif" if fullscreen == 0 else "textures/gui/Side_Panel_Shop_Scaled.gif"
+POP_UP_MESSAGE_FRAME_TEXTURE = "textures/gui/Pop_Up_Message_Frame.gif" if fullscreen == 0 else "textures/gui/Pop_Up_Message_Frame_Scaled.gif"
 LOCKED_TEXTURE = "textures/gui/Locked.gif" if fullscreen == 0 else "textures/gui/Locked_Scaled.gif"
 TAB_SELECTOR_TEXTURE = "textures/gui/Tab_Selector.gif" if fullscreen == 0 else "textures/gui/Tab_Selector_Scaled.gif"
 SLOT_SELECTOR_TEXTURE = "textures/gui/Slot_Selector.gif" if fullscreen == 0 else "textures/gui/Slot_Selector_Scaled.gif"

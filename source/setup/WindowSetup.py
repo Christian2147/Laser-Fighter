@@ -215,6 +215,7 @@ texture_paths = [
     "textures/buttons/Tab.gif",
     "textures/buttons/Tab_Highlighted.gif",
     "textures/gui/Side_Panel_Shop.gif",
+    "textures/gui/Pop_Up_Message_Frame.gif",
     "textures/gui/Locked.gif",
     "textures/gui/Tab_Selector.gif",
     "textures/gui/Slot_Selector.gif",
