@@ -182,7 +182,7 @@ YELLOW_POWER_UP_DESCRIPTIONS = [
         "Duration: 20",
         "Special:",
         "None"
-    ], 20, "Courier"),
+    ], 18, "Courier"),
     Description("left", [
         "Level 3",
         "",
@@ -190,7 +190,7 @@ YELLOW_POWER_UP_DESCRIPTIONS = [
         "Duration: 30",
         "Special:",
         "Player movement 1.5x"
-    ], 20, "Courier"),
+    ], 18, "Courier"),
     Description("left", [
         "Level 4",
         "",
@@ -198,7 +198,7 @@ YELLOW_POWER_UP_DESCRIPTIONS = [
         "Duration: 45",
         "Special:",
         "Player movement 1.5x"
-    ], 20, "Courier"),
+    ], 18, "Courier"),
     Description("left", [
         "Level 5",
         "",
@@ -206,7 +206,7 @@ YELLOW_POWER_UP_DESCRIPTIONS = [
         "Duration: 60",
         "Special:",
         "Player movement 2x"
-    ], 20, "Courier"),
+    ], 18, "Courier"),
     Description("left", [
         "Max Level Reached!"
     ], 20, "Courier")

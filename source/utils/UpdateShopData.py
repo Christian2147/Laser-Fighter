@@ -59,14 +59,27 @@ class ShopConfig:
 
         # Initialize the shop configuration variables
         self.total_coins = 0
+
         self.machine_slot_selected = 0
         self.alien_slot_selected = 0
+
         self.machine_slots_unlocked = []
         self.alien_slots_unlocked = []
+
         self.yellow_power_up_level = 0
         self.blue_power_up_level = 0
         self.green_power_up_level = 0
         self.red_power_up_level = 0
+
+        self.coin_magnet_unlocked = False
+        self.shield_unlocked = False
+        self.thorns_unlocked = False
+        self.hearts_unlocked = False
+
+        self.coin_magnet_enabled = False
+        self.shield_enabled = False
+        self.thorns_enabled = False
+        self.hearts_enabled = False
 
         # Load the current shop configuration
         self.load()
@@ -94,10 +107,21 @@ class ShopConfig:
 
         self.machine_slots_unlocked = [self.player_data_manager.getint('Machine_Unlocked', f'slot_{i + 1}') for i in range(5)]
         self.alien_slots_unlocked = [self.player_data_manager.getint('Alien_Unlocked', f'slot_{i + 1}') for i in range(5)]
+
         self.yellow_power_up_level = self.player_data_manager.getint('Power_Up_Levels', 'Yellow_Power_Up')
         self.blue_power_up_level = self.player_data_manager.getint('Power_Up_Levels', 'Blue_Power_Up')
         self.green_power_up_level = self.player_data_manager.getint('Power_Up_Levels', 'Green_Power_Up')
         self.red_power_up_level = self.player_data_manager.getint('Power_Up_Levels', 'Red_Power_Up')
+
+        self.coin_magnet_unlocked = self.player_data_manager.getboolean('Gadgets_Unlocked', 'Coin_Magnet_Unlocked')
+        self.shield_unlocked = self.player_data_manager.getboolean('Gadgets_Unlocked', 'Armor_Unlocked')
+        self.thorns_unlocked = self.player_data_manager.getboolean('Gadgets_Unlocked', 'Thorns_Unlocked')
+        self.hearts_unlocked = self.player_data_manager.getboolean('Gadgets_Unlocked', 'Hearts_Unlocked')
+
+        self.coin_magnet_enabled = self.player_data_manager.getboolean('Gadgets_Enabled', 'Coin_Magnet_Enabled')
+        self.shield_enabled = self.player_data_manager.getboolean('Gadgets_Enabled', 'Armor_Enabled')
+        self.thorns_enabled = self.player_data_manager.getboolean('Gadgets_Enabled', 'Thorns_Enabled')
+        self.hearts_enabled = self.player_data_manager.getboolean('Gadgets_Enabled', 'Hearts_Enabled')
 
     def save(self):
         """
@@ -120,6 +144,16 @@ class ShopConfig:
         self.player_data_manager.set('Power_Up_Levels', 'Green_Power_Up', str(self.green_power_up_level))
         self.player_data_manager.set('Power_Up_Levels', 'Red_Power_Up', str(self.red_power_up_level))
 
+        self.player_data_manager.set('Gadgets_Unlocked', 'Coin_Magnet_Unlocked', str(self.coin_magnet_unlocked))
+        self.player_data_manager.set('Gadgets_Unlocked', 'Armor_Unlocked', str(self.shield_unlocked))
+        self.player_data_manager.set('Gadgets_Unlocked', 'Thorns_Unlocked', str(self.thorns_unlocked))
+        self.player_data_manager.set('Gadgets_Unlocked', 'Hearts_Unlocked', str(self.hearts_unlocked))
+
+        self.player_data_manager.set('Gadgets_Enabled', 'Coin_Magnet_Enabled', str(self.coin_magnet_enabled))
+        self.player_data_manager.set('Gadgets_Enabled', 'Armor_Enabled', str(self.shield_enabled))
+        self.player_data_manager.set('Gadgets_Enabled', 'Thorns_Enabled', str(self.thorns_enabled))
+        self.player_data_manager.set('Gadgets_Enabled', 'Hearts_Enabled', str(self.hearts_enabled))
+
     def __repr__(self):
         """
             Creates a print statement for the current shop configuration where they are all listed out in order.
@@ -136,4 +170,12 @@ class ShopConfig:
                 f"yellow_power_up_level={self.yellow_power_up_level}, "
                 f"blue_power_up_level={self.blue_power_up_level}, "
                 f"green_power_up_level={self.green_power_up_level}, "
-                f"red_power_up_level={self.red_power_up_level})")
+                f"red_power_up_level={self.red_power_up_level}, "
+                f"coin_magnet_unlocked={self.coin_magnet_unlocked}, "
+                f"shield_unlocked={self.shield_unlocked}, "
+                f"thorns_unlocked={self.thorns_unlocked}, "
+                f"hearts_unlocked={self.hearts_unlocked}, "
+                f"coin_magnet_enabled={self.coin_magnet_enabled}, "
+                f"shield_enabled={self.shield_enabled}, "
+                f"thorns_enabled={self.thorns_enabled}, "
+                f"hearts_enabled={self.hearts_enabled})")

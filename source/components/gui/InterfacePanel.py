@@ -24,6 +24,9 @@
 
 import turtle
 from setup.ConfigurationSetup import shop_config
+from setup.data.MilestoneMessages import MILESTONE_1_MESSAGE
+from setup.data.MilestoneMessages import MILESTONE_2_MESSAGE
+from setup.data.MilestoneMessages import MILESTONE_3_MESSAGE
 from setup.data.ShopDescriptions import MAIN_DESCRIPTION
 from setup.data.ShopDescriptions import MACHINE_DESCRIPTIONS
 from setup.data.ShopDescriptions import ALIEN_DESCRIPTIONS
