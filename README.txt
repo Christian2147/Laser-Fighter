@@ -15,7 +15,7 @@
 
 Created By: Christian Marinkovich (@Christian2147 on GitHub)
 Created In: PyCharm IDE Community Edition for Python v3.7.3
-This is version 1.1.0b
+This is Major Update 1.1.0b
 
 This game is a big project that I am working on mainly for fun. I enjoyed every bit of making this game so far and I hope you enjoy every bit of playing it!
 So far, this project has taken me roughly 600 hours to create.
@@ -47,6 +47,7 @@ Changelog:
 + Added The Shop! The Shop is a place where you can upgrade your player or weapons, as well as your power ups abilities!
 + Added 4 new player skins for the Machine Player!
 + Added 4 new gun skins for Alien Mode!
++ Added Power Up Upgrades!
 * Major preformance improvements, especially for those not running in a traditional windows environment
 * Changed the look of the button highlight when hovering over a button
 * Fixed an issue with enemy collisions that caused the players laser to phase through enemies when there was intense lag
