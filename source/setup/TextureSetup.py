@@ -152,6 +152,7 @@ BLUE_POWER_UP_DISPLAY_ICON_TEXTURE = "textures/interface/Display/Blue_Power_Up_D
 GREEN_POWER_UP_DISPLAY_ICON_TEXTURE = "textures/interface/Display/Green_Power_Up_Display_Icon.gif" if fullscreen == 0 else "textures/interface/Display/Green_Power_Up_Display_Icon_Scaled.gif"
 RED_POWER_UP_DISPLAY_ICON_TEXTURE = "textures/interface/Display/Red_Power_Up_Display_Icon.gif" if fullscreen == 0 else "textures/interface/Display/Red_Power_Up_Display_Icon_Scaled.gif"
 MACHINE_MODE_TAB_ICON_TEXTURE = "textures/interface/Icons/Tab/Machine_Mode_Tab_Icon.gif" if fullscreen == 0 else "textures/interface/Icons/Tab/Machine_Mode_Tab_Icon_Scaled.gif"
+GADGETS_TAB_ICON_TEXTURE = "textures/interface/Icons/Tab/Gadgets_Tab_Icon.gif" if fullscreen == 0 else "textures/interface/Icons/Tab/Gadgets_Tab_Icon_Scaled.gif"
 MACHINE_DEFAULT_SLOT_ICON_TEXTURE = "textures/interface/Icons/Slot/Machine_Default_Slot_Icon.gif" if fullscreen == 0 else "textures/interface/Icons/Slot/Machine_Default_Slot_Icon_Scaled.gif"
 MACHINE_WASHER_SLOT_ICON_TEXTURE = "textures/interface/Icons/Slot/Machine_Washer_Slot_Icon.gif" if fullscreen == 0 else "textures/interface/Icons/Slot/Machine_Washer_Slot_Icon_Scaled.gif"
 THE_INCINERATOR_SLOT_ICON_TEXTURE = "textures/interface/Icons/Slot/The_Incinerator_Slot_Icon.gif" if fullscreen == 0 else "textures/interface/Icons/Slot/The_Incinerator_Slot_Icon_Scaled.gif"

@@ -44,6 +44,7 @@ from setup.TextureSetup import INVENTORY_SLOT_FRAME_HIGHLIGHTED_TEXTURE
 from setup.TextureSetup import BUY_BUTTON_TEXTURE
 from setup.TextureSetup import BUY_BUTTON_HIGHLIGHTED_TEXTURE
 from setup.TextureSetup import MACHINE_MODE_TAB_ICON_TEXTURE
+from setup.TextureSetup import GADGETS_TAB_ICON_TEXTURE
 from setup.TextureSetup import PLAYER_GUN_RIGHT_TEXTURE
 from setup.TextureSetup import YELLOW_LIGHTNING_POWER_UP_TEXTURE
 from setup.TextureSetup import LOCKED_TEXTURE
@@ -193,6 +194,8 @@ class Button:
                 self.button_text.shape(PLAYER_GUN_RIGHT_TEXTURE)
             elif id == 3:
                 self.button_text.shape(YELLOW_LIGHTNING_POWER_UP_TEXTURE)
+            elif id == 4:
+                self.button_text.shape(GADGETS_TAB_ICON_TEXTURE)
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor())
         elif type == "Shop_Slot" or type == "Power_Up_Slot":
             # Which icon is displayed depends on the page that the user is on.
@@ -403,6 +406,8 @@ class Button:
             self.button_text.shape(PLAYER_GUN_RIGHT_TEXTURE)
         elif id == 3:
             self.button_text.shape(YELLOW_LIGHTNING_POWER_UP_TEXTURE)
+        elif id == 4:
+            self.button_text.shape(GADGETS_TAB_ICON_TEXTURE)
         self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor())
         self.button_text.showturtle()
 

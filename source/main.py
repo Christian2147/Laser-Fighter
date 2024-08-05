@@ -1705,10 +1705,10 @@ def main():
             if panel.panel_index == 0:
                 panel.spawn_panel(screen.mode)
 
-            # Create Main Menu button
+            # Create Main Menu button and the different Tabs
             if button.current_button_index == 0:
                 button.spawn_button("Game", 1)
-                for i in range(3):
+                for i in range(4):
                     button.spawn_button("Tab", i + 1)
 
             # Check if the main menu button has been clicked or not
@@ -1727,6 +1727,8 @@ def main():
                         wn.onscreenclick(screen.display_alien_mode_page)
                     elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(screen.display_power_up_page)
+                    elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(screen.display_gadgets_page)
 
             # Spawn all the necessary standalone text
             if textbox.current_text_index == 0:
@@ -1741,7 +1743,7 @@ def main():
             # If the current page is "Machine_Mode"
             if screen.page == "Machine_Mode":
                 # Create 5 shop slots
-                if button.current_button_index == 4:
+                if button.current_button_index == 5:
                     for i in range(5):
                         button.spawn_button("Shop_Slot", i + 1, screen.page)
 
@@ -1812,7 +1814,7 @@ def main():
             # If the page is "Alien_Mode"
             elif screen.page == "Alien_Mode":
                 # Create 5 shop slots
-                if button.current_button_index == 4:
+                if button.current_button_index == 5:
                     for i in range(5):
                         button.spawn_button("Shop_Slot", i + 1, screen.page)
 
@@ -1882,8 +1884,8 @@ def main():
                             wn.onscreenclick(shop.execute_buy_button)
             # If the page is "Power_Ups"
             elif screen.page == "Power_Ups":
-                # Spawn 4 shop slots
-                if button.current_button_index == 4:
+                # Spawn 4 power up slots
+                if button.current_button_index == 5:
                     for i in range(4):
                         button.spawn_button("Power_Up_Slot", i + 1)
 
@@ -1951,6 +1953,15 @@ def main():
                     elif bu.get_type() == "Buy":
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
                             wn.onscreenclick(shop.execute_buy_button)
+            elif screen.page == "Gadgets":
+                # Check to see if the tab selector needs to be moved
+                if refresh_variables.move_tab_selector == 1:
+                    for s in selector.selectors_on_screen_list:
+                        if s.get_type() == "Tab":
+                            for bu in button.buttons_on_screen_list:
+                                if bu.get_type() == "Tab" and bu.get_id() == 4:
+                                    s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
+                                    refresh_variables.move_tab_selector = 0
 
             # Spawn the coin indicator
             if coin_indicator.coin_indicator_index == 0:

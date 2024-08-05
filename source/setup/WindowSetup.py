@@ -236,6 +236,7 @@ texture_paths = [
     "textures/interface/Display/Green_Power_Up_Display_Icon.gif",
     "textures/interface/Display/Red_Power_Up_Display_Icon.gif",
     "textures/interface/Icons/Tab/Machine_Mode_Tab_Icon.gif",
+    "textures/interface/Icons/Tab/Gadgets_Tab_Icon.gif",
     "textures/interface/Icons/Slot/Machine_Default_Slot_Icon.gif",
     "textures/interface/Icons/Slot/Machine_Washer_Slot_Icon.gif",
     "textures/interface/Icons/Slot/The_Incinerator_Slot_Icon.gif",

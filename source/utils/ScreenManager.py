@@ -392,6 +392,20 @@ class ScreenUpdate:
             self._refresh.refresh_text = 1
             self._refresh.move_tab_selector = 1
 
+    def display_gadgets_page(self, x, y):
+        self._screen.onscreenclick(None)
+        # Check to see if the cursor is in the bound of the button to be clicked
+        if (x > -641 * self._scale_factor_x) and (x < -566 * self._scale_factor_x) and (y > -261 * self._scale_factor_y) and (y < -159 * self._scale_factor_y):
+            if self._settings.button_sound == 1:
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+                sound.play()
+            # Enter the Gadgets page
+            self._page = "Gadgets"
+            self._screen_update = 1
+            self._page_update = 1
+            self._refresh.refresh_text = 1
+            self._refresh.move_tab_selector = 1
+
     def launch_stats_mode(self, x, y):
         """
             Function used to enter the statistics screen.

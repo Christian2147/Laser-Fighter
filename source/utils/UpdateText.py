@@ -323,6 +323,11 @@ class TextRefresh:
                                 t.write_left(" 15000", 22, "normal")
                             elif self._shop_config.red_power_up_level == 4:
                                 t.write_left(" 30000", 22, "normal")
+                    elif self._screen.page == "Gadgets":
+                        if t.id == 3:
+                            t.write_left("Gadgets", 36, "bold")
+                        elif 4 <= t.id < 8:
+                            t.write_left(" 50000", 22, "normal")
             if self._refresh.refresh_text == 1:
                 self._refresh.refresh_text = 0
         elif self._screen.mode == "Stats":
