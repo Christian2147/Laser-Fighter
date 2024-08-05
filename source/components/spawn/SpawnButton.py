@@ -116,7 +116,7 @@ class SpawnButton:
         # If a usable button sprite does exist
         else:
             # If the button to create does not need a button indicator
-            if type != "Settings_Toggle" and type != "Shop_Slot" and type != "Power_Up_Slot" and type != "Buy":
+            if type != "Settings_Toggle" and type != "Shop_Slot" and type != "Power_Up_Slot" and type != "Gadget_Slot" and type != "Buy":
                 # Reinstate the button like normal
                 # Go through all the button sprites
                 for bu in self.all_button_list:
@@ -158,6 +158,8 @@ class SpawnButton:
                             bu.reinstate_to_shop_slot(id, page)
                         elif type == "Power_Up_Slot":
                             bu.reinstate_to_power_up_slot(id)
+                        elif type == "Gadget_Slot":
+                            bu.reinstate_to_gadget_slot(id)
                         elif type == "Buy":
                             bu.reinstate_to_buy()
                         self.buttons_on_screen_list.append(bu)
@@ -178,6 +180,8 @@ class SpawnButton:
                                 bu.reinstate_to_shop_slot(id, page)
                             elif type == "Power_Up_Slot":
                                 bu.reinstate_to_power_up_slot(id)
+                            elif type == "Gadget_Slot":
+                                bu.reinstate_to_gadget_slot(id)
                             elif type == "Buy":
                                 bu.reinstate_to_buy()
                             self.buttons_on_screen_list.append(bu)

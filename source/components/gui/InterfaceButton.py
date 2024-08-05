@@ -140,7 +140,7 @@ class Button:
             if id < 5:
                 self.button_frame.goto(-602.5 * scale_factor_x, (150 - (120 * (id - 1))) * scale_factor_y)
         # The item slots in the shop
-        elif type == "Shop_Slot" or type == "Power_Up_Slot":
+        elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadgets_Slot":
             self.button_frame.shape(INVENTORY_SLOT_FRAME_TEXTURE)
             if id < 5:
                 self.button_frame.goto((-427 + (170 * (id - 1))) * scale_factor_x, 96 * scale_factor_y)
@@ -197,7 +197,7 @@ class Button:
             elif id == 4:
                 self.button_text.shape(GADGETS_TAB_ICON_TEXTURE)
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor())
-        elif type == "Shop_Slot" or type == "Power_Up_Slot":
+        elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadgets_Slot":
             # Which icon is displayed depends on the page that the user is on.
             if page == "Machine_Mode":
                 if id == 1:
@@ -230,6 +230,15 @@ class Button:
                     self.button_text.shape(GREEN_POWER_UP_SLOT_ICON_TEXTURE)
                 elif id == 4:
                     self.button_text.shape(RED_POWER_UP_SLOT_ICON_TEXTURE)
+            elif page == "Gadgets":
+                if id == 1:
+                    self.button_text.shape(COIN_MAGNET_SLOT_ICON_TEXTURE)
+                elif id == 2:
+                    self.button_text.shape(ARMOR_SLOT_ICON_TEXTURE)
+                elif id == 3:
+                    self.button_text.shape(THORNS_SLOT_ICON_TEXTURE)
+                elif id == 4:
+                    self.button_text.shape(HEART_POWER_UP_SLOT_ICON_TEXTURE)
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * scale_factor_y)
         elif type == "Buy":
             self.button_text.goto(self.button_frame.xcor() - 80 * scale_factor_x, self.button_frame.ycor() + 10 * scale_factor_y)
@@ -274,7 +283,7 @@ class Button:
 
             self.indicator = 1
         # Create the locks for the slots in the shop
-        elif type == "Shop_Slot" or type == "Power_Up_Slot":
+        elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadgets_Slot":
             self.button_indicator = turtle.Turtle()
             # Ensure that the turtle does not draw lines on the screen while moving
             self.button_indicator.penup()
@@ -452,6 +461,23 @@ class Button:
         self.type = "Power_Up_Slot"
         self.id = id
 
+    def reinstate_to_gadget_slot(self, id):
+        """
+            Reuses the existing button sprite to spawn a gadget slot button based on the id.
+            The page is already known to be "Gadgets" based on this.
+
+            :param id: A unique identifier for the button
+            :type id: int
+
+            :return: None
+        """
+
+        self.reinstate_to_slot(id, "Gadgets")
+
+        # Set the type to "Gadget_Slot"
+        self.type = "Gadget_Slot"
+        self.id = id
+
     def reinstate_to_slot(self, id, page="None"):
         """
             Reuses the existing button sprite to spawn a shop slot or power up slot and place it in a location on
@@ -504,6 +530,15 @@ class Button:
                 self.button_text.shape(GREEN_POWER_UP_SLOT_ICON_TEXTURE)
             elif id == 4:
                 self.button_text.shape(RED_POWER_UP_SLOT_ICON_TEXTURE)
+        elif page == "Gadgets":
+            if id == 1:
+                self.button_text.shape(COIN_MAGNET_SLOT_ICON_TEXTURE)
+            elif id == 2:
+                self.button_text.shape(ARMOR_SLOT_ICON_TEXTURE)
+            elif id == 3:
+                self.button_text.shape(THORNS_SLOT_ICON_TEXTURE)
+            elif id == 4:
+                self.button_text.shape(HEART_POWER_UP_SLOT_ICON_TEXTURE)
         self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
         self.button_text.showturtle()
 
@@ -716,7 +751,7 @@ class Button:
              :type: int
         """
 
-        if self.type == "Shop_Slot":
+        if self.type == "Shop_Slot" or self.type == "Gadget_Slot":
             return self.indicator_toggled
 
     def remove(self):
@@ -867,6 +902,16 @@ class Button:
             if setting != 0:
                 self.button_indicator.clear()
                 self.button_indicator.write("Level {}".format(setting), align="center", font=("Courier", int(18 * self.scale_factor), "normal"))
+        elif self.type == "Gadget_Slot":
+            # For the gadget slots, write if they are enabled or disabled
+            if setting:
+                self.button_indicator.color("green")
+                self.button_indicator.clear()
+                self.button_indicator.write("Enabled", align="center", font=("Courier", int(18 * self.scale_factor), "bold"))
+            else:
+                self.button_indicator.color("red")
+                self.button_indicator.clear()
+                self.button_indicator.write("Disabled", align="center", font=("Courier", int(18 * self.scale_factor), "bold"))
 
     def write_fullscreen_indicator(self, setting, fullscreen_toggled):
         """
@@ -907,15 +952,24 @@ class Button:
             :return: None
         """
 
-        if check_value == 0:
-            self.button_indicator.showturtle()
-            self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
-            self.indicator_toggled = 1
+        if self.type != "Gadget_Slot":
+            if check_value == 0:
+                self.button_indicator.showturtle()
+                self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
+                self.indicator_toggled = 1
+            else:
+                self.button_indicator.hideturtle()
+                if self.type != "Power_Up_Slot":
+                    self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor())
+                self.indicator_toggled = 0
         else:
-            self.button_indicator.hideturtle()
-            if self.type != "Power_Up_Slot":
-                self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor())
-            self.indicator_toggled = 0
+            if not check_value:
+                self.button_indicator.showturtle()
+                self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
+                self.indicator_toggled = 1
+            else:
+                self.button_indicator.hideturtle()
+                self.indicator_toggled = 0
 
     def set_indicator_location(self):
         """
@@ -927,7 +981,10 @@ class Button:
         if self.indicator_toggled == 1:
             self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
         else:
-            self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() - 45 * self.scale_factor_y)
+            if self.type == "Power_Up_Slot":
+                self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() - 45 * self.scale_factor_y)
+            else:
+                self.button_indicator.goto(self.button_frame.xcor(), self.button_frame.ycor() - 75 * self.scale_factor_y)
 
     def update_highlight(self, x, y):
         """
@@ -1003,7 +1060,7 @@ class Button:
             else:
                 self.button_frame.color("white")
                 self.button_frame.shape(TAB_TEXTURE)
-        elif self.type == "Shop_Slot" or self.type == "Power_Up_Slot":
+        elif self.type == "Shop_Slot" or self.type == "Power_Up_Slot" or self.type == "Gadget_Slot":
             if self.id < 5:
                 if (137 + (170 * (self.id - 1))) * self.scale_factor_x < x < (288 + (170 * (self.id - 1))) * self.scale_factor_x and 178 * self.scale_factor_y < y < 349 * self.scale_factor_y:
                     self.button_frame.color("yellow")

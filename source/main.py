@@ -1954,6 +1954,35 @@ def main():
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
                             wn.onscreenclick(shop.execute_buy_button)
             elif screen.page == "Gadgets":
+                # Spawn 4 gadget slots
+                if button.current_button_index == 5:
+                    for i in range(4):
+                        button.spawn_button("Gadget_Slot", i + 1)
+
+                # Check to see if a price label is still needed and if the power ups are on their max level or not
+                if textbox.current_text_index == 3 and button.buy_button_pressed == 0:
+                    counter = 4
+                    for bu in button.buttons_on_screen_list:
+                        if bu.get_type() == "Gadget_Slot":
+                            if bu.get_indicator_toggled() == 1:
+                                textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
+                                price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
+                                refresh_variables.refresh_text = 1
+                            counter = counter + 1
+
+                # Check to see if each gadget is enabled or not
+                for bu in button.buttons_on_screen_list:
+                    if bu.get_type() == "Gadget_Slot":
+                        if bu.get_id() == 1:
+                            bu.toggle_indicator(shop_config.coin_magnet_unlocked)
+                        elif bu.get_id() == 2:
+                            bu.toggle_indicator(shop_config.shield_unlocked)
+                        elif bu.get_id() == 3:
+                            bu.toggle_indicator(shop_config.thorns_unlocked)
+                        elif bu.get_id() == 4:
+                            bu.toggle_indicator(shop_config.hearts_unlocked)
+                        bu.set_indicator_location()
+
                 # Check to see if the tab selector needs to be moved
                 if refresh_variables.move_tab_selector == 1:
                     for s in selector.selectors_on_screen_list:

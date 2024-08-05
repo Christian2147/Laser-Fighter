@@ -247,6 +247,19 @@ class TextRefresh:
                             bu.write_indicator(self._shop_config.green_power_up_level)
                         elif bu.get_id() == 4:
                             bu.write_indicator(self._shop_config.red_power_up_level)
+                    elif bu.get_type() == "Gadget_Slot":
+                        if bu.get_id() == 1:
+                            if self._shop_config.coin_magnet_unlocked:
+                                bu.write_indicator(self._shop_config.coin_magnet_enabled)
+                        elif bu.get_id() == 2:
+                            if self._shop_config.shield_unlocked:
+                                bu.write_indicator(self._shop_config.shield_enabled)
+                        elif bu.get_id() == 3:
+                            if self._shop_config.thorns_unlocked:
+                                bu.write_indicator(self._shop_config.thorns_enabled)
+                        elif bu.get_id() == 4:
+                            if self._shop_config.hearts_unlocked:
+                                bu.write_indicator(self._shop_config.hearts_enabled)
                     if bu.get_type() == "Buy":
                         bu.write_buy(self._shop.price_displayed)
             if self._refresh.refresh_button == 1:
