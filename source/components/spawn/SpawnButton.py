@@ -134,6 +134,8 @@ class SpawnButton:
                             bu.reinstate_to_game()
                         elif type == "Tab":
                             bu.reinstate_to_tab(id)
+                        elif type == "Enable":
+                            bu.reinstate_to_enable()
                         elif type == "Regular_Settings_And_Controls":
                             bu.reinstate_to_regular_settings_and_controls(id)
                         elif type == "Controls_Toggle":

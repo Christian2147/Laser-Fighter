@@ -147,7 +147,7 @@ class Button:
             elif 4 < id < 9:
                 self.button_frame.goto((-427 + (170 * (id - 1 - 4))) * scale_factor_x, -94 * scale_factor_y)
         # For the "buy item" button on the side panel in the shop
-        elif type == "Buy":
+        elif type == "Buy" or type == "Enable":
             self.button_frame.shape(BUY_BUTTON_TEXTURE)
             self.button_frame.goto(450 * scale_factor_x, -270 * scale_factor_y)
         # Standard buttons on the settings and controls screen
@@ -243,6 +243,9 @@ class Button:
         elif type == "Buy":
             self.button_text.goto(self.button_frame.xcor() - 80 * scale_factor_x, self.button_frame.ycor() + 10 * scale_factor_y)
             self.button_text.color("yellow")
+        elif type == "Enable":
+            self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() - 22 * scale_factor_y)
+            self.button_text.color("red")
         elif type == "Regular_Settings_And_Controls":
             self.button_text.goto(315.5 * scale_factor_x, self.button_frame.ycor() - 22 * scale_factor_y)
         elif type == "Settings_Toggle" or type == "Controls_Toggle":
@@ -582,6 +585,24 @@ class Button:
         self.type = "Buy"
         self.id = 1
 
+    def reinstate_to_enable(self):
+        """
+            Reuses the existing button sprite to spawn an enable gadget button on the side panel.
+
+            :return: None
+        """
+
+        self.button_frame.shape(BUY_BUTTON_TEXTURE)
+        self.button_frame.goto(450 * self.scale_factor_x, -270 * self.scale_factor_y)
+        self.button_frame.showturtle()
+
+        self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() - 22 * self.scale_factor_y)
+        self.button_text.color("red")
+
+        # Set the type top "Enable"
+        self.type = "Enable"
+        self.id = 1
+
     def reinstate_to_regular_settings_and_controls(self, id):
         """
             Reuses the existing button sprite to spawn a standard settings and controls button based on the id.
@@ -846,6 +867,15 @@ class Button:
         self.button_text.goto(self.button_frame.xcor() - 105 * self.scale_factor_x, self.button_frame.ycor() - 50 * self.scale_factor_y)
         self.button_text.write("{}".format(price), align="left", font=("Courier", int(28 * self.scale_factor), "normal"))
 
+    def write_enable(self, check_gadget):
+        self.button_text.clear()
+        if check_gadget:
+            self.button_text.color("red")
+            self.button_text.write("Disable", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
+        else:
+            self.button_text.color("green")
+            self.button_text.write("Enable", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
+
     def write_control(self, go_right_key, go_left_key, shoot_key, jump_key):
         """
             Writes the text and indicators for the control toggle buttons and then updates the screen with that text.
@@ -1075,7 +1105,7 @@ class Button:
                 else:
                     self.button_frame.color("White")
                     self.button_frame.shape(INVENTORY_SLOT_FRAME_TEXTURE)
-        elif self.type == "Buy":
+        elif self.type == "Buy" or self.type == "Enable":
             if 939 * self.scale_factor_x < x < 1240 * self.scale_factor_x and 572 * self.scale_factor_y < y < 688 * self.scale_factor_y:
                 self.button_frame.color("yellow")
                 self.button_frame.shape(BUY_BUTTON_HIGHLIGHTED_TEXTURE)

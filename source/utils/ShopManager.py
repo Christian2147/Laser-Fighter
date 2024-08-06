@@ -314,16 +314,18 @@ class Shop:
                     self._refresh.move_slot_selector = 1
                     # Remove the buy button
                     for bu in self._button.buttons_on_screen_list:
-                        if bu.get_type() == "Buy":
+                        if bu.get_type() == "Buy" or bu.get_type() == "Enable":
                             bu.remove()
                             self._button.buttons_on_screen_list.pop()
+                            self._button.current_button_index = self._button.current_button_index - 1
                 # If the item is not bought
                 else:
                     # Recreate the buy button to show the price for the selected item
                     for bu in self._button.buttons_on_screen_list:
-                        if bu.get_type() == "Buy":
+                        if bu.get_type() == "Buy" or bu.get_type() == "Enable":
                             bu.remove()
                             self._button.buttons_on_screen_list.pop()
+                            self._button.current_button_index = self._button.current_button_index - 1
                     self._button.spawn_button("Buy", 1)
                     self._price_displayed = ALIEN_PRICES[slot_id - 1]
         else:
@@ -390,20 +392,24 @@ class Shop:
                         self._price_displayed = GADGET_PRICE
                     else:
                         self._price_displayed = 0
-            # If there is a price, create a buy button, if not, do not create one and remove any existing one
+            # If there is a price, create a buy button, if not, do not create a button at all
+            #   and remove any existing one
             if self._price_displayed != 0:
                 for bu in self._button.buttons_on_screen_list:
-                    if bu.get_type() == "Buy":
+                    if bu.get_type() == "Buy" or bu.get_type() == "Enable":
                         bu.remove()
                         self._button.buttons_on_screen_list.pop()
                         self._button.current_button_index = self._button.current_button_index - 1
                 self._button.spawn_button("Buy", 1)
             else:
                 for bu in self._button.buttons_on_screen_list:
-                    if bu.get_type() == "Buy":
+                    if bu.get_type() == "Buy" or bu.get_type() == "Enable":
                         bu.remove()
                         self._button.buttons_on_screen_list.pop()
                         self._button.current_button_index = self._button.current_button_index - 1
+            # If the item is a gadget, an "enable" button should replace the "buy" button when the item is bought
+            if current_page == "Gadgets" and self._price_displayed == 0:
+                self._button.spawn_button("Enable", 1)
         # Refresh the side panel and all buttons
         self._refresh.refresh_panel = 1
         self._refresh.refresh_button = 1

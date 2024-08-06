@@ -260,8 +260,19 @@ class TextRefresh:
                         elif bu.get_id() == 4:
                             if self._shop_config.hearts_unlocked:
                                 bu.write_indicator(self._shop_config.hearts_enabled)
-                    if bu.get_type() == "Buy":
+                    elif bu.get_type() == "Buy":
                         bu.write_buy(self._shop.price_displayed)
+                    elif bu.get_type() == "Enable":
+                        for pa in self._panel.panel_turtle:
+                            if pa.category == "Gadget":
+                                if pa.id == 1:
+                                    bu.write_enable(self._shop_config.coin_magnet_enabled)
+                                elif pa.id == 2:
+                                    bu.write_enable(self._shop_config.shield_enabled)
+                                elif pa.id == 3:
+                                    bu.write_enable(self._shop_config.thorns_enabled)
+                                elif pa.id == 4:
+                                    bu.write_enable(self._shop_config.hearts_enabled)
             if self._refresh.refresh_button == 1:
                 self._refresh.refresh_button = 0
             # Refreshes panel text
