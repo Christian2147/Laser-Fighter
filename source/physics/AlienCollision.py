@@ -124,7 +124,8 @@ class AlienCollision:
         for h in self._human_player.current_human:
             # Each Small Aliens Hitbox is calculated
             for sa in self._small_alien.small_aliens:
-                sa.got_hit = 0
+                if sa.death_animation == 0:
+                    sa.got_hit = 0
                 # If the collision lines for the Alien should be on the left (-1) or right (1) side
                 # Depends where the player is relative to the Alien.
                 if sa.get_small_alien().xcor() - self.SMALL_ALIEN_X_DISTANCE >= (h.get_player().xcor() + self.PLAYER_LASER_GAP) or \
@@ -145,7 +146,8 @@ class AlienCollision:
 
             # Each Medium Aliens Hitbox is calculated
             for ma in self._medium_alien.medium_aliens:
-                ma.got_hit = 0
+                if ma.death_animation == 0:
+                    ma.got_hit = 0
                 if ma.get_medium_alien().xcor() - self.MEDIUM_ALIEN_X_DISTANCE >= (h.get_player().xcor() + self.PLAYER_LASER_GAP) or \
                         (ma.get_medium_alien().xcor() - self.MEDIUM_ALIEN_X_DISTANCE < (h.get_player().xcor() - self.PLAYER_LASER_GAP) < ma.get_medium_alien().xcor() + self.MEDIUM_ALIEN_X_DISTANCE and h.direction == 2):
                     ma.collision_point = -1
@@ -162,7 +164,8 @@ class AlienCollision:
 
             # Each Large Aliens Hitbox is calculated
             for la in self._large_alien.large_aliens:
-                la.got_hit = 0
+                if la.death_animation == 0:
+                    la.got_hit = 0
                 if la.get_large_alien().xcor() - self.LARGE_ALIEN_X_DISTANCE >= (h.get_player().xcor() + self.PLAYER_LASER_GAP) or \
                         (la.get_large_alien().xcor() - self.LARGE_ALIEN_X_DISTANCE < (h.get_player().xcor() - self.PLAYER_LASER_GAP) < la.get_large_alien().xcor() + self.LARGE_ALIEN_X_DISTANCE and h.direction == 2):
                     la.collision_point = -1
@@ -179,7 +182,8 @@ class AlienCollision:
 
             # Each UFOs Hitbox is calculated
             for u in self._ufo.ufos:
-                u.got_hit = 0
+                if u.death_animation == 0:
+                    u.got_hit = 0
                 if u.get_ufo().xcor() - self.UFO_X_DISTANCE >= (h.get_player().xcor() + self.PLAYER_LASER_GAP) or \
                         (u.get_ufo().xcor() - self.UFO_X_DISTANCE < (h.get_player().xcor() - self.PLAYER_LASER_GAP) < u.get_ufo().xcor() + self.UFO_X_DISTANCE and h.direction == 2):
                     u.collision_point = -1

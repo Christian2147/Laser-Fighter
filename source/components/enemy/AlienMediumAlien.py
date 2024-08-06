@@ -132,10 +132,10 @@ class MediumAlien:
         self.movement_activated = 0
 
         # For collision
-        self.got_hit = 0
+        self.got_hit = 1
         self.collision_point = 0
-        self.already_ahead = 0
-        self.already_behind = 0
+        self.already_ahead = 1
+        self.already_behind = 1
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -249,10 +249,10 @@ class MediumAlien:
         self.walk_start_time = 0
         self.move_start_time = 0
         self.movement_activated = 0
-        self.got_hit = 0
+        self.got_hit = 1
         self.collision_point = 0
-        self.already_ahead = 0
-        self.already_behind = 0
+        self.already_ahead = 1
+        self.already_behind = 1
 
     def set_alien_direction(self, player_x):
         """

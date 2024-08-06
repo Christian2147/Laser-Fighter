@@ -54,6 +54,7 @@ from setup.SpriteSetup import small_alien
 from setup.SpriteSetup import medium_alien
 from setup.SpriteSetup import large_alien
 from setup.SpriteSetup import ufo
+from setup.SpriteSetup import gadget
 from setup.ModeSetupMaster import power_up_setup
 from setup.ModeSetupMaster import machine_mode_setup
 from setup.ModeSetupMaster import alien_mode_setup
@@ -177,6 +178,9 @@ def main():
             screen.screen_update = 0
             screen.page_update = 0
             button.buy_button_pressed = 0
+            if screen.mode == "Machine_Mode" or screen.mode == "Alien_Mode":
+                gadget.start_timer()
+            print(len(wn.turtles()))
 
         # The game background objects and the panel is created right when the game is launched.
         # This is done to make sure that they are truly in the background and that nothing lies behind these sprites.
@@ -415,16 +419,64 @@ def main():
                 b.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), settings.enemy_shooting_sound)
 
             # Detects if the players has picked up a coin
-            hit_coin = 0
-            for c in coin.coins_on_screen_list:
-                for p in machine_player.current_player:
-                    # Check each of the players lasers
-                    for l in p.get_laser():
-                        # If the player picks up a coin
-                        if l.laser.isvisible() and \
-                                (c.range[0] < l.laser.xcor() < c.range[1]) and \
-                                l.laser.ycor() > c.collision_coordinate and \
-                                coin.coin_pickup_delay == 0:
+            if not shop_config.coin_magnet_enabled:
+                hit_coin = 0
+                for c in coin.coins_on_screen_list:
+                    for p in machine_player.current_player:
+                        # Check each of the players lasers
+                        for l in p.get_laser():
+                            # If the player picks up a coin
+                            if l.laser.isvisible() and \
+                                    (c.range[0] < l.laser.xcor() < c.range[1]) and \
+                                    l.laser.ycor() > c.collision_coordinate and \
+                                    coin.coin_pickup_delay == 0:
+                                # Remove the coin from the screen
+                                c.remove()
+                                # Increase the amount of coins the users has based on the type of coin picked up
+                                if c.get_type() == "copper":
+                                    # For each coin, check if the blue power up has a multiplier on it
+                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_blue_value
+                                    else:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_value
+                                elif c.get_type() == "silver":
+                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_blue_value
+                                    else:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_value
+                                elif c.get_type() == "gold":
+                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_blue_value
+                                    else:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_value
+                                elif c.get_type() == "platinum":
+                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_blue_value
+                                    else:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_value
+                                shop_config.save()
+                                statistics.save()
+                                coin.coins_on_screen_list.pop(hit_coin)
+                                # play the coin pickup sound
+                                if settings.coin_pickup_sound == 1:
+                                    sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
+                                    sound.play()
+                                break
+                        hit_coin = hit_coin + 1
+            else:
+                gadget.attract_coins("Machine_Mode")
+                hit_coin = 0
+                for c in coin.coins_on_screen_list:
+                    for p in machine_player.current_player:
+                        if p.player.isvisible() and p.death_animation == 0 and p.player.distance(c.coin) < c.COIN_DISTANCE:
                             # Remove the coin from the screen
                             c.remove()
                             # Increase the amount of coins the users has based on the type of coin picked up
@@ -464,8 +516,7 @@ def main():
                             if settings.coin_pickup_sound == 1:
                                 sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
                                 sound.play()
-                            break
-                    hit_coin = hit_coin + 1
+                        hit_coin = hit_coin + 1
 
             # Create the machine hitboxes when requested (Value of do_collision is determined by the index of the laser)
             for p in machine_player.current_player:
@@ -1247,55 +1298,103 @@ def main():
                     la.set_alien_texture(human_player.right_update, human_player.left_update)
 
             # Detects if the players has picked up a coin
-            hit_coin = 0
-            for c in coin.coins_on_screen_list:
-                for h in human_player.current_human:
-                    # If the player picks up a coin
-                    # This can be done with any one of the players lasers
-                    if (any(l.laser.isvisible() and (
-                        h.direction == 1 and c.relative_laser_position == -1 and l.laser.xcor() > c.collision_coordinate or
-                        h.direction == 2 and c.relative_laser_position == 1 and l.laser.xcor() < c.collision_coordinate
-                    ) for l in h.get_laser())) or h.get_player().distance(c.get_coin()) < 55 * scale_factor:
-                        # Remove the coin
-                        c.remove()
-                        # Increase the amount of coins based on the type of coin picked up
-                        if c.get_type() == "copper":
-                            # Check if the blue power up has a multiplier activated for the coins value and use it
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
-                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_blue_value
-                            else:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
-                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_value
-                        elif c.get_type() == "silver":
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
-                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.silver_coin_blue_value
-                            else:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
-                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.silver_coin_value
-                        elif c.get_type() == "gold":
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
-                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.gold_coin_blue_value
-                            else:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
-                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.gold_coin_value
-                        elif c.get_type() == "platinum":
-                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
-                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.platinum_coin_blue_value
-                            else:
-                                shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
-                                statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.platinum_coin_value
-                        shop_config.save()
-                        statistics.save()
-                        coin.coins_on_screen_list.pop(hit_coin)
-                        # play the coin pickup sound
-                        if settings.coin_pickup_sound == 1:
-                            sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
-                            sound.play()
-                    hit_coin = hit_coin + 1
+            if not shop_config.coin_magnet_enabled:
+                hit_coin = 0
+                for c in coin.coins_on_screen_list:
+                    for h in human_player.current_human:
+                        # If the player picks up a coin
+                        # This can be done with any one of the players lasers
+                        if (any(l.laser.isvisible() and (
+                            h.direction == 1 and c.relative_laser_position == -1 and l.laser.xcor() > c.collision_coordinate or
+                            h.direction == 2 and c.relative_laser_position == 1 and l.laser.xcor() < c.collision_coordinate
+                        ) for l in h.get_laser())) or h.get_player().distance(c.get_coin()) < 55 * scale_factor:
+                            # Remove the coin
+                            c.remove()
+                            # Increase the amount of coins based on the type of coin picked up
+                            if c.get_type() == "copper":
+                                # Check if the blue power up has a multiplier activated for the coins value and use it
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_value
+                            elif c.get_type() == "silver":
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.silver_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.silver_coin_value
+                            elif c.get_type() == "gold":
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.gold_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.gold_coin_value
+                            elif c.get_type() == "platinum":
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.platinum_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.platinum_coin_value
+                            shop_config.save()
+                            statistics.save()
+                            coin.coins_on_screen_list.pop(hit_coin)
+                            # play the coin pickup sound
+                            if settings.coin_pickup_sound == 1:
+                                sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
+                                sound.play()
+                        hit_coin = hit_coin + 1
+            else:
+                gadget.attract_coins("Alien_Mode")
+
+                hit_coin = 0
+                for c in coin.coins_on_screen_list:
+                    for h in human_player.current_human:
+                        if h.player.isvisible() and h.death_animation == 0 and h.player.distance(c.coin) < c.COIN_DISTANCE:
+                            # Remove the coin from the screen
+                            c.remove()
+                            # Increase the amount of coins the users has based on the type of coin picked up
+                            if c.get_type() == "copper":
+                                # For each coin, check if the blue power up has a multiplier on it
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_value
+                            elif c.get_type() == "silver":
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.silver_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.silver_coin_value
+                            elif c.get_type() == "gold":
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.gold_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.gold_coin_value
+                            elif c.get_type() == "platinum":
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.platinum_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.platinum_coin_value
+                            shop_config.save()
+                            statistics.save()
+                            coin.coins_on_screen_list.pop(hit_coin)
+                            # play the coin pickup sound
+                            if settings.coin_pickup_sound == 1:
+                                sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
+                                sound.play()
+                        hit_coin = hit_coin + 1
 
             # Alien Killer
             for h in human_player.current_human:

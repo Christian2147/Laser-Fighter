@@ -48,6 +48,7 @@ from components.spawn.SpawnAlien import SpawnSmallAlien
 from components.spawn.SpawnAlien import SpawnMediumAlien
 from components.spawn.SpawnAlien import SpawnLargeAlien
 from components.spawn.SpawnAlien import SpawnUFO
+from components.ItemGadget import Gadget
 
 
 # Stores Button Objects
@@ -121,3 +122,6 @@ large_alien = SpawnLargeAlien(scale_factor_X, scale_factor_Y)
 
 # Stores the UFO
 ufo = SpawnUFO(scale_factor_X, scale_factor_Y)
+
+# Stores the Gadget Functions
+gadget = Gadget(machine_player, human_player, coin, scale_factor)
