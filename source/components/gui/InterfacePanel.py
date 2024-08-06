@@ -34,6 +34,7 @@ from setup.data.ShopDescriptions import YELLOW_POWER_UP_DESCRIPTIONS
 from setup.data.ShopDescriptions import BLUE_POWER_UP_DESCRIPTIONS
 from setup.data.ShopDescriptions import GREEN_POWER_UP_DESCRIPTIONS
 from setup.data.ShopDescriptions import RED_POWER_UP_DESCRIPTIONS
+from setup.data.ShopDescriptions import GADGET_DESCRIPTIONS
 from setup.TextureSetup import SIDE_PANEL_SHOP_TEXTURE
 from setup.TextureSetup import MACHINE_DEFAULT_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import MACHINE_WASHER_DISPLAY_ICON_TEXTURE
@@ -49,6 +50,10 @@ from setup.TextureSetup import YELLOW_POWER_UP_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import BLUE_POWER_UP_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import GREEN_POWER_UP_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import RED_POWER_UP_DISPLAY_ICON_TEXTURE
+from setup.TextureSetup import COIN_MAGNET_DISPLAY_ICON_TEXTURE
+from setup.TextureSetup import ARMOR_DISPLAY_ICON_TEXTURE
+from setup.TextureSetup import THORNS_DISPLAY_ICON_TEXTURE
+from setup.TextureSetup import HEART_POWER_UP_DISPLAY_ICON_TEXTURE
 
 
 class Panel:
@@ -301,6 +306,13 @@ class Panel:
                                             font=(RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_font(),
                                             int(RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_size() * self.scale_factor), "normal"))
                     self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 30 * self.scale_factor_y)
+            elif self.category == "Gadget":
+                for i in range(GADGET_DESCRIPTIONS[self.id - 1].get_length()):
+                    self.panel_text.write("{}".format(GADGET_DESCRIPTIONS[self.id - 1].get_text()[i]),
+                                            align=GADGET_DESCRIPTIONS[self.id - 1].get_align(),
+                                            font=(GADGET_DESCRIPTIONS[self.id - 1].get_font(),
+                                            int(GADGET_DESCRIPTIONS[self.id - 1].get_size() * self.scale_factor), "normal"))
+                    self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 27 * self.scale_factor_y)
         # Set the panel indicator after the text is updated
         self.set_indicator()
 
@@ -345,4 +357,13 @@ class Panel:
                 self.panel_indicator.shape(GREEN_POWER_UP_DISPLAY_ICON_TEXTURE)
             elif self.category == "Red_Power_Up":
                 self.panel_indicator.shape(RED_POWER_UP_DISPLAY_ICON_TEXTURE)
+            elif self.category == "Gadget":
+                if self.id == 1:
+                    self.panel_indicator.shape(COIN_MAGNET_DISPLAY_ICON_TEXTURE)
+                elif self.id == 2:
+                    self.panel_indicator.shape(ARMOR_DISPLAY_ICON_TEXTURE)
+                elif self.id == 3:
+                    self.panel_indicator.shape(THORNS_DISPLAY_ICON_TEXTURE)
+                elif self.id == 4:
+                    self.panel_indicator.shape(HEART_POWER_UP_DISPLAY_ICON_TEXTURE)
             self.panel_indicator.showturtle()

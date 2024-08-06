@@ -27,6 +27,7 @@ import pygame
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
+from setup.data.ShopDescriptions import GADGET_PRICE
 
 
 class Shop:
@@ -162,6 +163,8 @@ class Shop:
                 self.execute_slot_function("Alien_Mode", 1)
             elif self._screen.page == "Power_Ups":
                 self.execute_slot_function("Power_Ups", 1)
+            elif self._screen.page == "Gadgets":
+                self.execute_slot_function("Gadgets", 1)
 
     def slot_2_select(self, x, y):
         """
@@ -185,6 +188,8 @@ class Shop:
                 self.execute_slot_function("Alien_Mode", 2)
             elif self._screen.page == "Power_Ups":
                 self.execute_slot_function("Power_Ups", 2)
+            elif self._screen.page == "Gadgets":
+                self.execute_slot_function("Gadgets", 2)
 
     def slot_3_select(self, x, y):
         """
@@ -208,6 +213,8 @@ class Shop:
                 self.execute_slot_function("Alien_Mode", 3)
             elif self._screen.page == "Power_Ups":
                 self.execute_slot_function("Power_Ups", 3)
+            elif self._screen.page == "Gadgets":
+                self.execute_slot_function("Gadgets", 3)
 
     def slot_4_select(self, x, y):
         """
@@ -231,6 +238,8 @@ class Shop:
                 self.execute_slot_function("Alien_Mode", 4)
             elif self._screen.page == "Power_Ups":
                 self.execute_slot_function("Power_Ups", 4)
+            elif self._screen.page == "Gadgets":
+                self.execute_slot_function("Gadgets", 4)
 
     def slot_5_select(self, x, y):
         """
@@ -270,8 +279,8 @@ class Shop:
         if self._settings.button_sound == 1:
             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
             sound.play()
-        # If the page is not "Power_Ups", the item has to be bought in order to be displayed
-        if current_page != "Power_Ups":
+        # If the page is not "Power_Ups" and "Gadgets", the item has to be bought in order to be displayed
+        if current_page != "Power_Ups" and current_page != "Gadgets":
             # Display the slot item on the side panel in the shop
             for pa in self._panel.panel_turtle:
                 pa.set_panel_text(current_page, slot_id)
@@ -321,34 +330,66 @@ class Shop:
             # If the page is power ups, display the information for the next level up from the current
             #   level of the power up selected
             if slot_id == 1:
-                for pa in self._panel.panel_turtle:
-                    pa.set_panel_text("Yellow_Power_Up", slot_id)
-                # Display a price if there is still a level higher
-                if self._shop_config.yellow_power_up_level != 5:
-                    self._price_displayed = POWER_UP_PRICES[self._shop_config.yellow_power_up_level - 1]
+                if current_page == "Power_Ups":
+                    for pa in self._panel.panel_turtle:
+                        pa.set_panel_text("Yellow_Power_Up", slot_id)
+                    # Display a price if there is still a level higher
+                    if self._shop_config.yellow_power_up_level != 5:
+                        self._price_displayed = POWER_UP_PRICES[self._shop_config.yellow_power_up_level - 1]
+                    else:
+                        self._price_displayed = 0
                 else:
-                    self._price_displayed = 0
+                    for pa in self._panel.panel_turtle:
+                        pa.set_panel_text("Gadget", slot_id)
+                    if not self._shop_config.coin_magnet_unlocked:
+                        self._price_displayed = GADGET_PRICE
+                    else:
+                        self._price_displayed = 0
             elif slot_id == 2:
-                for pa in self._panel.panel_turtle:
-                    pa.set_panel_text("Blue_Power_Up", slot_id)
-                if self._shop_config.blue_power_up_level != 5:
-                    self._price_displayed = POWER_UP_PRICES[self._shop_config.blue_power_up_level - 1]
+                if current_page == "Power_Ups":
+                    for pa in self._panel.panel_turtle:
+                        pa.set_panel_text("Blue_Power_Up", slot_id)
+                    if self._shop_config.blue_power_up_level != 5:
+                        self._price_displayed = POWER_UP_PRICES[self._shop_config.blue_power_up_level - 1]
+                    else:
+                        self._price_displayed = 0
                 else:
-                    self._price_displayed = 0
+                    for pa in self._panel.panel_turtle:
+                        pa.set_panel_text("Gadget", slot_id)
+                    if not self._shop_config.shield_unlocked:
+                        self._price_displayed = GADGET_PRICE
+                    else:
+                        self._price_displayed = 0
             elif slot_id == 3:
-                for pa in self._panel.panel_turtle:
-                    pa.set_panel_text("Green_Power_Up", slot_id)
-                if self._shop_config.green_power_up_level != 5:
-                    self._price_displayed = POWER_UP_PRICES[self._shop_config.green_power_up_level - 1]
+                if current_page == "Power_Ups":
+                    for pa in self._panel.panel_turtle:
+                        pa.set_panel_text("Green_Power_Up", slot_id)
+                    if self._shop_config.green_power_up_level != 5:
+                        self._price_displayed = POWER_UP_PRICES[self._shop_config.green_power_up_level - 1]
+                    else:
+                        self._price_displayed = 0
                 else:
-                    self._price_displayed = 0
+                    for pa in self._panel.panel_turtle:
+                        pa.set_panel_text("Gadget", slot_id)
+                    if not self._shop_config.thorns_unlocked:
+                        self._price_displayed = GADGET_PRICE
+                    else:
+                        self._price_displayed = 0
             elif slot_id == 4:
-                for pa in self._panel.panel_turtle:
-                    pa.set_panel_text("Red_Power_Up", slot_id)
-                if self._shop_config.red_power_up_level != 5:
-                    self._price_displayed = POWER_UP_PRICES[self._shop_config.red_power_up_level - 1]
+                if current_page == "Power_Ups":
+                    for pa in self._panel.panel_turtle:
+                        pa.set_panel_text("Red_Power_Up", slot_id)
+                    if self._shop_config.red_power_up_level != 5:
+                        self._price_displayed = POWER_UP_PRICES[self._shop_config.red_power_up_level - 1]
+                    else:
+                        self._price_displayed = 0
                 else:
-                    self._price_displayed = 0
+                    for pa in self._panel.panel_turtle:
+                        pa.set_panel_text("Gadget", slot_id)
+                    if not self._shop_config.hearts_unlocked:
+                        self._price_displayed = GADGET_PRICE
+                    else:
+                        self._price_displayed = 0
             # If there is a price, create a buy button, if not, do not create one and remove any existing one
             if self._price_displayed != 0:
                 for bu in self._button.buttons_on_screen_list:

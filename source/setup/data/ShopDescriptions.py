@@ -310,12 +310,10 @@ GADGET_DESCRIPTIONS = [
         "makes all coins",
         "that spawn during",
         "gameplay move towards",
-        "the player. As",
-        "a drawback, coins",
-        "cannot be picked",
-        "up by getting",
-        "hit with a",
-        "laser."
+        "the player. As a",
+        "drawback, coins cannot",
+        "be picked up by hitting",
+        "them with a laser."
     ], 16, "Courier"),
     Description("left", [
         "Shield",
@@ -341,12 +339,12 @@ GADGET_DESCRIPTIONS = [
         "Heart Power Up",
         "",
         "Makes it so",
-        "that a 4th",
+        "that a unique",
         "heart power up",
         "can spawn during",
         "gameplay. When picked",
-        "up, The heart",
+        "up, the heart",
         "power up grants",
-        "the player 2 health"
+        "the player 3 health."
     ], 16, "Courier")
 ]

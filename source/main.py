@@ -1992,6 +1992,19 @@ def main():
                                     s.new_select(bu.get_button_frame().xcor() - 1 * scale_factor_X, bu.get_button_frame().ycor())
                                     refresh_variables.move_tab_selector = 0
 
+                # Check if the slots have been clicked on or not
+                for bu in button.buttons_on_screen_list:
+                    button_color, button_type, id = bu.click_button()
+                    if bu.get_type() == "Gadget_Slot":
+                        if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                            wn.onscreenclick(shop.slot_1_select)
+                        elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                            wn.onscreenclick(shop.slot_2_select)
+                        elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                            wn.onscreenclick(shop.slot_3_select)
+                        elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                            wn.onscreenclick(shop.slot_4_select)
+
             # Spawn the coin indicator
             if coin_indicator.coin_indicator_index == 0:
                 coin_indicator.spawn_coin_indicator()
