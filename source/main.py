@@ -1000,6 +1000,16 @@ def main():
                         if pu.get_type() == 3:
                             pu.spawn(settings.power_up_spawn_sound)
 
+            # 75 for the heart power up if the heart gadget is enabled
+            if shop_config.hearts_enabled:
+                if power_up.power_up_update == 75 or (machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 76):
+                    if power_up.power_up_index[4] == 0:
+                        power_up.spawn_power_up(5, screen.mode, settings.power_up_spawn_sound)
+                    else:
+                        for pu in power_up.current_power_ups:
+                            if pu.get_type() == 5:
+                                pu.spawn(settings.power_up_spawn_sound)
+
             # Check if the player has picked up a power up or not
             for p in machine_player.current_player:
                 for pu in power_up.current_power_ups:
@@ -1030,6 +1040,14 @@ def main():
                                 statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
                                 statistics.save()
                             extra_power_up_indicator.extra_power_up_indicator_turtle[0].set_power_up_active(1)
+
+                        if shop_config.hearts_enabled:
+                            if pu.type == 5 and pu.get_power_up().distance(p.get_player()) < 50 * scale_factor and p.get_death_animation() == 0:
+                                pu.pick_up(settings.power_up_pickup_sound)
+                                if settings.god_mode == 0:
+                                    statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
+                                    statistics.save()
+                                p.grant_player_health()
 
             # If the power ups are active, run their timers through these functions
             for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
@@ -1195,6 +1213,16 @@ def main():
                         if pu.get_type() == 4:
                             pu.spawn(settings.power_up_spawn_sound)
 
+            # 75 for the heart power up if the heart gadget is enabled
+            if shop_config.hearts_enabled:
+                if power_up.power_up_update == 75 or (machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 76):
+                    if power_up.power_up_index[4] == 0:
+                        power_up.spawn_power_up(5, screen.mode, settings.power_up_spawn_sound)
+                    else:
+                        for pu in power_up.current_power_ups:
+                            if pu.get_type() == 5:
+                                pu.spawn(settings.power_up_spawn_sound)
+
             # Check if the player has picked up a power up or not
             for h in human_player.current_human:
                 for pu in power_up.current_power_ups:
@@ -1225,6 +1253,14 @@ def main():
                                 statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1
                                 statistics.save()
                             extra_power_up_indicator.extra_power_up_indicator_turtle[0].set_power_up_active(1)
+
+                        if shop_config.hearts_enabled:
+                            if pu.type == 5 and pu.get_power_up().distance(h.get_player()) < 50 * scale_factor and h.get_death_animation() == 0:
+                                pu.pick_up(settings.power_up_pickup_sound)
+                                if settings.god_mode == 0:
+                                    statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1
+                                    statistics.save()
+                                h.grant_player_health()
 
             # If the power ups are active, run their timers through these functions
             for yi in yellow_power_up_indicator.yellow_power_up_indicator_turtle:
@@ -1779,7 +1815,7 @@ def main():
                     # If the player laser hits a ufo that is visible and not dying and has health
                     #   greater than damage
                     if ufo.ufo_hit_value == 0:
-                        if u.got_hit == 0 and u.get_ufo_health() > alien_mode_setup.damage and u.get_ufo().isvisible():
+                        if u.get_ufo_health() > alien_mode_setup.damage and u.get_ufo().isvisible():
                             laser_hit = 0
                             if u.got_hit == 0:
                                 for l in h.get_laser():

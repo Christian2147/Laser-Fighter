@@ -59,7 +59,7 @@ class SpawnPowerUp:
 
         self.all_power_ups = []
         self.current_power_ups = []
-        self.power_up_index = [0, 0, 0, 0]
+        self.power_up_index = [0, 0, 0, 0, 0]
         self.power_up_update = 0
         self.power_up_time = 0
 
@@ -122,12 +122,20 @@ class SpawnPowerUp:
                 self.power_up_index[2] = 1
                 self.current_power_ups.append(power_up)
                 self.all_power_ups.append(power_up)
-            else:
+            elif type == 4:
                 if mode == "Machine_Mode":
                     power_up = PowerUp(4, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
                 elif mode == "Alien_Mode":
                     power_up = PowerUp(4, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[3] = 1
+                self.current_power_ups.append(power_up)
+                self.all_power_ups.append(power_up)
+            elif type == 5:
+                if mode == "Machine_Mode":
+                    power_up = PowerUp(5, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                elif mode == "Alien_Mode":
+                    power_up = PowerUp(5, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                self.power_up_index[4] = 1
                 self.current_power_ups.append(power_up)
                 self.all_power_ups.append(power_up)
         else:
@@ -156,12 +164,19 @@ class SpawnPowerUp:
                             pu.reinstate(3, 2, power_up_spawn_sound)
                         self.power_up_index[2] = 1
                         self.current_power_ups.append(pu)
-                    else:
+                    elif type == 4:
                         if mode == "Machine_Mode":
                             pu.reinstate(4, 1, power_up_spawn_sound)
                         elif mode == "Alien_Mode":
                             pu.reinstate(4, 2, power_up_spawn_sound)
                         self.power_up_index[3] = 1
+                        self.current_power_ups.append(pu)
+                    elif type == 5:
+                        if mode == "Machine_Mode":
+                            pu.reinstate(5, 1, power_up_spawn_sound)
+                        elif mode == "Alien_Mode":
+                            pu.reinstate(5, 2, power_up_spawn_sound)
+                        self.power_up_index[4] = 1
                         self.current_power_ups.append(pu)
                     break
 

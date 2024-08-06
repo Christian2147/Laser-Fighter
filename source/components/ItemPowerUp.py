@@ -33,6 +33,7 @@ from setup.TextureSetup import YELLOW_LIGHTNING_POWER_UP_TEXTURE
 from setup.TextureSetup import BLUE_LIGHTNING_POWER_UP_TEXTURE
 from setup.TextureSetup import GREEN_LIGHTNING_POWER_UP_TEXTURE
 from setup.TextureSetup import RED_LIGHTNING_POWER_UP_TEXTURE
+from setup.TextureSetup import HEART_POWER_UP_TEXTURE
 from setup.TextureSetup import YELLOW_POWER_UP_INDICATOR_ON_TEXTURE
 from setup.TextureSetup import YELLOW_POWER_UP_INDICATOR_OFF_TEXTURE
 from setup.TextureSetup import BLUE_POWER_UP_INDICATOR_ON_TEXTURE
@@ -91,6 +92,8 @@ class PowerUp:
         # Type 4 = red power up
         elif type == 4:
             self.power_up.shape(RED_LIGHTNING_POWER_UP_TEXTURE)
+        elif type == 5:
+            self.power_up.shape(HEART_POWER_UP_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving
         self.power_up.penup()
         self.power_up.shapesize(2 * scale_factor_y, 2 * scale_factor_x)
@@ -147,6 +150,8 @@ class PowerUp:
         # Type 4 = red power up
         elif type == 4:
             self.power_up.shape(RED_LIGHTNING_POWER_UP_TEXTURE)
+        elif type == 5:
+            self.power_up.shape(HEART_POWER_UP_TEXTURE)
         # Spawn in a random location on the x-axis (y axis depends on the mode of the game)
         if mode == 1:
             self.power_up.goto(random.randint(int(-620 * self.scale_factor_x), int(620 * self.scale_factor_x)), -300 * self.scale_factor_y)
