@@ -142,6 +142,8 @@ class MachineModeSetup:
         self.yellow_player_movement = 30
         self.power_up_spawn_rate = 1
 
+        self.health = 0
+
         # Run the setup
         self.setup_machine_mode()
 
@@ -169,6 +171,7 @@ class MachineModeSetup:
         del self.player_movement
         del self.yellow_player_movement
         del self.power_up_spawn_rate
+        del self.health
 
     def setup_machine_mode(self):
         """
@@ -253,3 +256,8 @@ class MachineModeSetup:
 
         self.player_movement = self.player_movement * self._scale_factor_x
         self.yellow_player_movement = self.player_movement * self._power_up_setup.yellow_power_up_movement_increase
+
+        if self._shop_config.shield_enabled:
+            self.health = 20
+        else:
+            self.health = 10

@@ -41,6 +41,16 @@ from setup.TextureSetup import HEALTH_BAR_410_TEXTURE
 from setup.TextureSetup import HEALTH_BAR_310_TEXTURE
 from setup.TextureSetup import HEALTH_BAR_210_TEXTURE
 from setup.TextureSetup import HEALTH_BAR_110_TEXTURE
+from setup.TextureSetup import ARMOR_BAR_10_10_TEXTURE
+from setup.TextureSetup import ARMOR_BAR_10_9_TEXTURE
+from setup.TextureSetup import ARMOR_BAR_10_8_TEXTURE
+from setup.TextureSetup import ARMOR_BAR_10_7_TEXTURE
+from setup.TextureSetup import ARMOR_BAR_10_6_TEXTURE
+from setup.TextureSetup import ARMOR_BAR_10_5_TEXTURE
+from setup.TextureSetup import ARMOR_BAR_10_4_TEXTURE
+from setup.TextureSetup import ARMOR_BAR_10_3_TEXTURE
+from setup.TextureSetup import ARMOR_BAR_10_2_TEXTURE
+from setup.TextureSetup import ARMOR_BAR_10_1_TEXTURE
 
 
 class Player:
@@ -125,8 +135,23 @@ class Player:
         if god_mode == 1:
             self.health_bar.hideturtle()
 
+        # If the shield is enabled, an armor bar is created in the top right corner of the screen
+        if machine_mode_setup.health == 20:
+            self.armor_bar = turtle.Turtle()
+            self.armor_bar.shape(ARMOR_BAR_10_10_TEXTURE)
+            self.armor_bar.shapesize(1 * scale_factor_y, 1 * scale_factor_x)
+            # Ensure that the turtle does not draw lines on the screen while moving
+            self.armor_bar.penup()
+            self.armor_bar.goto(531 * scale_factor_x, 299 * scale_factor_y)
+            # If god mode is on, the armor bar is not visible
+            if god_mode == 1:
+                self.armor_bar.hideturtle()
+            self.armor_created = 1
+        else:
+            self.armor_created = 0
+
         self.death_animation = 0
-        self.health_bar_indicator = 10
+        self.health_bar_indicator = machine_mode_setup.health
         self.hit_delay = 0
         self.update = 0
         self.direction = 0
@@ -155,6 +180,9 @@ class Player:
         self.laser_has_attacked_list.clear()
         self.lasers_fired_list.clear()
         self.health_bar.clear()
+        if hasattr(self, 'armor'):
+            self.armor.clear()
+            del self.armor
         del self.player
         del self.health_bar
         del self.laser_list
@@ -208,6 +236,22 @@ class Player:
         if god_mode == 0:
             self.health_bar.showturtle()
 
+        self.health_bar_indicator = machine_mode_setup.health
+
+        if self.health_bar_indicator == 20:
+            if self.armor_created == 0:
+                self.armor_bar = turtle.Turtle()
+                self.armor_bar.shapesize(1 * self.scale_factor_y, 1 * self.scale_factor_x)
+                # Ensure that the turtle does not draw lines on the screen while moving
+                self.armor_bar.penup()
+                self.armor_bar.goto(531 * self.scale_factor_x, 299 * self.scale_factor_y)
+                self.armor_created = 1
+
+            self.armor_bar.shape(ARMOR_BAR_10_10_TEXTURE)
+            # If god mode is off, show the armor bar
+            if god_mode == 0:
+                self.armor_bar.showturtle()
+
     def get_player(self):
         """
             Returns the player sprite so that its class attributes can be accessed.
@@ -237,6 +281,16 @@ class Player:
         """
 
         return self.health_bar
+
+    def get_armor_bar(self):
+        """
+            Returns the players armor bar sprite so that its class attributes can be accessed
+
+            :return: armor_bar: The players armor bar sprite
+            :type: turtle.Turtle()
+        """
+
+        return self.armor_bar
 
     def get_player_death_update(self):
         """
@@ -321,9 +375,11 @@ class Player:
         self.laser_count = 0
         self.do_collision = 0
         self.health_bar.hideturtle()
+        if self.armor_created == 1:
+            self.armor_bar.hideturtle()
         self.death_animation = 0
         self.hit_delay = 0
-        self.health_bar_indicator = 10
+        self.health_bar_indicator = machine_mode_setup.health
         self.update = 0
         # self.laser_has_attacked = 0
         self.laser_start_time = 0
@@ -512,10 +568,13 @@ class Player:
                 self.update = 6
                 self.kill_start_time = 0
 
-        # Resets the players health back to 10
+        # Resets the players health back to 10 or 20 is the shield is enabled
         if self.update == 3.5:
             self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
-            self.health_bar_indicator = 10
+            self.health_bar_indicator = machine_mode_setup.health
+            if self.health_bar_indicator == 20:
+                self.armor_bar.shape(ARMOR_BAR_10_10_TEXTURE)
+                self.armor_bar.showturtle()
             self.update = 4
             self.kill_start_time = time.time()
             return
@@ -598,7 +657,27 @@ class Player:
 
         if self.hit_delay == 0 and no_hit == 0 and self.update == 0:
             # Decrease the players health by 1
-            if self.health_bar_indicator == 10:
+            if self.health_bar_indicator == 20:
+                self.armor_bar.shape(ARMOR_BAR_10_9_TEXTURE)
+            elif self.health_bar_indicator == 19:
+                self.armor_bar.shape(ARMOR_BAR_10_8_TEXTURE)
+            elif self.health_bar_indicator == 18:
+                self.armor_bar.shape(ARMOR_BAR_10_7_TEXTURE)
+            elif self.health_bar_indicator == 17:
+                self.armor_bar.shape(ARMOR_BAR_10_6_TEXTURE)
+            elif self.health_bar_indicator == 16:
+                self.armor_bar.shape(ARMOR_BAR_10_5_TEXTURE)
+            elif self.health_bar_indicator == 15:
+                self.armor_bar.shape(ARMOR_BAR_10_4_TEXTURE)
+            elif self.health_bar_indicator == 14:
+                self.armor_bar.shape(ARMOR_BAR_10_3_TEXTURE)
+            elif self.health_bar_indicator == 13:
+                self.armor_bar.shape(ARMOR_BAR_10_2_TEXTURE)
+            elif self.health_bar_indicator == 12:
+                self.armor_bar.shape(ARMOR_BAR_10_1_TEXTURE)
+            elif self.health_bar_indicator == 11:
+                self.armor_bar.hideturtle()
+            elif self.health_bar_indicator == 10:
                 self.health_bar.shape(HEALTH_BAR_910_TEXTURE)
             elif self.health_bar_indicator == 9:
                 self.health_bar.shape(HEALTH_BAR_810_TEXTURE)
