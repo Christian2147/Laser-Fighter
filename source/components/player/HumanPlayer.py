@@ -897,6 +897,64 @@ class Human:
                 self.gun.shape(alien_mode_setup.gun_left_texture)
             self.gun_start_time = time.time()
 
+    def grant_player_health(self):
+        if self.health + 3 > alien_mode_setup.health:
+            new_increase = alien_mode_setup.health - self.health
+            self.health = self.health + new_increase
+        else:
+            self.health = self.health + 3
+
+        if self.health >= 10:
+            self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
+            if self.health == 20:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_10_TEXTURE)
+            elif self.health == 19:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_9_TEXTURE)
+            elif self.health == 18:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_8_TEXTURE)
+            elif self.health == 17:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_7_TEXTURE)
+            elif self.health == 16:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_6_TEXTURE)
+            elif self.health == 15:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_5_TEXTURE)
+            elif self.health == 14:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_4_TEXTURE)
+            elif self.health == 13:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_3_TEXTURE)
+            elif self.health == 12:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_2_TEXTURE)
+            elif self.health == 11:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_1_TEXTURE)
+        elif self.health == 9:
+            self.health_bar.shape(HEALTH_BAR_910_TEXTURE)
+        elif self.health == 8:
+            self.health_bar.shape(HEALTH_BAR_810_TEXTURE)
+        elif self.health == 7:
+            self.health_bar.shape(HEALTH_BAR_710_TEXTURE)
+        elif self.health == 6:
+            self.health_bar.shape(HEALTH_BAR_610_TEXTURE)
+        elif self.health == 5:
+            self.health_bar.shape(HEALTH_BAR_510_TEXTURE)
+        elif self.health == 4:
+            self.health_bar.shape(HEALTH_BAR_410_TEXTURE)
+        elif self.health == 3:
+            self.health_bar.shape(HEALTH_BAR_310_TEXTURE)
+        elif self.health == 2:
+            self.health_bar.shape(HEALTH_BAR_210_TEXTURE)
+        elif self.health == 1:
+            self.health_bar.shape(HEALTH_BAR_110_TEXTURE)
+
     def kill_player(self, death_sound):
         """
             Kills the human player and plays the human players death animation. After that, it spawns the player back

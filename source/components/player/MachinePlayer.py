@@ -541,6 +541,64 @@ class Player:
                 l.laser.hideturtle()
             self.laser_start_time = 0
 
+    def grant_player_health(self):
+        if self.health_bar_indicator + 3 > machine_mode_setup.health:
+            new_increase = machine_mode_setup.health - self.health_bar_indicator
+            self.health_bar_indicator = self.health_bar_indicator + new_increase
+        else:
+            self.health_bar_indicator = self.health_bar_indicator + 3
+
+        if self.health_bar_indicator >= 10:
+            self.health_bar.shape(HEALTH_BAR_1010_TEXTURE)
+            if self.health_bar_indicator == 20:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_10_TEXTURE)
+            elif self.health_bar_indicator == 19:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_9_TEXTURE)
+            elif self.health_bar_indicator == 18:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_8_TEXTURE)
+            elif self.health_bar_indicator == 17:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_7_TEXTURE)
+            elif self.health_bar_indicator == 16:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_6_TEXTURE)
+            elif self.health_bar_indicator == 15:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_5_TEXTURE)
+            elif self.health_bar_indicator == 14:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_4_TEXTURE)
+            elif self.health_bar_indicator == 13:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_3_TEXTURE)
+            elif self.health_bar_indicator == 12:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_2_TEXTURE)
+            elif self.health_bar_indicator == 11:
+                self.armor_bar.showturtle()
+                self.armor_bar.shape(ARMOR_BAR_10_1_TEXTURE)
+        elif self.health_bar_indicator == 9:
+            self.health_bar.shape(HEALTH_BAR_910_TEXTURE)
+        elif self.health_bar_indicator == 8:
+            self.health_bar.shape(HEALTH_BAR_810_TEXTURE)
+        elif self.health_bar_indicator == 7:
+            self.health_bar.shape(HEALTH_BAR_710_TEXTURE)
+        elif self.health_bar_indicator == 6:
+            self.health_bar.shape(HEALTH_BAR_610_TEXTURE)
+        elif self.health_bar_indicator == 5:
+            self.health_bar.shape(HEALTH_BAR_510_TEXTURE)
+        elif self.health_bar_indicator == 4:
+            self.health_bar.shape(HEALTH_BAR_410_TEXTURE)
+        elif self.health_bar_indicator == 3:
+            self.health_bar.shape(HEALTH_BAR_310_TEXTURE)
+        elif self.health_bar_indicator == 2:
+            self.health_bar.shape(HEALTH_BAR_210_TEXTURE)
+        elif self.health_bar_indicator == 1:
+            self.health_bar.shape(HEALTH_BAR_110_TEXTURE)
+
     def kill_player(self, death_sound):
         """
             Kills the player and plays the players death animation. After that, it spawns the player back at the
