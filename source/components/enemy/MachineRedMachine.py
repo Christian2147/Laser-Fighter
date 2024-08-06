@@ -185,6 +185,7 @@ class RedMachine:
         self.float_time_offset = time.time()
         self.x_range_list = [(0, 0)] * machine_mode_setup.laser_count
         self.collision_y_coordinate_list = [0] * machine_mode_setup.laser_count
+        self.thorns_initiated_damage = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -349,6 +350,7 @@ class RedMachine:
         self.movement_activated = 0
         self.x_range_list.clear()
         self.collision_y_coordinate_list.clear()
+        self.thorns_initiated_damage = 0
 
     def remove_collisions(self):
         """
@@ -535,6 +537,7 @@ class RedMachine:
             # Change the texture of the red machine to the first frame of the death explosion
             self.red_machine.shape(EXPLOSION_1_TEXTURE)
             self.update = 0.5
+            self.thorns_initiated_damage = 0
             self.start_time = time.time()
             return
 
@@ -568,6 +571,7 @@ class RedMachine:
                 sound.play()
             self.health_bar = 1
             self.hit_delay = 1
+            self.thorns_initiated_damage = 0
             self.hit_start_time = time.time()
 
     def float_effect(self):
