@@ -517,3 +517,38 @@ class Shop:
                     self._refresh.refresh_indicator = 1
                     self._refresh.move_slot_selector = 1
                     self._button.buy_button_pressed = 1
+
+    def execute_enable_button(self, x, y):
+        self._window.onscreenclick(None)
+        # Check to see if the cursor is in the bound of the button to be clicked
+        if (x > 299 * self._scale_factor_x) and (x < 600 * self._scale_factor_x) and (y > -328 * self._scale_factor_y) and (y < -212 * self._scale_factor_y):
+            # Button sound is played
+            if self._settings.button_sound == 1:
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+                sound.play()
+            for pa in self._panel.panel_turtle:
+                if pa.category == "Gadget":
+                    if pa.id == 1:
+                        if self._shop_config.coin_magnet_enabled:
+                            self._shop_config.coin_magnet_enabled = False
+                        else:
+                            self._shop_config.coin_magnet_enabled = True
+                    elif pa.id == 2:
+                        if self._shop_config.shield_enabled:
+                            self._shop_config.shield_enabled = False
+                        else:
+                            self._shop_config.shield_enabled = True
+                    elif pa.id == 3:
+                        if self._shop_config.thorns_enabled:
+                            self._shop_config.thorns_enabled = False
+                        else:
+                            self._shop_config.thorns_enabled = True
+                    elif pa.id == 4:
+                        if self._shop_config.hearts_enabled:
+                            self._shop_config.hearts_enabled = False
+                        else:
+                            self._shop_config.hearts_enabled = True
+            self._shop_config.save()
+            self._refresh.refresh_panel = 1
+            self._refresh.refresh_text = 1
+            self._refresh.refresh_button = 1
