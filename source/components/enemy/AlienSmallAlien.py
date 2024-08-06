@@ -119,6 +119,8 @@ class SmallAlien:
         self.collision_point = 0
         self.already_ahead = 1
         self.already_behind = 1
+        self.thorns_initiated_damage = 0
+
         self.id = id
 
         self.scale_factor_x = scale_factor_x
@@ -198,6 +200,7 @@ class SmallAlien:
         self.collision_point = 0
         self.already_ahead = 1
         self.already_behind = 1
+        self.thorns_initiated_damage = 0
 
     def set_alien_direction(self, player_x):
         """
@@ -343,6 +346,7 @@ class SmallAlien:
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0
+            self.thorns_initiated_damage = 0
             self.death_animation = 1
             self.kill_start_time = time.time()
             return

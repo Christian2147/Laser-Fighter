@@ -136,6 +136,7 @@ class MediumAlien:
         self.collision_point = 0
         self.already_ahead = 1
         self.already_behind = 1
+        self.thorns_initiated_damage = 0
 
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -253,6 +254,7 @@ class MediumAlien:
         self.collision_point = 0
         self.already_ahead = 1
         self.already_behind = 1
+        self.thorns_initiated_damage = 0
 
     def set_alien_direction(self, player_x):
         """
@@ -406,6 +408,7 @@ class MediumAlien:
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0
+            self.thorns_initiated_damage = 0
             self.death_animation = 1
             self.kill_start_time = time.time()
             return
@@ -447,6 +450,7 @@ class MediumAlien:
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0
+            self.thorns_initiated_damage = 0
             self.health = 1
             self.hit_delay = 1
             self.hit_start_time = time.time()

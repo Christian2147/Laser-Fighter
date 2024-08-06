@@ -1402,35 +1402,55 @@ def main():
                 for sa in small_alien.small_aliens:
                     # If the player laser hits a small alien that is visible and not dying
                     if small_alien.small_aliens_kill_values[current_small_alien_update_value_index] == 0:
-                        if sa.got_hit == 0 and sa.get_small_alien().isvisible():
+                        if sa.get_small_alien().isvisible():
                             # Check for all player lasers
-                            for l in h.get_laser():
-                                if l.laser_update < alien_mode_setup.piercing and \
-                                    alien_collision.SMALL_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.SMALL_ALIEN_Y_RANGE[1] and (
-                                    (l.laser.xcor() > sa.get_small_alien().xcor() + alien_collision.SMALL_ALIEN_X_DISTANCE * sa.collision_point and h.laser_direction == 1 and sa.already_ahead == 0) or
-                                    (l.laser.xcor() < sa.get_small_alien().xcor() + alien_collision.SMALL_ALIEN_X_DISTANCE * sa.collision_point and h.laser_direction == 2 and sa.already_behind == 0)
-                                ):
-                                    small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = small_alien.small_aliens_kill_values[current_small_alien_update_value_index] + 1
+                            laser_killed = 0
+                            if sa.got_hit == 0:
+                                for l in h.get_laser():
+                                    if l.laser_update < alien_mode_setup.piercing and \
+                                        alien_collision.SMALL_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.SMALL_ALIEN_Y_RANGE[1] and (
+                                        (l.laser.xcor() > sa.get_small_alien().xcor() + alien_collision.SMALL_ALIEN_X_DISTANCE * sa.collision_point and h.laser_direction == 1 and sa.already_ahead == 0) or
+                                        (l.laser.xcor() < sa.get_small_alien().xcor() + alien_collision.SMALL_ALIEN_X_DISTANCE * sa.collision_point and h.laser_direction == 2 and sa.already_behind == 0)
+                                    ):
+                                        small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = small_alien.small_aliens_kill_values[current_small_alien_update_value_index] + 1
 
-                                    # Increase the players score
-                                    # When the blue power up is active, the score increases are doubled
-                                    #   (This is universal)
-                                    # The player gun type may also have a score multiplier applied
-                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                        statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
-                                    else:
-                                        statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
+                                        # Increase the players score
+                                        # When the blue power up is active, the score increases are doubled
+                                        #   (This is universal)
+                                        # The player gun type may also have a score multiplier applied
+                                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                            statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
+                                        else:
+                                            statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
 
-                                    # Update the stats if god mode is off
-                                    if settings.god_mode == 0:
-                                        statistics.small_aliens_killed = statistics.small_aliens_killed + 1
-                                        statistics.save()
+                                        # Update the stats if god mode is off
+                                        if settings.god_mode == 0:
+                                            statistics.small_aliens_killed = statistics.small_aliens_killed + 1
+                                            statistics.save()
 
-                                    # Increase the lasers pierce by 1 and try hiding the laser
-                                    l.laser.hideturtle()
-                                    if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                                        l.laser_update = l.laser_update + 1
-                                    break
+                                        # Increase the lasers pierce by 1 and try hiding the laser
+                                        l.laser.hideturtle()
+                                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                                            l.laser_update = l.laser_update + 1
+                                        laser_killed = 1
+                                        break
+
+                            if sa.thorns_initiated_damage == 1 and laser_killed == 0:
+                                small_alien.small_aliens_kill_values[current_small_alien_update_value_index] =  small_alien.small_aliens_kill_values[current_small_alien_update_value_index] + 1
+
+                                # Increase the players score
+                                # When the blue power up is active, the score increases are doubled
+                                #   (This is universal)
+                                # The player gun type may also have a score multiplier applied
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
+                                else:
+                                    statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
+
+                                # Update the stats if god mode is off
+                                if settings.god_mode == 0:
+                                    statistics.small_aliens_killed = statistics.small_aliens_killed + 1
+                                    statistics.save()
                     elif small_alien.small_aliens_kill_values[current_small_alien_update_value_index] != 0:
                         # Kill the alien
                         sa.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
@@ -1449,28 +1469,43 @@ def main():
                     #   than or equal to damage
                     # Same procedure as before
                     if medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] == 0:
-                        if ma.got_hit == 0 and ma.health <= alien_mode_setup.damage and ma.get_medium_alien().isvisible() and ma.hit_delay == 0:
-                            for l in h.get_laser():
-                                if l.laser_update < alien_mode_setup.piercing and \
-                                    alien_collision.MEDIUM_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.MEDIUM_ALIEN_Y_RANGE[1] and (
-                                    (l.laser.xcor() > ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 1 and ma.already_ahead == 0) or
-                                    (l.laser.xcor() < ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 2 and ma.already_behind == 0)
-                                ):
-                                    medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
+                        if ma.health <= alien_mode_setup.damage and ma.get_medium_alien().isvisible() and ma.hit_delay == 0:
+                            laser_killed = 0
+                            if ma.got_hit == 0:
+                                for l in h.get_laser():
+                                    if l.laser_update < alien_mode_setup.piercing and \
+                                        alien_collision.MEDIUM_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.MEDIUM_ALIEN_Y_RANGE[1] and (
+                                        (l.laser.xcor() > ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 1 and ma.already_ahead == 0) or
+                                        (l.laser.xcor() < ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 2 and ma.already_behind == 0)
+                                    ):
+                                        medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
 
-                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                        statistics.score = statistics.score + 2 * alien_mode_setup.blue_power_up_score_multiplier
-                                    else:
-                                        statistics.score = statistics.score + 2 * alien_mode_setup.regular_score_multiplier
+                                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                            statistics.score = statistics.score + 2 * alien_mode_setup.blue_power_up_score_multiplier
+                                        else:
+                                            statistics.score = statistics.score + 2 * alien_mode_setup.regular_score_multiplier
 
-                                    if settings.god_mode == 0:
-                                        statistics.medium_aliens_killed = statistics.medium_aliens_killed + 1
-                                        statistics.save()
+                                        if settings.god_mode == 0:
+                                            statistics.medium_aliens_killed = statistics.medium_aliens_killed + 1
+                                            statistics.save()
 
-                                    l.laser.hideturtle()
-                                    if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                                        l.laser_update = l.laser_update + 1
-                                    break
+                                        l.laser.hideturtle()
+                                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                                            l.laser_update = l.laser_update + 1
+                                        laser_killed = 1
+                                        break
+
+                            if ma.thorns_initiated_damage == 1 and laser_killed == 0:
+                                medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
+
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    statistics.score = statistics.score + 2 * alien_mode_setup.blue_power_up_score_multiplier
+                                else:
+                                    statistics.score = statistics.score + 2 * alien_mode_setup.regular_score_multiplier
+
+                                if settings.god_mode == 0:
+                                    statistics.medium_aliens_killed = statistics.medium_aliens_killed + 1
+                                    statistics.save()
                     elif medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] != 0:
                         ma.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
@@ -1482,29 +1517,44 @@ def main():
                     # If the player laser hits a medium alien that is visible and not dying and has health
                     #   greater than damage
                     if medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] == 0:
-                        if ma.got_hit == 0 and ma.get_medium_alien_health() > alien_mode_setup.damage and ma.get_medium_alien().isvisible():
-                            for l in h.get_laser():
-                                if l.laser_update < alien_mode_setup.piercing and \
-                                    alien_collision.MEDIUM_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.MEDIUM_ALIEN_Y_RANGE[1] and (
-                                    (l.laser.xcor() > ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 1 and ma.already_ahead == 0) or
-                                    (l.laser.xcor() < ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 2 and ma.already_behind == 0)
-                                ):
-                                    medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
+                        if ma.get_medium_alien_health() > alien_mode_setup.damage and ma.get_medium_alien().isvisible():
+                            laser_hit = 0
+                            if ma.got_hit == 0:
+                                for l in h.get_laser():
+                                    if l.laser_update < alien_mode_setup.piercing and \
+                                        alien_collision.MEDIUM_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.MEDIUM_ALIEN_Y_RANGE[1] and (
+                                        (l.laser.xcor() > ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 1 and ma.already_ahead == 0) or
+                                        (l.laser.xcor() < ma.get_medium_alien().xcor() + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 2 and ma.already_behind == 0)
+                                    ):
+                                        medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
 
-                                    # Increase the players score by the hit amount
-                                    # When the blue power up is active, the score increases are doubled
-                                    #   (This is universal)
-                                    # The player gun type may also have a score multiplier applied
-                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                        statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
-                                    else:
-                                        statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
+                                        # Increase the players score by the hit amount
+                                        # When the blue power up is active, the score increases are doubled
+                                        #   (This is universal)
+                                        # The player gun type may also have a score multiplier applied
+                                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                            statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
+                                        else:
+                                            statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
 
-                                    # Increase the lasers pierce by 1 and try hiding the laser
-                                    l.laser.hideturtle()
-                                    if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                                        l.laser_update = l.laser_update + 1
-                                    break
+                                        # Increase the lasers pierce by 1 and try hiding the laser
+                                        l.laser.hideturtle()
+                                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                                            l.laser_update = l.laser_update + 1
+                                            laser_hit = 1
+                                        break
+
+                            if ma.thorns_initiated_damage == 1 and laser_hit == 0:
+                                medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
+
+                                # Increase the players score by the hit amount
+                                # When the blue power up is active, the score increases are doubled
+                                #   (This is universal)
+                                # The player gun type may also have a score multiplier applied
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
+                                else:
+                                    statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
                     elif medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] != 0:
                         # Hit the alien
                         ma.hit_alien(settings.enemy_hit_sound)
@@ -1521,28 +1571,43 @@ def main():
                     # If the player laser hits a large alien that is visible and not dying and has health less
                     #   than or equal to damage
                     if large_alien.large_aliens_kill_values[current_large_alien_update_value_index] == 0:
-                        if la.got_hit == 0 and la.health <= alien_mode_setup.damage and la.get_large_alien().isvisible() and la.hit_delay == 0:
-                            for l in h.get_laser():
-                                if l.laser_update < alien_mode_setup.piercing and \
-                                    alien_collision.LARGE_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.LARGE_ALIEN_Y_RANGE[1] and (
-                                    (l.laser.xcor() > la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.laser_direction == 1 and la.already_ahead == 0) or
-                                    (l.laser.xcor() < la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.laser_direction == 2 and la.already_behind == 0)
-                                ):
-                                    large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = large_alien.large_aliens_kill_values[current_large_alien_update_value_index] + 1
+                        if la.health <= alien_mode_setup.damage and la.get_large_alien().isvisible() and la.hit_delay == 0:
+                            laser_killed = 0
+                            if la.got_hit == 0:
+                                for l in h.get_laser():
+                                    if l.laser_update < alien_mode_setup.piercing and \
+                                        alien_collision.LARGE_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.LARGE_ALIEN_Y_RANGE[1] and (
+                                        (l.laser.xcor() > la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.laser_direction == 1 and la.already_ahead == 0) or
+                                        (l.laser.xcor() < la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.laser_direction == 2 and la.already_behind == 0)
+                                    ):
+                                        large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = large_alien.large_aliens_kill_values[current_large_alien_update_value_index] + 1
 
-                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                        statistics.score = statistics.score + 4 * alien_mode_setup.blue_power_up_score_multiplier
-                                    else:
-                                        statistics.score = statistics.score + 4 * alien_mode_setup.regular_score_multiplier
+                                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                            statistics.score = statistics.score + 4 * alien_mode_setup.blue_power_up_score_multiplier
+                                        else:
+                                            statistics.score = statistics.score + 4 * alien_mode_setup.regular_score_multiplier
 
-                                    if settings.god_mode == 0:
-                                        statistics.big_aliens_killed = statistics.big_aliens_killed + 1
-                                        statistics.save()
+                                        if settings.god_mode == 0:
+                                            statistics.big_aliens_killed = statistics.big_aliens_killed + 1
+                                            statistics.save()
 
-                                    l.laser.hideturtle()
-                                    if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                                        l.laser_update = l.laser_update + 1
-                                    break
+                                        l.laser.hideturtle()
+                                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                                            l.laser_update = l.laser_update + 1
+                                        laser_killed = 1
+                                        break
+
+                            if la.thorns_initiated_damage == 1 and laser_killed == 0:
+                                large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = large_alien.large_aliens_kill_values[current_large_alien_update_value_index] + 1
+
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    statistics.score = statistics.score + 4 * alien_mode_setup.blue_power_up_score_multiplier
+                                else:
+                                    statistics.score = statistics.score + 4 * alien_mode_setup.regular_score_multiplier
+
+                                if settings.god_mode == 0:
+                                    statistics.big_aliens_killed = statistics.big_aliens_killed + 1
+                                    statistics.save()
                     elif large_alien.large_aliens_kill_values[current_large_alien_update_value_index] != 0:
                         la.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         large_alien.large_aliens_kill_values[current_large_alien_update_value_index] = large_alien.large_aliens_kill_values[current_large_alien_update_value_index] + 1
@@ -1555,24 +1620,35 @@ def main():
                     #   greater than damage
                     # Same procedure as before
                     if large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] == 0:
-                        if la.got_hit == 0 and la.get_large_alien_health() > alien_mode_setup.damage and la.get_large_alien().isvisible():
-                            for l in h.get_laser():
-                                if l.laser_update < alien_mode_setup.piercing and \
-                                    alien_collision.LARGE_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.LARGE_ALIEN_Y_RANGE[1] and (
-                                    (l.laser.xcor() > la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.laser_direction == 1 and la.already_ahead == 0) or
-                                    (l.laser.xcor() < la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.laser_direction == 2 and la.already_behind == 0)
-                                ):
-                                    large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] + 1
+                        if la.get_large_alien_health() > alien_mode_setup.damage and la.get_large_alien().isvisible():
+                            laser_hit = 0
+                            if la.got_hit == 0:
+                                for l in h.get_laser():
+                                    if l.laser_update < alien_mode_setup.piercing and \
+                                        alien_collision.LARGE_ALIEN_Y_RANGE[0] < l.laser.ycor() < alien_collision.LARGE_ALIEN_Y_RANGE[1] and (
+                                        (l.laser.xcor() > la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.laser_direction == 1 and la.already_ahead == 0) or
+                                        (l.laser.xcor() < la.get_large_alien().xcor() + alien_collision.LARGE_ALIEN_X_DISTANCE * la.collision_point and h.laser_direction == 2 and la.already_behind == 0)
+                                    ):
+                                        large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] + 1
 
-                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                        statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
-                                    else:
-                                        statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
+                                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                            statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
+                                        else:
+                                            statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
 
-                                    l.laser.hideturtle()
-                                    if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                                        l.laser_update = l.laser_update + 1
-                                    break
+                                        l.laser.hideturtle()
+                                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                                            l.laser_update = l.laser_update + 1
+                                        laser_hit = 1
+                                        break
+
+                            if la.thorns_initiated_damage == 1 and laser_hit == 0:
+                                large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] + 1
+
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
+                                else:
+                                    statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
                     elif large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] != 0:
                         la.hit_alien(settings.enemy_hit_sound)
                         large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] = large_alien.large_aliens_hit_values[current_large_alien_hit_value_index] + 1
@@ -1585,28 +1661,43 @@ def main():
                     # If the player laser hits the ufo that is visible and not dying and has health less than
                     #   or equal to damage
                     if ufo.ufo_kill_value == 0:
-                        if u.got_hit == 0 and u.get_ufo_health() <= alien_mode_setup.damage and u.get_ufo().isvisible() and u.hit_delay == 0:
-                            for l in h.get_laser():
-                                if l.laser_update < alien_mode_setup.piercing and \
-                                    alien_collision.UFO_Y_RANGE[0] < l.laser.ycor() < alien_collision.UFO_Y_RANGE[1] and (
-                                    (l.laser.xcor() > u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.laser_direction == 1 and u.already_ahead == 0) or
-                                    (l.laser.xcor() < u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.laser_direction == 2 and u.already_behind == 0)
-                                ):
-                                    ufo.ufo_kill_value = ufo.ufo_kill_value + 1
+                        if u.get_ufo_health() <= alien_mode_setup.damage and u.get_ufo().isvisible() and u.hit_delay == 0:
+                            laser_killed = 0
+                            if u.got_hit == 0:
+                                for l in h.get_laser():
+                                    if l.laser_update < alien_mode_setup.piercing and \
+                                        alien_collision.UFO_Y_RANGE[0] < l.laser.ycor() < alien_collision.UFO_Y_RANGE[1] and (
+                                        (l.laser.xcor() > u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.laser_direction == 1 and u.already_ahead == 0) or
+                                        (l.laser.xcor() < u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.laser_direction == 2 and u.already_behind == 0)
+                                    ):
+                                        ufo.ufo_kill_value = ufo.ufo_kill_value + 1
 
-                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                        statistics.score = statistics.score + 50 * alien_mode_setup.blue_power_up_score_multiplier
-                                    else:
-                                        statistics.score = statistics.score + 50 * alien_mode_setup.regular_score_multiplier
+                                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                            statistics.score = statistics.score + 50 * alien_mode_setup.blue_power_up_score_multiplier
+                                        else:
+                                            statistics.score = statistics.score + 50 * alien_mode_setup.regular_score_multiplier
 
-                                    if settings.god_mode == 0:
-                                        statistics.ufos_killed = statistics.ufos_killed + 1
-                                        statistics.save()
+                                        if settings.god_mode == 0:
+                                            statistics.ufos_killed = statistics.ufos_killed + 1
+                                            statistics.save()
 
-                                    l.laser.hideturtle()
-                                    if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                                        l.laser_update = l.laser_update + 1
-                                    break
+                                        l.laser.hideturtle()
+                                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                                            l.laser_update = l.laser_update + 1
+                                        laser_killed = 1
+                                        break
+
+                            if u.thorns_initiated_damage == 1 and laser_killed == 0:
+                                ufo.ufo_kill_value = ufo.ufo_kill_value + 1
+
+                                if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                    statistics.score = statistics.score + 50 * alien_mode_setup.blue_power_up_score_multiplier
+                                else:
+                                    statistics.score = statistics.score + 50 * alien_mode_setup.regular_score_multiplier
+
+                                if settings.god_mode == 0:
+                                    statistics.ufos_killed = statistics.ufos_killed + 1
+                                    statistics.save()
                     elif ufo.ufo_kill_value != 0:
                         u.kill_ufo(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         ufo.ufo_kill_value = ufo.ufo_kill_value + 1
@@ -1618,34 +1709,56 @@ def main():
                     #   greater than damage
                     if ufo.ufo_hit_value == 0:
                         if u.got_hit == 0 and u.get_ufo_health() > alien_mode_setup.damage and u.get_ufo().isvisible():
-                            for l in h.get_laser():
-                                if l.laser_update < alien_mode_setup.piercing and \
-                                    alien_collision.UFO_Y_RANGE[0] < l.laser.ycor() < alien_collision.UFO_Y_RANGE[1] and (
-                                    (l.laser.xcor() > u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.laser_direction == 1 and u.already_ahead == 0) or
-                                    (l.laser.xcor() < u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.laser_direction == 2 and u.already_behind == 0)
-                                ):
-                                    ufo.ufo_hit_value = ufo.ufo_hit_value + 1
+                            laser_hit = 0
+                            if u.got_hit == 0:
+                                for l in h.get_laser():
+                                    if l.laser_update < alien_mode_setup.piercing and \
+                                        alien_collision.UFO_Y_RANGE[0] < l.laser.ycor() < alien_collision.UFO_Y_RANGE[1] and (
+                                        (l.laser.xcor() > u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.laser_direction == 1 and u.already_ahead == 0) or
+                                        (l.laser.xcor() < u.get_ufo().xcor() + alien_collision.UFO_X_DISTANCE * u.collision_point and h.laser_direction == 2 and u.already_behind == 0)
+                                    ):
+                                        ufo.ufo_hit_value = ufo.ufo_hit_value + 1
 
-                                    if u.get_ufo_health() == 2 or u.get_ufo_health() == 1:
-                                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                            statistics.score = statistics.score + 3 * alien_mode_setup.blue_power_up_score_multiplier
+                                        if u.get_ufo_health() == 2 or u.get_ufo_health() == 1:
+                                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                                statistics.score = statistics.score + 3 * alien_mode_setup.blue_power_up_score_multiplier
+                                            else:
+                                                statistics.score = statistics.score + 3 * alien_mode_setup.regular_score_multiplier
+                                        elif u.get_ufo_health() == 5 or u.get_ufo_health() == 4 or u.get_ufo_health() == 3:
+                                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                                statistics.score = statistics.score + 2 * alien_mode_setup.blue_power_up_score_multiplier
+                                            else:
+                                                statistics.score = statistics.score + 2 * alien_mode_setup.regular_score_multiplier
                                         else:
-                                            statistics.score = statistics.score + 3 * alien_mode_setup.regular_score_multiplier
-                                    elif u.get_ufo_health() == 5 or u.get_ufo_health() == 4 or u.get_ufo_health() == 3:
-                                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                            statistics.score = statistics.score + 2 * alien_mode_setup.blue_power_up_score_multiplier
-                                        else:
-                                            statistics.score = statistics.score + 2 * alien_mode_setup.regular_score_multiplier
+                                            if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                                statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
+                                            else:
+                                                statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
+
+                                        l.laser.hideturtle()
+                                        if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
+                                            l.laser_update = l.laser_update + 1
+                                        laser_hit = 1
+                                        break
+
+                            if u.thorns_initiated_damage == 1 and laser_hit == 0:
+                                ufo.ufo_hit_value = ufo.ufo_hit_value + 1
+
+                                if u.get_ufo_health() == 2 or u.get_ufo_health() == 1:
+                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                        statistics.score = statistics.score + 3 * alien_mode_setup.blue_power_up_score_multiplier
                                     else:
-                                        if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                                            statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
-                                        else:
-                                            statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
-
-                                    l.laser.hideturtle()
-                                    if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
-                                        l.laser_update = l.laser_update + 1
-                                    break
+                                        statistics.score = statistics.score + 3 * alien_mode_setup.regular_score_multiplier
+                                elif u.get_ufo_health() == 5 or u.get_ufo_health() == 4 or u.get_ufo_health() == 3:
+                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                        statistics.score = statistics.score + 2 * alien_mode_setup.blue_power_up_score_multiplier
+                                    else:
+                                        statistics.score = statistics.score + 2 * alien_mode_setup.regular_score_multiplier
+                                else:
+                                    if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                                        statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
+                                    else:
+                                        statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
                     elif ufo.ufo_hit_value != 0:
                         u.hit_ufo(settings.enemy_hit_sound)
                         ufo.ufo_hit_value = ufo.ufo_hit_value + 1
@@ -1681,24 +1794,32 @@ def main():
                                 # Then, kill the player
                                 h.kill_player(settings.player_death_sound)
                                 human_player.human_update_value = human_player.human_update_value + 1
+                                if shop_config.thorns_enabled:
+                                    sa.thorns_initiated_damage = 1
 
                     for ma in medium_alien.medium_aliens:
                         if ma.get_medium_alien().distance(h.get_player()) < 100 * scale_factor:
                             if h.health == 1 and h.hit_delay == 0 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and human_player.human_update_value == 0 and ma.get_death_animation() == 0 and settings.god_mode == 0:
                                 h.kill_player(settings.player_death_sound)
                                 human_player.human_update_value = human_player.human_update_value + 1
+                                if shop_config.thorns_enabled:
+                                    ma.thorns_initiated_damage = 1
 
                     for la in large_alien.large_aliens:
                         if la.get_large_alien().distance(h.get_player()) < 160 * scale_factor:
                             if h.health == 1 and h.hit_delay == 0 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and la.get_death_animation() == 0 and settings.god_mode == 0:
                                 h.kill_player(settings.player_death_sound)
                                 human_player.human_update_value = human_player.human_update_value + 1
+                                if shop_config.thorns_enabled:
+                                    la.thorns_initiated_damage = 1
 
                     for u in ufo.ufos:
                         if u.get_ufo().distance(h.get_player()) < 53 * scale_factor:
                             if h.health == 1 and h.hit_delay == 0 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and u.get_ufo().isvisible() and u.get_death_animation() == 0 and settings.god_mode == 0:
                                 h.kill_player(settings.player_death_sound)
                                 human_player.human_update_value = human_player.human_update_value + 1
+                                if shop_config.thorns_enabled:
+                                    u.thorns_initiated_damage = 1
 
                         if u.get_ufo_laser().distance(h.get_player()) < 25 * scale_factor:
                             if h.health == 1 and h.hit_delay == 0 and u.get_ufo_laser().isvisible() and settings.god_mode == 0 and human_player.human_update_value == 0:
@@ -1727,18 +1848,24 @@ def main():
                                 # Hit the player
                                 h.hit_player(settings.player_hit_sound)
                                 human_player.human_hit_value = human_player.human_hit_value + 1
+                                if shop_config.thorns_enabled:
+                                    sa.thorns_initiated_damage = 1
 
                     for ma in medium_alien.medium_aliens:
                         if ma.get_medium_alien().distance(h.get_player()) < 100 * scale_factor:
                             if h.get_health() > 1 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and ma.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
                                 h.hit_player(settings.player_hit_sound)
                                 human_player.human_hit_value = human_player.human_hit_value + 1
+                                if shop_config.thorns_enabled:
+                                    ma.thorns_initiated_damage = 1
 
                     for la in large_alien.large_aliens:
                         if la.get_large_alien().distance(h.get_player()) < 160 * scale_factor:
                             if h.get_health() > 1 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and la.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
                                 h.hit_player(settings.player_hit_sound)
                                 human_player.human_hit_value = human_player.human_hit_value + 1
+                                if shop_config.thorns_enabled:
+                                    la.thorns_initiated_damage = 1
 
                     for u in ufo.ufos:
                         # For the UFO, the player can get hurt by both touching the UFO and getting hit
@@ -1747,6 +1874,8 @@ def main():
                             if h.get_health() > 1 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and u.get_ufo().isvisible() and u.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
                                 h.hit_player(settings.player_hit_sound)
                                 human_player.human_hit_value = human_player.human_hit_value + 1
+                                if shop_config.thorns_enabled:
+                                    u.thorns_initiated_damage = 1
 
                         if u.get_ufo_laser().distance(h.get_player()) < 25 * scale_factor:
                             if h.get_health() > 1 and u.get_ufo_laser().isvisible() and settings.god_mode == 0:
