@@ -495,10 +495,24 @@ class Shop:
                                 self._price_displayed = POWER_UP_PRICES[self._shop_config.red_power_up_level - 1]
                                 max_level = 0
                         self._shop_config.save()
+                    elif self._screen.page == "Gadgets":
+                        if current_slot == 1:
+                            self._shop_config.coin_magnet_unlocked = True
+                            self._shop_config.coin_magnet_enabled = True
+                        elif current_slot == 2:
+                            self._shop_config.shield_unlocked = True
+                            self._shop_config.shield_enabled = True
+                        elif current_slot == 3:
+                            self._shop_config.thorns_unlocked = True
+                            self._shop_config.thorns_enabled = True
+                        elif current_slot == 4:
+                            self._shop_config.hearts_unlocked = True
+                            self._shop_config.hearts_enabled = True
+                        self._shop_config.save()
                     # Remove the buy button is the page is not the power ups page or the max level as been reached
                     if self._screen.page != "Power_Ups" or max_level == 1:
                         for bu in self._button.buttons_on_screen_list:
-                            if bu.get_type() == "Buy":
+                            if bu.get_type() == "Buy" or bu.get_type() == "Enable":
                                 bu.remove()
                                 self._button.buttons_on_screen_list.pop()
                                 self._button.current_button_index = self._button.current_button_index - 1
@@ -510,6 +524,8 @@ class Shop:
                         for pr in self._price_label.price_label_on_screen_list:
                             if pr.get_id() == current_slot + 3:
                                 pr.remove()
+                        if self._screen.page == "Gadgets":
+                            self._button.spawn_button("Enable", 1)
                     # Refresh the panel, text, buttons, indicators, selectors, and set buy_button_pressed to 1
                     self._refresh.refresh_panel = 1
                     self._refresh.refresh_text = 1

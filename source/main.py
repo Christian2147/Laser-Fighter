@@ -2004,6 +2004,9 @@ def main():
                             wn.onscreenclick(shop.slot_3_select)
                         elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
                             wn.onscreenclick(shop.slot_4_select)
+                    elif bu.get_type() == "Buy":
+                        if button_color == "yellow" and bu.get_button_frame().isvisible():
+                            wn.onscreenclick(shop.execute_buy_button)
                     elif bu.get_type() == "Enable":
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
                             wn.onscreenclick(shop.execute_enable_button)
