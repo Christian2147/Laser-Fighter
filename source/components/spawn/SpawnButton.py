@@ -109,6 +109,7 @@ class SpawnButton:
             if type != "Shop_Slot":
                 button = Button(type, id, self.scale_factor, self.scale_factor_x, self.scale_factor_y)
             else:
+                # The page the user is on is needed for the Shop Slot
                 button = Button(type, id, self.scale_factor, self.scale_factor_x, self.scale_factor_y, page=page)
             self.buttons_on_screen_list.append(button)
             self.current_button_index = self.current_button_index + 1
@@ -177,7 +178,7 @@ class SpawnButton:
                         if bu.get_button_frame().isvisible():
                             continue
                         else:
-                            # Reinstate it and add the button indicator
+                            # Reinstate it and add the button indicator to the object
                             if type == "Settings_Toggle":
                                 bu.reinstate_to_settings_toggle(id)
                             elif type == "Shop_Slot":

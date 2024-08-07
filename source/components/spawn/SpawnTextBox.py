@@ -88,21 +88,29 @@ class SpawnTextbox:
         """
 
         # All spawn functions have this same procedure to check for existing sprites to use
-        # This is done because the turtle module makes it impossible to actually fully get rid of a turtle while the
+        # This is done because the turtle module makes it hard to actually fully get rid of a turtle while the
         #   program is running.
         # In order to maintain performance, all turtle sprites are reused as often as possible.
         # This is why a global list exists for every type of sprite in the game.
+
+        # If a reusable object does not exist
         if len(self.all_text_list) <= len(self.text_on_screen_list):
+            # Make a new one
             text_box = Text(id, x, y, color, self.scale_factor, self.scale_factor_x)
+            # Add it to all the lists
             self.text_on_screen_list.append(text_box)
             self.current_text_index = self.current_text_index + 1
             self.all_text_list.append(text_box)
+        # If a reusable object does exist
         else:
+            # Find it
             for t in self.all_text_list:
                 if t.in_use == 1:
                     continue
                 else:
+                    # Reinstate it on the screen
                     t.reinstate(id, x, y, color)
+                    # Add it to the screen list
                     self.text_on_screen_list.append(t)
                     self.current_text_index = self.current_text_index + 1
                     break

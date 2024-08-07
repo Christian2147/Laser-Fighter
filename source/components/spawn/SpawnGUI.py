@@ -78,6 +78,9 @@ class SpawnPanel:
             :param mode: Determines the current mode of the game
             :type mode: string
 
+            :param id: Determines the type of message to display on the panel (Only for Machine Mode and Alien Mode)
+            :type id: int
+
             :return: None
         """
 

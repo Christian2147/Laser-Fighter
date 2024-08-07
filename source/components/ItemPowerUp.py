@@ -22,6 +22,7 @@
     Power Ups have a random chance of spawning while the user is playing either of these modes.
     The red power up is exclusive to Alien Mode and the green power up is exclusive the Machine Mode.
     When picked up, the power ups activate a special ability depending on the type picked up.
+    When the hearts gadget is enabled, it allows for the hearts power up to spawn.
 """
 
 import turtle
@@ -92,6 +93,7 @@ class PowerUp:
         # Type 4 = red power up
         elif type == 4:
             self.power_up.shape(RED_LIGHTNING_POWER_UP_TEXTURE)
+        # Type 5 = heart power up
         elif type == 5:
             self.power_up.shape(HEART_POWER_UP_TEXTURE)
         # Ensure that the turtle does not draw lines on the screen while moving

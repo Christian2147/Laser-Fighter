@@ -37,7 +37,7 @@ class SpawnPowerUp:
                 launched, even the ones removed from the screen
             current_power_ups (list): Contains all of the power up sprites currently visible/active on the screen.
             power_up_index (list): Stores which of each of the different power up types is currently on the screen
-                (There are 4 different types, 3 possible per mode)
+                (There are 4 different types, 3 possible per mode (5 with the Hearts Gadget))
             power_up_update (int): The random variable used for randomly spawning the power ups on the screen
             power_up_time (float): Used as a timestamp for the spawning of power ups on the screen (Every 0.4 seconds,
                 the random variable power_up_update is determined to see if a power up will spawn)
@@ -98,6 +98,7 @@ class SpawnPowerUp:
         """
 
         if len(self.all_power_ups) <= len(self.current_power_ups):
+            # Yellow power up
             if type == 1:
                 if mode == "Machine_Mode":
                     power_up = PowerUp(1, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
@@ -106,6 +107,7 @@ class SpawnPowerUp:
                 self.power_up_index[0] = 1
                 self.current_power_ups.append(power_up)
                 self.all_power_ups.append(power_up)
+            # Blue power up
             elif type == 2:
                 if mode == "Machine_Mode":
                     power_up = PowerUp(2, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
@@ -114,6 +116,7 @@ class SpawnPowerUp:
                 self.power_up_index[1] = 1
                 self.current_power_ups.append(power_up)
                 self.all_power_ups.append(power_up)
+            # Green power up
             elif type == 3:
                 if mode == "Machine_Mode":
                     power_up = PowerUp(3, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
@@ -122,6 +125,7 @@ class SpawnPowerUp:
                 self.power_up_index[2] = 1
                 self.current_power_ups.append(power_up)
                 self.all_power_ups.append(power_up)
+            # Red power up
             elif type == 4:
                 if mode == "Machine_Mode":
                     power_up = PowerUp(4, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
@@ -130,6 +134,7 @@ class SpawnPowerUp:
                 self.power_up_index[3] = 1
                 self.current_power_ups.append(power_up)
                 self.all_power_ups.append(power_up)
+            # Heart power up (If Heart power up gadget is on)
             elif type == 5:
                 if mode == "Machine_Mode":
                     power_up = PowerUp(5, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)

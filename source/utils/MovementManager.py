@@ -48,22 +48,22 @@ class Movement:
             Initializes all the necessary pointers for the Movement Manager.
 
             :param screen: Pointer to the current displayed screen and the screen changing functions.
-            :type screen: ScreenUpdate
+            :type screen: ScreenUpdate()
 
             :param machine_player: Pointer to the machine player object.
-            :type machine_player: MachinePlayer
+            :type machine_player: MachinePlayer()
 
             :param human_player: Pointer to the human player object.
-            :type human_player: HumanPlayer
+            :type human_player: HumanPlayer()
 
             :param yellow_power_up_indicator: Pointer to the yellow power up indicator.
-            :type yellow_power_up_indicator: YellowPowerUpIndicator
+            :type yellow_power_up_indicator: YellowPowerUpIndicator()
 
             :param settings: Pointer to the current game settings.
-            :type settings: Settings
+            :type settings: Settings()
 
             :param statistics: Pointer to the current game statistics.
-            :type statistics: Statistics
+            :type statistics: Statistics()
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode.
             :type scale_factor_y: float
