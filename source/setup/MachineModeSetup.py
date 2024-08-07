@@ -74,6 +74,8 @@ class MachineModeSetup:
             yellow_player_movement (float): Stores the players movement speed when the yellow power up is active
 
             power_up_spawn_rate (int): Stores the spawn rate of all power ups
+
+            health (int): The maximum health of the player given the current gadgets enabled
         """
 
     MACHINE_MOVE_2 = 2 * scale_factor_X
@@ -257,6 +259,7 @@ class MachineModeSetup:
         self.player_movement = self.player_movement * self._scale_factor_x
         self.yellow_player_movement = self.player_movement * self._power_up_setup.yellow_power_up_movement_increase
 
+        # Check if the shield is enabled to determine the maximum health
         if self._shop_config.shield_enabled:
             self.health = 20
         else:

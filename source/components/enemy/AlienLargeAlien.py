@@ -76,6 +76,7 @@ class LargeAlien:
                 for detecting what point the laser need to pass in order to kill the alien)
             already_behind (int): Determines of the player is already behind the alien (smaller x-cor) (This is used
                 for detecting what point the laser need to pass in order to kill the alien)
+            thorns_initiated_damage (int): Checks if the enemy has damaged the player while the player has thorns on
 
             id (int): The id of the alien
 
@@ -409,6 +410,7 @@ class LargeAlien:
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0
+            # Set the thorns initiated damage back to 0 if needed
             self.thorns_initiated_damage = 0
             self.death_animation = 1
             self.kill_start_time = time.time()
@@ -455,6 +457,7 @@ class LargeAlien:
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0
+            # Set the thorns initiated damage back to 0 if needed
             self.thorns_initiated_damage = 0
             self.hit_delay = 1
             self.hit_start_time = time.time()

@@ -284,7 +284,7 @@ GREEN_POWER_UP_DESCRIPTIONS = [
     ], 20, "Courier")
 ]
 
-# For the Red Power Up upgrades
+# For the Red Power Up upgrades (Including when it is locked)
 RED_POWER_UP_DESCRIPTIONS = [
     Description("left", [
         "Locked",

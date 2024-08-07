@@ -169,7 +169,7 @@ class MachineCollision:
             elif 16 <= bm.death_count:
                 x_offset = intersection_time[0] * self.MACHINE_8_10_MOVEMENT_SPEED * -1
 
-            # Check for cases where the machien hits the edge of the screen and turns around.
+            # Check for cases where the machine hits the edge of the screen and turns around.
             if x_offset != 0:
                 if bm.movement == -1:
                     x_offset = x_offset * -1

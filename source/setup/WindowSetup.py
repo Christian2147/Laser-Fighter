@@ -54,7 +54,7 @@ if settings.fullscreen == 1:
     window.cv._rootwindow.attributes("-fullscreen", True)
 
     # Calculating the scale factor:
-    # Extract the screen width and height agian
+    # Extract the screen width and height again
     current_screen_width = win32api.GetSystemMetrics(0)
     current_screen_height = win32api.GetSystemMetrics(1)
     # The main scale factor is based off the smallest of the two lengths

@@ -82,6 +82,7 @@ class UFO:
                 for detecting what point the laser need to pass in order to kill the UFO)
             already_behind (int): Determines of the player is already behind the UFO (smaller x-cor) (This is used
                 for detecting what point the laser need to pass in order to kill the UFO)
+            thorns_initiated_damage (int): Checks if the enemy has damaged the player while the player has thorns on
 
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
@@ -438,6 +439,7 @@ class UFO:
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0
+            # Set the thorns initiated damage back to 0 if needed
             self.thorns_initiated_damage = 0
             self.death_animation = 1
             self.kill_start_time = time.time()
@@ -498,6 +500,7 @@ class UFO:
             self.got_hit = 1
             self.already_ahead = 0
             self.already_behind = 0
+            # Set the thorns initiated damage back to 0 if needed
             self.thorns_initiated_damage = 0
             self.hit_delay = 1
             self.hit_start_time = time.time()

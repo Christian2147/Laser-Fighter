@@ -77,6 +77,8 @@ class AlienModeSetup:
             yellow_jump_frequency (float): Stores the players jump speed when the yellow power up is active
 
             power_up_spawn_rate (int): Stores the spawn rate of all power ups
+
+            health (int): The maximum health of the player given the current gadgets enabled
     """
 
     # Set the instance to "None" at the beginning
@@ -289,6 +291,7 @@ class AlienModeSetup:
 
         self.yellow_jump_frequency = self.jump_frequency / self._power_up_setup.yellow_power_up_movement_increase
 
+        # Check if the shield is enabled to determine the maximum health
         if self._shop_config.shield_enabled:
             self.health = 20
         else:

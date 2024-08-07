@@ -195,7 +195,7 @@ class PowerUpSetup:
         elif self._shop_config.red_power_up_level == 5:
             self.red_power_up_duration = 40
 
-        # Setup the coin values
+        # Setup the coin values during gameplay
         self.copper_coin_blue_value = self.copper_coin_value * self.blue_power_up_coin_multiplier
         self.silver_coin_blue_value = self.silver_coin_value * self.blue_power_up_coin_multiplier
         self.gold_coin_blue_value = self.gold_coin_value * self.blue_power_up_coin_multiplier

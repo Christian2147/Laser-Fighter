@@ -90,6 +90,7 @@ class RedMachine:
                 has to be in in order to hit the enemy)
             collision_y_coordinate_list: The y-axis point that the players lasers have to pass in order to
                 hit the machine.
+            thorns_initiated_damage (int): Checks if the enemy has damaged the player while the player has thorns on
 
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
@@ -537,6 +538,7 @@ class RedMachine:
             # Change the texture of the red machine to the first frame of the death explosion
             self.red_machine.shape(EXPLOSION_1_TEXTURE)
             self.update = 0.5
+            # Set the thorns initiated damage back to 0 if needed
             self.thorns_initiated_damage = 0
             self.start_time = time.time()
             return
@@ -571,6 +573,7 @@ class RedMachine:
                 sound.play()
             self.health_bar = 1
             self.hit_delay = 1
+            # Set the thorns initiated damage back to 0 if needed
             self.thorns_initiated_damage = 0
             self.hit_start_time = time.time()
 

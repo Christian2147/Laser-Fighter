@@ -97,6 +97,7 @@ class Boss:
                 has to be in in order to hit the enemy)
             collision_y_coordinate_list: The y-axis point that the players lasers have to pass in order to
                 hit the machine.
+            thorns_initiated_damage (int): Checks if the enemy has damaged the player while the player has thorns on
 
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
@@ -500,6 +501,7 @@ class Boss:
             # Change the texture of the boss to the first frame of the death explosion
             self.boss.shape(EXPLOSION_1_TEXTURE)
             self.update = 0.5
+            # Set the thorns initiated damage back to 0 if needed
             self.thorns_initiated_damage = 0
             self.start_time = time.time()
             return
@@ -553,6 +555,7 @@ class Boss:
                 sound = pygame.mixer.Sound("sound/Explosion2.wav")
                 sound.play()
             self.hit_delay = 1
+            # Set the thorns initiated damage back to 0 if needed
             self.thorns_initiated_damage = 0
             self.hit_start_time = time.time()
 

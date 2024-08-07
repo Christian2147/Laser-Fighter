@@ -124,6 +124,7 @@ class AlienCollision:
         for h in self._human_player.current_human:
             # Each Small Aliens Hitbox is calculated
             for sa in self._small_alien.small_aliens:
+                # Make sure that the alien is not dying before resetting its status as being hit
                 if sa.death_animation == 0:
                     sa.got_hit = 0
                 # If the collision lines for the Alien should be on the left (-1) or right (1) side
@@ -202,7 +203,7 @@ class AlienCollision:
             for c in self._coin.coins_on_screen_list:
                 # If the player is facing right (1) or left (2)
                 if h.direction == 1:
-                    # If the player is ahead (1) or behind (-1) of the hit box
+                    # If the player is ahead (1) or behind (-1) the coin hit box
                     if h.get_player().xcor() + self.PLAYER_LASER_GAP > c.coin.xcor():
                         c.relative_laser_position = 1
                     else:
