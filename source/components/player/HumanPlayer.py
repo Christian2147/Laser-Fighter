@@ -69,6 +69,8 @@ class Human:
             oxygen_tank (turtle.Turtle()): The players oxygen tank sprite
             gun (turtle.Turtle()): The player gun sprite
             health_bar (turtle.Turtle()): The players health bar sprite
+            armor_bar (turtle.Turtle()): The players armor bar sprite
+            armor_created (int): Determines if the armor bar has already been created or not for the player
 
             laser_list (list): The list of the current lasers on the screen
             all_laser_list (list): The list of all laser sprites created since the program began running (So that they
@@ -251,6 +253,8 @@ class Human:
         self.laser_list.clear()
         self.all_laser_list.clear()
         self.health_bar.clear()
+        # Check if the armor bar exists or not
+        # If it does, delete it here
         if hasattr(self, 'armor'):
             self.armor.clear()
             del self.armor
@@ -314,6 +318,7 @@ class Human:
 
         self.health = alien_mode_setup.health
 
+        # If the shield is enabled, create the armor bar if it does not exist already
         if self.health == 20:
             if self.armor_created == 0:
                 self.armor_bar = turtle.Turtle()
@@ -323,6 +328,7 @@ class Human:
                 self.armor_bar.goto(531 * self.scale_factor_x, 299 * self.scale_factor_y)
                 self.armor_created = 1
 
+            # Set the armor bar to full
             self.armor_bar.shape(ARMOR_BAR_10_10_TEXTURE)
             # If god mode is off, show the armor bar
             if god_mode == 0:
@@ -421,6 +427,7 @@ class Human:
         self.health_bar.hideturtle()
         for l in self.laser_list:
             l.remove()
+        # If the armor bar was created, remove it from the screen
         if self.armor_created == 1:
             self.armor_bar.hideturtle()
         self.laser_list.clear()
@@ -765,6 +772,7 @@ class Human:
 
             :return: None
         """
+
         # If the direction is right
         if -1080 * self.scale_factor_x < self.laser_list[0].laser.xcor() < 1080 * self.scale_factor_x and self.laser_direction == 1:
             self.shoot_update = 1
@@ -898,6 +906,12 @@ class Human:
             self.gun_start_time = time.time()
 
     def grant_player_health(self):
+        """
+            This function is used to grant the player 3 health when the Heart power up is picked up.
+
+            :return: None
+        """
+
         if self.health + 3 > alien_mode_setup.health:
             new_increase = alien_mode_setup.health - self.health
             self.health = self.health + new_increase
@@ -1065,6 +1079,7 @@ class Human:
 
         if self.hit_delay == 1:
             # Update the players health bar
+            # If the players health is above 10, an armor bar should be visible
             if self.health == 19:
                 self.armor_bar.shape(ARMOR_BAR_10_9_TEXTURE)
             elif self.health == 18:
@@ -1083,6 +1098,7 @@ class Human:
                 self.armor_bar.shape(ARMOR_BAR_10_2_TEXTURE)
             elif self.health == 11:
                 self.armor_bar.shape(ARMOR_BAR_10_1_TEXTURE)
+            # Armor bar disappears when the players health drops below 11
             elif self.health == 10:
                 self.armor_bar.hideturtle()
             elif self.health == 9:

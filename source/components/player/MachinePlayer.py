@@ -60,6 +60,8 @@ class Player:
         Attributes:
             player (turtle.Turtle()): The player sprite
             health_bar (turtle.Turtle()): The players health bar sprite
+            armor_bar (turtle.Turtle()): The players armor bar sprite
+            armor_created (int): Determines if the armor bar has already been created or not for the player
 
             laser_list (list): The list of the current lasers on the screen
             all_laser_list (list): The list of all laser sprites created since the program began running (So that they
@@ -180,6 +182,8 @@ class Player:
         self.laser_has_attacked_list.clear()
         self.lasers_fired_list.clear()
         self.health_bar.clear()
+        # Check if the armor bar exists or not
+        # If it does, delete it here
         if hasattr(self, 'armor'):
             self.armor.clear()
             del self.armor
@@ -238,6 +242,7 @@ class Player:
 
         self.health_bar_indicator = machine_mode_setup.health
 
+        # If the shield is enabled, create the armor bar if it does not exist already
         if self.health_bar_indicator == 20:
             if self.armor_created == 0:
                 self.armor_bar = turtle.Turtle()
@@ -247,6 +252,7 @@ class Player:
                 self.armor_bar.goto(531 * self.scale_factor_x, 299 * self.scale_factor_y)
                 self.armor_created = 1
 
+            # Set the armor bar to full
             self.armor_bar.shape(ARMOR_BAR_10_10_TEXTURE)
             # If god mode is off, show the armor bar
             if god_mode == 0:
@@ -375,6 +381,7 @@ class Player:
         self.laser_count = 0
         self.do_collision = 0
         self.health_bar.hideturtle()
+        # If the armor bar was created, remove it from the screen
         if self.armor_created == 1:
             self.armor_bar.hideturtle()
         self.death_animation = 0
@@ -542,6 +549,12 @@ class Player:
             self.laser_start_time = 0
 
     def grant_player_health(self):
+        """
+            This function is used to grant the player 3 health when the Heart power up is picked up.
+
+            :return: None
+        """
+
         if self.health_bar_indicator + 3 > machine_mode_setup.health:
             new_increase = machine_mode_setup.health - self.health_bar_indicator
             self.health_bar_indicator = self.health_bar_indicator + new_increase
@@ -714,7 +727,8 @@ class Player:
             self.hit_delay = 2
 
         if self.hit_delay == 0 and no_hit == 0 and self.update == 0:
-            # Decrease the players health by 1
+            # Update the players health bar
+            # If the players health is above 10, an armor bar should be visible
             if self.health_bar_indicator == 20:
                 self.armor_bar.shape(ARMOR_BAR_10_9_TEXTURE)
             elif self.health_bar_indicator == 19:
@@ -733,6 +747,7 @@ class Player:
                 self.armor_bar.shape(ARMOR_BAR_10_2_TEXTURE)
             elif self.health_bar_indicator == 12:
                 self.armor_bar.shape(ARMOR_BAR_10_1_TEXTURE)
+            # Armor bar disappears when the players health drops below 11
             elif self.health_bar_indicator == 11:
                 self.armor_bar.hideturtle()
             elif self.health_bar_indicator == 10:
@@ -757,5 +772,6 @@ class Player:
                 sound = pygame.mixer.Sound("sound/Explosion4.wav")
                 sound.play()
             self.hit_delay = 1
+            # Decrease the players health by 1
             self.health_bar_indicator = self.health_bar_indicator - 1
             self.hit_start_time = time.time()
