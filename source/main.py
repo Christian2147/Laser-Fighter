@@ -29,7 +29,11 @@
 import time
 import random
 import gc
-from setup.ConfigurationSetup import *
+from setup.ConfigurationSetup import refresh_variables
+from setup.ConfigurationSetup import controls_toggle
+from setup.ConfigurationSetup import milestones
+from setup.ConfigurationSetup import statistics
+from setup.ConfigurationSetup import shop_config
 from setup.WindowSetup import *
 from setup.SpriteSetup import button
 from setup.SpriteSetup import textbox
