@@ -25,6 +25,12 @@ class MilestoneConfig:
         # Initialize the playerData.ini parser
         self.player_data_manager = PlayerDataManager()
 
+        self.milestone_1_displayed = 0
+        self.milestone_2_displayed = 0
+        self.milestone_3_displayed = 0
+
+        self.milestone_start_time = 0
+
         # Initialize the milestone variables
         self.game_played = False
         self.machine_mode_beaten = False
@@ -34,11 +40,15 @@ class MilestoneConfig:
 
     def __del__(self):
         del self.player_data_manager
+        del self.milestone_1_displayed
+        del self.milestone_2_displayed
+        del self.milestone_3_displayed
+        del self.milestone_start_time
 
     def load(self):
-        self.player_data_manager.getboolean('Machine_Mode_First_Time', 'Ran_First_Time')
-        self.player_data_manager.getboolean('Machine_Mode_Beat', 'Machine_Mode_Beat')
-        self.player_data_manager.getboolean('Alien_Mode_Beat', 'Alien_Mode_Beat')
+        self.game_played = self.player_data_manager.getboolean('Machine_Mode_First_Time', 'Ran_First_Time')
+        self.machine_mode_beaten = self.player_data_manager.getboolean('Machine_Mode_Beat', 'Machine_Mode_Beat')
+        self.alien_mode_beaten = self.player_data_manager.getboolean('Alien_Mode_Beat', 'Alien_Mode_Beat')
 
     def save(self):
         self.player_data_manager.set('Machine_Mode_First_Time', 'Ran_First_Time', str(self.game_played))

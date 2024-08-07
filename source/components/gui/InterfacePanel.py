@@ -113,7 +113,7 @@ class Panel:
         if type == "Shop":
             self.panel_text.goto(self.panel.xcor() - 155 * scale_factor_x, self.panel.ycor() + 290 * scale_factor_y)
         else:
-            self.panel_text.goto(self.panel.xcor(), self.panel.ycor())
+            self.panel_text.goto(self.panel.xcor(), self.panel.ycor() + 105 * self.scale_factor_y)
         self.panel_text.hideturtle()
 
         if type == "Shop":
@@ -179,8 +179,9 @@ class Panel:
     def reinstate_to_machine_message(self, id):
         self.panel.shape(POP_UP_MESSAGE_FRAME_TEXTURE)
         self.panel.goto(0, 0)
+        self.panel.showturtle()
 
-        self.panel_text.goto(self.panel.xcor(), self.panel.ycor())
+        self.panel_text.goto(self.panel.xcor(), self.panel.ycor() + 105 * self.scale_factor_y)
 
         self.type = "Machine_Mode"
         self.id = id
@@ -188,8 +189,9 @@ class Panel:
     def reinstate_to_alien_message(self):
         self.panel.shape(POP_UP_MESSAGE_FRAME_TEXTURE)
         self.panel.goto(0, 200 * self.scale_factor_y)
+        self.panel.showturtle()
 
-        self.panel_text.goto(self.panel.xcor(), self.panel.ycor())
+        self.panel_text.goto(self.panel.xcor(), self.panel.ycor() + 105 * self.scale_factor_y)
 
         self.type = "Alien_Mode"
         self.id = 1

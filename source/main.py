@@ -293,6 +293,26 @@ def main():
                 if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
                     wn.onscreenclick(screen.launch_title_mode)
 
+            if not milestones.game_played and milestones.milestone_1_displayed == 0:
+                for pa in panel.panel_turtle:
+                    pa.remove()
+                panel.panel_index = 0
+                panel.spawn_panel(screen.mode, 1)
+                refresh_variables.refresh_panel = 1
+                milestones.game_played = True
+                milestones.save()
+                milestones.milestone_1_displayed = 1
+                milestones.milestone_start_time = time.time()
+
+            if milestones.milestone_1_displayed == 1:
+                current_time = time.time()
+                elapsed_time = current_time - milestones.milestone_start_time
+                if elapsed_time > 30:
+                    for pa in panel.panel_turtle:
+                        pa.remove()
+                    panel.panel_index = 0
+                    milestones.milestone_1_displayed = 0
+
             # Spawn the rest of the game interface
             # This includes the power up timers
             # The power up timers are created as just ordinary text boxes with the correct colors
