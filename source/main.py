@@ -1497,7 +1497,7 @@ def main():
                     for h in human_player.current_human:
                         # If the player picks up a coin
                         # This can be done with any one of the players lasers
-                        if (any(l.laser.isvisible() and (
+                        if (any(l.laser.isvisible() and c.range[0] < l.laser.ycor() < c.range[1] and (
                             h.direction == 1 and c.relative_laser_position == -1 and l.laser.xcor() > c.collision_coordinate or
                             h.direction == 2 and c.relative_laser_position == 1 and l.laser.xcor() < c.collision_coordinate
                         ) for l in h.get_laser())) or h.get_player().distance(c.get_coin()) < 55 * scale_factor:
