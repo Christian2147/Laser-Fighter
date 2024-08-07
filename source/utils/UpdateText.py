@@ -157,9 +157,12 @@ class TextRefresh:
             # Refreshes button text
             if self._refresh.refresh_button == 1 or self._refresh.refresh_button == 2:
                 for bu in self._button.buttons_on_screen_list:
+                    # Check if the title button is a type to be locked
                     if bu.type != "Title_Locked":
                         bu.write_lines()
                     else:
+                        # If it is, display either a lock over the button or the button text
+                        #   depending on the conditional variable
                         bu.toggle_title_lock(self._shop_config.alien_slot_selected)
             if self._refresh.refresh_button == 1:
                 self._refresh.refresh_button = 2
@@ -275,6 +278,8 @@ class TextRefresh:
                                 bu.write_indicator(self._shop_config.hearts_enabled)
                     elif bu.get_type() == "Buy":
                         bu.write_buy(self._shop.price_displayed)
+                    # Display the enable button text based on which gadget is currently being displayed
+                    #   in the side panel
                     elif bu.get_type() == "Enable":
                         for pa in self._panel.panel_turtle:
                             if pa.category == "Gadget":

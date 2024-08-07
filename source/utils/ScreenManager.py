@@ -350,6 +350,7 @@ class ScreenUpdate:
                 sound.play()
             # Enter The Shop
             self._mode = "Shop"
+            # Display the Machine Mode page by default
             self._page = "Machine_Mode"
             self._screen_update = 1
             self._refresh.refresh_panel = 1
@@ -357,6 +358,18 @@ class ScreenUpdate:
             self._refresh.move_slot_selector = 1
 
     def display_machine_mode_page(self, x, y):
+        """
+            Displays the Machine Mode Upgrades page while in the shop.
+
+            :param x: The current x-coordinate of the cursor
+            :type x: float
+
+            :param y: The current y-coordinate of the cursor
+            :type y: float
+
+            :return: None
+        """
+
         self._screen.onscreenclick(None)
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -641 * self._scale_factor_x) and (x < -566 * self._scale_factor_x) and (y > 99 * self._scale_factor_y) and (y < 201 * self._scale_factor_y):
@@ -372,6 +385,18 @@ class ScreenUpdate:
             self._refresh.move_slot_selector = 1
 
     def display_alien_mode_page(self, x, y):
+        """
+            Displays the Alien Mode Upgrades page while in the shop.
+
+            :param x: The current x-coordinate of the cursor
+            :type x: float
+
+            :param y: The current y-coordinate of the cursor
+            :type y: float
+
+            :return: None
+        """
+
         self._screen.onscreenclick(None)
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -641 * self._scale_factor_x) and (x < -566 * self._scale_factor_x) and (y > -21 * self._scale_factor_y) and (y < 81 * self._scale_factor_y):
@@ -387,6 +412,18 @@ class ScreenUpdate:
             self._refresh.move_slot_selector = 1
 
     def display_power_up_page(self, x, y):
+        """
+            Displays the Power Up Upgrades page while in the shop.
+
+            :param x: The current x-coordinate of the cursor
+            :type x: float
+
+            :param y: The current y-coordinate of the cursor
+            :type y: float
+
+            :return: None
+        """
+
         self._screen.onscreenclick(None)
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -641 * self._scale_factor_x) and (x < -566 * self._scale_factor_x) and (y > -141 * self._scale_factor_y) and (y < -39 * self._scale_factor_y):
@@ -401,6 +438,18 @@ class ScreenUpdate:
             self._refresh.move_tab_selector = 1
 
     def display_gadgets_page(self, x, y):
+        """
+            Displays the Gadgets page while in the shop.
+
+            :param x: The current x-coordinate of the cursor
+            :type x: float
+
+            :param y: The current y-coordinate of the cursor
+            :type y: float
+
+            :return: None
+        """
+
         self._screen.onscreenclick(None)
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -641 * self._scale_factor_x) and (x < -566 * self._scale_factor_x) and (y > -261 * self._scale_factor_y) and (y < -159 * self._scale_factor_y):

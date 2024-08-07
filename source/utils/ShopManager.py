@@ -105,6 +105,7 @@ class Shop:
         self._scale_factor_x = scale_factor_x
         self._scale_factor_y = scale_factor_y
 
+        # Price displayed on the buy button
         self._price_displayed = 0
 
     def __del__(self):
@@ -156,7 +157,7 @@ class Shop:
         self._window.onscreenclick(None)
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > -503 * self._scale_factor_x) and (x < -352 * self._scale_factor_x) and (y > 11 * self._scale_factor_y) and (y < 182 * self._scale_factor_y):
-            # Which item is displayed depends on the current page of the shop displayed
+            # Which item is displayed depends on the current page that is being displayed in the shop
             if self._screen.page == "Machine_Mode":
                 self.execute_slot_function("Machine_Mode", 1)
             elif self._screen.page == "Alien_Mode":
@@ -279,7 +280,7 @@ class Shop:
         if self._settings.button_sound == 1:
             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
             sound.play()
-        # If the page is not "Power_Ups" and "Gadgets", the item has to be bought in order to be displayed
+        # If the page is not "Power_Ups" and "Gadgets", the item has to be bought in order for it to be selected
         if current_page != "Power_Ups" and current_page != "Gadgets":
             # Display the slot item on the side panel in the shop
             for pa in self._panel.panel_turtle:
@@ -320,21 +321,24 @@ class Shop:
                             self._button.current_button_index = self._button.current_button_index - 1
                 # If the item is not bought
                 else:
-                    # Recreate the buy button to show the price for the selected item
+                    # Remove the current buy button being displayed
                     for bu in self._button.buttons_on_screen_list:
                         if bu.get_type() == "Buy" or bu.get_type() == "Enable":
                             bu.remove()
                             self._button.buttons_on_screen_list.pop()
                             self._button.current_button_index = self._button.current_button_index - 1
+                    # If Alien Mode is unlocked, recreate the buy button
+                    #   and display the price and allow the user to buy the item
                     if self._shop_config.alien_slots_unlocked[slot_id -1] != -1:
                         self._button.spawn_button("Buy", 1)
                         self._price_displayed = ALIEN_PRICES[slot_id - 1]
+                    # If it is locked, do not allow the user to buy the item
                     else:
                         self._price_displayed = 0
         else:
-            # If the page is power ups, display the information for the next level up from the current
-            #   level of the power up selected
             if slot_id == 1:
+                # If the current page is power ups, display the information for the next level up from the current
+                #   level of the power up selected
                 if current_page == "Power_Ups":
                     for pa in self._panel.panel_turtle:
                         pa.set_panel_text("Yellow_Power_Up", slot_id)
@@ -343,9 +347,12 @@ class Shop:
                         self._price_displayed = POWER_UP_PRICES[self._shop_config.yellow_power_up_level]
                     else:
                         self._price_displayed = 0
+                # If the current page is gadgets, display the price of the gadget if it is
+                #   not bought, or display a button to enable/disable it
                 else:
                     for pa in self._panel.panel_turtle:
                         pa.set_panel_text("Gadget", slot_id)
+                    # Check if the item has already been unlocked or not
                     if not self._shop_config.coin_magnet_unlocked:
                         self._price_displayed = GADGET_PRICE
                     else:
@@ -498,7 +505,9 @@ class Shop:
                                 self._price_displayed = POWER_UP_PRICES[self._shop_config.red_power_up_level]
                                 max_level = 0
                         self._shop_config.save()
+                    # If the page is gadgets
                     elif self._screen.page == "Gadgets":
+                        # Unlock and enable the gadget if it is successfully bought
                         if current_slot == 1:
                             self._shop_config.coin_magnet_unlocked = True
                             self._shop_config.coin_magnet_enabled = True
@@ -527,6 +536,8 @@ class Shop:
                         for pr in self._price_label.price_label_on_screen_list:
                             if pr.get_id() == current_slot + 3:
                                 pr.remove()
+                        # If the current page is the gadgets page, display an enable/disable button after
+                        #   removing the buy button
                         if self._screen.page == "Gadgets":
                             self._button.spawn_button("Enable", 1)
                     # Refresh the panel, text, buttons, indicators, selectors, and set buy_button_pressed to 1
@@ -538,6 +549,18 @@ class Shop:
                     self._button.buy_button_pressed = 1
 
     def execute_enable_button(self, x, y):
+        """
+            Toggles the currently selected gadget on or off.
+
+            :param x: The current x-coordinate of the cursor
+            :type x: float
+
+            :param y: The current y-coordinate of the cursor
+            :type y: float
+
+            :return: None
+        """
+
         self._window.onscreenclick(None)
         # Check to see if the cursor is in the bound of the button to be clicked
         if (x > 299 * self._scale_factor_x) and (x < 600 * self._scale_factor_x) and (y > -328 * self._scale_factor_y) and (y < -212 * self._scale_factor_y):
@@ -546,8 +569,10 @@ class Shop:
                 sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             for pa in self._panel.panel_turtle:
+                # Check to see what gadgets is currently being displayed
                 if pa.category == "Gadget":
                     if pa.id == 1:
+                        # Toggle the gadget on if it is off and off if it is on
                         if self._shop_config.coin_magnet_enabled:
                             self._shop_config.coin_magnet_enabled = False
                         else:
@@ -567,6 +592,7 @@ class Shop:
                             self._shop_config.hearts_enabled = False
                         else:
                             self._shop_config.hearts_enabled = True
+            # Save the settings and update the screen
             self._shop_config.save()
             self._refresh.refresh_panel = 1
             self._refresh.refresh_text = 1

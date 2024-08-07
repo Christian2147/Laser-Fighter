@@ -47,6 +47,16 @@ class ShopConfig:
             blue_power_up_level (int): The current level of the blue power up
             green_power_up_level (int): The current level of the green power up
             red_power_up_level (int): The current level of the red power up
+
+            coin_magnet_unlocked (boolean): Determines if the coin magnet gadget is unlocked.
+            shield_unlocked (boolean): Determines if the shield gadget is unlocked.
+            thorns_unlocked (boolean): Determines if the thorns gadget is unlocked.
+            hearts_unlocked (boolean): Determines if the hearts gadget is unlocked.
+
+            coin_magnet_enabled (boolean): Determines if the coin magnet gadget is currently enabled.
+            shield_enabled (boolean): Determines if the shield gadget is currently enabled.
+            thorns_enabled (boolean): Determines if the thorns gadget is currently enabled.
+            hearts_enabled (boolean): Determines if the hearts gadget is currently enabled.
     """
 
     def __init__(self):

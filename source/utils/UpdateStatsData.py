@@ -99,6 +99,7 @@ class Stats:
         self.alien_power_ups_picked_up = 0
         self.alien_coins_collected = 0
 
+        # Initialize the god mode pointer
         self.god_mode = god_mode
 
         # Load the current game statistics
