@@ -36,6 +36,7 @@ from setup.data.ShopDescriptions import GREEN_POWER_UP_DESCRIPTIONS
 from setup.data.ShopDescriptions import RED_POWER_UP_DESCRIPTIONS
 from setup.data.ShopDescriptions import GADGET_DESCRIPTIONS
 from setup.TextureSetup import SIDE_PANEL_SHOP_TEXTURE
+from setup.TextureSetup import POP_UP_MESSAGE_FRAME_TEXTURE
 from setup.TextureSetup import MACHINE_DEFAULT_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import MACHINE_WASHER_DISPLAY_ICON_TEXTURE
 from setup.TextureSetup import THE_INCINERATOR_DISPLAY_ICON_TEXTURE
@@ -74,7 +75,7 @@ class Panel:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, type, scale_factor, scale_factor_x, scale_factor_y):
+    def __init__(self, type, scale_factor, scale_factor_x, scale_factor_y, id=1):
         """
             Creates a panel object to be displayed on the screen.
 
@@ -98,24 +99,36 @@ class Panel:
         if type == "Shop":
             self.panel.shape(SIDE_PANEL_SHOP_TEXTURE)
             self.panel.goto(450 * scale_factor_x, 0)
+        elif type == "Machine_Mode":
+            self.panel.shape(POP_UP_MESSAGE_FRAME_TEXTURE)
+            self.panel.goto(0, 0)
+        elif type == "Alien_Mode":
+            self.panel.shape(POP_UP_MESSAGE_FRAME_TEXTURE)
+            self.panel.goto(0, 200 * scale_factor_y)
 
         self.panel_text = turtle.Turtle()
         self.panel_text.color("white")
         # Ensure that the turtle does not draw lines on the screen while moving
         self.panel_text.penup()
-        self.panel_text.goto(self.panel.xcor() - 155 * scale_factor_x, self.panel.ycor() + 290 * scale_factor_y)
+        if type == "Shop":
+            self.panel_text.goto(self.panel.xcor() - 155 * scale_factor_x, self.panel.ycor() + 290 * scale_factor_y)
+        else:
+            self.panel_text.goto(self.panel.xcor(), self.panel.ycor())
         self.panel_text.hideturtle()
 
-        self.panel_indicator = turtle.Turtle()
-        # Ensure that the turtle does not draw lines on the screen while moving
-        self.panel_indicator.penup()
         if type == "Shop":
+            self.panel_indicator = turtle.Turtle()
+            # Ensure that the turtle does not draw lines on the screen while moving
+            self.panel_indicator.penup()
             self.panel_indicator.goto(self.panel.xcor(), self.panel.ycor() + 190 * scale_factor_y)
-        self.panel_indicator.hideturtle()
+            self.panel_indicator.hideturtle()
+            self.indicator_created = 1
+        else:
+            self.indicator_created = 0
 
         self.type = type
         self.category = "Welcome"
-        self.id = 1
+        self.id = id
 
         self.scale_factor = scale_factor
         self.scale_factor_x = scale_factor_x
@@ -130,10 +143,11 @@ class Panel:
 
         self.panel.clear()
         self.panel_text.clear()
-        self.panel_indicator.clear()
+        if self.indicator_created == 1:
+            self.panel_indicator.clear()
+            del self.panel_indicator
         del self.panel
         del self.panel_text
-        del self.panel_indicator
 
     def reinstate_to_shop(self):
         """
@@ -148,11 +162,36 @@ class Panel:
 
         self.panel_text.goto(self.panel.xcor() - 155 * self.scale_factor_x, self.panel.ycor() + 290 * self.scale_factor_y)
 
+        if self.indicator_created == 0:
+            self.panel_indicator = turtle.Turtle()
+            # Ensure that the turtle does not draw lines on the screen while moving
+            self.panel_indicator.penup()
+            self.panel_indicator.hideturtle()
+            self.indicator_created = 1
+
         self.panel_indicator.goto(self.panel.xcor(), self.panel.ycor() + 190 * self.scale_factor_y)
 
         # Set it to the welcome message
         self.type = "Shop"
         self.category = "Welcome"
+        self.id = 1
+
+    def reinstate_to_machine_message(self, id):
+        self.panel.shape(POP_UP_MESSAGE_FRAME_TEXTURE)
+        self.panel.goto(0, 0)
+
+        self.panel_text.goto(self.panel.xcor(), self.panel.ycor())
+
+        self.type = "Machine_Mode"
+        self.id = id
+
+    def reinstate_to_alien_message(self):
+        self.panel.shape(POP_UP_MESSAGE_FRAME_TEXTURE)
+        self.panel.goto(0, 200 * self.scale_factor_y)
+
+        self.panel_text.goto(self.panel.xcor(), self.panel.ycor())
+
+        self.type = "Alien_Mode"
         self.id = 1
 
     def get_panel_frame(self):
@@ -227,7 +266,8 @@ class Panel:
         self.panel.hideturtle()
         self.panel_text.hideturtle()
         self.panel_text.clear()
-        self.panel_indicator.hideturtle()
+        if self.indicator_created == 1:
+            self.panel_indicator.hideturtle()
 
     def write_text(self):
         """
@@ -313,8 +353,30 @@ class Panel:
                                             font=(GADGET_DESCRIPTIONS[self.id - 1].get_font(),
                                             int(GADGET_DESCRIPTIONS[self.id - 1].get_size() * self.scale_factor), "normal"))
                     self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 27 * self.scale_factor_y)
-        # Set the panel indicator after the text is updated
-        self.set_indicator()
+            # Set the panel indicator after the text is updated
+            self.set_indicator()
+        elif self.type == "Machine_Mode":
+            if self.id == 1:
+                for i in range(MILESTONE_1_MESSAGE[self.id - 1].get_length()):
+                    self.panel_text.write("{}".format(MILESTONE_1_MESSAGE[self.id - 1].get_text()[i]),
+                                            align=MILESTONE_1_MESSAGE[self.id - 1].get_align(),
+                                            font=(MILESTONE_1_MESSAGE[self.id - 1].get_font(),
+                                            int(MILESTONE_1_MESSAGE[self.id - 1].get_size() * self.scale_factor), "normal"))
+                    self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
+            else:
+                for i in range(MILESTONE_2_MESSAGE[self.id - 1].get_length()):
+                    self.panel_text.write("{}".format(MILESTONE_2_MESSAGE[self.id - 1].get_text()[i]),
+                                            align=MILESTONE_2_MESSAGE[self.id - 1].get_align(),
+                                            font=(MILESTONE_2_MESSAGE[self.id - 1].get_font(),
+                                            int(MILESTONE_2_MESSAGE[self.id - 1].get_size() * self.scale_factor), "normal"))
+                    self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
+        elif self.type == "Alien_Mode":
+            for i in range(MILESTONE_3_MESSAGE[self.id - 1].get_length()):
+                self.panel_text.write("{}".format(MILESTONE_3_MESSAGE[self.id - 1].get_text()[i]),
+                                        align=MILESTONE_3_MESSAGE[self.id - 1].get_align(),
+                                        font=(MILESTONE_3_MESSAGE[self.id - 1].get_font(),
+                                        int(MILESTONE_3_MESSAGE[self.id - 1].get_size() * self.scale_factor), "normal"))
+                self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
 
     def set_indicator(self):
         """

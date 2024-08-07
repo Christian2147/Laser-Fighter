@@ -71,7 +71,7 @@ class SpawnPanel:
         del self.panel_turtle
         del self.panel_index
 
-    def spawn_panel(self, mode):
+    def spawn_panel(self, mode, id=0):
         """
             Spawn a panel on the screen with the correct type based on what screen the player is on.
 
@@ -94,6 +94,10 @@ class SpawnPanel:
                 else:
                     if mode == "Shop":
                         pa.reinstate_to_shop()
+                    elif mode == "Machine_Mode":
+                        pa.reinstate_to_machine_message(id)
+                    elif mode == "Alien_Mode":
+                        pa.reinstate_to_alien_message()
                     self.panel_index = self.panel_index + 1
 
 

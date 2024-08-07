@@ -176,6 +176,11 @@ class TextRefresh:
                     bu.write_lines()
             if self._refresh.refresh_button == 1:
                 self._refresh.refresh_button = 0
+            # Refreshes panel text
+            if self._refresh.refresh_panel == 1:
+                for pa in self._panel.panel_turtle:
+                    pa.write_text()
+                self._refresh.refresh_panel = 0
             for t in self._textbox.text_on_screen_list:
                 if t.id == 1:
                     t.write("Score: {}  High Score: {}".format(self._statistics.score, self._statistics.high_score_machine_war), 24, "normal")
@@ -207,6 +212,11 @@ class TextRefresh:
                     bu.write_lines()
             if self._refresh.refresh_button == 1:
                 self._refresh.refresh_button = 0
+            # Refreshes panel text
+            if self._refresh.refresh_panel == 1:
+                for pa in self._panel.panel_turtle:
+                    pa.write_text()
+                self._refresh.refresh_panel = 0
             for t in self._textbox.text_on_screen_list:
                 if t.id == 1:
                     t.write("Score: {}  High Score: {}".format(self._statistics.score, self._statistics.high_score_alien_mode), 24, "normal")

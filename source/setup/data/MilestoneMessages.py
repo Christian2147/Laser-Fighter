@@ -41,7 +41,7 @@ MILESTONE_2_MESSAGE = [
         "to the moon! Now, you",
         "must find a way to",
         "the aliens central base. It",
-        "is said that the UFOs",
+        "is said that the saucers",
         "the aliens use not only",
         "carry a map to the base,",
         "but also carry a key",
@@ -55,10 +55,10 @@ MILESTONE_3_MESSAGE = [
         "Congratulations!",
         "",
         "You have successfully killed an",
-        "alien UFO and therefore found",
+        "alien saucer and therefore found",
         "a map and a key",
         "to the base. Your next",
         "goal is to get inside",
-        "and destroy it!"
+        "and destroy their operation!"
     ], 16, "Courier"),
 ]
