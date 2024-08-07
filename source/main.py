@@ -28,6 +28,7 @@
 
 import time
 import random
+import gc
 from setup.ConfigurationSetup import *
 from setup.WindowSetup import *
 from setup.SpriteSetup import button
@@ -180,6 +181,7 @@ def main():
             button.buy_button_pressed = 0
             if screen.mode == "Machine_Mode" or screen.mode == "Alien_Mode":
                 gadget.start_timer()
+            gc.collect()
             print(len(wn.turtles()))
 
         # The game background objects and the panel is created right when the game is launched.
@@ -243,8 +245,10 @@ def main():
 
             # Spawn the title mode buttons
             if button.current_button_index == 0:
-                for i in range(4):
+                for i in range(3):
                     button.spawn_button("Title", i + 1)
+                for i in range(1):
+                    button.spawn_button("Title_Locked", i + 1)
                 for i in range(2):
                     button.spawn_button("Title_Small", i + 1)
 
@@ -267,11 +271,12 @@ def main():
                         # Run the button function if clicked
                         wn.onscreenclick(screen.launch_machine_mode)
                     elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.launch_alien_mode)
-                    elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(screen.launch_shop_mode)
-                    elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                    elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(screen.exit_game)
+                elif button_type == "Title_Locked":
+                    if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
+                        wn.onscreenclick(screen.launch_alien_mode)
                 elif button_type == "Title_Small":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
                         wn.onscreenclick(screen.launch_settings_mode)

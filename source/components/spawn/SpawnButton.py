@@ -128,6 +128,8 @@ class SpawnButton:
                         # Reinstate the button to the correct type and id
                         if type == "Title":
                             bu.reinstate_to_title(id)
+                        elif type == "Title_Locked":
+                            bu.reinstate_to_title_locked(id)
                         elif type == "Title_Small":
                             bu.reinstate_to_title_small(id)
                         elif type == "Game":

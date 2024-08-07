@@ -118,11 +118,14 @@ class Button:
             if id == 1:
                 self.button_frame.goto(0, 85 * scale_factor_y)
             elif id == 2:
-                self.button_frame.goto(0, -5 * scale_factor_y)
-            elif id == 3:
                 self.button_frame.goto(0, -95 * scale_factor_y)
-            elif id == 4:
+            elif id == 3:
                 self.button_frame.goto(0, -275 * scale_factor_y)
+        elif type == "Title_Locked":
+            self.button_frame.shape(TITLE_SCREEN_BUTTON_TEXTURE)
+            self.button_frame.shapesize(3.5 * scale_factor_y, 25 * scale_factor_x)
+            if id == 1:
+                self.button_frame.goto(0, -5 * scale_factor_y)
         # Title screen small button
         elif type == "Title_Small":
             self.button_frame.shape(TITLE_SCREEN_BUTTON_SMALL_TEXTURE)
@@ -182,6 +185,9 @@ class Button:
         # Ensure that the turtle does not draw lines on the screen while moving
         self.button_text.penup()
         if type == "Title":
+            self.button_text.goto(0, self.button_frame.ycor() - 22 * scale_factor_y)
+        elif type == "Title_Locked":
+            self.button_text.shape(LOCKED_TEXTURE)
             self.button_text.goto(0, self.button_frame.ycor() - 22 * scale_factor_y)
         elif type == "Title_Small":
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() - 22 * scale_factor_y)
@@ -340,10 +346,8 @@ class Button:
         if id == 1:
             self.button_frame.goto(0, 85 * self.scale_factor_y)
         elif id == 2:
-            self.button_frame.goto(0, -5 * self.scale_factor_y)
-        elif id == 3:
             self.button_frame.goto(0, -95 * self.scale_factor_y)
-        elif id == 4:
+        elif id == 3:
             self.button_frame.goto(0, -275 * self.scale_factor_y)
         self.button_frame.color("white")
         self.button_frame.showturtle()
@@ -353,6 +357,30 @@ class Button:
 
         # Set the type to "Title"
         self.type = "Title"
+        self.id = id
+
+    def reinstate_to_title_locked(self, id):
+        """
+            Reuses the existing button sprite to spawn a title screen button that can lock based on the id.
+
+            :param id: A unique identifier for the button
+            :type id: int
+
+            :return: None
+        """
+
+        self.button_frame.shape(TITLE_SCREEN_BUTTON_TEXTURE)
+        self.button_frame.shapesize(3.5 * self.scale_factor_y, 25 * self.scale_factor_x)
+        if id == 1:
+            self.button_frame.goto(0, -5 * self.scale_factor_y)
+        self.button_frame.showturtle()
+
+        self.button_text.shape(LOCKED_TEXTURE)
+        self.button_text.color("white")
+        self.button_text.goto(0, self.button_frame.ycor() - 22 * self.scale_factor_y)
+
+        # Set the type to "Title_Locked"
+        self.type = "Title_Locked"
         self.id = id
 
     def reinstate_to_title_small(self, id):
@@ -806,10 +834,8 @@ class Button:
             if self.id == 1:
                 self.button_text.write("Machine Mode", align="center", font=("Courier", int(30 * self.scale_factor), "normal"))
             elif self.id == 2:
-                self.button_text.write("Alien Mode", align="center", font=("Courier", int(30 * self.scale_factor), "normal"))
-            elif self.id == 3:
                 self.button_text.write("Coin Shop", align="center", font=("Courier", int(30 * self.scale_factor), "normal"))
-            elif self.id == 4:
+            elif self.id == 3:
                 self.button_text.write("Exit", align="center", font=("Courier", int(30 * self.scale_factor), "normal"))
         elif self.type == "Title_Small":
             if self.id == 1:
@@ -850,6 +876,18 @@ class Button:
                 self.button_text.write("Fullscreen:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
             elif self.id == 12:
                 self.button_text.write("VSync:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
+
+    def toggle_title_lock(self, setting):
+        if setting != 0:
+            if self.id == 1:
+                self.button_text.hideturtle()
+                self.button_text.goto(0, self.button_frame.ycor() - 22 * self.scale_factor_y)
+                self.button_text.clear()
+                self.button_text.write("Alien Mode", align="center", font=("Courier", int(30 * self.scale_factor), "normal"))
+        else:
+            self.button_text.clear()
+            self.button_text.goto(0, self.button_frame.ycor())
+            self.button_text.showturtle()
 
     def write_buy(self, price):
         """
@@ -1039,21 +1077,22 @@ class Button:
                     self.button_frame.color("white")
                     self.button_frame.shape(TITLE_SCREEN_BUTTON_TEXTURE)
             elif self.id == 2:
-                if 388 * self.scale_factor_x < x < 890 * self.scale_factor_x and 329 * self.scale_factor_y < y < 401 * self.scale_factor_y:
-                    self.button_frame.color("yellow")
-                    self.button_frame.shape(TITLE_SCREEN_BUTTON_HIGHLIGHTED_TEXTURE)
-                else:
-                    self.button_frame.color("white")
-                    self.button_frame.shape(TITLE_SCREEN_BUTTON_TEXTURE)
-            elif self.id == 3:
                 if 388 * self.scale_factor_x < x < 890 * self.scale_factor_x and 419 * self.scale_factor_y < y < 491 * self.scale_factor_y:
                     self.button_frame.color("yellow")
                     self.button_frame.shape(TITLE_SCREEN_BUTTON_HIGHLIGHTED_TEXTURE)
                 else:
                     self.button_frame.color("white")
                     self.button_frame.shape(TITLE_SCREEN_BUTTON_TEXTURE)
-            elif self.id == 4:
+            elif self.id == 3:
                 if 388 * self.scale_factor_x < x < 890 * self.scale_factor_x and 599 * self.scale_factor_y < y < 671 * self.scale_factor_y:
+                    self.button_frame.color("yellow")
+                    self.button_frame.shape(TITLE_SCREEN_BUTTON_HIGHLIGHTED_TEXTURE)
+                else:
+                    self.button_frame.color("white")
+                    self.button_frame.shape(TITLE_SCREEN_BUTTON_TEXTURE)
+        elif self.type == "Title_Locked":
+            if self.id == 1:
+                if 388 * self.scale_factor_x < x < 890 * self.scale_factor_x and 329 * self.scale_factor_y < y < 401 * self.scale_factor_y:
                     self.button_frame.color("yellow")
                     self.button_frame.shape(TITLE_SCREEN_BUTTON_HIGHLIGHTED_TEXTURE)
                 else:

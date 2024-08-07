@@ -157,7 +157,10 @@ class TextRefresh:
             # Refreshes button text
             if self._refresh.refresh_button == 1 or self._refresh.refresh_button == 2:
                 for bu in self._button.buttons_on_screen_list:
-                    bu.write_lines()
+                    if bu.type != "Title_Locked":
+                        bu.write_lines()
+                    else:
+                        bu.toggle_title_lock(self._shop_config.alien_slot_selected)
             if self._refresh.refresh_button == 1:
                 self._refresh.refresh_button = 2
             elif self._refresh.refresh_button == 2:
