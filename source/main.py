@@ -14,12 +14,12 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 # Created By: Christian Marinkovich (@Christian2147 On GitHub) This is the main source file for Laser Fighter.
-# This is game version beta 1.1.0 released on 08/03/24
+# This is game version beta 1.2.0 released on 08/07/24
 
 """
     File: main.py
     Author: Christian Marinkovich
-    Date: 2024-08-03
+    Date: 2024-08-07
     Description:
     This file is the main file for Laser Fighter.
     The main file contains the main function, which contains the game loop.
@@ -185,6 +185,7 @@ def main():
             button.buy_button_pressed = 0
             if screen.mode == "Machine_Mode" or screen.mode == "Alien_Mode":
                 gadget.start_timer()
+            # Initiate garbage collection to help avoid memory crashes
             gc.collect()
             print(len(window.turtles()))
 
@@ -223,6 +224,7 @@ def main():
             power_up.power_up_index[1] = 0
             power_up.power_up_index[2] = 0
             power_up.power_up_index[3] = 0
+            power_up.power_up_index[4] = 0
 
             # Remove the coin indicator
             for ci in coin_indicator.coin_indicator_turtle:
@@ -302,6 +304,8 @@ def main():
                 if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
                     window.onscreenclick(screen.launch_title_mode)
 
+            # Check to see if the first milestone has been met
+            # If it has not been met, initiate the first milestone
             if not milestones.game_played and milestones.milestone_1_displayed == 0:
                 for pa in panel.panel_turtle:
                     pa.remove()
@@ -313,6 +317,7 @@ def main():
                 milestones.milestone_1_displayed = 1
                 milestones.milestone_start_time = time.time()
 
+            # Display the first milestone for 30 seconds to allow the player to read the information
             if milestones.milestone_1_displayed == 1:
                 current_time = time.time()
                 elapsed_time = current_time - milestones.milestone_start_time
@@ -322,6 +327,7 @@ def main():
                     panel.panel_index = 0
                     milestones.milestone_1_displayed = 0
 
+            # Display the second milestone for 30 seconds to allow the player to read the information
             if milestones.milestone_2_displayed == 1:
                 current_time = time.time()
                 elapsed_time = current_time - milestones.milestone_start_time
@@ -457,7 +463,9 @@ def main():
                 b.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active(), settings.enemy_shooting_sound)
 
             # Detects if the players has picked up a coin
+            # If the coin magnet gadget is not enabled
             if not shop_config.coin_magnet_enabled:
+                # Player has to pick up coins in their own
                 hit_coin = 0
                 for c in coin.coins_on_screen_list:
                     for p in machine_player.current_player:
@@ -509,11 +517,15 @@ def main():
                                     sound.play()
                                 break
                         hit_coin = hit_coin + 1
+            # If the coin magnet is enabled
             else:
+                # Move the coins towards the player
                 gadget.attract_coins("Machine_Mode")
+
                 hit_coin = 0
                 for c in coin.coins_on_screen_list:
                     for p in machine_player.current_player:
+                        # When the player is close enough to the coin, pick it up
                         if p.player.isvisible() and p.death_animation == 0 and p.player.distance(c.coin) < c.COIN_DISTANCE:
                             # Remove the coin from the screen
                             c.remove()
@@ -576,19 +588,24 @@ def main():
                     if bm.get_blue_machine().isvisible() and blue_machine.blue_machines_update_values[current_blue_update_value_index] == 0:
                         laser_killer = 0
                         attacked = 0
+                        # Check to see if the laser will attack it
                         for i in range(len(p.get_laser())):
                             if p.get_laser()[i].laser.isvisible() and \
                                     (bm.x_range_list[i][0] < p.get_laser()[i].laser.xcor() < bm.x_range_list[i][1]) and \
                                     p.get_laser()[i].laser.ycor() > bm.collision_y_coordinate_list[i]:
+                                # If it has, initiate the killing of the enemy
                                 attacked = 1
 
                                 # Confirm that the players laser has attacked
                                 p.set_laser_has_attacked(1, i)
                                 laser_killer = 1
 
+                        # Check to see if the machine hit the player and the player has the thorns gadget enabled
                         if bm.thorns_initiated_damage == 1 and laser_killer == 0:
+                            # If so, initiate the killing of the enemy
                             attacked = 1
 
+                        # If the killing of the enemy has been initiated
                         if attacked == 1:
                             # Kill the enemy
                             bm.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
@@ -624,6 +641,7 @@ def main():
                 for ym in yellow_machine.yellow_machines:
                     # If the player laser hits a yellow machine that is visible and not dying
                     if ym.get_yellow_machine().isvisible() and yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] == 0:
+                        # Same procedure as before
                         laser_killer = 0
                         attacked = 0
                         for i in range(len(p.get_laser())):
@@ -715,19 +733,24 @@ def main():
                         if rm.health_bar > machine_mode_setup.damage:
                             attacked = 0
                             laser_hit = 0
+                            # Check to see if the players laser has attacked the machine
                             for i in range(len(p.get_laser())):
                                 if p.get_laser()[i].laser.isvisible() and \
                                         (rm.x_range_list[i][0] < p.get_laser()[i].laser.xcor() < rm.x_range_list[i][1]) and \
                                         p.get_laser()[i].laser.ycor() > rm.collision_y_coordinate_list[i]:
+                                    # If so, initiate the hit of the enemy
                                     attacked = 1
 
                                     # Confirm that the players laser has attacked and make it disappear
                                     p.set_laser_has_attacked(1, i)
-                                    laser_hit = 0
+                                    laser_hit = 1
 
+                            # Check to see if the enemy hit the player while the player has thorns on
                             if rm.thorns_initiated_damage == 1 and laser_hit == 0:
+                                # If so, initiate the hitting of the enemy
                                 attacked = 1
 
+                            # If the hitting of the enemy has been initiated
                             if attacked == 1:
                                 # Deal 1 health of damage to the red machine, but do not kill it yet
                                 rm.hit_enemy(settings.enemy_hit_sound)
@@ -779,6 +802,8 @@ def main():
                                     statistics.bosses_killed = statistics.bosses_killed + 1
                                     statistics.save()
 
+                                # Check to see if the second milestone has been reached yet or not
+                                # If it has not been reached, initiate it
                                 if not milestones.machine_mode_beaten and milestones.milestone_2_displayed == 0:
                                     for pa in panel.panel_turtle:
                                         pa.remove()
@@ -787,6 +812,7 @@ def main():
                                     refresh_variables.refresh_panel = 1
                                     milestones.machine_mode_beaten = True
                                     milestones.save()
+                                    # Unlock Alien Mode
                                     shop_config.alien_slot_selected = 1
                                     shop_config.alien_slots_unlocked[0] = 1
                                     shop_config.alien_slots_unlocked[1] = 0
@@ -830,6 +856,8 @@ def main():
                                 b.hit_boss(settings.enemy_hit_sound)
                                 machine_boss.boss_hit_value = machine_boss.boss_hit_value + 1
 
+                                # Only increase the score by 2 if it is the first hit to the boss and the players
+                                #   weapon only does 1 damage
                                 if b.health_bar == 9:
                                     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                         statistics.score = statistics.score + 2 * machine_mode_setup.blue_power_up_score_multiplier
@@ -878,6 +906,7 @@ def main():
                                     p.kill_player(settings.player_death_sound)
                                     statistics.score = 0
                                     machine_player.player_update_value = machine_player.player_update_value + 1
+                                    # If the player has thorns enabled, initiate the thorns damage on the enemy
                                     if shop_config.thorns_enabled:
                                         bm.thorns_initiated_damage = 1
 
@@ -936,6 +965,7 @@ def main():
                                     # Hit the player
                                     p.hit_player(settings.player_hit_sound)
                                     machine_player.player_hit_value = machine_player.player_hit_value + 1
+                                    # If the player has thorns enabled, initiate the thorns damage on the enemy
                                     if shop_config.thorns_enabled:
                                         bm.thorns_initiated_damage = 1
 
@@ -1072,7 +1102,7 @@ def main():
                 for pu in power_up.current_power_ups:
                     # If a power up is visible
                     if pu.get_power_up().isvisible():
-                        # Check its type (1 = yellow, 2 = blue, and 3 = green)
+                        # Check its type (1 = yellow, 2 = blue, 3 = green, and 5 = heart)
                         # If the player runs to the power up
                         if pu.type == 1 and pu.get_power_up().distance(p.get_player()) < 50 * scale_factor and p.get_death_animation() == 0 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             # Pick it up
@@ -1098,12 +1128,14 @@ def main():
                                 statistics.save()
                             extra_power_up_indicator.extra_power_up_indicator_turtle[0].set_power_up_active(1)
 
+                        # Allow for the heart power up if the heart gadget is enabled
                         if shop_config.hearts_enabled:
                             if pu.type == 5 and pu.get_power_up().distance(p.get_player()) < 50 * scale_factor and p.get_death_animation() == 0:
                                 pu.pick_up(settings.power_up_pickup_sound)
                                 if settings.god_mode == 0:
                                     statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
                                     statistics.save()
+                                # Grant the player health
                                 p.grant_player_health()
 
             # If the power ups are active, run their timers through these functions
@@ -1162,6 +1194,8 @@ def main():
                 if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
                     window.onscreenclick(screen.launch_title_mode)
 
+            # Check to see if the third milestone has been met yet or not
+            # If it has not been met, initiate the third milestone
             if not milestones.alien_mode_played and milestones.milestone_3_displayed == 0:
                 for pa in panel.panel_turtle:
                     pa.remove()
@@ -1173,6 +1207,7 @@ def main():
                 milestones.milestone_3_displayed = 1
                 milestones.milestone_start_time = time.time()
 
+            # Display the third milestone for 30 seconds so that the player has time to read the information
             if milestones.milestone_3_displayed == 1:
                 current_time = time.time()
                 elapsed_time = current_time - milestones.milestone_start_time
@@ -1182,6 +1217,7 @@ def main():
                     panel.panel_index = 0
                     milestones.milestone_3_displayed = 0
 
+            # Display the fourth milestone for 30 seconds so that the player has time to read the information
             if milestones.milestone_4_displayed == 1:
                 current_time = time.time()
                 elapsed_time = current_time - milestones.milestone_start_time
@@ -1211,9 +1247,11 @@ def main():
                 earth.spawn_earth()
             if background_objects.background_objects_index == 0:
                 background_objects.spawn_background_objects()
+
             # Spawn the human player
             if human_player.current_human_index == 0:
                 human_player.spawn_human_player(settings.god_mode)
+
             # Spawn three small aliens to start out
             if small_alien.small_alien_index == 0:
                 for i in range(3):
@@ -1314,7 +1352,7 @@ def main():
                 for pu in power_up.current_power_ups:
                     # If a power up is visible
                     if pu.get_power_up().isvisible():
-                        # Check its type (1 = yellow, 2 = blue, and 3 = green)
+                        # Check its type (1 = yellow, 2 = blue, 4 = red, and 5 = heart)
                         # If the player runs to the power up
                         if pu.type == 1 and pu.get_power_up().distance(h.get_player()) < 50 * scale_factor and h.get_death_animation() == 0 and yellow_power_up_indicator.yellow_power_up_indicator_turtle[0].get_power_up_active() == 0:
                             # Pick it up
@@ -1340,12 +1378,14 @@ def main():
                                 statistics.save()
                             extra_power_up_indicator.extra_power_up_indicator_turtle[0].set_power_up_active(1)
 
+                        # If the hearts power up is enabled, allow the player to pick it up
                         if shop_config.hearts_enabled:
                             if pu.type == 5 and pu.get_power_up().distance(h.get_player()) < 50 * scale_factor and h.get_death_animation() == 0:
                                 pu.pick_up(settings.power_up_pickup_sound)
                                 if settings.god_mode == 0:
                                     statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1
                                     statistics.save()
+                                # Grant the player 3 health
                                 h.grant_player_health()
 
             # If the power ups are active, run their timers through these functions
@@ -1491,7 +1531,9 @@ def main():
                     la.set_alien_texture(human_player.right_update, human_player.left_update)
 
             # Detects if the players has picked up a coin
+            # If the coin magnet is not enabled
             if not shop_config.coin_magnet_enabled:
+                # Player must pick up the coin in their own
                 hit_coin = 0
                 for c in coin.coins_on_screen_list:
                     for h in human_player.current_human:
@@ -1541,12 +1583,15 @@ def main():
                                 sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
                                 sound.play()
                         hit_coin = hit_coin + 1
+            # If the coin magnet is enabled
             else:
+                # Move the ocins towards the player
                 gadget.attract_coins("Alien_Mode")
 
                 hit_coin = 0
                 for c in coin.coins_on_screen_list:
                     for h in human_player.current_human:
+                        # When the player gets close enough to the coin, pick it up
                         if h.player.isvisible() and h.death_animation == 0 and h.player.distance(c.coin) < c.COIN_DISTANCE:
                             # Remove the coin from the screen
                             c.remove()
@@ -1596,7 +1641,7 @@ def main():
                     # If the player laser hits a small alien that is visible and not dying
                     if small_alien.small_aliens_kill_values[current_small_alien_update_value_index] == 0:
                         if sa.get_small_alien().isvisible():
-                            # Check for all player lasers
+                            # Check for all player lasers first
                             laser_killed = 0
                             if sa.got_hit == 0:
                                 for l in h.get_laser():
@@ -1625,9 +1670,12 @@ def main():
                                         l.laser.hideturtle()
                                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                                             l.laser_update = l.laser_update + 1
+                                        # Set that the laser has already killed the enemy
                                         laser_killed = 1
                                         break
 
+                            # If the laser did not kill the enemy this iteration
+                            # Kill the enemy if the thorns gadget is enabled and the player got hit by the enemy
                             if sa.thorns_initiated_damage == 1 and laser_killed == 0:
                                 small_alien.small_aliens_kill_values[current_small_alien_update_value_index] =  small_alien.small_aliens_kill_values[current_small_alien_update_value_index] + 1
 
@@ -1711,6 +1759,7 @@ def main():
                     #   greater than damage
                     if medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] == 0:
                         if ma.get_medium_alien_health() > alien_mode_setup.damage and ma.get_medium_alien().isvisible():
+                            # Check if the laser hit the enemy first
                             laser_hit = 0
                             if ma.got_hit == 0:
                                 for l in h.get_laser():
@@ -1734,9 +1783,13 @@ def main():
                                         l.laser.hideturtle()
                                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                                             l.laser_update = l.laser_update + 1
-                                            laser_hit = 1
+                                        # Set that the laser as already hit the enemy this iteration
+                                        laser_hit = 1
                                         break
 
+                            # If the laser did not already hit the enemy this iteration
+                            # Check if the player got hi by the alien while the thorns gadget is enabled
+                            # If the player has been hit with the thorns gadget, hit the alien
                             if ma.thorns_initiated_damage == 1 and laser_hit == 0:
                                 medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
 
@@ -1903,6 +1956,8 @@ def main():
                                     statistics.ufos_killed = statistics.ufos_killed + 1
                                     statistics.save()
 
+                                # Check to see if the 4th milestone has been reached yet
+                                # If it has not been reached, initiate the 4th milestone
                                 if not milestones.alien_mode_beaten and milestones.milestone_4_displayed == 0:
                                     for pa in panel.panel_turtle:
                                         pa.remove()
@@ -1934,6 +1989,9 @@ def main():
                                     ):
                                         ufo.ufo_hit_value = ufo.ufo_hit_value + 1
 
+                                        # UFO health going down to 6 - 9 grants the player 1 point
+                                        # UFO health going down to 3 - 5 grants the player 2 points
+                                        # UFO health going down to 1 - 2 grants the player 3 points
                                         if u.get_ufo_health() == 2 or u.get_ufo_health() == 1:
                                             if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
                                                 statistics.score = statistics.score + 3 * alien_mode_setup.blue_power_up_score_multiplier
@@ -2009,6 +2067,7 @@ def main():
                                 # Then, kill the player
                                 h.kill_player(settings.player_death_sound)
                                 human_player.human_update_value = human_player.human_update_value + 1
+                                # If the thorns gadget is enabled, hit the alien
                                 if shop_config.thorns_enabled:
                                     sa.thorns_initiated_damage = 1
 
@@ -2063,6 +2122,7 @@ def main():
                                 # Hit the player
                                 h.hit_player(settings.player_hit_sound)
                                 human_player.human_hit_value = human_player.human_hit_value + 1
+                                # If the thorns gadget is enabled, hit the alien
                                 if shop_config.thorns_enabled:
                                     sa.thorns_initiated_damage = 1
 
@@ -2089,6 +2149,7 @@ def main():
                             if h.get_health() > 1 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and u.get_ufo().isvisible() and u.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
                                 h.hit_player(settings.player_hit_sound)
                                 human_player.human_hit_value = human_player.human_hit_value + 1
+                                # Only if the player touches the UFO will thorns initiate damage on it
                                 if shop_config.thorns_enabled:
                                     u.thorns_initiated_damage = 1
 
@@ -2397,13 +2458,14 @@ def main():
                     elif bu.get_type() == "Buy":
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
                             window.onscreenclick(shop.execute_buy_button)
+            # If the page is "Gadgets"
             elif screen.page == "Gadgets":
                 # Spawn 4 gadget slots
                 if button.current_button_index == 5:
                     for i in range(4):
                         button.spawn_button("Gadget_Slot", i + 1)
 
-                # Check to see if a price label is still needed and if the power ups are on their max level or not
+                # Check to see if a price label is still needed depending on if the item has been bought or not
                 if textbox.current_text_index == 3 and button.buy_button_pressed == 0:
                     counter = 4
                     for bu in button.buttons_on_screen_list:
@@ -2414,7 +2476,7 @@ def main():
                                 refresh_variables.refresh_text = 1
                             counter = counter + 1
 
-                # Check to see if each gadget is enabled or not
+                # Check to see if each gadget is unlocked or not
                 for bu in button.buttons_on_screen_list:
                     if bu.get_type() == "Gadget_Slot":
                         if bu.get_id() == 1:
@@ -2448,9 +2510,11 @@ def main():
                             window.onscreenclick(shop.slot_3_select)
                         elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
                             window.onscreenclick(shop.slot_4_select)
+                    # Check to see if the buy button has been clicked
                     elif bu.get_type() == "Buy":
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
                             window.onscreenclick(shop.execute_buy_button)
+                    # Check to see if the enable button has been clicked
                     elif bu.get_type() == "Enable":
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
                             window.onscreenclick(shop.execute_enable_button)
