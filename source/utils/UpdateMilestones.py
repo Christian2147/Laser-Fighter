@@ -28,12 +28,14 @@ class MilestoneConfig:
         self.milestone_1_displayed = 0
         self.milestone_2_displayed = 0
         self.milestone_3_displayed = 0
+        self.milestone_4_displayed = 0
 
         self.milestone_start_time = 0
 
         # Initialize the milestone variables
         self.game_played = False
         self.machine_mode_beaten = False
+        self.alien_mode_played = False
         self.alien_mode_beaten = False
 
         self.load()
@@ -43,19 +45,23 @@ class MilestoneConfig:
         del self.milestone_1_displayed
         del self.milestone_2_displayed
         del self.milestone_3_displayed
+        del self.milestone_4_displayed
         del self.milestone_start_time
 
     def load(self):
         self.game_played = self.player_data_manager.getboolean('Machine_Mode_First_Time', 'Ran_First_Time')
         self.machine_mode_beaten = self.player_data_manager.getboolean('Machine_Mode_Beat', 'Machine_Mode_Beat')
+        self.alien_mode_played = self.player_data_manager.getboolean('Alien_Mode_Played', 'Alien_Mode_Played')
         self.alien_mode_beaten = self.player_data_manager.getboolean('Alien_Mode_Beat', 'Alien_Mode_Beat')
 
     def save(self):
         self.player_data_manager.set('Machine_Mode_First_Time', 'Ran_First_Time', str(self.game_played))
         self.player_data_manager.set('Machine_Mode_Beat', 'Machine_Mode_Beat', str(self.machine_mode_beaten))
+        self.player_data_manager.set('Alien_Mode_Played', 'Alien_Mode_Played', str(self.alien_mode_played))
         self.player_data_manager.set('Alien_Mode_Beat', 'Alien_Mode_Beat', str(self.alien_mode_beaten))
 
     def __repr__(self):
         return (f"game_played={self.game_played}, "
                 f"machine_mode_beaten={self.machine_mode_beaten}, "
+                f"alien_mode_played={self.alien_mode_played}, "
                 f"alien_mode_beaten={self.alien_mode_beaten})")

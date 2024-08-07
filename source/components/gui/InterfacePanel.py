@@ -27,6 +27,7 @@ from setup.ConfigurationSetup import shop_config
 from setup.data.MilestoneMessages import MILESTONE_1_MESSAGE
 from setup.data.MilestoneMessages import MILESTONE_2_MESSAGE
 from setup.data.MilestoneMessages import MILESTONE_3_MESSAGE
+from setup.data.MilestoneMessages import MILESTONE_4_MESSAGE
 from setup.data.ShopDescriptions import MAIN_DESCRIPTION
 from setup.data.ShopDescriptions import MACHINE_DESCRIPTIONS
 from setup.data.ShopDescriptions import ALIEN_DESCRIPTIONS
@@ -104,7 +105,7 @@ class Panel:
             self.panel.goto(0, 0)
         elif type == "Alien_Mode":
             self.panel.shape(POP_UP_MESSAGE_FRAME_TEXTURE)
-            self.panel.goto(0, 200 * scale_factor_y)
+            self.panel.goto(-400 * self.scale_factor_x, 100 * scale_factor_y)
 
         self.panel_text = turtle.Turtle()
         self.panel_text.color("white")
@@ -186,15 +187,15 @@ class Panel:
         self.type = "Machine_Mode"
         self.id = id
 
-    def reinstate_to_alien_message(self):
+    def reinstate_to_alien_message(self, id):
         self.panel.shape(POP_UP_MESSAGE_FRAME_TEXTURE)
-        self.panel.goto(0, 200 * self.scale_factor_y)
+        self.panel.goto(-400 * self.scale_factor_x, 100 * self.scale_factor_y)
         self.panel.showturtle()
 
         self.panel_text.goto(self.panel.xcor(), self.panel.ycor() + 105 * self.scale_factor_y)
 
         self.type = "Alien_Mode"
-        self.id = 1
+        self.id = id
 
     def get_panel_frame(self):
         """
@@ -359,26 +360,34 @@ class Panel:
             self.set_indicator()
         elif self.type == "Machine_Mode":
             if self.id == 1:
-                for i in range(MILESTONE_1_MESSAGE[self.id - 1].get_length()):
-                    self.panel_text.write("{}".format(MILESTONE_1_MESSAGE[self.id - 1].get_text()[i]),
-                                            align=MILESTONE_1_MESSAGE[self.id - 1].get_align(),
-                                            font=(MILESTONE_1_MESSAGE[self.id - 1].get_font(),
-                                            int(MILESTONE_1_MESSAGE[self.id - 1].get_size() * self.scale_factor), "normal"))
+                for i in range(MILESTONE_1_MESSAGE[0].get_length()):
+                    self.panel_text.write("{}".format(MILESTONE_1_MESSAGE[0].get_text()[i]),
+                                            align=MILESTONE_1_MESSAGE[0].get_align(),
+                                            font=(MILESTONE_1_MESSAGE[0].get_font(),
+                                            int(MILESTONE_1_MESSAGE[0].get_size() * self.scale_factor), "normal"))
                     self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
             else:
-                for i in range(MILESTONE_2_MESSAGE[self.id - 1].get_length()):
-                    self.panel_text.write("{}".format(MILESTONE_2_MESSAGE[self.id - 1].get_text()[i]),
-                                            align=MILESTONE_2_MESSAGE[self.id - 1].get_align(),
-                                            font=(MILESTONE_2_MESSAGE[self.id - 1].get_font(),
-                                            int(MILESTONE_2_MESSAGE[self.id - 1].get_size() * self.scale_factor), "normal"))
+                for i in range(MILESTONE_2_MESSAGE[0].get_length()):
+                    self.panel_text.write("{}".format(MILESTONE_2_MESSAGE[0].get_text()[i]),
+                                            align=MILESTONE_2_MESSAGE[0].get_align(),
+                                            font=(MILESTONE_2_MESSAGE[0].get_font(),
+                                            int(MILESTONE_2_MESSAGE[0].get_size() * self.scale_factor), "normal"))
                     self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
         elif self.type == "Alien_Mode":
-            for i in range(MILESTONE_3_MESSAGE[self.id - 1].get_length()):
-                self.panel_text.write("{}".format(MILESTONE_3_MESSAGE[self.id - 1].get_text()[i]),
-                                        align=MILESTONE_3_MESSAGE[self.id - 1].get_align(),
-                                        font=(MILESTONE_3_MESSAGE[self.id - 1].get_font(),
-                                        int(MILESTONE_3_MESSAGE[self.id - 1].get_size() * self.scale_factor), "normal"))
-                self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
+            if self.id == 1:
+                for i in range(MILESTONE_3_MESSAGE[0].get_length()):
+                    self.panel_text.write("{}".format(MILESTONE_3_MESSAGE[0].get_text()[i]),
+                                            align=MILESTONE_3_MESSAGE[0].get_align(),
+                                            font=(MILESTONE_3_MESSAGE[0].get_font(),
+                                            int(MILESTONE_3_MESSAGE[0].get_size() * self.scale_factor), "normal"))
+                    self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
+            else:
+                for i in range(MILESTONE_4_MESSAGE[0].get_length()):
+                    self.panel_text.write("{}".format(MILESTONE_4_MESSAGE[0].get_text()[i]),
+                                            align=MILESTONE_4_MESSAGE[0].get_align(),
+                                            font=(MILESTONE_4_MESSAGE[0].get_font(),
+                                            int(MILESTONE_4_MESSAGE[0].get_size() * self.scale_factor), "normal"))
+                    self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
 
     def set_indicator(self):
         """

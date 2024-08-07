@@ -97,7 +97,7 @@ class SpawnPanel:
                     elif mode == "Machine_Mode":
                         pa.reinstate_to_machine_message(id)
                     elif mode == "Alien_Mode":
-                        pa.reinstate_to_alien_message()
+                        pa.reinstate_to_alien_message(id)
                     self.panel_index = self.panel_index + 1
 
 

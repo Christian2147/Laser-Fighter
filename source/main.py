@@ -186,12 +186,6 @@ def main():
         # This is done to make sure that they are truly in the background and that nothing lies behind these sprites.
         # Since turtle does not allow a way to push a turtle in front of another turtle,
         #   this is the only way to do this.
-        if len(panel.panel_turtle) == 0:
-            panel.spawn_panel("Shop")
-            for pa in panel.panel_turtle:
-                pa.remove()
-            panel.panel_index = 0
-
         if len(background_objects.background_objects_turtle) == 0:
             background_objects.spawn_background_objects()
             for bo in background_objects.background_objects_turtle:
@@ -203,6 +197,12 @@ def main():
             for s in sun.sun_turtle:
                 s.remove()
             sun.sun_index = 0
+
+        if len(panel.panel_turtle) == 0:
+            panel.spawn_panel("Shop")
+            for pa in panel.panel_turtle:
+                pa.remove()
+            panel.panel_index = 0
 
         """
             When Title Mode is on
@@ -312,6 +312,15 @@ def main():
                         pa.remove()
                     panel.panel_index = 0
                     milestones.milestone_1_displayed = 0
+
+            if milestones.milestone_2_displayed == 1:
+                current_time = time.time()
+                elapsed_time = current_time - milestones.milestone_start_time
+                if elapsed_time > 30:
+                    for pa in panel.panel_turtle:
+                        pa.remove()
+                    panel.panel_index = 0
+                    milestones.milestone_2_displayed = 0
 
             # Spawn the rest of the game interface
             # This includes the power up timers
@@ -760,6 +769,17 @@ def main():
                                 if settings.god_mode == 0:
                                     statistics.bosses_killed = statistics.bosses_killed + 1
                                     statistics.save()
+
+                                if not milestones.machine_mode_beaten and milestones.milestone_2_displayed == 0:
+                                    for pa in panel.panel_turtle:
+                                        pa.remove()
+                                    panel.panel_index = 0
+                                    panel.spawn_panel(screen.mode, 2)
+                                    refresh_variables.refresh_panel = 1
+                                    milestones.machine_mode_beaten = True
+                                    milestones.save()
+                                    milestones.milestone_2_displayed = 1
+                                    milestones.milestone_start_time = time.time()
                     elif machine_boss.boss_update_value != 0:
                         b.kill_boss(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         machine_boss.boss_update_value = machine_boss.boss_update_value + 1
@@ -1124,6 +1144,35 @@ def main():
                 button_color, button_type, id = bu.click_button()
                 if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
                     wn.onscreenclick(screen.launch_title_mode)
+
+            if not milestones.alien_mode_played and milestones.milestone_3_displayed == 0:
+                for pa in panel.panel_turtle:
+                    pa.remove()
+                panel.panel_index = 0
+                panel.spawn_panel(screen.mode, 1)
+                refresh_variables.refresh_panel = 1
+                milestones.alien_mode_played = True
+                milestones.save()
+                milestones.milestone_3_displayed = 1
+                milestones.milestone_start_time = time.time()
+
+            if milestones.milestone_3_displayed == 1:
+                current_time = time.time()
+                elapsed_time = current_time - milestones.milestone_start_time
+                if elapsed_time > 30:
+                    for pa in panel.panel_turtle:
+                        pa.remove()
+                    panel.panel_index = 0
+                    milestones.milestone_3_displayed = 0
+
+            if milestones.milestone_4_displayed == 1:
+                current_time = time.time()
+                elapsed_time = current_time - milestones.milestone_start_time
+                if elapsed_time > 30:
+                    for pa in panel.panel_turtle:
+                        pa.remove()
+                    panel.panel_index = 0
+                    milestones.milestone_4_displayed = 0
 
             # Spawn the rest of the game interface
             # This includes the power up timers
@@ -1808,6 +1857,17 @@ def main():
                                             statistics.ufos_killed = statistics.ufos_killed + 1
                                             statistics.save()
 
+                                        if not milestones.alien_mode_beaten and milestones.milestone_4_displayed == 0:
+                                            for pa in panel.panel_turtle:
+                                                pa.remove()
+                                            panel.panel_index = 0
+                                            panel.spawn_panel(screen.mode, 2)
+                                            refresh_variables.refresh_panel = 1
+                                            milestones.alien_mode_beaten = True
+                                            milestones.save()
+                                            milestones.milestone_4_displayed = 1
+                                            milestones.milestone_start_time = time.time()
+
                                         l.laser.hideturtle()
                                         if extra_power_up_indicator.extra_power_up_indicator_turtle[0].get_power_up_active() == 0:
                                             l.laser_update = l.laser_update + 1
@@ -1825,6 +1885,17 @@ def main():
                                 if settings.god_mode == 0:
                                     statistics.ufos_killed = statistics.ufos_killed + 1
                                     statistics.save()
+
+                                if not milestones.alien_mode_beaten and milestones.milestone_4_displayed == 0:
+                                    for pa in panel.panel_turtle:
+                                        pa.remove()
+                                    panel.panel_index = 0
+                                    panel.spawn_panel(screen.mode, 2)
+                                    refresh_variables.refresh_panel = 1
+                                    milestones.alien_mode_beaten = True
+                                    milestones.save()
+                                    milestones.milestone_4_displayed = 1
+                                    milestones.milestone_start_time = time.time()
                     elif ufo.ufo_kill_value != 0:
                         u.kill_ufo(settings.enemy_death_sound, coin.coins_on_screen_list, coin.all_coins_list)
                         ufo.ufo_kill_value = ufo.ufo_kill_value + 1

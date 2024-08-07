@@ -32,8 +32,24 @@ MILESTONE_1_MESSAGE = [
     ], 16, "Courier"),
 ]
 
-# When the player beats the boss in Machine Mode for the first time
+# When the player beats the machine boss for the first time
 MILESTONE_2_MESSAGE = [
+    Description("center", [
+        "Congratulations!",
+        "",
+        "You have successfully entered",
+        "the moons orbit! Now, you",
+        "must find a safe place",
+        "to land so that you",
+        "can begin your operation.",
+        "Careful! There seems to be",
+        "a lot of aliens on",
+        "the moon.",
+    ], 16, "Courier"),
+]
+
+# When the player enters Alien Mode for the first time
+MILESTONE_3_MESSAGE = [
     Description("center", [
         "Congratulations!",
         "",
@@ -50,7 +66,7 @@ MILESTONE_2_MESSAGE = [
 ]
 
 # When the player beats the boss in Alien Mode for the first time
-MILESTONE_3_MESSAGE = [
+MILESTONE_4_MESSAGE = [
     Description("center", [
         "Congratulations!",
         "",
