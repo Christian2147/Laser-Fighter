@@ -92,6 +92,9 @@ class Panel:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
+
+            :param id: The id of the milestone to display (Only for Machine Mode and Alien Mode)
+            :type id: int
         """
 
         self.panel = turtle.Turtle()
@@ -128,6 +131,7 @@ class Panel:
         else:
             self.indicator_created = 0
 
+        # Display the welcome message by default in the shop
         self.type = type
         self.category = "Welcome"
         self.id = id
@@ -145,6 +149,7 @@ class Panel:
 
         self.panel.clear()
         self.panel_text.clear()
+        # Delete the panel indicator if it exists
         if self.indicator_created == 1:
             self.panel_indicator.clear()
             del self.panel_indicator
@@ -164,6 +169,7 @@ class Panel:
 
         self.panel_text.goto(self.panel.xcor() - 155 * self.scale_factor_x, self.panel.ycor() + 290 * self.scale_factor_y)
 
+        # Create the panel indicator if it does not exist already
         if self.indicator_created == 0:
             self.panel_indicator = turtle.Turtle()
             # Ensure that the turtle does not draw lines on the screen while moving
@@ -179,22 +185,42 @@ class Panel:
         self.id = 1
 
     def reinstate_to_machine_message(self, id):
+        """
+            Reuses the existing sprite to create a message box in Machine Mode.
+
+            :param id: The id of the milestone message to be displayed
+            :type id: int
+
+            :return: None
+        """
+
         self.panel.shape(POP_UP_MESSAGE_FRAME_TEXTURE)
         self.panel.goto(0, 0)
         self.panel.showturtle()
 
         self.panel_text.goto(self.panel.xcor(), self.panel.ycor() + 105 * self.scale_factor_y)
 
+        # Set the type to Machine Mode
         self.type = "Machine_Mode"
         self.id = id
 
     def reinstate_to_alien_message(self, id):
+        """
+            Reuses the existing sprite to create a message box in Machine Mode.
+
+            :param id: The id of the milestone message to be displayed
+            :type id: int
+
+            :return: None
+        """
+
         self.panel.shape(POP_UP_MESSAGE_FRAME_TEXTURE)
         self.panel.goto(-400 * self.scale_factor_x, 100 * self.scale_factor_y)
         self.panel.showturtle()
 
         self.panel_text.goto(self.panel.xcor(), self.panel.ycor() + 105 * self.scale_factor_y)
 
+        # Set the type to Alien Mode
         self.type = "Alien_Mode"
         self.id = id
 
@@ -285,6 +311,7 @@ class Panel:
         self.panel_text.clear()
 
         # Writes new text based on the panel type and id of the text
+        # If the current screen is the shop screen, the panel is a side panel
         if self.type == "Shop":
             if self.category == "Welcome":
                 self.panel_text.goto(self.panel.xcor() - 155 * self.scale_factor_x, self.panel.ycor() + 290 * self.scale_factor_y)
@@ -307,14 +334,18 @@ class Panel:
                                             int(MACHINE_DESCRIPTIONS[self.id - 1].get_size() * self.scale_factor), "normal"))
                     self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
             elif self.category == "Alien_Mode":
+                # If Alien Mode is unlocked
                 if shop_config.alien_slots_unlocked[self.id - 1] != -1:
+                    # Display the description of the item
                     for i in range(ALIEN_DESCRIPTIONS[self.id - 1].get_length()):
                         self.panel_text.write("{}".format(ALIEN_DESCRIPTIONS[self.id - 1].get_text()[i]),
                                                 align=ALIEN_DESCRIPTIONS[self.id - 1].get_align(),
                                                 font=(ALIEN_DESCRIPTIONS[self.id - 1].get_font(),
                                                 int(ALIEN_DESCRIPTIONS[self.id - 1].get_size() * self.scale_factor), "normal"))
                         self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
+                # If Alien Mode is locked
                 else:
+                    # Simply let the user know that Alien Mode is locked
                     for i in range(ALIEN_LOCKED_DESCRIPTION[0].get_length()):
                         self.panel_text.write("{}".format(ALIEN_LOCKED_DESCRIPTION[0].get_text()[i]),
                                                 align=ALIEN_LOCKED_DESCRIPTION[0].get_align(),
@@ -367,6 +398,7 @@ class Panel:
                     self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 27 * self.scale_factor_y)
             # Set the panel indicator after the text is updated
             self.set_indicator()
+        # If the current mode is Machine Mode, the panel is a message box
         elif self.type == "Machine_Mode":
             if self.id == 1:
                 for i in range(MILESTONE_1_MESSAGE[0].get_length()):
@@ -382,6 +414,7 @@ class Panel:
                                             font=(MILESTONE_2_MESSAGE[0].get_font(),
                                             int(MILESTONE_2_MESSAGE[0].get_size() * self.scale_factor), "normal"))
                     self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
+        # If the current mode is Alien Mode, the panel is a message box
         elif self.type == "Alien_Mode":
             if self.id == 1:
                 for i in range(MILESTONE_3_MESSAGE[0].get_length()):

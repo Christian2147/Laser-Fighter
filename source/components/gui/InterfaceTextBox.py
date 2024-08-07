@@ -101,6 +101,15 @@ class Text:
             :param id: Ths id of the new text box (For identification of the object in main)
             :type id: int
 
+            :param x: The x-coordinate of where the text box should be placed
+            :type x: float
+
+            :param y: The y-coordinate of where the text box should be placed
+            :type y: float
+
+            :param color: The color of the text box
+            :type color: string
+
             :return: None
         """
 

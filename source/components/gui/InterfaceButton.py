@@ -121,6 +121,7 @@ class Button:
                 self.button_frame.goto(0, -95 * scale_factor_y)
             elif id == 3:
                 self.button_frame.goto(0, -275 * scale_factor_y)
+        # Title Screen Lock button
         elif type == "Title_Locked":
             self.button_frame.shape(TITLE_SCREEN_BUTTON_TEXTURE)
             self.button_frame.shapesize(3.5 * scale_factor_y, 25 * scale_factor_x)
@@ -187,6 +188,7 @@ class Button:
         if type == "Title":
             self.button_text.goto(0, self.button_frame.ycor() - 22 * scale_factor_y)
         elif type == "Title_Locked":
+            # Display either a lock or the button text for a lock button
             self.button_text.shape(LOCKED_TEXTURE)
             self.button_text.goto(0, self.button_frame.ycor() - 22 * scale_factor_y)
         elif type == "Title_Small":
@@ -203,6 +205,7 @@ class Button:
             elif id == 4:
                 self.button_text.shape(GADGETS_TAB_ICON_TEXTURE)
             self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor())
+        # For the different shop slots, display icons instead
         elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadgets_Slot":
             # Which icon is displayed depends on the page that the user is on.
             if page == "Machine_Mode":
@@ -302,6 +305,7 @@ class Button:
 
             self.indicator = 1
             self.indicator_toggled = 0
+        # The indicator here is used as the coin icon
         elif type == "Buy":
             self.button_indicator = turtle.Turtle()
             self.button_indicator.penup()
@@ -690,6 +694,7 @@ class Button:
             self.button_indicator.hideturtle()
             self.indicator = 1
 
+        # Set the indicator location
         if id == 1:
             self.button_indicator.goto(-177 * self.scale_factor_x, 173 * self.scale_factor_y)
         elif id == 2:
@@ -826,7 +831,7 @@ class Button:
             :return: None
         """
 
-        # Clears the existing text
+        # Clears the existing text (The shop slot does not use a textbox)
         if self.type != "Shop_Slot":
             self.button_text.clear()
         # Writes new text based on the button type and id
@@ -878,13 +883,26 @@ class Button:
                 self.button_text.write("VSync:", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
 
     def toggle_title_lock(self, setting):
+        """
+            Toggles the lock buttons lock on or off.
+
+            :param setting: Determines whether the button needs to be locked or not
+            :type setting: int
+
+            :return:
+        """
+
+        # For Alien Mode specifically:
+        # If the user does currently have an Alien Mode gun selected (Means it is unlocked)
         if setting != 0:
+            # display the regular button text
             if self.id == 1:
                 self.button_text.hideturtle()
                 self.button_text.goto(0, self.button_frame.ycor() - 22 * self.scale_factor_y)
                 self.button_text.clear()
                 self.button_text.write("Alien Mode", align="center", font=("Courier", int(30 * self.scale_factor), "normal"))
         else:
+            # Otherwise, lock the button
             self.button_text.clear()
             self.button_text.goto(0, self.button_frame.ycor())
             self.button_text.showturtle()
@@ -906,11 +924,22 @@ class Button:
         self.button_text.write("{}".format(price), align="left", font=("Courier", int(28 * self.scale_factor), "normal"))
 
     def write_enable(self, check_gadget):
+        """
+            Used to write the enable buttons text based on whether the gadget is currently disabled or enabled.
+
+            :param check_gadget: Check the current gadget to see if it is enabled or not.
+            :type check_gadget: bool
+
+            :return: None
+        """
+
         self.button_text.clear()
         if check_gadget:
+            # If it is enabled, give the option to disable
             self.button_text.color("red")
             self.button_text.write("Disable", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
         else:
+            # If it is disabled, give the option to enable
             self.button_text.color("green")
             self.button_text.write("Enable", align="center", font=("Courier", int(28 * self.scale_factor), "bold"))
 
