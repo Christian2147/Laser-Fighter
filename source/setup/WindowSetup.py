@@ -44,14 +44,14 @@ scale_factor_X = 1
 scale_factor_Y = 1
 
 # Create Screen Object with "Laser Fighter" as the title
-wn = turtle.Screen()
-wn.title("Laser Fighter")
-wn.bgcolor("black")
+window = turtle.Screen()
+window.title("Laser Fighter")
+window.bgcolor("black")
 if settings.fullscreen == 1:
     # Set the width and height to be the monitors width and height
     # The monitors width and height is retrieved from the windows API
-    wn.setup(width=win32api.GetSystemMetrics(0), height=win32api.GetSystemMetrics(1))
-    wn.cv._rootwindow.attributes("-fullscreen", True)
+    window.setup(width=win32api.GetSystemMetrics(0), height=win32api.GetSystemMetrics(1))
+    window.cv._rootwindow.attributes("-fullscreen", True)
 
     # Calculating the scale factor:
     # Extract the screen width and height agian
@@ -91,23 +91,23 @@ if settings.fullscreen == 1:
     # Save the background and add "_Scaled" to its name in the files
     resized_image = image.resize((new_width, new_height))
     resized_image.save("textures/background/Shooting_Game_Background_Scaled.gif")
-    wn.bgpic("textures/background/Shooting_Game_Background_Scaled.gif")
+    window.bgpic("textures/background/Shooting_Game_Background_Scaled.gif")
 else:
     # Default screen is created if fullscreen is not on
-    wn.bgpic("textures/background/Shooting_Game_Background.gif")
-    wn.setup(width=1280, height=720)
+    window.bgpic("textures/background/Shooting_Game_Background.gif")
+    window.setup(width=1280, height=720)
 
 # Get rid of the gray border around the edge of the canvas
-wn.cv.config(highlightthickness=0)
-#wn.cv.config(borderwidth=0)
+window.cv.config(highlightthickness=0)
+#window.cv.config(borderwidth=0)
 # Make the window not resizable (Will hopefully change later)
-wn.cv._rootwindow.resizable(False, False)
+window.cv._rootwindow.resizable(False, False)
 # Set the window icon
 img = tkinter.Image("photo", file="icon/Icon.png")
-wn._root.iconphoto(True, img)
-tk_window = wn.getcanvas().winfo_toplevel()
+window._root.iconphoto(True, img)
+tk_window = window.getcanvas().winfo_toplevel()
 tk_window.iconbitmap('icon/Icon.ico')
-wn.tracer(0)
+window.tracer(0)
 
 # List of paths to all textures that need to be loaded
 texture_paths = [
@@ -292,11 +292,11 @@ if settings.fullscreen == 1:
         # If fullscreen is on, the textures with "_Scaled" at the end of their name are implemented
         new_path = f"{base}_Scaled{ext}"
         resized_image.save(new_path)
-        wn.addshape(new_path)
+        window.addshape(new_path)
 else:
     # If fullscreen is off, textures are imported with names as is
     for texture in texture_paths:
-        wn.addshape(texture)
+        window.addshape(texture)
 
 # Initialize PyGame and PyGame Sound Engine (Performance improvements and better sound)
 pygame.init()

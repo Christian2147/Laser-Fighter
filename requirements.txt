@@ -1,10 +1,12 @@
 altgraph==0.17.2
 future==0.18.2
 importlib-metadata==4.10.0
+memory-profiler==0.61.0
 numpy==1.21.6
 pefile==2021.9.3
 Pillow==9.5.0
 pip==19.0.3
+psutil==6.0.0
 pygame==2.5.2
 pyinstaller==4.7
 pyinstaller-hooks-contrib==2021.4

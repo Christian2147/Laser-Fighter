@@ -87,7 +87,7 @@ def main():
 
             if elapsed_time >= MONITOR_DELAY:
                 text_refresh.update_text()
-                wn.update()
+                window.update()
                 start_ticks = pygame.time.get_ticks()
         # If VSync is off
         else:
@@ -112,7 +112,7 @@ def main():
             elif screen.mode == "Controls":
                 if screen.tick_update % 5 == 0:
                     text_refresh.update_text()
-            wn.update()
+            window.update()
 
         """
             Loop Terminator - Terminates the game loop
@@ -182,7 +182,7 @@ def main():
             if screen.mode == "Machine_Mode" or screen.mode == "Alien_Mode":
                 gadget.start_timer()
             gc.collect()
-            print(len(wn.turtles()))
+            print(len(window.turtles()))
 
         # The game background objects and the panel is created right when the game is launched.
         # This is done to make sure that they are truly in the background and that nothing lies behind these sprites.
@@ -269,19 +269,19 @@ def main():
                     # If the mouse is hovering over the valid button
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
                         # Run the button function if clicked
-                        wn.onscreenclick(screen.launch_machine_mode)
+                        window.onscreenclick(screen.launch_machine_mode)
                     elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.launch_shop_mode)
+                        window.onscreenclick(screen.launch_shop_mode)
                     elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.exit_game)
+                        window.onscreenclick(screen.exit_game)
                 elif button_type == "Title_Locked":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.launch_alien_mode)
+                        window.onscreenclick(screen.launch_alien_mode)
                 elif button_type == "Title_Small":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.launch_settings_mode)
+                        window.onscreenclick(screen.launch_settings_mode)
                     elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.launch_stats_mode)
+                        window.onscreenclick(screen.launch_stats_mode)
 
         """
             When Machine Mode is on
@@ -296,7 +296,7 @@ def main():
             for bu in button.buttons_on_screen_list:
                 button_color, button_type, id = bu.click_button()
                 if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(screen.launch_title_mode)
+                    window.onscreenclick(screen.launch_title_mode)
 
             if not milestones.game_played and milestones.milestone_1_displayed == 0:
                 for pa in panel.panel_turtle:
@@ -1156,7 +1156,7 @@ def main():
             for bu in button.buttons_on_screen_list:
                 button_color, button_type, id = bu.click_button()
                 if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(screen.launch_title_mode)
+                    window.onscreenclick(screen.launch_title_mode)
 
             if not milestones.alien_mode_played and milestones.milestone_3_displayed == 0:
                 for pa in panel.panel_turtle:
@@ -2154,20 +2154,20 @@ def main():
             for bu in button.buttons_on_screen_list:
                 button_color, button_type, id = bu.click_button()
                 if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(screen.launch_title_mode)
+                    window.onscreenclick(screen.launch_title_mode)
 
             # Check to see if the tabs have been click or not
             for bu in button.buttons_on_screen_list:
                 button_color, button_type, id = bu.click_button()
                 if button_type == "Tab":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.display_machine_mode_page)
+                        window.onscreenclick(screen.display_machine_mode_page)
                     elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.display_alien_mode_page)
+                        window.onscreenclick(screen.display_alien_mode_page)
                     elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.display_power_up_page)
+                        window.onscreenclick(screen.display_power_up_page)
                     elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.display_gadgets_page)
+                        window.onscreenclick(screen.display_gadgets_page)
 
             # Spawn all the necessary standalone text
             if textbox.current_text_index == 0:
@@ -2238,18 +2238,18 @@ def main():
                     button_color, button_type, id = bu.click_button()
                     if bu.get_type() == "Shop_Slot":
                         if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_1_select)
+                            window.onscreenclick(shop.slot_1_select)
                         elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_2_select)
+                            window.onscreenclick(shop.slot_2_select)
                         elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_3_select)
+                            window.onscreenclick(shop.slot_3_select)
                         elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_4_select)
+                            window.onscreenclick(shop.slot_4_select)
                         elif id == 5 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_5_select)
+                            window.onscreenclick(shop.slot_5_select)
                     elif bu.get_type() == "Buy":
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.execute_buy_button)
+                            window.onscreenclick(shop.execute_buy_button)
             # If the page is "Alien_Mode"
             elif screen.page == "Alien_Mode":
                 # Create 5 shop slots
@@ -2310,18 +2310,18 @@ def main():
                     button_color, button_type, id = bu.click_button()
                     if bu.get_type() == "Shop_Slot":
                         if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_1_select)
+                            window.onscreenclick(shop.slot_1_select)
                         elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_2_select)
+                            window.onscreenclick(shop.slot_2_select)
                         elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_3_select)
+                            window.onscreenclick(shop.slot_3_select)
                         elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_4_select)
+                            window.onscreenclick(shop.slot_4_select)
                         elif id == 5 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_5_select)
+                            window.onscreenclick(shop.slot_5_select)
                     elif bu.get_type() == "Buy":
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.execute_buy_button)
+                            window.onscreenclick(shop.execute_buy_button)
             # If the page is "Power_Ups"
             elif screen.page == "Power_Ups":
                 # Spawn 4 power up slots
@@ -2383,16 +2383,16 @@ def main():
                     button_color, button_type, id = bu.click_button()
                     if bu.get_type() == "Power_Up_Slot":
                         if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_1_select)
+                            window.onscreenclick(shop.slot_1_select)
                         elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_2_select)
+                            window.onscreenclick(shop.slot_2_select)
                         elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_3_select)
+                            window.onscreenclick(shop.slot_3_select)
                         elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_4_select)
+                            window.onscreenclick(shop.slot_4_select)
                     elif bu.get_type() == "Buy":
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.execute_buy_button)
+                            window.onscreenclick(shop.execute_buy_button)
             elif screen.page == "Gadgets":
                 # Spawn 4 gadget slots
                 if button.current_button_index == 5:
@@ -2437,19 +2437,19 @@ def main():
                     button_color, button_type, id = bu.click_button()
                     if bu.get_type() == "Gadget_Slot":
                         if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_1_select)
+                            window.onscreenclick(shop.slot_1_select)
                         elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_2_select)
+                            window.onscreenclick(shop.slot_2_select)
                         elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_3_select)
+                            window.onscreenclick(shop.slot_3_select)
                         elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.slot_4_select)
+                            window.onscreenclick(shop.slot_4_select)
                     elif bu.get_type() == "Buy":
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.execute_buy_button)
+                            window.onscreenclick(shop.execute_buy_button)
                     elif bu.get_type() == "Enable":
                         if button_color == "yellow" and bu.get_button_frame().isvisible():
-                            wn.onscreenclick(shop.execute_enable_button)
+                            window.onscreenclick(shop.execute_enable_button)
 
             # Spawn the coin indicator
             if coin_indicator.coin_indicator_index == 0:
@@ -2474,7 +2474,7 @@ def main():
             for bu in button.buttons_on_screen_list:
                 button_color, button_type, id = bu.click_button()
                 if button_type == "Game" and button_color == "yellow" and bu.get_button_frame().isvisible():
-                    wn.onscreenclick(screen.launch_title_mode)
+                    window.onscreenclick(screen.launch_title_mode)
 
             # Create the statistics text
             if textbox.current_text_index == 0:
@@ -2511,35 +2511,35 @@ def main():
                 button_color, button_type, id = bu.click_button()
                 if button_type == "Regular_Settings_And_Controls":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.launch_title_mode)
+                        window.onscreenclick(screen.launch_title_mode)
                     elif id == 2 and (button_color == "yellow" or button.clickable == 1) and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.launch_controls_mode)
+                        window.onscreenclick(screen.launch_controls_mode)
                         button.clickable = 0
                 elif button_type == "Settings_Toggle":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(settings_toggle.toggle_button_sound)
+                        window.onscreenclick(settings_toggle.toggle_button_sound)
                     elif id == 2 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(settings_toggle.toggle_player_shooting_sound)
+                        window.onscreenclick(settings_toggle.toggle_player_shooting_sound)
                     elif id == 3 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(settings_toggle.toggle_enemy_shooting_sound)
+                        window.onscreenclick(settings_toggle.toggle_enemy_shooting_sound)
                     elif id == 4 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(settings_toggle.toggle_player_death_sound)
+                        window.onscreenclick(settings_toggle.toggle_player_death_sound)
                     elif id == 5 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(settings_toggle.toggle_enemy_death_sound)
+                        window.onscreenclick(settings_toggle.toggle_enemy_death_sound)
                     elif id == 6 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(settings_toggle.toggle_player_hit_sound)
+                        window.onscreenclick(settings_toggle.toggle_player_hit_sound)
                     elif id == 7 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(settings_toggle.toggle_enemy_hit_sound)
+                        window.onscreenclick(settings_toggle.toggle_enemy_hit_sound)
                     elif id == 8 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(settings_toggle.toggle_power_up_pickup_sound)
+                        window.onscreenclick(settings_toggle.toggle_power_up_pickup_sound)
                     elif id == 9 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(settings_toggle.toggle_power_up_spawn_sound)
+                        window.onscreenclick(settings_toggle.toggle_power_up_spawn_sound)
                     elif id == 10 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(settings_toggle.toggle_coin_pick_up_sound)
+                        window.onscreenclick(settings_toggle.toggle_coin_pick_up_sound)
                     elif id == 11 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(settings_toggle.toggle_fullscreen)
+                        window.onscreenclick(settings_toggle.toggle_fullscreen)
                     elif id == 12 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(settings_toggle.toggle_vsync)
+                        window.onscreenclick(settings_toggle.toggle_vsync)
 
             # Create all additional text boxes
             if textbox.current_text_index == 0:
@@ -2570,19 +2570,19 @@ def main():
                 button_color, button_type, id = bu.click_button()
                 if button_type == "Regular_Settings_And_Controls":
                     if id == 1 and button_color == "yellow" and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.launch_title_mode)
+                        window.onscreenclick(screen.launch_title_mode)
                     elif id == 3 and (button_color == "yellow" or button.clickable == 2) and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(screen.launch_settings_mode)
+                        window.onscreenclick(screen.launch_settings_mode)
                         button.clickable = 0
                 elif button_type == "Controls_Toggle":
                     if id == 1 and (button_color == "yellow" or button_color == "orange") and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(controls.change_go_right_key)
+                        window.onscreenclick(controls.change_go_right_key)
                     elif id == 2 and (button_color == "yellow" or button_color == "orange") and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(controls.change_go_left_key)
+                        window.onscreenclick(controls.change_go_left_key)
                     elif id == 3 and (button_color == "yellow" or button_color == "orange") and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(controls.change_shoot_key)
+                        window.onscreenclick(controls.change_shoot_key)
                     elif id == 4 and (button_color == "yellow" or button_color == "orange") and bu.get_button_frame().isvisible():
-                        wn.onscreenclick(controls.change_jump_key)
+                        window.onscreenclick(controls.change_jump_key)
 
             # Create any additional text boxes
             if textbox.current_text_index == 0:

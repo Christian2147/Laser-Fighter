@@ -21,7 +21,7 @@
     Master file for all the general utility controls and functions for Laser Fighter.
 """
 
-from setup.WindowSetup import wn
+from setup.WindowSetup import window
 from setup.SpriteSetup import button
 from setup.SpriteSetup import textbox
 from setup.SpriteSetup import panel
@@ -50,7 +50,7 @@ from utils.ControlsManager import Controls
 from utils.UpdateText import TextRefresh
 
 # Screen Updater
-screen = ScreenUpdate(wn, button, settings, shop_config, refresh_variables,
+screen = ScreenUpdate(window, button, settings, shop_config, refresh_variables,
                       power_up_setup, machine_mode_setup, alien_mode_setup,
                       scale_factor_X, scale_factor_Y)
 
@@ -63,18 +63,18 @@ movement = Movement(screen, machine_player, human_player,
 hover = Hover(screen, button)
 
 # Shop Configuration
-shop = Shop(wn, screen, button,
+shop = Shop(window, screen, button,
             panel, textbox, price_label,
             settings, refresh_variables, shop_config,
             scale_factor_X, scale_factor_Y)
 
 # Settings Updater
-settings_toggle = SettingsToggle(wn, screen, button,
+settings_toggle = SettingsToggle(window, screen, button,
                                  settings, refresh_variables, scale_factor_X,
                                  scale_factor_Y)
 
 # Keybind Updater
-controls = Controls(wn, screen, settings,
+controls = Controls(window, screen, settings,
                     controls_toggle, refresh_variables, scale_factor_X,
                     scale_factor_Y)
 
@@ -88,17 +88,17 @@ text_refresh = TextRefresh(screen, button, panel,
 
 # Sets the keybinds for the turtle graphics window:
 # Bind the current keybinds to their appropriate functions
-wn.listen()
-wn.onkeypress(movement.go_left, controls_toggle.go_left_key)
-wn.onkeypress(movement.go_right, controls_toggle.go_right_key)
-wn.onkeypress(movement.shoot, controls_toggle.shoot_key)
-wn.onkeypress(movement.jump, controls_toggle.jump_key)
+window.listen()
+window.onkeypress(movement.go_left, controls_toggle.go_left_key)
+window.onkeypress(movement.go_right, controls_toggle.go_right_key)
+window.onkeypress(movement.shoot, controls_toggle.shoot_key)
+window.onkeypress(movement.jump, controls_toggle.jump_key)
 
 # Detect when the user wants to close the window and terminate the game loop.
 # "WM_DELETE_WINDOW" is the parameter used to determine if the user has clicked the red x in the corner of the window
 # If so, run the "on_quit" function in the screen updater which terminates the window
-wn._root.protocol("WM_DELETE_WINDOW", screen.on_quit)
+window._root.protocol("WM_DELETE_WINDOW", screen.on_quit)
 
 # The two lines of code below are used to collect the position of the users cursor on the canvas
-mouse_position = wn.getcanvas()
+mouse_position = window.getcanvas()
 mouse_position.bind('<Motion>', hover.hover)
