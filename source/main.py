@@ -778,6 +778,14 @@ def main():
                                     refresh_variables.refresh_panel = 1
                                     milestones.machine_mode_beaten = True
                                     milestones.save()
+                                    shop_config.alien_slot_selected = 1
+                                    shop_config.alien_slots_unlocked[0] = 1
+                                    shop_config.alien_slots_unlocked[1] = 0
+                                    shop_config.alien_slots_unlocked[2] = 0
+                                    shop_config.alien_slots_unlocked[3] = 0
+                                    shop_config.alien_slots_unlocked[4] = 0
+                                    shop_config.red_power_up_level = 1
+                                    shop_config.save()
                                     milestones.milestone_2_displayed = 1
                                     milestones.milestone_start_time = time.time()
                     elif machine_boss.boss_update_value != 0:
@@ -2249,15 +2257,16 @@ def main():
                     counter = 4
                     for bu in button.buttons_on_screen_list:
                         if bu.get_type() == "Shop_Slot":
-                            if bu.get_indicator_toggled() == 1:
+                            if bu.get_indicator_toggled() == 1 and shop_config.alien_slots_unlocked[counter - 4] != -1:
                                 textbox.spawn_text_box(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 78 * scale_factor_Y, "yellow")
                                 price_label.spawn_price_label(counter, bu.get_button_frame().xcor() - 50 * scale_factor_X, bu.get_button_frame().ycor() - 60 * scale_factor_Y)
                                 refresh_variables.refresh_text = 1
                             counter = counter + 1
 
                 # Spawn a slot selector if one does not exist already
-                if selector.current_selector_index == 1:
-                    selector.spawn_selector("Slot")
+                if shop_config.alien_slot_selected != 0:
+                    if selector.current_selector_index == 1:
+                        selector.spawn_selector("Slot")
 
                 # Check to see if the tab selector needs to be moved
                 if refresh_variables.move_tab_selector == 1:

@@ -35,6 +35,7 @@ class ScreenUpdate:
             _screen (ScreenUpdate()): Pointer to the current displayed screen and the screen changing functions
             _button (SpawnButton()): Pointer to all the button objects currently on the screen
             _settings (Settings()): Pointer to the current game settings
+            _shop_config (ShopConfig()): Pointer to the current shop configuration
             _refresh (Refresh()): Pointer to the game refresh variables
             _power_up_setup (PowerUpSetup()): The current power up configuration
             _machine_mode_setup (MachineModeSetup()): The current Machine Mode configuration
@@ -55,7 +56,7 @@ class ScreenUpdate:
             _quit_loop (int): Determines if the program has been terminated
     """
 
-    def __init__(self, screen, button, settings, refresh, power_up_setup, machine_mode_setup, alien_mode_setup, scale_factor_x, scale_factor_y):
+    def __init__(self, screen, button, settings, shop_config, refresh, power_up_setup, machine_mode_setup, alien_mode_setup, scale_factor_x, scale_factor_y):
         """
             Initializes all the necessary pointers for the Screen Manager.
 
@@ -67,6 +68,9 @@ class ScreenUpdate:
 
             :param settings: Pointer to the current game settings.
             :type settings: Settings()
+
+            :param shop_config: Pointer to the current shop configuration.
+            :type shop_config: ShopConfig()
 
             :param refresh: Pointer to the game refresh variables.
             :type refresh: Refresh()
@@ -90,6 +94,7 @@ class ScreenUpdate:
         self._screen = screen
         self._button = button
         self._settings = settings
+        self._shop_config = shop_config
         self._refresh = refresh
         self._power_up_setup = power_up_setup
         self._machine_mode_setup = machine_mode_setup
@@ -116,6 +121,7 @@ class ScreenUpdate:
         del self._screen
         del self._button
         del self._settings
+        del self._shop_config
         del self._refresh
         del self._power_up_setup
         del self._machine_mode_setup
@@ -317,9 +323,11 @@ class ScreenUpdate:
             if self._settings.button_sound == 1:
                 sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
-            # Enter Alien Mode
-            self._mode = "Alien_Mode"
-            self._screen_update = 1
+            # If Alien Mode has been unlocked
+            if self._shop_config.alien_slot_selected != 0:
+                # Enter Alien Mode
+                self._mode = "Alien_Mode"
+                self._screen_update = 1
 
     def launch_shop_mode(self, x, y):
         """

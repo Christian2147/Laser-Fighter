@@ -983,7 +983,7 @@ class Button:
         """
 
         if self.type != "Gadget_Slot":
-            if check_value == 0:
+            if check_value == 0 or check_value == -1:
                 self.button_indicator.showturtle()
                 self.button_text.goto(self.button_frame.xcor(), self.button_frame.ycor() + 20 * self.scale_factor_y)
                 self.indicator_toggled = 1

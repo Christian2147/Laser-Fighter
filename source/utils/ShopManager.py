@@ -326,8 +326,11 @@ class Shop:
                             bu.remove()
                             self._button.buttons_on_screen_list.pop()
                             self._button.current_button_index = self._button.current_button_index - 1
-                    self._button.spawn_button("Buy", 1)
-                    self._price_displayed = ALIEN_PRICES[slot_id - 1]
+                    if self._shop_config.alien_slots_unlocked[slot_id -1] != -1:
+                        self._button.spawn_button("Buy", 1)
+                        self._price_displayed = ALIEN_PRICES[slot_id - 1]
+                    else:
+                        self._price_displayed = 0
         else:
             # If the page is power ups, display the information for the next level up from the current
             #   level of the power up selected
@@ -337,7 +340,7 @@ class Shop:
                         pa.set_panel_text("Yellow_Power_Up", slot_id)
                     # Display a price if there is still a level higher
                     if self._shop_config.yellow_power_up_level != 5:
-                        self._price_displayed = POWER_UP_PRICES[self._shop_config.yellow_power_up_level - 1]
+                        self._price_displayed = POWER_UP_PRICES[self._shop_config.yellow_power_up_level]
                     else:
                         self._price_displayed = 0
                 else:
@@ -352,7 +355,7 @@ class Shop:
                     for pa in self._panel.panel_turtle:
                         pa.set_panel_text("Blue_Power_Up", slot_id)
                     if self._shop_config.blue_power_up_level != 5:
-                        self._price_displayed = POWER_UP_PRICES[self._shop_config.blue_power_up_level - 1]
+                        self._price_displayed = POWER_UP_PRICES[self._shop_config.blue_power_up_level]
                     else:
                         self._price_displayed = 0
                 else:
@@ -367,7 +370,7 @@ class Shop:
                     for pa in self._panel.panel_turtle:
                         pa.set_panel_text("Green_Power_Up", slot_id)
                     if self._shop_config.green_power_up_level != 5:
-                        self._price_displayed = POWER_UP_PRICES[self._shop_config.green_power_up_level - 1]
+                        self._price_displayed = POWER_UP_PRICES[self._shop_config.green_power_up_level]
                     else:
                         self._price_displayed = 0
                 else:
@@ -382,7 +385,7 @@ class Shop:
                     for pa in self._panel.panel_turtle:
                         pa.set_panel_text("Red_Power_Up", slot_id)
                     if self._shop_config.red_power_up_level != 5:
-                        self._price_displayed = POWER_UP_PRICES[self._shop_config.red_power_up_level - 1]
+                        self._price_displayed = POWER_UP_PRICES[self._shop_config.red_power_up_level]
                     else:
                         self._price_displayed = 0
                 else:
@@ -471,28 +474,28 @@ class Shop:
                             if self._shop_config.yellow_power_up_level == 5:
                                 max_level = 1
                             else:
-                                self._price_displayed = POWER_UP_PRICES[self._shop_config.yellow_power_up_level - 1]
+                                self._price_displayed = POWER_UP_PRICES[self._shop_config.yellow_power_up_level]
                                 max_level = 0
                         elif current_slot == 2:
                             self._shop_config.blue_power_up_level = self._shop_config.blue_power_up_level + 1
                             if self._shop_config.blue_power_up_level == 5:
                                 max_level = 1
                             else:
-                                self._price_displayed = POWER_UP_PRICES[self._shop_config.blue_power_up_level - 1]
+                                self._price_displayed = POWER_UP_PRICES[self._shop_config.blue_power_up_level]
                                 max_level = 0
                         elif current_slot == 3:
                             self._shop_config.green_power_up_level = self._shop_config.green_power_up_level + 1
                             if self._shop_config.green_power_up_level == 5:
                                 max_level = 1
                             else:
-                                self._price_displayed = POWER_UP_PRICES[self._shop_config.green_power_up_level - 1]
+                                self._price_displayed = POWER_UP_PRICES[self._shop_config.green_power_up_level]
                                 max_level = 0
                         elif current_slot == 4:
                             self._shop_config.red_power_up_level = self._shop_config.red_power_up_level + 1
                             if self._shop_config.red_power_up_level == 5:
                                 max_level = 1
                             else:
-                                self._price_displayed = POWER_UP_PRICES[self._shop_config.red_power_up_level - 1]
+                                self._price_displayed = POWER_UP_PRICES[self._shop_config.red_power_up_level]
                                 max_level = 0
                         self._shop_config.save()
                     elif self._screen.page == "Gadgets":

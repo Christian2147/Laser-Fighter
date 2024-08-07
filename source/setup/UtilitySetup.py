@@ -50,7 +50,7 @@ from utils.ControlsManager import Controls
 from utils.UpdateText import TextRefresh
 
 # Screen Updater
-screen = ScreenUpdate(wn, button, settings, refresh_variables,
+screen = ScreenUpdate(wn, button, settings, shop_config, refresh_variables,
                       power_up_setup, machine_mode_setup, alien_mode_setup,
                       scale_factor_X, scale_factor_Y)
 

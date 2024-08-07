@@ -29,6 +29,7 @@ from setup.data.MilestoneMessages import MILESTONE_2_MESSAGE
 from setup.data.MilestoneMessages import MILESTONE_3_MESSAGE
 from setup.data.MilestoneMessages import MILESTONE_4_MESSAGE
 from setup.data.ShopDescriptions import MAIN_DESCRIPTION
+from setup.data.ShopDescriptions import ALIEN_LOCKED_DESCRIPTION
 from setup.data.ShopDescriptions import MACHINE_DESCRIPTIONS
 from setup.data.ShopDescriptions import ALIEN_DESCRIPTIONS
 from setup.data.ShopDescriptions import YELLOW_POWER_UP_DESCRIPTIONS
@@ -306,12 +307,20 @@ class Panel:
                                             int(MACHINE_DESCRIPTIONS[self.id - 1].get_size() * self.scale_factor), "normal"))
                     self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
             elif self.category == "Alien_Mode":
-                for i in range(ALIEN_DESCRIPTIONS[self.id - 1].get_length()):
-                    self.panel_text.write("{}".format(ALIEN_DESCRIPTIONS[self.id - 1].get_text()[i]),
-                                            align=ALIEN_DESCRIPTIONS[self.id - 1].get_align(),
-                                            font=(ALIEN_DESCRIPTIONS[self.id - 1].get_font(),
-                                            int(ALIEN_DESCRIPTIONS[self.id - 1].get_size() * self.scale_factor), "normal"))
-                    self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
+                if shop_config.alien_slots_unlocked[self.id - 1] != -1:
+                    for i in range(ALIEN_DESCRIPTIONS[self.id - 1].get_length()):
+                        self.panel_text.write("{}".format(ALIEN_DESCRIPTIONS[self.id - 1].get_text()[i]),
+                                                align=ALIEN_DESCRIPTIONS[self.id - 1].get_align(),
+                                                font=(ALIEN_DESCRIPTIONS[self.id - 1].get_font(),
+                                                int(ALIEN_DESCRIPTIONS[self.id - 1].get_size() * self.scale_factor), "normal"))
+                        self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 24 * self.scale_factor_y)
+                else:
+                    for i in range(ALIEN_LOCKED_DESCRIPTION[0].get_length()):
+                        self.panel_text.write("{}".format(ALIEN_LOCKED_DESCRIPTION[0].get_text()[i]),
+                                                align=ALIEN_LOCKED_DESCRIPTION[0].get_align(),
+                                                font=(ALIEN_LOCKED_DESCRIPTION[0].get_font(),
+                                                int(ALIEN_LOCKED_DESCRIPTION[0].get_size() * self.scale_factor), "normal"))
+                        self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 27 * self.scale_factor_y)
             # Display the description of the next level up of the given power up
             elif self.category == "Yellow_Power_Up":
                 check_setting = shop_config.yellow_power_up_level
@@ -343,11 +352,11 @@ class Panel:
             elif self.category == "Red_Power_Up":
                 check_setting = shop_config.red_power_up_level
 
-                for i in range(RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_length()):
-                    self.panel_text.write("{}".format(RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_text()[i]),
-                                            align=RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_align(),
-                                            font=(RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_font(),
-                                            int(RED_POWER_UP_DESCRIPTIONS[check_setting - 1].get_size() * self.scale_factor), "normal"))
+                for i in range(RED_POWER_UP_DESCRIPTIONS[check_setting].get_length()):
+                    self.panel_text.write("{}".format(RED_POWER_UP_DESCRIPTIONS[check_setting].get_text()[i]),
+                                            align=RED_POWER_UP_DESCRIPTIONS[check_setting].get_align(),
+                                            font=(RED_POWER_UP_DESCRIPTIONS[check_setting].get_font(),
+                                            int(RED_POWER_UP_DESCRIPTIONS[check_setting].get_size() * self.scale_factor), "normal"))
                     self.panel_text.goto(self.panel_text.xcor(), self.panel_text.ycor() - 30 * self.scale_factor_y)
             elif self.category == "Gadget":
                 for i in range(GADGET_DESCRIPTIONS[self.id - 1].get_length()):

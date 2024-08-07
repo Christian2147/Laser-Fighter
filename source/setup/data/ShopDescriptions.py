@@ -28,7 +28,7 @@ from components.gui.GUIDataDescription import Description
 # Prices for each item in the shop (Power Up Prices ordered by Level)
 MACHINE_PRICES = [0, 5000, 15000, 40000, 100000]
 ALIEN_PRICES = [0, 5000, 15000, 40000, 100000]
-POWER_UP_PRICES = [1000, 5000, 15000, 30000]
+POWER_UP_PRICES = [0, 1000, 5000, 15000, 30000]
 GADGET_PRICE = 50000
 
 # Shop Welcome Message
@@ -45,6 +45,16 @@ MAIN_DESCRIPTION = [
         "to become even",
         "more powerful."
     ], 24, "Courier")
+]
+
+# For the Alien Mode items when Alien Mode is locked
+ALIEN_LOCKED_DESCRIPTION = [
+    Description("left", [
+        "Locked",
+        "",
+        "Unlock Alien Mode",
+        "to view this item!"
+    ], 18, "Courier")
 ]
 
 # For the Machine Player upgrades
@@ -276,6 +286,12 @@ GREEN_POWER_UP_DESCRIPTIONS = [
 
 # For the Red Power Up upgrades
 RED_POWER_UP_DESCRIPTIONS = [
+    Description("left", [
+        "Locked",
+        "",
+        "Unlock Alien Mode",
+        "to view this item!"
+    ], 20, "Courier"),
     Description("left", [
         "Level 2",
         "",
