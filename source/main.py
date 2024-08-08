@@ -187,7 +187,6 @@ def main():
                 gadget.start_timer()
             # Initiate garbage collection to help avoid memory crashes
             gc.collect()
-            print(len(window.turtles()))
 
         # The game background objects and the panel is created right when the game is launched.
         # This is done to make sure that they are truly in the background and that nothing lies behind these sprites.

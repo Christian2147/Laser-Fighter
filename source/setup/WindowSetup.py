@@ -99,7 +99,6 @@ else:
 
 # Get rid of the gray border around the edge of the canvas
 window.cv.config(highlightthickness=0)
-#window.cv.config(borderwidth=0)
 # Make the window not resizable (Will hopefully change later)
 window.cv._rootwindow.resizable(False, False)
 # Set the window icon
