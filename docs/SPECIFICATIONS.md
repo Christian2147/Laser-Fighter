@@ -29,7 +29,7 @@ Here is the software needed for playing the game through the current executable:
 
 Here is the software you should install if you want to look at and work with the source code and also the software used to create the game:
 
-1. Python version 3.7.3 (Recommended to avoid potential compatibility issues and was used for the game development) ![Python Logo](https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg)
+1. Python version 3.7.3 (Recommended to avoid potential compatibility issues and was used for the game development) ![Python Logo](https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg) <img src="https://www.python.org/community/logos/python-logo-master-v3-TM.png" alt="Python Logo" width="100"/>
 2. Visual Studio Code or PyCharm Community Edition 2019.1.3 x64 (Both were used for the games development)
 3. Any version of Git - For organizing the project
 4. Any version of Krita - For creating textures
