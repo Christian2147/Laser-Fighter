@@ -149,7 +149,7 @@ hearts_enabled = False
 These are the instructions to convert the source code into a package with the executable file that can be redistributed. 
 
 1. Open command prompt by typing "cmd" in the search bar
-2. type `cd path/to/your/python/file/to/convert`
+2. type `cd path/to/your/python/file/to/convert` which would be the path to "main.py" in the "source" directory
 3. Make sure you have pyinstaller installed
     - If not, type `pip install pyinstaller` in the terminal
 4. Type `pyinstaller -F -w -i Icon/icon.ico main.py`
@@ -157,6 +157,18 @@ These are the instructions to convert the source code into a package with the ex
 5. Copy the entire source folder to a zip file
 6. Delete all folders and files within except the "Config" "Icon" "Sound" and "Textures" folders
 7. Do not forget the LICENSE file!
+
+## Packaging the Image Scaler:
+
+These are the instructions for generating an executable for the Laser Fighter Image Scaler.
+
+1. Set the "source" pointer of the venv to "imagescaler" instead of "source"
+2. Open command prompt by typing "cmd" in the search bar
+3. type `cd path/to/your/python/file/to/convert` which would be the path to the "Main.py" in the "imagescaler" directory
+4. Type `pyinstaller -F -w -i Icon/icon.ico main.py`
+5. Go to the dist folder in your directory and put the executable in the main directory.
+6. Run the executable!
+7. You can now set the source pointer for the venv back to the "source" directory
 
 ### Additional Note
 
