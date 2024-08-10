@@ -5,22 +5,24 @@
 These are the instructions if you want to use this source code and create your own virtual environment for it
 
 1. Open command prompt by typing "cmd" in the search bar
-2. type "cd path/to/your/project"
-3. type "python -m venv venv" (Windows) "python3 -m venv venv" (Linux)
-4. Now you must activate your virtual environment by typing: venv\Scripts\activate (Windows) source venv/bin/activate (Linux)
-5. Install the reuired packages by typing "pip install -r requirements.txt"
-6. To verify the installation type "pip list"
+2. type `cd path/to/your/project`
+3. type `python -m venv venv` (Windows) `python3 -m venv venv` (Linux)
+4. Now you must activate your virtual environment by typing: `venv\Scripts\activate` (Windows) `source venv/bin/activate` (Linux)
+5. Install the reuired packages by typing `pip install -r requirements.txt`
+6. To verify the installation type `pip list`
 7. Starting working!
+
+**NOTE:** If you run into problems biulding the virtual environment, try installing the requirements one by one
 
 ## Packaging the game
 
-These are the instructions to convert the source code to an executable file that can be redistributed. 
+These are the instructions to convert the source code into a package with the executable file that can be redistributed. 
 
 1. Open command prompt by typing "cmd" in the search bar
-2. type "cd path/to/your/python/file/to/convert"
+2. type `cd path/to/your/python/file/to/convert`
 3. Make sure you have pyinstaller installed
-    - If not, type "pip install pyinstaller" in the terminal
-4. Type "pyinstaller -F -w -i Icon/icon.ico main.py
+    - If not, type `pip install pyinstaller` in the terminal
+4. Type `pyinstaller -F -w -i Icon/icon.ico main.py`
 5. Go to the dist folder in your directory and put the executable in the main directory.
 5. Copy the entire source folder to a zip file
 6. Delete all folders and files within except the "Config" "Icon" "Sound" and "Textures" folders
