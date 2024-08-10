@@ -16,7 +16,36 @@ These are the instructions if you want to use this source code and create your o
 6. To verify the installation and see the installed packages, type `pip list`
 7. Starting working!
 
-**NOTE:** If you run into problems biulding the virtual environment, try installing the requirements one by one
+### If you are facing issues installing the virtual environment:
+
+Try removing the following libraries from requirements.txt:
+- pip
+- setuptools
+- memory-profiler
+- psutil
+
+### If you are on Linux (Not Directly supported):
+
+1. Additionally to removing the libraries listed above, remove the following from the requirements.txt:
+    - pywin32
+    - pywin32-ctypes
+2. If you installed Python on Linux, the modules above should have came wiht Linux alternatives by default. The only exceptions to this rule are win32api and win32con.
+3. You will have to manually replace these libraries in the game code in order for it to run. I recommend using xrandr for getting the monitor properties, as that is all these files are used for.
+4. Go to the `ConfigurationSetup.py` file and remove the following code to execute a batch file:
+```python
+# Backup the player data and config files on launch through a batch file (Made so that the user can run the
+#   script whenever they want
+batch_file_path = './config/bckp.bat'
+target_directory = os.path.abspath('./config')
+absolute_batch_file_path = os.path.abspath(batch_file_path)
+subprocess.run([absolute_batch_file_path], cwd=target_directory)
+```
+5. All batch files will have to be replaced with shell scripts to execute similar tasks. The code above to access them will also have to be replaced.
+6. Your virtual environment should work on Linux at this point if you managed to perform eevery steup correctly.
+
+#### **Note**:
+The instructions above are just mere suggestions and guidelines for how to get the virtual environment to work on Linux. I cannot garentee that it will in fact be a 100% solution as Linux support has not been implemented yet. In the future when Linux support is implemented, there will be a streamlined way to set the venv up for Linux.
+    
 
 ## Cleaning Up And Resetting The Game
 
@@ -157,6 +186,10 @@ These are the instructions to convert the source code into a package with the ex
 5. Copy the entire source folder to a zip file
 6. Delete all folders and files within except the "Config" "Icon" "Sound" and "Textures" folders
 7. Do not forget the LICENSE file!
+
+### Additional Note
+
+The recommended version of python to use is python 3.7.3. This is what the game was created in.
 
 ## Packaging the Image Scaler:
 
