@@ -29,12 +29,12 @@ Here is the software needed for playing the game through the current executable:
 
 Here is the software you should install if you want to look at and work with the source code and also the software used to create the game:
 
-1. Python version 3.7.3 (Recommended to avoid potential compatibility issues and was used for the game development) ![Python Logo](https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg) <img src="https://www.python.org/community/logos/python-logo-master-v3-TM.png" alt="Python Logo" width="100"/>
-2. Visual Studio Code or PyCharm Community Edition 2019.1.3 x64 (Both were used for the games development)
-3. Any version of Git - For organizing the project
-4. Any version of Krita - For creating textures
-5. Any version of Audacity - For creating and editing game sounds
-6. Paint 3D - For saving a gif with transparency
+1. <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python Logo" width="25"/> Python version 3.7.3 (Recommended to avoid potential compatibility issues and was used for the game development)  
+2. <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Visual_Studio_Code_Logo.png" alt="Visual Studio Code Logo" width="25"/> Visual Studio Code or PyCharm Community Edition 2019.1.3 x64 (Both were used for the games development)
+3. <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Git-logo.svg" alt="Git Logo" width="25"/> Any version of Git - For organizing the project
+4. <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Krita_Logo.svg" alt="Krita Logo" width="25"/> Any version of Krita - For creating textures
+5. <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Audacity_Logo.png" alt="Audacity Logo" width="25"/> Any version of Audacity - For creating and editing game sounds
+6. <img src="https://upload.wikimedia.org/wikipedia/commons/4/43/Paint_3D_Logo.png" alt="Paint 3D Logo" width="25"/> Paint 3D - For saving a gif with transparency
 7. The Laser Fighter Image scaler provided in the "tools" directory of this repo - For scaling .gif texture files
 
 ## External libraries used to create Laser Fighter

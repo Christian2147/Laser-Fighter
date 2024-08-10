@@ -8,7 +8,7 @@ These are the instructions if you want to use this source code and create your o
 2. type "cd path/to/your/project"
 3. type "python -m venv venv" (Windows) "python3 -m venv venv" (Linux)
 4. Now you must activate your virtual environment by typing: venv\Scripts\activate (Windows) source venv/bin/activate (Linux)
-5. Install the reuired packages by typing "pip install -r reuirements.txt"
+5. Install the reuired packages by typing "pip install -r requirements.txt"
 6. To verify the installation type "pip list"
 7. Starting working!
 
