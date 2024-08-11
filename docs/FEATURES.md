@@ -9,8 +9,11 @@ Laser Fighter is a 2D laser shooting game that is set in outer space. It offers 
 Machine Mode is the first gameplay mode that you will encounter in Laser Fighter. In Machine Mode, you are set in outer space and trying to kill as many enemy machines as possible. The enemy machines look down at the player and shoot lasers at the player. The enemy machines come in the following types:
 
 **Blue Machine**: The smallest of the enemy machines and the easiest to kill. Grants one point upon death.
+
 **Yellow Machine**: The second machine that you encounter. Has a faster moving laser and is bigger than the blue machine. Grants two points upon death.
+
 **Red Machine**: The third machine that you will enounter. Has a bigger and faster moving laser, more health, and is bigger than the yellow machine.
+
 **Pink Machine Boss**: The final machine enemy that you will encounter in Machine Mode. Only one of these will spawn at any given moment. They are big, have 10 health, and have a very fast moving laser. The laser moves faster the lower its health gets. The Pink Machine Boss only spawns after all the blue, yellow, and red machines have spawned.
 
 You, the player, is a player laser machine that is hanging off of a ship (Which is imagined to be below the screen behind the player laser and indvisable to the user)
@@ -22,8 +25,11 @@ You, the player, is a player laser machine that is hanging off of a ship (Which 
 Alien Mode is the second gameplay mode that you will encounter in Laser Fighter. In Alien Mode, you are on the moon and trying to kill as many aliens as possible. The aliens will spawn off the edges of the screen and start moving towards the player, trying to kill the player. the more aliens that the player kills, the faster they move. The aliens come in the following types:
 
 **Small Alien**: It shorter than the player and has only 1 health.
+
 **Medium Alien**: Similar hieght to the player and has 2 health.
+
 **Large Alien**: Way taller than the player and has 3 health.
+
 **Alien Saucer**: Spawn floating in the air and shoots lasers down at the player. The play must jump to hit it. The Alien UFO has 10 health. The Alien UFO only spawns after all the small, medium, and large aliens have spawned in.
 
 You, the player, spawn in the center of the map with a gun and an exygen tank as a human artronaut. Your goal is to defend yourself from all the incoming aliens.
