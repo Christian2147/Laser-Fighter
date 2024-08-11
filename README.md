@@ -2,7 +2,7 @@
 
 # Laser-Fighter
 
-Laser Fighter is a 2D laser shooting game and is the first game that I have created. The first version was finished in December of 2021 and it has been growing ever since. About 600 hours of work have so far been put into this game and more is on the way. I created this game not only because it was fun but also because I wanted to learn more about the software development process by actually creating a real piece of software. Considering I am really familiar with gaming and indie games, I felt that a 2D pixel shooting game would be a good place to start. If you want to know more about the timeline of Laser Fighter, check out its [history](./docs/HISTORY.md).
+Laser Fighter is a 2D laser shooting game and is the first game that I have created. The first version was finished in December of 2021 and it has been growing ever since. About 600 hours of work have so far been put into this game and more is on the way. I created this game not only because it was fun but also because I wanted to learn more about the software development process by actually creating a real piece of software. Considering I am really familiar with gaming and indie games, I felt that a 2D pixel shooting game would be a good place to start.
 
 
 ## Version 1.2.0b:
@@ -31,7 +31,6 @@ NOTE: The exe file for this application is unsigned and has an unverified publis
 
 For a full list of specifications and requirements, go to the [specifications page](./docs/SPECIFICATIONS.md)<br>
 For instructions on how to install the game or use the source code, go to the [instructions page](./docs/INSTRUCTIONS.md)<br>
-For a list of features that the game offers, go to the [features page](./docs/FEATURES.md)<br>
 
 ## License
 
