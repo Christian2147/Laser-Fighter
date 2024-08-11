@@ -21,6 +21,8 @@ Check out the [Releases](https://github.com/Christian2147/Laser-Fighter/releases
 | [Version 1.1.0b](https://github.com/Christian2147/Laser-Fighter/releases/tag/v1.1.0) |
 | [Version 1.2.0b](https://github.com/Christian2147/Laser-Fighter/releases/tag/v1.2.0) |
 
+**Note**: Each release contains the binary for the version it is labeled for and that versions source code. the versions source code is the games source code at the time that the version was released.
+
 ## Installing Laser Fighter
 
 Here are the steps for installing Laser Fighter onto your computer:
