@@ -73,6 +73,7 @@ to
 window.setup(width=current_screen_width, height=current_screen_height)
 ```
 and make sure to calculate these parameters before executing this function.
+
 4. Go to the `ConfigurationSetup.py` file and remove the following code to execute a batch file:
 ```python
 # Backup the player data and config files on launch through a batch file (Made so that the user can run the
