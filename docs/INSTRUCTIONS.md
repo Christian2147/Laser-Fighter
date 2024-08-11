@@ -12,7 +12,7 @@ These are the instructions if you want to use this source code and create your o
 4. Now you must activate your virtual environment by typing: 
     - `venv\Scripts\activate` (Windows) 
     - `source venv/bin/activate` (Linux)
-5. Install the reuired packages by typing `pip install -r requirements.txt` and press Enter
+5. Install the required packages by typing `pip install -r requirements.txt` and press Enter
 6. To verify the installation and see the installed packages, type `pip list`
 7. Starting working!
 
@@ -24,13 +24,55 @@ Try removing the following libraries from requirements.txt:
 - memory-profiler
 - psutil
 
+If you are still having problems, remember that all folder names MUST be lowercase.
+All Texture files must be in the following naming format Word_Word_Word.gif
+All Python files must be in the following naming format WordWordWord.py
+
+If any of these files are renamed incorrectly, simply manually rename them.
+
 ### If you are on Linux (Not Directly supported):
 
 1. Additionally to removing the libraries listed above, remove the following from the requirements.txt:
     - pywin32
     - pywin32-ctypes
-2. If you installed Python on Linux, the modules above should have came wiht Linux alternatives by default. The only exceptions to this rule are win32api and win32con.
-3. You will have to manually replace these libraries in the game code in order for it to run. I recommend using xrandr for getting the monitor properties, as that is all these files are used for.
+2. If you installed Python on Linux, the modules above should have came with Linux alternatives by default. The only exceptions to this rule are win32api and win32con.
+3. You will have to manually replace these libraries in the game code in order for it to run. These libraries are only used to access the users monitor properties. You can do this using the xrandr function under the subprocess module. Here is an example:
+
+```python
+import subprocess
+
+def get_screen_resolution():
+    # Run the `xrandr` command
+    result = subprocess.run(['xrandr'], capture_output=True, text=True)
+    
+    # Decode the output and find the line containing the current resolution
+    output = result.stdout
+    lines = output.splitlines()
+    
+    for line in lines:
+        if '*' in line:  # '*' indicates the current resolution and refresh rate
+            parts = line.split()
+            resolution = parts[0]  # The resolution is the first part of the line
+            refresh_rate = parts[1]  # The refresh rate is the second part
+            width, height = resolution.split('x')
+            return int(width), int(height), float(refresh_rate[:-2])  # Remove 'Hz' from refresh rate
+
+    return None, None, None
+
+# Example usage (These are the actual parameters in the games code you have to set using this function. You also have to remove the old way they are declared)
+current_screen_width, current_screen_height, REFRESH_RATE = get_screen_info()
+```
+On top of this: 
+1. Comment out the DISPLAY_DEVICE and SETTINGS parameters.
+2. Change 
+```python 
+window.setup(width=win32api.GetSystemMetrics(0), height=win32api.GetSystemMetrics(1)) 
+```
+to
+```python
+window.setup(width=current_screen_width, height=current_screen_height)
+```
+and make sure to calculate these parameters before executing this function.
 4. Go to the `ConfigurationSetup.py` file and remove the following code to execute a batch file:
 ```python
 # Backup the player data and config files on launch through a batch file (Made so that the user can run the
@@ -41,11 +83,15 @@ absolute_batch_file_path = os.path.abspath(batch_file_path)
 subprocess.run([absolute_batch_file_path], cwd=target_directory)
 ```
 5. All batch files will have to be replaced with shell scripts to execute similar tasks. The code above to access them will also have to be replaced.
-6. Your virtual environment should work on Linux at this point if you managed to perform eevery steup correctly.
+6. Your virtual environment should work on Linux at this point if you managed to perform every setup correctly.
 
 #### **Note**:
-The instructions above are just mere suggestions and guidelines for how to get the virtual environment to work on Linux. I cannot garentee that it will in fact be a 100% solution as Linux support has not been implemented yet. In the future when Linux support is implemented, there will be a streamlined way to set the venv up for Linux.
+
+The instructions above are just mere suggestions and guidelines for how to get the virtual environment to work on Linux. I cannot guarentee that it will in fact be a 100% solution as Linux support has not been implemented yet. The performance of this software on Linus may also be unpredictable. In the future when Linux support is implemented, there will be a streamlined way to set the venv up for Linux.
     
+#### **Special Thanks**:
+
+Special Thanks to @yosoyducc for helping me with the instructions on this page!
 
 ## Cleaning Up And Resetting The Game
 
