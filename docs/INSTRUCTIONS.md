@@ -65,16 +65,16 @@ current_screen_width, current_screen_height, REFRESH_RATE = get_screen_info()
 On top of this: 
 1. Comment out the DISPLAY_DEVICE and SETTINGS parameters.
 2. Change 
-```python 
-window.setup(width=win32api.GetSystemMetrics(0), height=win32api.GetSystemMetrics(1)) 
-```
-to
-```python
-window.setup(width=current_screen_width, height=current_screen_height)
-```
-and make sure to calculate these parameters before executing this function.
-
-4. Go to the `ConfigurationSetup.py` file and remove the following code to execute a batch file:
+    ```python 
+    window.setup(width=win32api.GetSystemMetrics(0), height=win32api.GetSystemMetrics(1)) 
+    ```
+    to
+    ```python
+    window.setup(width=current_screen_width, height=current_screen_height)
+    ```
+    and make sure to calculate these parameters before executing this function.
+    
+3. Go to the `ConfigurationSetup.py` file and remove the following code to execute a batch file:
 ```python
 # Backup the player data and config files on launch through a batch file (Made so that the user can run the
 #   script whenever they want
@@ -83,8 +83,8 @@ target_directory = os.path.abspath('./config')
 absolute_batch_file_path = os.path.abspath(batch_file_path)
 subprocess.run([absolute_batch_file_path], cwd=target_directory)
 ```
-5. All batch files will have to be replaced with shell scripts to execute similar tasks. The code above to access them will also have to be replaced.
-6. Your virtual environment should work on Linux at this point if you managed to perform every setup correctly.
+4. All batch files will have to be replaced with shell scripts to execute similar tasks. The code above to access them will also have to be replaced.
+5. Your virtual environment should work on Linux at this point if you managed to perform every setup correctly.
 
 #### **Note**:
 
