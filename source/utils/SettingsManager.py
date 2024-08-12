@@ -22,8 +22,8 @@
     This includes all the execution functions for all the buttons on the settings page.
 """
 
-from tkinter import messagebox
 import pygame
+from tkinter import messagebox
 
 
 class SettingsToggle:

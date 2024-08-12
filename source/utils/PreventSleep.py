@@ -25,8 +25,8 @@
         default state.
 """
 
-import ctypes
 import os
+import ctypes
 
 # Constants for preventing system sleep:
 # ES_CONTINUOUS: System should continue to use the current state

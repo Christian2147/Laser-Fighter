@@ -22,9 +22,9 @@
             used at all times for this file to avoid any potential conflicts.
 """
 
-from tkinter import messagebox
 import configparser
 import threading
+from tkinter import messagebox
 
 
 class ConfigManager:

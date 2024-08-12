@@ -21,8 +21,8 @@
     This file contains the logic for changing and toggling the keybinds while in game.
 """
 
-from tkinter import messagebox
 import pygame
+from tkinter import messagebox
 
 
 class Controls:

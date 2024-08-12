@@ -22,8 +22,8 @@
         refreshing specific aspects of the screen.
 """
 
-from tkinter import messagebox
 import pygame
+from tkinter import messagebox
 
 
 class ScreenUpdate:
