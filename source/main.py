@@ -14,12 +14,12 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 # Created By: Christian Marinkovich (@Christian2147 On GitHub) This is the main source file for Laser Fighter.
-# This is game version beta 1.2.0 released on 08/07/24
+# This is game version beta 1.2.1 released on 08/11/24
 
 """
     File: main.py
     Author: Christian Marinkovich
-    Date: 2024-08-07
+    Date: 2024-08-11
     Description:
     This file is the main file for Laser Fighter.
     The main file contains the main function, which contains the game loop.
@@ -1527,7 +1527,7 @@ def main():
                             if (any(l.laser.isvisible() and c.range[0] < l.laser.ycor() < c.range[1] and (
                                 h.direction == 1 and c.relative_laser_position == -1 and l.laser.xcor() > c.collision_coordinate or
                                 h.direction == 2 and c.relative_laser_position == 1 and l.laser.xcor() < c.collision_coordinate
-                            ) for l in h.get_laser())) or h.get_player().distance(c.get_coin()) < 55 * scale_factor:
+                            ) for l in h.get_laser()) and c.just_fired == 1) or h.get_player().distance(c.get_coin()) < 55 * scale_factor:
                                 # Remove the coin
                                 c.remove()
                                 # Increase the amount of coins based on the type of coin picked up

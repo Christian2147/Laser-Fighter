@@ -213,3 +213,4 @@ class AlienCollision:
                         c.relative_laser_position = 1
                     else:
                         c.relative_laser_position = -1
+                c.just_fired = 1

@@ -365,6 +365,7 @@ class UFO:
                 # Set the hitbox for the coin
                 platinum_coin.range = (platinum_coin.coin.ycor() - platinum_coin.COIN_DISTANCE, platinum_coin.coin.ycor() + platinum_coin.COIN_DISTANCE)
                 platinum_coin.collision_coordinate = platinum_coin.coin.xcor()
+                platinum_coin.just_fired = 0
                 coins_on_screen.append(platinum_coin)
                 all_coins.append(platinum_coin)
             else:
@@ -376,6 +377,7 @@ class UFO:
                         # Set the hitbox for the coin
                         coin.range = (coin.coin.ycor() - coin.COIN_DISTANCE, coin.coin.ycor() + coin.COIN_DISTANCE)
                         coin.collision_coordinate = coin.coin.xcor()
+                        coin.just_fired = 0
                         coins_on_screen.append(coin)
                         break
             # Respawn the UFO in a random location (side of the screen)
