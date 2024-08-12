@@ -44,9 +44,16 @@ For more specific requirements and design specifications, visit the [specificati
 
 If you want to work with the source code and create your own virtual environment, go to the [instructions page](./docs/INSTRUCTIONS.md).
 
-## What Laser Fighter Offers:
+## What Laser Fighter Offers
 
 Laser Fighter is a 2D shooting game created in Python. It currently offers two gameplay modes: Machine Mode and Alien Mode. In both modes, you are in space, shooting lasers and defending yourself from monsters. To learn more about Laser Fighter's features, check out the [features page](./docs/FEATURES.md).
+
+## Bugs & Concerns
+
+If you have any suggestions about the game or bug you would like to report, feel free to create an issue on the [issues page](https://github.com/Christian2147/Laser-Fighter/issues).
+
+For feature requests, please read and follow the [feature issue template](./docs/FEATURE_ISSUE_TEMPLATE.md) for guidance.
+For bug reports, please read and follow the [bug issue template](./docs/BUG_ISSUE_TEMPLATE.md) for guidance.
 
 ## Acknowledgments
 

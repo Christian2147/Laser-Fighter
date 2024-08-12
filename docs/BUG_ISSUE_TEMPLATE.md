@@ -37,3 +37,4 @@ Add any other context about the problem here.
 - Label whether it occurs with vsync off or vsync on
 - Label if it is a documentation bug
 - Label what gameplay mode the bug is present in, if any
+- Do not add any other labels
