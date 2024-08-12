@@ -5,16 +5,38 @@
 These are the instructions if you want to use this source code and create your own virtual environment for it
 
 1. Open command prompt by typing "cmd" in the search bar
-2. type `cd path/to/your/project`
+2. type 
+    ```cmd
+    cd path/to/your/project
+    ```
 3. type:
-    - `python -m venv venv` (Windows) 
-    - `python3 -m venv venv` (Linux)
+    -   (Windows)
+        ```cmd
+        python -m venv venv
+        ```
+    -   (Linux)
+        ```bash
+        python3 -m venv venv
+        ```
 4. Now you must activate your virtual environment by typing: 
-    - `venv\Scripts\activate` (Windows) 
-    - `source venv/bin/activate` (Linux)
-5. Install the required packages by typing `pip install -r requirements.txt` and press Enter
-6. To verify the installation and see the installed packages, type `pip list`
-7. Starting working!
+    -   (Windows)
+        ```cmd 
+        venv\Scripts\activate
+        ```
+    -   (Linux) 
+        ```bash
+        source venv/bin/activate
+        ```
+5. Install the required packages by typing 
+    ```cmd
+    pip install -r requirements.txt
+    ``` 
+    and press Enter
+6. To verify the installation and see the installed packages, type 
+    ```cmd
+    pip list
+    ```
+7. Start working!
 
 ### If you are facing issues installing the virtual environment:
 
@@ -64,7 +86,8 @@ current_screen_width, current_screen_height, REFRESH_RATE = get_screen_resolutio
 ```
 On top of this: 
 1. Comment out the DISPLAY_DEVICE and SETTINGS parameters.
-2. Change 
+2. Remove the setter for the REFRESH_RATE variable (It has already been set in the function above)
+3. Change 
     ```python 
     window.setup(width=win32api.GetSystemMetrics(0), height=win32api.GetSystemMetrics(1)) 
     ```
@@ -72,19 +95,9 @@ On top of this:
     ```python
     window.setup(width=current_screen_width, height=current_screen_height)
     ```
-    and make sure to calculate these parameters before executing this function.
+    and make sure to calculate these parameters with the function given above before executing this function.
     
-3. Go to the `ConfigurationSetup.py` file and remove the following code to execute a batch file:
-```python
-# Backup the player data and config files on launch through a batch file (Made so that the user can run the
-#   script whenever they want
-batch_file_path = './config/bckp.bat'
-target_directory = os.path.abspath('./config')
-absolute_batch_file_path = os.path.abspath(batch_file_path)
-subprocess.run([absolute_batch_file_path], cwd=target_directory)
-```
-4. All batch files will have to be replaced with shell scripts to execute similar tasks. The code above to access them will also have to be replaced.
-5. Your virtual environment should work on Linux at this point if you managed to perform every setup correctly.
+4. Your virtual environment should work on Linux at this point if you managed to perform every setup correctly.
 
 #### **Note**:
 
@@ -225,10 +238,26 @@ hearts_enabled = False
 These are the instructions to convert the source code into a package with the executable file that can be redistributed. 
 
 1. Open command prompt by typing "cmd" in the search bar
-2. type `cd path/to/your/python/file/to/convert` which would be the path to "main.py" in the "source" directory
+2. type 
+    ```cmd
+    cd path/to/your/python/file/to/convert
+    ``` 
+    which would be the path to "main.py" in the "source" directory
 3. Make sure you have pyinstaller installed
-    - If not, type `pip install pyinstaller` in the terminal
-4. Type `pyinstaller -F -w -i Icon/icon.ico main.py`
+    - If not, type 
+        ```cmd
+        pip install pyinstaller
+        ``` 
+        in the terminal
+4. Type:
+    -   (Windows)
+        ```cmd 
+        pyinstaller -F -w -i icon/icon.ico main.py
+        ``` 
+    -   (Linux)
+        ```bash 
+        pyinstaller -F -w -i icon/icon.png main.py
+        ```
 5. Go to the dist folder in your directory and put the executable in the main directory.
 5. Copy the entire source folder to a zip file
 6. Delete all folders and files within except the "Config" "Icon" "Sound" and "Textures" folders
@@ -244,8 +273,15 @@ These are the instructions for generating an executable for the Laser Fighter Im
 
 1. Set the "source" pointer of the venv to "imagescaler" instead of "source"
 2. Open command prompt by typing "cmd" in the search bar
-3. type `cd path/to/your/python/file/to/convert` which would be the path to the "Main.py" in the "imagescaler" directory
-4. Type `pyinstaller -F -w -i Icon/icon.ico main.py`
+3. Type 
+    ```cmd
+    cd path/to/your/python/file/to/convert
+    ``` 
+    which would be the path to the "Main.py" in the "imagescaler" directory
+4. Type 
+    ```cmd
+    pyinstaller -F -w -i icon/icon.ico main.py
+    ```
 5. Go to the dist folder in your directory and put the executable in the main directory.
 6. Run the executable!
 7. You can now set the source pointer for the venv back to the "source" directory
