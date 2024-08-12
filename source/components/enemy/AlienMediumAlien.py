@@ -337,6 +337,7 @@ class MediumAlien:
                 # Set the hitbox for the coin
                 silver_coin.range = (silver_coin.coin.ycor() - silver_coin.COIN_DISTANCE, silver_coin.coin.ycor() + silver_coin.COIN_DISTANCE)
                 silver_coin.collision_coordinate = silver_coin.coin.xcor()
+                silver_coin.just_fired = 0
                 coins_on_screen.append(silver_coin)
                 all_coins.append(silver_coin)
             else:
@@ -348,6 +349,7 @@ class MediumAlien:
                         # Set the hitbox for the coin
                         coin.range = (coin.coin.ycor() - coin.COIN_DISTANCE, coin.coin.ycor() + coin.COIN_DISTANCE)
                         coin.collision_coordinate = coin.coin.xcor()
+                        coin.just_fired = 0
                         coins_on_screen.append(coin)
                         break
             # Respawn the medium alien in a random location (side of the screen)

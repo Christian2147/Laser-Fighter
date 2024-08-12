@@ -283,6 +283,7 @@ class SmallAlien:
                 # Set the hitbox for the coin
                 copper_coin.range = (copper_coin.coin.ycor() - copper_coin.COIN_DISTANCE, copper_coin.coin.ycor() + copper_coin.COIN_DISTANCE)
                 copper_coin.collision_coordinate = copper_coin.coin.xcor()
+                copper_coin.just_fired = 0
                 coins_on_screen.append(copper_coin)
                 all_coins.append(copper_coin)
             else:
@@ -294,6 +295,7 @@ class SmallAlien:
                         # Set the hitbox for the coin
                         coin.range = (coin.coin.ycor() - coin.COIN_DISTANCE, coin.coin.ycor() + coin.COIN_DISTANCE)
                         coin.collision_coordinate = coin.coin.xcor()
+                        coin.just_fired = 0
                         coins_on_screen.append(coin)
                         break
             # Respawn the small alien in a random location (side of the screen)

@@ -338,6 +338,7 @@ class LargeAlien:
                 # Set the hitbox for the coin
                 gold_coin.range = (gold_coin.coin.ycor() - gold_coin.COIN_DISTANCE, gold_coin.coin.ycor() + gold_coin.COIN_DISTANCE)
                 gold_coin.collision_coordinate = gold_coin.coin.xcor()
+                gold_coin.just_fired = 0
                 coins_on_screen.append(gold_coin)
                 all_coins.append(gold_coin)
             else:
@@ -349,6 +350,7 @@ class LargeAlien:
                         # Set the hitbox for the coin
                         coin.range = (coin.coin.ycor() - coin.COIN_DISTANCE, coin.coin.ycor() + coin.COIN_DISTANCE)
                         coin.collision_coordinate = coin.coin.xcor()
+                        coin.just_fired = 0
                         coins_on_screen.append(coin)
                         break
             # Respawn the large alien in a random location (side of the screen)
