@@ -22,8 +22,8 @@
     This includes all the execution functions for all the buttons in the shop.
 """
 
-import ctypes
 import pygame
+from tkinter import messagebox
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
@@ -446,13 +446,13 @@ class Shop:
                 sound.play()
             # If the player does not have enough coins, display an error message
             if self._price_displayed > self._shop_config.total_coins:
-                ctypes.windll.user32.MessageBoxW(0, "You do not have enough coins to purchase this item!", "Not Enough Coins!", 16)
+                messagebox.showerror("Not Enough Coins!", "You do not have enough coins to purchase this item!")
             # If the player does have enough coins
             else:
                 # Clarify if the user wants to purchase the item
-                message_output = ctypes.windll.user32.MessageBoxW(0, "Are you sure you want to purchase this item for {} coins?".format(self._price_displayed), "Are you sure?", 4 + 32)
+                message_output = messagebox.askquestion("Are you sure?", "Are you sure you want to purchase this item for {} coins?".format(self._price_displayed), icon='question')
                 # If the user says yes
-                if message_output != 7:
+                if message_output == 'yes':
                     max_level = 0
                     # Coin sound is played
                     if self._settings.button_sound == 1:

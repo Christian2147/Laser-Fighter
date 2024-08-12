@@ -514,9 +514,6 @@ class UFO:
             When the UFO has died enough times, this function will cause it to start moving faster and faster.
             Notice how the speed increase is greater than that of regular aliens.
 
-            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-            :type scale_factor_x: float
-
             :return: None
         """
 

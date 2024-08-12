@@ -105,7 +105,10 @@ window.cv._rootwindow.resizable(False, False)
 img = tkinter.Image("photo", file="icon/Icon.png")
 window._root.iconphoto(True, img)
 tk_window = window.getcanvas().winfo_toplevel()
-tk_window.iconbitmap('icon/Icon.ico')
+if os.name == 'nt':
+    tk_window.iconbitmap('icon/Icon.ico')
+elif os.name == 'posix':
+    tk_window.iconbitmap('icon/Icon.png')
 window.tracer(0)
 
 # List of paths to all textures that need to be loaded

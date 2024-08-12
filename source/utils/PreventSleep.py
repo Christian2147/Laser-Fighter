@@ -26,6 +26,7 @@
 """
 
 import ctypes
+import os
 
 # Constants for preventing system sleep:
 # ES_CONTINUOUS: System should continue to use the current state
@@ -40,7 +41,7 @@ class MonitorSleepController:
     """
 
     def __init__(self):
-        pass
+        self.os_name = os.name
 
     def prevent_sleep(self):
         """
@@ -49,7 +50,18 @@ class MonitorSleepController:
             :return: None
         """
 
-        ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED)
+        # For windows
+        if self.os_name == 'nt':
+            # Let the system know to stay awake
+            ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED)
+        # For Linux
+        elif self.os_name == 'posix':
+            # Turn off screen saver
+            os.system('xset s off')
+            # Disable DPMS (Energy Star) features
+            os.system('xset -dpms')
+            # Prevent screen blanking
+            os.system('xset s noblank')
 
     def allow_sleep(self):
         """
@@ -58,7 +70,18 @@ class MonitorSleepController:
             :return: None
         """
 
-        ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)
+        # For Windows
+        if self.os_name == 'nt':
+            # Allow the system to sleep
+            ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)
+        # For Linux
+        elif self.os_name == 'posix':
+            # Turn on screen saver
+            os.system('xset s on')
+            # Enable DPMS (Energy Star) features
+            os.system('xset +dpms')
+            # Allow screen blanking
+            os.system('xset s blank')
 
     def __enter__(self):
         """

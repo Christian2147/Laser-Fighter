@@ -50,7 +50,15 @@ shop_config = ShopConfig()
 
 # Backup the player data and config files on launch through a batch file (Made so that the user can run the
 #   script whenever they want
-batch_file_path = './config/bckp.bat'
-target_directory = os.path.abspath('./config')
-absolute_batch_file_path = os.path.abspath(batch_file_path)
-subprocess.run([absolute_batch_file_path], cwd=target_directory)
+# For Windows
+if os.name == 'nt':
+    batch_file_path = './config/bckp.bat'
+    target_directory = os.path.abspath('./config')
+    absolute_batch_file_path = os.path.abspath(batch_file_path)
+    subprocess.run([absolute_batch_file_path], cwd=target_directory)
+# For Linux
+elif os.name == 'posix':
+    shell_script_path = './config/bckp.sh'
+    target_directory = os.path.abspath('./config')
+    absolute_shell_script_path = os.path.abspath(shell_script_path)
+    subprocess.run(['bash', absolute_shell_script_path], cwd=target_directory)

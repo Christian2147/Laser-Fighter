@@ -21,7 +21,7 @@
     This file contains the logic for changing and toggling the keybinds while in game.
 """
 
-import ctypes
+from tkinter import messagebox
 import pygame
 
 
@@ -280,7 +280,7 @@ class Controls:
             # If the new keybind input is invalid (enter key or multiple charecters)
             if (len(key_2) > 1 and key_2 != "space") or key_2 == "":
                 # Let the user know through an error
-                ctypes.windll.user32.MessageBoxW(0, "That is an invalid input!", "Invalid Input!", 16)
+                messagebox.showerror("Invalid Input!", "That is an invalid input!")
             # if it is valid
             else:
                 # Update the keybind in the backup ini file.
@@ -327,9 +327,9 @@ class Controls:
                 # If there is a conflict
                 if key_alert == 1:
                     # Alert the user about the conflict
-                    message_output = ctypes.windll.user32.MessageBoxW(0, "Your current configuration may cause conflicts with other controls!\nAre you sure you want to keep it?", "Conflict!", 4 + 48)
+                    message_output = messagebox.askyesno("Conflict!", "Your current configuration may cause conflicts with other controls!\nAre you sure you want to keep it?", icon='warning')
                     # If the user wants to go back
-                    if message_output == 7:
+                    if not message_output:
                         # Reinstate the old keybinds and update the backup keybind file
                         key_1 = key_backup
                         key_2 = key_backup

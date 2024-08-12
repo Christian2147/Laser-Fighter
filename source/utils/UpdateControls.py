@@ -21,8 +21,8 @@
     This file contains the logic for loading, updating, and saving the current game keybinds.
 """
 
-import ctypes
 import configparser
+from tkinter import messagebox
 from utils.ConfigManager import ConfigManager
 
 
@@ -121,7 +121,7 @@ class ControlsConfig:
             self.key_check[3] = self.key_update['Key_Update'].get('Key_4')
         # Throw a windows message box error if the load fails
         except configparser.Error as e:
-            ctypes.windll.user32.MessageBoxW(0, f"Error reading config file: {e}", "Error", 0x10)
+            messagebox.showerror("Error", f"Error reading config file: {e}")
 
     def save(self):
         """
@@ -152,7 +152,7 @@ class ControlsConfig:
                 self.key_update.write(checkconfigfile)
         # Throw a windows message box error if the save fails
         except configparser.Error as e:
-            ctypes.windll.user32.MessageBoxW(0, f"Error saving config file: {e}", "Error", 0x10)
+            messagebox.showerror("Error", f"Error saving config file: {e}")
 
     def __repr__(self):
         """

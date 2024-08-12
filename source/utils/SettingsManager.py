@@ -22,7 +22,7 @@
     This includes all the execution functions for all the buttons on the settings page.
 """
 
-import ctypes
+from tkinter import messagebox
 import pygame
 
 
@@ -355,9 +355,9 @@ class SettingsToggle:
             # If fullscreen was originally off
             if self._settings.fullscreen == 0 and self._fullscreen_toggled == 0:
                 # Warn the player about the effects of performance
-                message_output = ctypes.windll.user32.MessageBoxW(0, "Enabling fullscreen may cause a performance drop and expose your game to bugs. Are you sure you want to enable fullscreen?", "Warning!", 4 + 48)
+                message_output = messagebox.askyesno("Warning!", "Enabling fullscreen may cause a performance drop and expose your game to bugs. Are you sure you want to enable fullscreen?", icon='warning')
                 # If the player says yes
-                if message_output != 7:
+                if message_output:
                     # Toggle fullscreen
                     self._settings.toggle_fullscreen()
                     # Alert the game of a needed restart
@@ -400,9 +400,9 @@ class SettingsToggle:
             # If VSync was originally off
             if self._settings.vsync == 0:
                 # Warn the user about effects on performance
-                message_output = ctypes.windll.user32.MessageBoxW(0, "Turning on VSync may lower performance. Are you sure you want to enable VSync?", "Warning!", 4 + 48)
+                message_output = messagebox.askyesno("Warning!", "Turning on VSync may lower performance. Are you sure you want to enable VSync?", icon='warning')
                 # If the user selects yes
-                if message_output != 7:
+                if message_output:
                     # Toggle VSync
                     if self._settings.vsync == 1:
                         self._settings.vsync = 0

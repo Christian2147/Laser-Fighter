@@ -22,7 +22,7 @@
             used at all times for this file to avoid any potential conflicts.
 """
 
-import ctypes
+from tkinter import messagebox
 import configparser
 import threading
 
@@ -102,7 +102,7 @@ class ConfigManager:
             self.config.set(section, key, value)
             self.save()
         except configparser.Error as e:
-            ctypes.windll.user32.MessageBoxW(0, f"Error reading config file: {e}", "Error", 0x10)
+            messagebox.showerror("Error", f"Error saving config file: {e}")
 
     def get(self, section, key):
         """
@@ -121,7 +121,7 @@ class ConfigManager:
         try:
             return self.config.get(section, key, fallback="")
         except configparser.Error as e:
-            ctypes.windll.user32.MessageBoxW(0, f"Error reading config file: {e}", "Error", 0x10)
+            messagebox.showerror("Error", f"Error reading config file: {e}")
             return ""
 
     def getint(self, section, key):
@@ -141,5 +141,5 @@ class ConfigManager:
         try:
             return self.config.getint(section, key, fallback=0)
         except configparser.Error as e:
-            ctypes.windll.user32.MessageBoxW(0, f"Error reading config file: {e}", "Error", 0x10)
+            messagebox.showerror("Error", f"Error reading config file: {e}")
             return 0

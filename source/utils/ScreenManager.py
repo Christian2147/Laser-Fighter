@@ -22,7 +22,7 @@
         refreshing specific aspects of the screen.
 """
 
-import ctypes
+from tkinter import messagebox
 import pygame
 
 
@@ -257,12 +257,12 @@ class ScreenUpdate:
                 # "updated_controls" checks if this is the case.
                 if self._updated_controls == 1:
                     # Warn the user that a restart is required
-                    message_output = ctypes.windll.user32.MessageBoxW(0, "A restart is required for these changes to take effect!\nDo you want to restart now?", "Restart Required!", 4 + 48)
+                    message_output = messagebox.askyesno("Restart Required!", "A restart is required for these changes to take effect!\nDo you want to restart now?", icon='warning')
                     # If the user selects "yes"
-                    if message_output == 6:
+                    if message_output:
                         self.on_quit()
                     # If the user selects "no"
-                    elif message_output == 7:
+                    else:
                         # Set the mode to "Title_Mode" to change the screen
                         self._mode = "Title_Mode"
                         self._screen_update = 1
