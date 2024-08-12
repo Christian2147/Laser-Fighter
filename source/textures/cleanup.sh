@@ -24,7 +24,7 @@
 # I am not responsible for any damage caused my misuse of this file!
 cd "$(dirname "$0")"
 
-# Ensure the script is running in a directory named "textures"
+# Ensure the script is running in the "textures" directory
 if [ "$(basename "$PWD")" != "textures" ]; then
     echo "cleanup.sh: FATAL: This script must be run from a directory named 'textures'."
     exit 1
