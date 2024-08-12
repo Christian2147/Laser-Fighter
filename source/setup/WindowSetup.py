@@ -50,8 +50,10 @@ window.bgcolor("black")
 if settings.fullscreen == 1:
     # Set the width and height to be the monitors width and height
     # The monitors width and height is retrieved from the windows API
-    # Remove this and replace it with xrandr code if you are trying to run this on Linux
+    # Remove the line below and replace it with xrandr code if you are trying to run this on Linux
     window.setup(width=win32api.GetSystemMetrics(0), height=win32api.GetSystemMetrics(1))
+
+    # Set the game to fullscreen mode
     window.cv._rootwindow.attributes("-fullscreen", True)
 
     # Calculating the scale factor:
