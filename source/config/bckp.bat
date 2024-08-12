@@ -24,7 +24,7 @@ mkdir "%newDir%" > nul 2>&1
 
 rem Iterate over files in the main directory and copy them to the backup directory
 for %%I in ("%CD%\*.*") do (
-    if /I NOT "%%~nxI"=="bckp.bat" (
+    if /I NOT "%%~nxI"=="bckp.bat" if /I NOT "%%~nxI"=="bckp.sh" (
         copy "%%I" "%newDir%\" > nul
     )
 )

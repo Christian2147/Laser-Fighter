@@ -24,6 +24,12 @@
 # I am not responsible for any damage caused my misuse of this file!
 cd "$(dirname "$0")"
 
+# Ensure the script is running in a directory named "textures"
+if [ "$(basename "$PWD")" != "textures" ]; then
+    echo "cleanup.sh: FATAL: This script must be run from a directory named 'textures'."
+    exit 1
+fi
+
 # Check this directory's write permission
 if [ ! -r . ] || [ ! -w . ]; then
     echo "cleanup.sh: FATAL: no permission to read and/or write to textures dir"
