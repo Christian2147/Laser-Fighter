@@ -2,9 +2,9 @@
 
 ## Creating your own virtual environment
 
-These are the instructions if you want to use this source code and create your own virtual environment for it
+These are the instructions if you want to use this source code and create your own virtual environment:
 
-1. Open command prompt by typing "cmd" in the search bar
+1. Open command prompt (Windows) or the terminal (Linux)
 2. type 
     ```cmd
     cd path/to/your/project
@@ -36,7 +36,7 @@ These are the instructions if you want to use this source code and create your o
     ```cmd
     pip list
     ```
-7. Start working!
+7. Begin working with the source code!
 
 ### If you are facing issues installing the virtual environment:
 
@@ -46,11 +46,11 @@ Try removing the following libraries from requirements.txt:
 - memory-profiler
 - psutil
 
-If you are still having problems, remember that all folder names MUST be lowercase.
-All Texture files must be in the following naming format Word_Word_Word.gif
-All Python files must be in the following naming format WordWordWord.py
+If you are still having problems, remember that all directory names MUST be lowercase.
+All Texture files must be in the following naming format: Word_Word_Word.gif
+All Python files must be in the following naming format: WordWordWord.py
 
-If any of these files are renamed incorrectly, simply manually rename them.
+If any of these files are named incorrectly, simply manually rename them.
 
 ### If you are on Linux (Not Directly supported):
 
@@ -97,7 +97,7 @@ On top of this:
     ```
     and make sure to calculate these parameters with the function given above before executing this function.
     
-4. Your virtual environment should work on Linux at this point if you managed to perform every setup correctly.
+4. Your virtual environment should work on Linux at this point if you managed to perform the setup correctly.
 
 #### **Note**:
 
@@ -105,7 +105,7 @@ The instructions above are just mere suggestions and guidelines for how to get t
     
 #### **Special Thanks**:
 
-Special Thanks to @yosoyducc for helping me with the instructions on this page!
+Special Thanks to @yosoyducc for helping me with the Linux instructions on this page!
 
 ## Cleaning Up And Resetting The Game
 
@@ -231,7 +231,7 @@ hearts_enabled = False
 6. Finally, go to the `textures` directory also located in the `source` directory
 7. Run the `cleanup.bat` file to clean up all the extra texture files created from scaling in fullscreen mode
     - **WARNING**: Please **NEVER** move this file, as it could cause unintended consequences!
-    - **ADDITIONAL NOTE**: Linux does not support batch, meaning that Linux users will have to manually clean these files up. Full support for Linux is planned in the future but not here yet :(
+    - **ADDITIONAL NOTE**: Linux does not support batch, meaning that Linux users will have to run the `cleanup.sh` file instead.
 
 ## Packaging the game
 
@@ -260,10 +260,10 @@ These are the instructions to convert the source code into a package with the ex
         ```
 5. Go to the dist folder in your directory and put the executable in the main directory.
 5. Copy the entire source folder to a zip file
-6. Delete all folders and files within except the "Config" "Icon" "Sound" and "Textures" folders
-7. Do not forget the LICENSE file!
+6. Delete all folders and files within except the "config" "icon" "sound" and "textures" folders
+7. Do not forget to include the LICENSE file!
 
-### Additional Note
+### Note
 
 The recommended version of python to use is python 3.7.3. This is what the game was created in.
 
@@ -280,15 +280,19 @@ These are the instructions for generating an executable for the Laser Fighter Im
     which would be the path to the "Main.py" in the "imagescaler" directory
 4. Type 
     ```cmd
-    pyinstaller -F -w -i icon/icon.ico main.py
+    pyinstaller -F -w -i Main.py
     ```
 5. Go to the dist folder in your directory and put the executable in the main directory.
 6. Run the executable!
 7. You can now set the source pointer for the venv back to the "source" directory
 
-### Additional Note
+### Note
 
 The recommended version of python to use is python 3.7.3. This is what the game was created in.
+
+### Additional Note
+
+In order to package the image scaler in Linux, you first must convert the .ico file to a .png file and change the source code to use the .png file as an icon instead of the .ico file. 
 
 ## License
 
