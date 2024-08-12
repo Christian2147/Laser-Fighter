@@ -292,7 +292,7 @@ The recommended version of python to use is python 3.7.3. This is what the game 
 
 ### Additional Note
 
-In order to package the image scaler in Linux, you first must convert the .ico file to a .png file and change the source code to use the .png file as an icon instead of the .ico file. 
+In order to package the image scaler on Linux, you first must convert the .ico file to a .png file and change the source code to use the .png file as an icon instead of the .ico file. 
 
 ## License
 
