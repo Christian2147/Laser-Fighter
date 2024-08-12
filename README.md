@@ -47,6 +47,12 @@ If you want to work with the source code and create your own virtual environment
 
 Laser Fighter is a 2D shooting game created in Python. It currently offers two gameplay modes: Machine Mode and Alien Mode. In both modes, you are in space, shooting lasers and defending yourself from monsters. To learn more about Laser Fighter's features, check out the [features page](./docs/FEATURES.md).
 
+## Acknowledgments
+
+I would like to thank the following contributors:
+
+- **@yosoyducc**: Contributed to creating the `./source/textures/cleanup.sh` and the `./source/config/bckp.sh` shell scripts for Linux compatibility, which is copyrighted (c) 2024, yosoyducc. 
+
 ## License
 
 Copyright (c) [2024] [Christian Marinkovich]
