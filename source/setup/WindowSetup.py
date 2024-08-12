@@ -50,11 +50,13 @@ window.bgcolor("black")
 if settings.fullscreen == 1:
     # Set the width and height to be the monitors width and height
     # The monitors width and height is retrieved from the windows API
+    # Remove this and replace it with xrandr code if you are trying to run this on Linux
     window.setup(width=win32api.GetSystemMetrics(0), height=win32api.GetSystemMetrics(1))
     window.cv._rootwindow.attributes("-fullscreen", True)
 
     # Calculating the scale factor:
     # Extract the screen width and height again
+    # Remove this if you are trying to run this on Linux
     current_screen_width = win32api.GetSystemMetrics(0)
     current_screen_height = win32api.GetSystemMetrics(1)
     # The main scale factor is based off the smallest of the two lengths
@@ -108,6 +110,7 @@ tk_window = window.getcanvas().winfo_toplevel()
 if os.name == 'nt':
     tk_window.iconbitmap('icon/Icon.ico')
 elif os.name == 'posix':
+    # If this still does not work on Linux, comment it out
     tk_window.iconbitmap('icon/Icon.png')
 window.tracer(0)
 
@@ -305,6 +308,7 @@ pygame.init()
 pygame.mixer.init()
 
 # Extract the refresh rate of the users monitor through the windows API
+# Remove this if you are trying to run this on Linux
 DISPLAY_DEVICE = win32api.EnumDisplayDevices(None, 0)
 SETTINGS = win32api.EnumDisplaySettings(DISPLAY_DEVICE.DeviceName, win32con.ENUM_CURRENT_SETTINGS)
 REFRESH_RATE = SETTINGS.DisplayFrequency

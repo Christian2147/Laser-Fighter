@@ -60,7 +60,7 @@ def get_screen_resolution():
     return None, None, None
 
 # Example usage (These are the actual parameters in the games code you have to set using this function. You also have to remove the old way they are declared)
-current_screen_width, current_screen_height, REFRESH_RATE = get_screen_info()
+current_screen_width, current_screen_height, REFRESH_RATE = get_screen_resolution()
 ```
 On top of this: 
 1. Comment out the DISPLAY_DEVICE and SETTINGS parameters.
