@@ -142,7 +142,7 @@ class CoinIndicator(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(COIN_INDICATOR_TEXTURE).convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.topleft = (-617 * scale_factor_x, 300 * scale_factor_y)
+        self.rect.center = (23 * scale_factor_x, 60 * scale_factor_y)
         self.coin_indicator_visible = 1
 
     def __del__(self):

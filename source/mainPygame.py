@@ -29,11 +29,13 @@
 import pygame
 from setup.WindowSetupPygame import GameWindow
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
+from components.spawn.SpawnCoinPygame import SpawnCoinIndicator
 
 
 def main():
     window = GameWindow()
     blue_machine = SpawnBlueMachine(window.scale_factor_X, window.scale_factor_Y)
+    coin_indicator = SpawnCoinIndicator(window.scale_factor_X, window.scale_factor_Y)
 
     # The main game loop:
     running = True
@@ -48,6 +50,9 @@ def main():
             for i in range(3):
                 blue_machine.spawn_blue_machine(i + 1)
 
+        if coin_indicator.coin_indicator_index == 0:
+            coin_indicator.spawn_coin_indicator()
+
         window.screen.fill((0, 0, 0))
 
         window.screen.blit(window.bg_surface, (0, 0))
@@ -58,6 +63,10 @@ def main():
 
                 if bu.blue_machine_laser.laser_visible == 1:
                     window.screen.blit(bu.blue_machine_laser.image, bu.blue_machine_laser.rect)
+
+        for ci in coin_indicator.coin_indicator_sprite:
+            if ci.coin_indicator_visible == 1:
+                window.screen.blit(ci.image, ci.rect)
 
         for bm in blue_machine.blue_machines:
             bm.shoot_laser(0, 1)
