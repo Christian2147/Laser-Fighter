@@ -31,6 +31,7 @@ from setup.WindowSetupPygame import GameWindow
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
 from components.spawn.SpawnPlayerPygame import SpawnMachinePlayer
 from components.spawn.SpawnCoinPygame import SpawnCoinIndicator
+from physics.MachineCollisionPygame import MachineCollision
 
 
 def main():
@@ -38,6 +39,9 @@ def main():
     blue_machine = SpawnBlueMachine(window.scale_factor_X, window.scale_factor_Y)
     machine_player = SpawnMachinePlayer(window.scale_factor_X, window.scale_factor_Y)
     coin_indicator = SpawnCoinIndicator(window.scale_factor_X, window.scale_factor_Y)
+
+    machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
+
 
     # The main game loop:
     running = True
