@@ -307,7 +307,7 @@ class BlueMachine(pygame.sprite.Sprite):
             # Respawn the blue machine in a different random location
             self.image = pygame.image.load(BLUE_MACHINE_TEXTURE).convert_alpha()
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
-            self.rect.topleft = (random.randint(int(-640 * self.scale_factor_x), int(640 * self.scale_factor_x)), random.randint(int(120 * self.scale_factor_y), int(220 * self.scale_factor_y)))
+            self.rect.center = (random.randint(int(-640 * self.scale_factor_x), int(640 * self.scale_factor_x)), random.randint(int(120 * self.scale_factor_y), int(220 * self.scale_factor_y)))
             # Restart the float effect
             self.float_activated = 0
             self.float = 1
@@ -336,7 +336,7 @@ class BlueMachine(pygame.sprite.Sprite):
             self.image = pygame.image.load(EXPLOSION_2_TEXTURE).convert_alpha()
             self.update = 1.5
             self.start_time = time.time()
-            self.kill_enemy(death_sound, coins_on_screen)
+            self.kill_enemy(death_sound, coins_on_screen, scale_factor_x)
             return
 
         # Wait 0.1 seconds
