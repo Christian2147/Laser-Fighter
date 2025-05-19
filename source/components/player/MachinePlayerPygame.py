@@ -433,7 +433,6 @@ class Player(pygame.sprite.Sprite):
 
         # While the last laser is still in the frame of the screen
         if self.laser_list[0].rect.centery > machine_mode_setup.laser_max_distance:
-            print("broski")
             # Keep moving it a number of units every 0.015 seconds
             # The number of units depends on the laser speed and the yellow power up
             current_time = time.time()
