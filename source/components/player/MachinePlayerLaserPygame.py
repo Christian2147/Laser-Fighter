@@ -65,6 +65,9 @@ class MachineLaser(pygame.sprite.Sprite):
         """Machine Player Laser Getter"""
         return self
 
+    def isvisible(self):
+        return self.laser_visible
+
     def remove(self):
         """
             Removes the players laser from the screen.

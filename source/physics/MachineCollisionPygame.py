@@ -153,7 +153,7 @@ class MachineCollision:
             self.enemy_center = bm.enemy_center
             current_time = time.time()
             self.float_time_offset = current_time - bm.float_time_offset
-            self.initial_distance = self.enemy_center - self.BLUE_MACHINE_DISTANCE - self._machine_player.current_player[0].laser_list[index].laser.ycor()
+            self.initial_distance = self.enemy_center - self.BLUE_MACHINE_DISTANCE - self._machine_player.current_player[0].laser_list[index].rect.centery
             intersection_time = self.calculate_time()
 
             # Based off the intersection time, calculate the amount that the machine will move along the x-axis during
@@ -174,23 +174,23 @@ class MachineCollision:
             if x_offset != 0:
                 if bm.movement == -1:
                     x_offset = x_offset * -1
-                    edge = -640 * self.scale_factor_x
-                    distance_from_edge = edge - (bm.blue_machine.xcor() + x_offset)
+                    edge = 0 * self.scale_factor_x
+                    distance_from_edge = edge - (bm.rect.centerx + x_offset)
                     if distance_from_edge > 0:
                         x_offset = x_offset + (2 * distance_from_edge)
                 else:
-                    edge = 640 * self.scale_factor_x
-                    distance_from_edge = edge - (bm.blue_machine.xcor() + x_offset)
+                    edge = 1280 * self.scale_factor_x
+                    distance_from_edge = edge - (bm.rect.centerx + x_offset)
                     if distance_from_edge < 0:
                         x_offset = x_offset + (2 * distance_from_edge)
 
             # Find the width of the hit box
-            bm.x_range_list[index] = (bm.blue_machine.xcor() + x_offset - self.BLUE_MACHINE_DISTANCE, bm.blue_machine.xcor() + x_offset + self.BLUE_MACHINE_DISTANCE)
+            bm.x_range_list[index] = (bm.rect.centerx + x_offset - self.BLUE_MACHINE_DISTANCE, bm.rect.centerx + x_offset + self.BLUE_MACHINE_DISTANCE)
 
             # Find the y-coordinate the laser must reach in order to hit the enemy based on the sine wave
             collision_y_coordinate = self.FLOAT_AMPLITUDE * math.sin((2 * math.pi * (intersection_time[0] * -1 + self.float_time_offset)) / self.PERIOD) + \
                 self.initial_distance + \
-                self._machine_player.current_player[0].laser_list[index].laser.ycor()
+                self._machine_player.current_player[0].laser_list[index].rect.centery
 
             bm.collision_y_coordinate_list[index] = collision_y_coordinate
 

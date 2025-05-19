@@ -139,6 +139,9 @@ class BlueMachine(pygame.sprite.Sprite):
 
         return self.update
 
+    def isvisible(self):
+        return self.machine_visible
+
     def set_death_count(self, new_death_count):
         """
             Sets the death count for the blue machine. (Used for when the player dies and the death count has to
@@ -307,7 +310,7 @@ class BlueMachine(pygame.sprite.Sprite):
             # Respawn the blue machine in a different random location
             self.image = pygame.image.load(BLUE_MACHINE_TEXTURE).convert_alpha()
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
-            self.rect.center = (random.randint(int(-640 * self.scale_factor_x), int(640 * self.scale_factor_x)), random.randint(int(120 * self.scale_factor_y), int(220 * self.scale_factor_y)))
+            self.rect.center = (random.randint(int(0 * self.scale_factor_x), int(1280 * self.scale_factor_x)), random.randint(int(140 * self.scale_factor_y), int(240 * self.scale_factor_y)))
             # Restart the float effect
             self.float_activated = 0
             self.float = 1

@@ -396,7 +396,7 @@ class Player(pygame.sprite.Sprite):
             sound.play()
         # Moves the specified laser back to the player to be fired
         self.laser_list[index].laser.rect.centerx = self.rect.centerx
-        self.laser_list[index].laser.rect.centery = self.rect.centery + machine_mode_setup.laser_offset
+        self.laser_list[index].laser.rect.centery = self.rect.centery - machine_mode_setup.laser_offset
         # Set the lasers attributes correctly
         self.laser_start_y_list[index] = self.laser_list[index].laser.rect.centery
         self.laser_has_attacked_list[index] = 0
@@ -432,7 +432,8 @@ class Player(pygame.sprite.Sprite):
             self.fire(shooting_sound, 1)
 
         # While the last laser is still in the frame of the screen
-        if self.laser_list[0].laser.rect.centery > machine_mode_setup.laser_max_distance:
+        if self.laser_list[0].rect.centery > machine_mode_setup.laser_max_distance:
+            print("broski")
             # Keep moving it a number of units every 0.015 seconds
             # The number of units depends on the laser speed and the yellow power up
             current_time = time.time()
