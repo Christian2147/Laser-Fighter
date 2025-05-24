@@ -62,7 +62,7 @@ class BlueMachine(pygame.sprite.Sprite):
 
         self.blue_machine_laser = BlueMachineLaser(id, scale_factor_x, scale_factor_y)
 
-        self.death_count = 6
+        self.death_count = 0
         self.update = 0
         self.movement = 1
         self.float = 1

@@ -123,17 +123,63 @@ def main():
         if coin_indicator.coin_indicator_index == 0:
             coin_indicator.spawn_coin_indicator()
 
+        for p in machine_player.current_player:
+            p.shoot(1, 0)
+
         for bm in blue_machine.blue_machines:
             bm.shoot_laser(0, 1)
 
-        for bm in blue_machine.blue_machines:
-            bm.float_effect()
-
-        for bm in blue_machine.blue_machines:
-            bm.move_enemy(0)
-
-        for p in machine_player.current_player:
-            p.shoot(1, 0)
+        hit_coin = 0
+        for c in coin.coins_on_screen_list:
+            for p in machine_player.current_player:
+                # Check each of the players lasers
+                for l in p.get_laser():
+                    # If the player picks up a coin
+                    if l.isvisible() and \
+                     c.rect.centerx - 50 * window.scale_factor_X < l.rect.centerx < c.rect.centerx + 50 * window.scale_factor_X and \
+                     c.rect.centery - 50 * window.scale_factor_Y < l.rect.centery < c.rect.centery + 50 * window.scale_factor_Y and \
+                     coin.coin_pickup_delay == 0:
+                        # Remove the coin from the screen
+                        c.remove()
+                        # Increase the amount of coins the users has based on the type of coin picked up
+                        # if c.get_type() == "copper":
+                        #     # For each coin, check if the blue power up has a multiplier on it
+                        #     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
+                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_blue_value
+                        #     else:
+                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
+                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_value
+                        # elif c.get_type() == "silver":
+                        #     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
+                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_blue_value
+                        #     else:
+                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
+                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_value
+                        # elif c.get_type() == "gold":
+                        #     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
+                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_blue_value
+                        #     else:
+                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
+                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_value
+                        # elif c.get_type() == "platinum":
+                        #     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
+                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
+                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_blue_value
+                        #     else:
+                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
+                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_value
+                        # shop_config.save()
+                        # statistics.save()
+                        coin.coins_on_screen_list.pop(hit_coin)
+                        # play the coin pickup sound
+                        if 1: #settings.coin_pickup_sound == 1:
+                            sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
+                            sound.play()
+                        break
+                hit_coin = hit_coin + 1
 
         # Collision still not working
         for p in machine_player.current_player:
@@ -268,6 +314,12 @@ def main():
                                 # If the player has thorns enabled, initiate the thorns damage on the enemy
                                 #if shop_config.thorns_enabled:
                                 #    bm.thorns_initiated_damage = 1
+
+        for bm in blue_machine.blue_machines:
+            bm.float_effect()
+
+        for bm in blue_machine.blue_machines:
+            bm.move_enemy(0)
 
         pygame.display.flip()
 
