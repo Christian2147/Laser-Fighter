@@ -32,6 +32,9 @@ from setup.WindowSetupPygame import GameWindow
 from components.spawn.SpawnCoinPygame import SpawnCoin
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
 from components.spawn.SpawnPlayerPygame import SpawnMachinePlayer
+from components.spawn.SpawnPowerUpPygame import SpawnYellowPowerUpIndicator
+from components.spawn.SpawnPowerUpPygame import SpawnBluePowerUpIndicator
+from components.spawn.SpawnPowerUpPygame import SpawnExtraPowerUpIndicator
 from components.spawn.SpawnCoinPygame import SpawnCoinIndicator
 from physics.MachineCollisionPygame import MachineCollision
 from utils.MovementManagerPygame import Movement
@@ -42,6 +45,10 @@ def main():
     coin = SpawnCoin()
     blue_machine = SpawnBlueMachine(window.scale_factor_X, window.scale_factor_Y)
     machine_player = SpawnMachinePlayer(window.scale_factor_X, window.scale_factor_Y)
+
+    yellow_power_up_indicator = SpawnYellowPowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
+    blue_power_up_indicator = SpawnBluePowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
+    extra_power_up_indicator = SpawnExtraPowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
     coin_indicator = SpawnCoinIndicator(window.scale_factor_X, window.scale_factor_Y)
 
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
@@ -49,7 +56,6 @@ def main():
 
     MOVE_REPEAT_DELAY = 0.05
     last_move_time = 0
-
 
     # The main game loop:
     running = True
@@ -106,6 +112,18 @@ def main():
                 if hasattr(mp, 'armor_bar') and mp.armor_bar.armor_bar_visible == 1:
                     window.screen.blit(mp.armor_bar.image, mp.armor_bar.rect)
 
+        for ypi in yellow_power_up_indicator.yellow_power_up_indicator_sprite:
+            if ypi.yellow_power_up_indicator_visible == 1:
+                window.screen.blit(ypi.image, ypi.rect)
+
+        for bpi in blue_power_up_indicator.blue_power_up_indicator_sprite:
+            if bpi.blue_power_up_indicator_visible == 1:
+                window.screen.blit(bpi.image, bpi.rect)
+
+        for epi in extra_power_up_indicator.extra_power_up_indicator_sprite:
+            if epi.extra_power_up_indicator_visible == 1:
+                window.screen.blit(epi.image, epi.rect)
+
         for ci in coin_indicator.coin_indicator_sprite:
             if ci.coin_indicator_visible == 1:
                 window.screen.blit(ci.image, ci.rect)
@@ -113,15 +131,27 @@ def main():
 
 
         # Rest of regular logic
-        if blue_machine.blue_machine_index == 0:
-            for i in range(3):
-                blue_machine.spawn_blue_machine(i + 1)
+        if coin_indicator.coin_indicator_index == 0:
+            coin_indicator.spawn_coin_indicator()
+
+        # Spawn the yellow power up indicator
+        if yellow_power_up_indicator.yellow_power_up_indicator_index == 0:
+            yellow_power_up_indicator.spawn_yellow_power_up_indicator()
+
+        # Spawn the blue power up indicator
+        if blue_power_up_indicator.blue_power_up_indicator_index == 0:
+            blue_power_up_indicator.spawn_blue_power_up_indicator()
+
+        # Spawn the green power up indicator
+        if extra_power_up_indicator.extra_power_up_indicator_index == 0:
+            extra_power_up_indicator.spawn_extra_power_up_indicator("Machine_Mode")
 
         if machine_player.current_player_index == 0:
             machine_player.spawn_machine_player(0)
 
-        if coin_indicator.coin_indicator_index == 0:
-            coin_indicator.spawn_coin_indicator()
+        if blue_machine.blue_machine_index == 0:
+            for i in range(3):
+                blue_machine.spawn_blue_machine(i + 1)
 
         for p in machine_player.current_player:
             p.shoot(1, 0)

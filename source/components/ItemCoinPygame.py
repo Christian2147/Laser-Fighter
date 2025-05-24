@@ -70,7 +70,7 @@ class Coin(pygame.sprite.Sprite):
         if type == "platinum":
             self.image = pygame.image.load(PLATINUM_COIN_TEXTURE).convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.topleft = (pos_x, pos_y)
+        self.rect.center = (pos_x, pos_y)
         self.coin_visible = 1
 
         # Collision Variables
