@@ -22,168 +22,129 @@
     This includes the power up indicators that appear at the top of the screen during gameplay.
 """
 
-#from components.ItemPowerUp import PowerUp
+from components.ItemPowerUpPygame import PowerUp
 from components.ItemPowerUpPygame import YellowIndicator
 from components.ItemPowerUpPygame import BlueIndicator
 from components.ItemPowerUpPygame import ExtraIndicator
 
 
-# class SpawnPowerUp:
-#     """
-#         Represents the Power Up container in Laser Fighter.
-#
-#         Attributes:
-#             all_power_ups (list): Contains all of the power up sprites created since the game has
-#                 launched, even the ones removed from the screen
-#             current_power_ups (list): Contains all of the power up sprites currently visible/active on the screen.
-#             power_up_index (list): Stores which of each of the different power up types is currently on the screen
-#                 (There are 4 different types, 3 possible per mode (5 with the Hearts Gadget))
-#             power_up_update (int): The random variable used for randomly spawning the power ups on the screen
-#             power_up_time (float): Used as a timestamp for the spawning of power ups on the screen (Every 0.4 seconds,
-#                 the random variable power_up_update is determined to see if a power up will spawn)
-#
-#             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
-#             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
-#     """
-#
-#     def __init__(self, scale_factor_x, scale_factor_y):
-#         """
-#             Creates the lists necessary to store the Power Up.
-#
-#             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
-#             :type scale_factor_x: float
-#
-#             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
-#             :type scale_factor_y: float
-#         """
-#
-#         self.all_power_ups = []
-#         self.current_power_ups = []
-#         self.power_up_index = [0, 0, 0, 0, 0]
-#         self.power_up_update = 0
-#         self.power_up_time = 0
-#
-#         self.scale_factor_x = scale_factor_x
-#         self.scale_factor_y = scale_factor_y
-#
-#     def __del__(self):
-#         """
-#             Clear the variables from memory once the program has terminated
-#
-#             :return: None
-#         """
-#
-#         del self.all_power_ups
-#         del self.current_power_ups
-#         del self.power_up_index
-#         del self.power_up_update
-#         del self.power_up_time
-#
-#     def spawn_power_up(self, type, mode, power_up_spawn_sound):
-#         """
-#             Spawn a power up on the screen.
-#             The type of power up depends on the parameter "type".
-#             What height it spawns at depends on the current mode the user is in.
-#
-#             :param type: Determines which type of power up spawns
-#             :type type: int
-#
-#             :param mode: Determines the current mode of the game
-#             :type mode: string
-#
-#             :param power_up_spawn_sound: Determines if the power up spawn sound is toggled on or off
-#             :type power_up_spawn_sound: int
-#
-#             :return: None
-#         """
-#
-#         if len(self.all_power_ups) <= len(self.current_power_ups):
-#             # Yellow power up
-#             if type == 1:
-#                 if mode == "Machine_Mode":
-#                     power_up = PowerUp(1, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
-#                 elif mode == "Alien_Mode":
-#                     power_up = PowerUp(1, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
-#                 self.power_up_index[0] = 1
-#                 self.current_power_ups.append(power_up)
-#                 self.all_power_ups.append(power_up)
-#             # Blue power up
-#             elif type == 2:
-#                 if mode == "Machine_Mode":
-#                     power_up = PowerUp(2, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
-#                 elif mode == "Alien_Mode":
-#                     power_up = PowerUp(2, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
-#                 self.power_up_index[1] = 1
-#                 self.current_power_ups.append(power_up)
-#                 self.all_power_ups.append(power_up)
-#             # Green power up
-#             elif type == 3:
-#                 if mode == "Machine_Mode":
-#                     power_up = PowerUp(3, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
-#                 elif mode == "Alien_Mode":
-#                     power_up = PowerUp(3, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
-#                 self.power_up_index[2] = 1
-#                 self.current_power_ups.append(power_up)
-#                 self.all_power_ups.append(power_up)
-#             # Red power up
-#             elif type == 4:
-#                 if mode == "Machine_Mode":
-#                     power_up = PowerUp(4, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
-#                 elif mode == "Alien_Mode":
-#                     power_up = PowerUp(4, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
-#                 self.power_up_index[3] = 1
-#                 self.current_power_ups.append(power_up)
-#                 self.all_power_ups.append(power_up)
-#             # Heart power up (If Heart power up gadget is on)
-#             elif type == 5:
-#                 if mode == "Machine_Mode":
-#                     power_up = PowerUp(5, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
-#                 elif mode == "Alien_Mode":
-#                     power_up = PowerUp(5, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
-#                 self.power_up_index[4] = 1
-#                 self.current_power_ups.append(power_up)
-#                 self.all_power_ups.append(power_up)
-#         else:
-#             for pu in self.all_power_ups:
-#                 if pu.get_power_up().isvisible():
-#                     continue
-#                 else:
-#                     if type == 1:
-#                         if mode == "Machine_Mode":
-#                             pu.reinstate(1, 1, power_up_spawn_sound)
-#                         elif mode == "Alien_Mode":
-#                             pu.reinstate(1, 2, power_up_spawn_sound)
-#                         self.power_up_index[0] = 1
-#                         self.current_power_ups.append(pu)
-#                     elif type == 2:
-#                         if mode == "Machine_Mode":
-#                             pu.reinstate(2, 1, power_up_spawn_sound)
-#                         elif mode == "Alien_Mode":
-#                             pu.reinstate(2, 2, power_up_spawn_sound)
-#                         self.power_up_index[1] = 1
-#                         self.current_power_ups.append(pu)
-#                     elif type == 3:
-#                         if mode == "Machine_Mode":
-#                             pu.reinstate(3, 1, power_up_spawn_sound)
-#                         elif mode == "Alien_Mode":
-#                             pu.reinstate(3, 2, power_up_spawn_sound)
-#                         self.power_up_index[2] = 1
-#                         self.current_power_ups.append(pu)
-#                     elif type == 4:
-#                         if mode == "Machine_Mode":
-#                             pu.reinstate(4, 1, power_up_spawn_sound)
-#                         elif mode == "Alien_Mode":
-#                             pu.reinstate(4, 2, power_up_spawn_sound)
-#                         self.power_up_index[3] = 1
-#                         self.current_power_ups.append(pu)
-#                     elif type == 5:
-#                         if mode == "Machine_Mode":
-#                             pu.reinstate(5, 1, power_up_spawn_sound)
-#                         elif mode == "Alien_Mode":
-#                             pu.reinstate(5, 2, power_up_spawn_sound)
-#                         self.power_up_index[4] = 1
-#                         self.current_power_ups.append(pu)
-#                     break
+class SpawnPowerUp:
+    """
+        Represents the Power Up container in Laser Fighter.
+
+        Attributes:
+            all_power_ups (list): Contains all of the power up sprites created since the game has
+                launched, even the ones removed from the screen
+            current_power_ups (list): Contains all of the power up sprites currently visible/active on the screen.
+            power_up_index (list): Stores which of each of the different power up types is currently on the screen
+                (There are 4 different types, 3 possible per mode (5 with the Hearts Gadget))
+            power_up_update (int): The random variable used for randomly spawning the power ups on the screen
+            power_up_time (float): Used as a timestamp for the spawning of power ups on the screen (Every 0.4 seconds,
+                the random variable power_up_update is determined to see if a power up will spawn)
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Power Up.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        self.current_power_ups = []
+        self.power_up_index = [0, 0, 0, 0, 0]
+        self.power_up_update = 0
+        self.power_up_time = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
+        del self.current_power_ups
+        del self.power_up_index
+        del self.power_up_update
+        del self.power_up_time
+
+    def spawn_power_up(self, type, mode, power_up_spawn_sound):
+        """
+            Spawn a power up on the screen.
+            The type of power up depends on the parameter "type".
+            What height it spawns at depends on the current mode the user is in.
+
+            :param type: Determines which type of power up spawns
+            :type type: int
+
+            :param mode: Determines the current mode of the game
+            :type mode: string
+
+            :param power_up_spawn_sound: Determines if the power up spawn sound is toggled on or off
+            :type power_up_spawn_sound: int
+
+            :return: None
+        """
+
+        # Yellow power up
+        if type == 1:
+            if mode == "Machine_Mode":
+                power_up = PowerUp(1, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                self.power_up_index[0] = 1
+                self.current_power_ups.append(power_up)
+            elif mode == "Alien_Mode":
+                power_up = PowerUp(1, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                self.power_up_index[0] = 1
+                self.current_power_ups.append(power_up)
+        # Blue power up
+        elif type == 2:
+            if mode == "Machine_Mode":
+                power_up = PowerUp(2, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                self.power_up_index[1] = 1
+                self.current_power_ups.append(power_up)
+            elif mode == "Alien_Mode":
+                power_up = PowerUp(2, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                self.power_up_index[1] = 1
+                self.current_power_ups.append(power_up)
+        # Green power up
+        elif type == 3:
+            if mode == "Machine_Mode":
+                power_up = PowerUp(3, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                self.power_up_index[2] = 1
+                self.current_power_ups.append(power_up)
+            elif mode == "Alien_Mode":
+                power_up = PowerUp(3, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                self.power_up_index[2] = 1
+                self.current_power_ups.append(power_up)
+        # Red power up
+        elif type == 4:
+            if mode == "Machine_Mode":
+                power_up = PowerUp(4, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                self.power_up_index[3] = 1
+                self.current_power_ups.append(power_up)
+            elif mode == "Alien_Mode":
+                power_up = PowerUp(4, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                self.power_up_index[3] = 1
+                self.current_power_ups.append(power_up)
+        # Heart power up (If Heart power up gadget is on)
+        elif type == 5:
+            if mode == "Machine_Mode":
+                power_up = PowerUp(5, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                self.power_up_index[4] = 1
+                self.current_power_ups.append(power_up)
+            elif mode == "Alien_Mode":
+                power_up = PowerUp(5, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                self.power_up_index[4] = 1
+                self.current_power_ups.append(power_up)
 
 
 class SpawnYellowPowerUpIndicator:

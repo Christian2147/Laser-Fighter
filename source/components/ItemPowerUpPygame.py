@@ -25,10 +25,10 @@
     When the hearts gadget is enabled, it allows for the hearts power up to spawn.
 """
 
-import turtle
 import random
 import time
 import pygame
+import math
 from setup.ModeSetupMasterPygame import power_up_setup
 from setup.TextureSetup import YELLOW_LIGHTNING_POWER_UP_TEXTURE
 from setup.TextureSetup import BLUE_LIGHTNING_POWER_UP_TEXTURE
@@ -45,13 +45,13 @@ from setup.TextureSetup import RED_POWER_UP_INDICATOR_ON_TEXTURE
 from setup.TextureSetup import RED_POWER_UP_INDICATOR_OFF_TEXTURE
 
 
-class PowerUp:
+class PowerUp(pygame.sprite.Sprite):
     """
         Represents a power up in Laser Fighter. Power ups have a random chance of spawning in both Machine Mode
             and Alien Mode.
 
         Attributes:
-            power_up (turtle.Turtle()): The power up sprite
+            power_up (pygame.sprite.Sprite): The power up sprite
 
             type (int): Determines the type of power up that this object is
             mode (int): Determines the current mode of the game (Machine mode or Alien mode)
@@ -80,33 +80,31 @@ class PowerUp:
             :type scale_factor_y: float
         """
 
-        self.power_up = turtle.Turtle()
-        # Type 1 = yellow power up
+        super().__init__()
         if type == 1:
-            self.power_up.shape(YELLOW_LIGHTNING_POWER_UP_TEXTURE)
+            self.image = pygame.image.load(YELLOW_LIGHTNING_POWER_UP_TEXTURE).convert_alpha()
         # Type 2 = blue power up
         elif type == 2:
-            self.power_up.shape(BLUE_LIGHTNING_POWER_UP_TEXTURE)
+            self.image = pygame.image.load(BLUE_LIGHTNING_POWER_UP_TEXTURE).convert_alpha()
         # Type 3 = green power up
         elif type == 3:
-            self.power_up.shape(GREEN_LIGHTNING_POWER_UP_TEXTURE)
+            self.image = pygame.image.load(GREEN_LIGHTNING_POWER_UP_TEXTURE).convert_alpha()
         # Type 4 = red power up
         elif type == 4:
-            self.power_up.shape(RED_LIGHTNING_POWER_UP_TEXTURE)
+            self.image = pygame.image.load(RED_LIGHTNING_POWER_UP_TEXTURE).convert_alpha()
         # Type 5 = heart power up
         elif type == 5:
-            self.power_up.shape(HEART_POWER_UP_TEXTURE)
-        # Ensure that the turtle does not draw lines on the screen while moving
-        self.power_up.penup()
-        self.power_up.shapesize(2 * scale_factor_y, 2 * scale_factor_x)
-        # Spawn in a random location on the x-axis (y axis depends on the mode of the game)
+            self.image = pygame.image.load(HEART_POWER_UP_TEXTURE).convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.center = (545 * scale_factor_x, 60 * scale_factor_y)
         if mode == 1:
-            self.power_up.goto(random.randint(int(-620 * scale_factor_x), int(620 * scale_factor_x)), -300 * scale_factor_y)
+            self.rect.center = (random.randint(int(20 * scale_factor_x), int(1260 * scale_factor_x)), 660 * scale_factor_y)
         elif mode == 2:
-            self.power_up.goto(random.randint(int(-620 * scale_factor_x), int(620 * scale_factor_x)), -150 * scale_factor_y)
+            self.rect.center = (random.randint(int(20 * scale_factor_x), int(1260 * scale_factor_x)), 510 * scale_factor_y)
         if spawn_sound == 1:
             sound = pygame.mixer.Sound("sound/Power_Up_Spawn_Sound.wav")
             sound.play()
+        self.power_up_visible = 1
 
         self.type = type
         self.mode = mode
@@ -121,51 +119,7 @@ class PowerUp:
             :return: None
         """
 
-        self.power_up.clear()
-        del self.power_up
-
-    def reinstate(self, type, mode, spawn_sound):
-        """
-            Reuses the existing sprite to spawn a power up on the screen with the correct type
-
-            :param type: Determines the type of power up to create
-            :type type: int
-
-            :param mode: Determines the current mode of the game
-            :type mode: int
-
-            :param spawn_sound: Determines if the power up spawn sound is toggled on or off.
-            :type spawn_sound: int
-
-            :return: None
-        """
-
-        # Type 1 = yellow power up
-        if type == 1:
-            self.power_up.shape(YELLOW_LIGHTNING_POWER_UP_TEXTURE)
-        # Type 2 = blue power up
-        elif type == 2:
-            self.power_up.shape(BLUE_LIGHTNING_POWER_UP_TEXTURE)
-        # Type 3 = green power up
-        elif type == 3:
-            self.power_up.shape(GREEN_LIGHTNING_POWER_UP_TEXTURE)
-        # Type 4 = red power up
-        elif type == 4:
-            self.power_up.shape(RED_LIGHTNING_POWER_UP_TEXTURE)
-        elif type == 5:
-            self.power_up.shape(HEART_POWER_UP_TEXTURE)
-        # Spawn in a random location on the x-axis (y axis depends on the mode of the game)
-        if mode == 1:
-            self.power_up.goto(random.randint(int(-620 * self.scale_factor_x), int(620 * self.scale_factor_x)), -300 * self.scale_factor_y)
-        elif mode == 2:
-            self.power_up.goto(random.randint(int(-620 * self.scale_factor_x), int(620 * self.scale_factor_x)), -150 * self.scale_factor_y)
-        if spawn_sound == 1:
-            sound = pygame.mixer.Sound("sound/Power_Up_Spawn_Sound.wav")
-            sound.play()
-        self.power_up.showturtle()
-
-        self.type = type
-        self.mode = mode
+        self.kill()
 
     def get_power_up(self):
         """
@@ -175,7 +129,7 @@ class PowerUp:
             :type: turtle.Turtle()
         """
 
-        return self.power_up
+        return self
 
     def get_type(self):
         """
@@ -187,6 +141,18 @@ class PowerUp:
 
         return self.type
 
+    def isvisible(self):
+        return self.power_up_visible
+
+    def distance(self, other_sprite):
+        """
+            Return the Euclidean distance to another sprite based on center positions.
+        """
+
+        dx = self.rect.centerx - other_sprite.rect.centerx
+        dy = self.rect.centery - other_sprite.rect.centery
+        return math.hypot(dx, dy)
+
     def remove(self):
         """
             Removes the power up sprite form the screen and resets its attributes.
@@ -194,7 +160,7 @@ class PowerUp:
             :return: None
         """
 
-        self.power_up.hideturtle()
+        self.power_up_visible = 0
 
     def spawn(self, spawn_sound):
         """
@@ -208,9 +174,9 @@ class PowerUp:
         """
 
         # If the power up is not visible
-        if self.power_up.isvisible() == False:
+        if not self.isvisible():
             # Spawn it back
-            self.power_up.showturtle()
+            self.power_up_visible = 1
             if spawn_sound == 1:
                 sound = pygame.mixer.Sound("sound/Power_Up_Spawn_Sound.wav")
                 sound.play()
@@ -226,11 +192,11 @@ class PowerUp:
         """
 
         # Make the power up disappear and move it to a new random location on the screen
-        self.power_up.hideturtle()
+        self.power_up_visible = 0
         if self.mode == 1:
-            self.power_up.goto(random.randint(int(-620 * self.scale_factor_x), int(620 * self.scale_factor_x)), -300 * self.scale_factor_y)
+            self.rect.center = (random.randint(int(20 * self.scale_factor_x), int(1260 * self.scale_factor_x)), 660 * self.scale_factor_y)
         elif self.mode == 2:
-            self.power_up.goto(random.randint(int(-620 * self.scale_factor_x), int(620 * self.scale_factor_x)), -150 * self.scale_factor_y)
+            self.rect.center = (random.randint(int(20 * self.scale_factor_x), int(1260 * self.scale_factor_x)), 510 * self.scale_factor_y)
         if pickup_sound == 1:
             sound = pygame.mixer.Sound("sound/Power_Up_Pickup_Sound.wav")
             sound.play()

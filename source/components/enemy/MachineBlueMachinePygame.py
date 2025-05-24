@@ -309,7 +309,9 @@ class BlueMachine(pygame.sprite.Sprite):
             copper_coin.collision_coordinate = copper_coin.rect.centery - copper_coin.COIN_DISTANCE
             coins_on_screen.append(copper_coin)
             # Respawn the blue machine in a different random location
+            old_center = self.rect.center
             self.image = pygame.image.load(BLUE_MACHINE_TEXTURE).convert_alpha()
+            self.rect = self.image.get_rect(center=old_center)
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
             self.rect.center = (random.randint(int(0 * self.scale_factor_x), int(1280 * self.scale_factor_x)), random.randint(int(140 * self.scale_factor_y), int(240 * self.scale_factor_y)))
             # Restart the float effect
@@ -337,7 +339,9 @@ class BlueMachine(pygame.sprite.Sprite):
 
         # Change the texture of the blue machine to the second frame of the explosion
         if 1.0 <= self.update <= 1.1:
+            old_center = self.rect.center
             self.image = pygame.image.load(EXPLOSION_2_TEXTURE).convert_alpha()
+            self.rect = self.image.get_rect(center=old_center)
             self.update = 1.5
             self.start_time = time.time()
             self.kill_enemy(death_sound, coins_on_screen, scale_factor_x)
@@ -360,7 +364,9 @@ class BlueMachine(pygame.sprite.Sprite):
                 sound = pygame.mixer.Sound("sound/Explosion.wav")
                 sound.play()
             # Change the texture of the blue machine to the first frame of the death explosion
+            old_center = self.rect.center
             self.image = pygame.image.load(EXPLOSION_1_TEXTURE).convert_alpha()
+            self.rect = self.image.get_rect(center=old_center)
             self.update = 0.5
             # Set the thorns initiated damage back to 0 if needed
             self.thorns_initiated_damage = 0

@@ -28,10 +28,13 @@
 
 import pygame
 import time
+import random
 from setup.WindowSetupPygame import GameWindow
+from setup.ModeSetupMasterPygame import machine_mode_setup
 from components.spawn.SpawnCoinPygame import SpawnCoin
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
 from components.spawn.SpawnPlayerPygame import SpawnMachinePlayer
+from components.spawn.SpawnPowerUpPygame import SpawnPowerUp
 from components.spawn.SpawnPowerUpPygame import SpawnYellowPowerUpIndicator
 from components.spawn.SpawnPowerUpPygame import SpawnBluePowerUpIndicator
 from components.spawn.SpawnPowerUpPygame import SpawnExtraPowerUpIndicator
@@ -44,6 +47,7 @@ def main():
     window = GameWindow()
     coin = SpawnCoin()
     blue_machine = SpawnBlueMachine(window.scale_factor_X, window.scale_factor_Y)
+    power_up = SpawnPowerUp(window.scale_factor_X, window.scale_factor_Y)
     machine_player = SpawnMachinePlayer(window.scale_factor_X, window.scale_factor_Y)
 
     yellow_power_up_indicator = SpawnYellowPowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
@@ -56,6 +60,8 @@ def main():
 
     MOVE_REPEAT_DELAY = 0.05
     last_move_time = 0
+
+    start_ticks = pygame.time.get_ticks()
 
     # The main game loop:
     running = True
@@ -99,6 +105,10 @@ def main():
                 if bu.blue_machine_laser.laser_visible == 1:
                     window.screen.blit(bu.blue_machine_laser.image, bu.blue_machine_laser.rect)
 
+        for pu in power_up.current_power_ups:
+            if pu.power_up_visible == 1:
+                window.screen.blit(pu.image, pu.rect)
+
         for mp in machine_player.current_player:
             if mp.player_visible == 1:
                 window.screen.blit(mp.image, mp.rect)
@@ -131,6 +141,25 @@ def main():
 
 
         # Rest of regular logic
+
+        current_ticks = pygame.time.get_ticks()
+        elapsed_time = (current_ticks - start_ticks) / 1000.0
+        current_power_up_time = time.time()
+        elapsed_power_up_time = current_power_up_time - power_up.power_up_time
+        if elapsed_power_up_time >= 0.4:
+            # See if more than 1 whole 0.4 seconds has passed (Just in case there is EXTREME lag)
+            # If it has, run the random chance the number of 0.4 that have passed
+            delta_movement = (elapsed_time - 1.0) / 1.0
+            delta_movement = int(delta_movement)
+            iterations = 1 + delta_movement
+            for i in range(iterations):
+                # Random number between 1 and 200 to create the 1/200 random chance for each power up
+                power_up.power_up_update = random.randint(-50, 150)
+                power_up.power_up_time = time.time()
+
+
+        # Machine Mode logic
+
         if coin_indicator.coin_indicator_index == 0:
             coin_indicator.spawn_coin_indicator()
 
@@ -150,14 +179,14 @@ def main():
             machine_player.spawn_machine_player(0)
 
         if blue_machine.blue_machine_index == 0:
-            for i in range(3):
+            for i in range(100):
                 blue_machine.spawn_blue_machine(i + 1)
 
         for p in machine_player.current_player:
-            p.shoot(1, 0)
+            p.shoot(1, yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active())
 
         for bm in blue_machine.blue_machines:
-            bm.shoot_laser(0, 1)
+            bm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active(), 1)
 
         hit_coin = 0
         for c in coin.coins_on_screen_list:
@@ -171,6 +200,7 @@ def main():
                      coin.coin_pickup_delay == 0:
                         # Remove the coin from the screen
                         c.remove()
+                        del c
                         # Increase the amount of coins the users has based on the type of coin picked up
                         # if c.get_type() == "copper":
                         #     # For each coin, check if the blue power up has a multiplier on it
@@ -350,6 +380,114 @@ def main():
 
         for bm in blue_machine.blue_machines:
             bm.move_enemy(0)
+
+        # Activate the power up indicators if the power ups become active
+        for yi in yellow_power_up_indicator.yellow_power_up_indicator_sprite:
+            yi.set_texture()
+
+        for bi in blue_power_up_indicator.blue_power_up_indicator_sprite:
+            bi.set_texture()
+
+        for ei in extra_power_up_indicator.extra_power_up_indicator_sprite:
+            ei.set_texture()
+
+        # If the RNG hits the 1/200, then spawn the power ups
+        # The chances are increased when the spawn rate is 2 up to 1/100 RNG
+        # 1 for yellow power up
+        if (power_up.power_up_update == 1 or (machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 2)) and \
+                yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active() == 0:
+            if power_up.power_up_index[0] == 0:
+                power_up.spawn_power_up(1, "Machine_Mode", 1)
+            else:
+                for pu in power_up.current_power_ups:
+                    if pu.get_type() == 1:
+                        pu.spawn(1)
+
+        # 50 for blue power up
+        if (power_up.power_up_update == 50 or (machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 51)) and \
+                blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 0:
+            if power_up.power_up_index[1] == 0:
+                power_up.spawn_power_up(2, "Machine_Mode", 1)
+            else:
+                for pu in power_up.current_power_ups:
+                    if pu.get_type() == 2:
+                        pu.spawn(1)
+
+        # 100 for the extra power up
+        if (power_up.power_up_update == 100 or (machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 101)) and \
+                extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active() == 0:
+            if power_up.power_up_index[2] == 0:
+                power_up.spawn_power_up(3, "Machine_Mode", 1)
+            else:
+                for pu in power_up.current_power_ups:
+                    if pu.get_type() == 3:
+                        pu.spawn(1)
+
+        # 75 for the heart power up if the heart gadget is enabled
+        # if shop_config.hearts_enabled:
+        #     if power_up.power_up_update == 75 or (
+        #             machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 76):
+        #         if power_up.power_up_index[4] == 0:
+        #             power_up.spawn_power_up(5, screen.mode, settings.power_up_spawn_sound)
+        #         else:
+        #             for pu in power_up.current_power_ups:
+        #                 if pu.get_type() == 5:
+        #                     pu.spawn(settings.power_up_spawn_sound)
+
+        # Check if the player has picked up a power up or not
+        for p in machine_player.current_player:
+            for pu in power_up.current_power_ups:
+                # If a power up is visible
+                if pu.get_power_up().isvisible():
+                    # Check its type (1 = yellow, 2 = blue, 3 = green, and 5 = heart)
+                    # If the player runs to the power up
+                    if pu.type == 1 and pu.get_power_up().distance(p.get_player()) < 50 * window.scale_factor and p.get_death_animation() == 0 and \
+                            yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active() == 0:
+                        # Pick it up
+                        pu.pick_up(1)
+                        # Update the stats
+                        # if settings.god_mode == 0:
+                        #     statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
+                        #     statistics.save()
+                        # Activate the specified power up (In this case yellow)
+                        yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].set_power_up_active(1)
+
+                    if pu.type == 2 and pu.get_power_up().distance(p.get_player()) < 50 * window.scale_factor and p.get_death_animation() == 0 and \
+                            blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 0:
+                        pu.pick_up(1)
+                        # if settings.god_mode == 0:
+                        #     statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
+                        #     statistics.save()
+                        blue_power_up_indicator.blue_power_up_indicator_sprite[0].set_power_up_active(1)
+
+                    if pu.type == 3 and pu.get_power_up().distance(p.get_player()) < 50 * window.scale_factor and p.get_death_animation() == 0 and \
+                            extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active() == 0:
+                        pu.pick_up(1)
+                        # if settings.god_mode == 0:
+                        #     statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
+                        #     statistics.save()
+                        extra_power_up_indicator.extra_power_up_indicator_sprite[0].set_power_up_active(1)
+
+                    # Allow for the heart power up if the heart gadget is enabled
+                    # if shop_config.hearts_enabled:
+                    #     if pu.type == 5 and pu.get_power_up().distance(
+                    #             p.get_player()) < 50 * scale_factor and p.get_death_animation() == 0:
+                    #         pu.pick_up(settings.power_up_pickup_sound)
+                    #         if settings.god_mode == 0:
+                    #             statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
+                    #             statistics.save()
+                    #         # Grant the player health
+                    #         p.grant_player_health()
+
+        # If the power ups are active, run their timers through these functions
+        for yi in yellow_power_up_indicator.yellow_power_up_indicator_sprite:
+            yi.set_timer()
+
+        for bi in blue_power_up_indicator.blue_power_up_indicator_sprite:
+            bi.set_timer()
+
+        for ei in extra_power_up_indicator.extra_power_up_indicator_sprite:
+            ei.set_timer()
 
         pygame.display.flip()
 
