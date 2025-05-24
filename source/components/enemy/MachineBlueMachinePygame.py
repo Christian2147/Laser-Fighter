@@ -30,6 +30,7 @@
 import random
 import pygame
 import time
+import math
 
 from setup.ModeSetupMasterPygame import machine_mode_setup
 from components.ItemCoinPygame import Coin
@@ -487,3 +488,12 @@ class BlueMachineLaser(pygame.sprite.Sprite):
 
     def __del__(self):
         self.kill()
+
+    def isvisible(self):
+        return self.laser_visible
+
+    def distance(self, other_sprite):
+        """Return the Euclidean distance to another sprite based on center positions."""
+        dx = self.rect.centerx - other_sprite.rect.centerx
+        dy = self.rect.centery - other_sprite.rect.centery
+        return math.hypot(dx, dy)

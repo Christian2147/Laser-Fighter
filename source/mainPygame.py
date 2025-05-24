@@ -77,7 +77,7 @@ def main():
 
 
 
-        # Drawer!!!!
+        # Drawer!!!! (View)
         window.screen.fill((0, 0, 0))
 
         window.screen.blit(window.bg_surface, (0, 0))
@@ -100,6 +100,11 @@ def main():
                 for mpl in mp.laser_list:
                     if mpl.laser_visible == 1:
                         window.screen.blit(mpl.image, mpl.rect)
+
+                window.screen.blit(mp.health_bar.image, mp.health_bar.rect)
+
+                if hasattr(mp, 'armor_bar') and mp.armor_bar.armor_bar_visible == 1:
+                    window.screen.blit(mp.armor_bar.image, mp.armor_bar.rect)
 
         for ci in coin_indicator.coin_indicator_sprite:
             if ci.coin_indicator_visible == 1:
@@ -153,8 +158,8 @@ def main():
                     # Check to see if the laser will attack it
                     for i in range(len(p.get_laser())):
                         if p.get_laser()[i].isvisible() and \
-                                (bm.rect.centerx - 50 < p.get_laser()[i].rect.centerx < bm.rect.centerx + 50) and \
-                                (bm.rect.centery - 50 < p.get_laser()[i].rect.centery < bm.rect.centery + 50):
+                         (bm.rect.centerx - 50 * window.scale_factor_X < p.get_laser()[i].rect.centerx < bm.rect.centerx + 50 * window.scale_factor_X) and \
+                         (bm.rect.centery - 50 * window.scale_factor_Y < p.get_laser()[i].rect.centery < bm.rect.centery + 50 * window.scale_factor_Y):
                             # If it has, initiate the killing of the enemy
                             attacked = 1
 
@@ -201,7 +206,68 @@ def main():
                         coin.coin_pickup_delay = 1
                 current_blue_update_value_index = current_blue_update_value_index + 1
 
+        # Player Killer
+        for p in machine_player.current_player:
+            # If the death animation has already started
+            if machine_player.player_update_value != 0:
+                # Keep going with the player death animation if it has started
+                p.kill_player(1)
+                machine_player.player_update_value = machine_player.player_update_value + 1
+                if p.get_player_death_update() == 0.6:
+                    # Reset the initial and staying blue machines death count
+                    for bm in blue_machine.blue_machines:
+                        bm.set_death_count(0)
+                    # Update the stats if god mode is off
+                    #if settings.god_mode == 0:
+                    #    statistics.classic_deaths = statistics.classic_deaths + 1
+                    #    statistics.machine_damage_taken = statistics.machine_damage_taken + 1
+                    #    statistics.save()
+                # Check if the death animation is finished
+                if p.get_player_death_update() == 0:
+                    machine_player.player_update_value = 0
+            # If the death animation is not ongoing
+            else:
+                # For every enemy, check if the enemies laser has hit the player
+                for bm in blue_machine.blue_machines:
+                    if bm.get_blue_machine_laser().distance(p.get_player()) < 125 * window.scale_factor:
+                        if bm.get_blue_machine_laser().isvisible() and -30 * window.scale_factor_X < (
+                                bm.get_blue_machine_laser().rect.centerx - p.rect.centerx) < 30 * window.scale_factor_X:
+                            bm.set_laser_has_attacked(1)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0: #and settings.god_mode == 0:
+                                # If so kill the player and set the score down to 0 to reset the game
+                                p.kill_player(1)
+                                #statistics.score = 0
+                                machine_player.player_update_value = machine_player.player_update_value + 1
+                                # If the player has thorns enabled, initiate the thorns damage on the enemy
+                                #if shop_config.thorns_enabled:
+                                    #bm.thorns_initiated_damage = 1
 
+            # If the player has more than 1 health, only deal 1 health of damage
+            # If the hit delay is ongoing
+            if machine_player.player_hit_value != 0:
+                p.hit_player(1)
+                machine_player.player_hit_value = machine_player.player_hit_value + 1
+                # Update the stats
+                #if p.get_hit_delay() == 2:
+                #    statistics.machine_damage_taken = statistics.machine_damage_taken + 1
+                #    statistics.save()
+                if p.get_hit_delay() == 0:
+                    machine_player.player_hit_value = 0
+            # If there is no hit delay
+            else:
+                # Check if the lasers of any enemies have hit the player
+                for bm in blue_machine.blue_machines:
+                    if bm.get_blue_machine_laser().distance(p.get_player()) < 125 * window.scale_factor:
+                        if bm.get_blue_machine_laser().isvisible() and -30 * window.scale_factor_X < (
+                                bm.get_blue_machine_laser().rect.centerx - p.rect.centerx) < 30 * window.scale_factor_X:
+                            bm.set_laser_has_attacked(1)
+                            if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0:# and settings.god_mode == 0:
+                                # Hit the player
+                                p.hit_player(1)
+                                machine_player.player_hit_value = machine_player.player_hit_value + 1
+                                # If the player has thorns enabled, initiate the thorns damage on the enemy
+                                #if shop_config.thorns_enabled:
+                                #    bm.thorns_initiated_damage = 1
 
         pygame.display.flip()
 
