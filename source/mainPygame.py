@@ -153,9 +153,8 @@ def main():
                     # Check to see if the laser will attack it
                     for i in range(len(p.get_laser())):
                         if p.get_laser()[i].isvisible() and \
-                                (bm.x_range_list[i][0] < p.get_laser()[i].rect.centerx < bm.x_range_list[i][
-                                    1]) and \
-                                p.get_laser()[i].rect.centery > bm.collision_y_coordinate_list[i]:
+                                (bm.rect.centerx - 50 < p.get_laser()[i].rect.centerx < bm.rect.centerx + 50) and \
+                                (bm.rect.centery - 50 < p.get_laser()[i].rect.centery < bm.rect.centery + 50):
                             # If it has, initiate the killing of the enemy
                             attacked = 1
 
@@ -201,6 +200,8 @@ def main():
                     if bm.get_update_value() == 3:
                         coin.coin_pickup_delay = 1
                 current_blue_update_value_index = current_blue_update_value_index + 1
+
+
 
         pygame.display.flip()
 
