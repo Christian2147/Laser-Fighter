@@ -32,8 +32,6 @@ class Text(pygame.sprite.Sprite):
         Represents a standalone textbox in the game.
 
         Attributes:
-            text_box (sprite): The text box turtle object
-
             moving (int): Determines the direction the text box will move
             start_time (float): Stores the timestamp for when the text box should move
             movement_activated (int): determines if the movement of the textbox has been activated or not.
@@ -74,19 +72,19 @@ class Text(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.color = color
-        self.text_box_visible = 0
+        self.text_box_visible = 1
 
-        self.small_font = pygame.font.SysFont("Courier", int(22 * scale_factor))
-        self.normal_font = pygame.font.SysFont("Courier", int(24 * scale_factor))
-        self.large_font = pygame.font.SysFont("Courier", int(36 * scale_factor))
-        self.subtitle_font = pygame.font.SysFont("Courier", int(48 * scale_factor))
-        self.title_font = pygame.font.SysFont("Courier", int(72 * scale_factor))
+        self.small_font = pygame.font.SysFont("Courier", int(29.5 * scale_factor))
+        self.normal_font = pygame.font.SysFont("Courier", int(32.5 * scale_factor))
+        self.large_font = pygame.font.SysFont("Courier", int(48.5 * scale_factor))
+        self.subtitle_font = pygame.font.SysFont("Courier", int(65 * scale_factor))
+        self.title_font = pygame.font.SysFont("Courier", int(97 * scale_factor))
 
-        self.small_font_bold = pygame.font.SysFont("Courier", int(22 * scale_factor), bold=True)
-        self.normal_font_bold = pygame.font.SysFont("Courier", int(24 * scale_factor), bold=True)
-        self.large_font_bold = pygame.font.SysFont("Courier", int(36 * scale_factor), bold=True)
-        self.subtitle_font_bold = pygame.font.SysFont("Courier", int(48 * scale_factor), bold=True)
-        self.title_font_bold = pygame.font.SysFont("Courier", int(72 * scale_factor), bold=True)
+        self.small_font_bold = pygame.font.SysFont("Courier", int(29.5 * scale_factor), bold=True)
+        self.normal_font_bold = pygame.font.SysFont("Courier", int(32.5 * scale_factor), bold=True)
+        self.large_font_bold = pygame.font.SysFont("Courier", int(48.5 * scale_factor), bold=True)
+        self.subtitle_font_bold = pygame.font.SysFont("Courier", int(65 * scale_factor), bold=True)
+        self.title_font_bold = pygame.font.SysFont("Courier", int(97 * scale_factor), bold=True)
 
         self.moving = 1
         self.start_time = 0

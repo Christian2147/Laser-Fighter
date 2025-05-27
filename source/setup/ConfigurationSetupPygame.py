@@ -24,8 +24,17 @@
 import subprocess
 import os
 
+from utils.UpdateSettingsDataPygame import Settings
+from utils.UpdateStatsDataPygame import Stats
 from utils.UpdateShopDataPygame import ShopConfig
 
+# Create Settings Object to store the settings variables
+settings = Settings()
+
+# Create a Stats Object to store the current statistics
+statistics = Stats(settings.god_mode)
+
+# Current Shop Configuration
 shop_config = ShopConfig()
 
 # Backup the player data and config files on launch through a batch file (Made so that the user can run the

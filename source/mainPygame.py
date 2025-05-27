@@ -31,6 +31,10 @@ import time
 import random
 from setup.WindowSetupPygame import GameWindow
 from setup.ModeSetupMasterPygame import machine_mode_setup
+from setup.ConfigurationSetupPygame import settings
+from setup.ConfigurationSetupPygame import statistics
+from setup.ConfigurationSetupPygame import shop_config
+from utils.UpdateTextPygame import TextRefresh
 from components.spawn.SpawnCoinPygame import SpawnCoin
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
 from components.spawn.SpawnPlayerPygame import SpawnMachinePlayer
@@ -39,6 +43,7 @@ from components.spawn.SpawnPowerUpPygame import SpawnYellowPowerUpIndicator
 from components.spawn.SpawnPowerUpPygame import SpawnBluePowerUpIndicator
 from components.spawn.SpawnPowerUpPygame import SpawnExtraPowerUpIndicator
 from components.spawn.SpawnCoinPygame import SpawnCoinIndicator
+from components.spawn.SpawnTextboxPygame import SpawnTextbox
 from physics.MachineCollisionPygame import MachineCollision
 from utils.MovementManagerPygame import Movement
 
@@ -54,6 +59,12 @@ def main():
     blue_power_up_indicator = SpawnBluePowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
     extra_power_up_indicator = SpawnExtraPowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
     coin_indicator = SpawnCoinIndicator(window.scale_factor_X, window.scale_factor_Y)
+
+    textbox = SpawnTextbox(window.scale_factor, window.scale_factor_X)
+
+    text_refresh = TextRefresh(textbox, yellow_power_up_indicator, blue_power_up_indicator,
+                               extra_power_up_indicator,
+                               statistics, shop_config)
 
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
     movement = Movement(machine_player, window.scale_factor_Y)
@@ -138,9 +149,15 @@ def main():
             if ci.coin_indicator_visible == 1:
                 window.screen.blit(ci.image, ci.rect)
 
+        for t in textbox.text_on_screen_list:
+            if t.text_box_visible == 1:
+                window.screen.blit(t.image, t.rect)
+
 
 
         # Rest of regular logic
+
+        text_refresh.update_text()
 
         current_ticks = pygame.time.get_ticks()
         elapsed_time = (current_ticks - start_ticks) / 1000.0
@@ -159,6 +176,15 @@ def main():
 
 
         # Machine Mode logic
+
+        if textbox.current_text_index == 0:
+            textbox.spawn_text_box(1, 640, 20 * window.scale_factor_Y, "white")
+            textbox.spawn_text_box(2, 575 * window.scale_factor_X, 62 * window.scale_factor_Y, "#737000")
+            textbox.spawn_text_box(3, 650 * window.scale_factor_X, 62 * window.scale_factor_Y, "#00001A")
+            textbox.spawn_text_box(4, 720 * window.scale_factor_X, 62 * window.scale_factor_Y, "#001C00")
+            textbox.spawn_text_box(5, 52 * window.scale_factor_X, 44 * window.scale_factor_Y, "yellow")
+            if settings.god_mode == 1:
+                textbox.spawn_text_box(6, 1121 * window.scale_factor_X, 20 * window.scale_factor_Y, "white")
 
         if coin_indicator.coin_indicator_index == 0:
             coin_indicator.spawn_coin_indicator()
