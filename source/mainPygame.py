@@ -179,7 +179,7 @@ def main():
         # Machine Mode logic
 
         if textbox.current_text_index == 0:
-            textbox.spawn_text_box(1, 640, 20 * window.scale_factor_Y, "white")
+            textbox.spawn_text_box(1, 640 * window.scale_factor_X, 20 * window.scale_factor_Y, "white")
             textbox.spawn_text_box(2, 575 * window.scale_factor_X, 62 * window.scale_factor_Y, "#737000")
             textbox.spawn_text_box(3, 650 * window.scale_factor_X, 62 * window.scale_factor_Y, "#00001A")
             textbox.spawn_text_box(4, 720 * window.scale_factor_X, 62 * window.scale_factor_Y, "#001C00")
