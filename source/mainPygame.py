@@ -31,6 +31,7 @@ import time
 import random
 from setup.WindowSetupPygame import GameWindow
 from setup.ModeSetupMasterPygame import machine_mode_setup
+from setup.ModeSetupMasterPygame import power_up_setup
 from setup.ConfigurationSetupPygame import settings
 from setup.ConfigurationSetupPygame import statistics
 from setup.ConfigurationSetupPygame import shop_config
@@ -201,18 +202,25 @@ def main():
         if extra_power_up_indicator.extra_power_up_indicator_index == 0:
             extra_power_up_indicator.spawn_extra_power_up_indicator("Machine_Mode")
 
+        # Check if the players score is greater than the current high score
+        if settings.god_mode == 0:
+            if statistics.score > statistics.high_score_machine_war:
+                # Update the high score in the game and the ini file if it is
+                statistics.high_score_machine_war = statistics.score
+                statistics.save()
+
         if machine_player.current_player_index == 0:
-            machine_player.spawn_machine_player(0)
+            machine_player.spawn_machine_player(settings.god_mode)
 
         if blue_machine.blue_machine_index == 0:
             for i in range(100):
                 blue_machine.spawn_blue_machine(i + 1)
 
         for p in machine_player.current_player:
-            p.shoot(1, yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active())
+            p.shoot(settings.player_shooting_sound, yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active())
 
         for bm in blue_machine.blue_machines:
-            bm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active(), 1)
+            bm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active(), settings.enemy_shooting_sound)
 
         hit_coin = 0
         for c in coin.coins_on_screen_list:
@@ -226,42 +234,42 @@ def main():
                      coin.coin_pickup_delay == 0:
                         # Remove the coin from the screen
                         c.remove()
-                        del c
                         # Increase the amount of coins the users has based on the type of coin picked up
-                        # if c.get_type() == "copper":
-                        #     # For each coin, check if the blue power up has a multiplier on it
-                        #     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
-                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_blue_value
-                        #     else:
-                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
-                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_value
-                        # elif c.get_type() == "silver":
-                        #     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
-                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_blue_value
-                        #     else:
-                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
-                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_value
-                        # elif c.get_type() == "gold":
-                        #     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
-                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_blue_value
-                        #     else:
-                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
-                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_value
-                        # elif c.get_type() == "platinum":
-                        #     if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
-                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_blue_value
-                        #     else:
-                        #         shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
-                        #         statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_value
-                        # shop_config.save()
-                        # statistics.save()
+                        if c.get_type() == "copper":
+                            # For each coin, check if the blue power up has a multiplier on it
+                            if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_blue_value
+                            else:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_value
+                        elif c.get_type() == "silver":
+                            if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_blue_value
+                            else:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_value
+                        elif c.get_type() == "gold":
+                            if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_blue_value
+                            else:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_value
+                        elif c.get_type() == "platinum":
+                            if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_blue_value
+                            else:
+                                shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
+                                statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_value
+                        del c
+                        shop_config.save()
+                        statistics.save()
                         coin.coins_on_screen_list.pop(hit_coin)
                         # play the coin pickup sound
-                        if 1: #settings.coin_pickup_sound == 1:
+                        if settings.coin_pickup_sound == 1:
                             sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
                             sound.play()
                         break
@@ -313,15 +321,15 @@ def main():
 
                         # Increase the players score
                         # When the blue power up is active, the score increases are doubled (This is universal)
-                        #if blue_power_up_indicator.blue_power_up_indicator_turtle[0].get_power_up_active() == 1:
-                            #statistics.score = statistics.score + 1 * machine_mode_setup.blue_power_up_score_multiplier
-                        #else:
-                            #statistics.score = statistics.score + 1 * machine_mode_setup.regular_score_multiplier
+                        if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                            statistics.score = statistics.score + 1 * machine_mode_setup.blue_power_up_score_multiplier
+                        else:
+                            statistics.score = statistics.score + 1 * machine_mode_setup.regular_score_multiplier
 
                         # Update the stats if god mode is off
-                        #if settings.god_mode == 0:
-                            #statistics.blue_bots_killed = statistics.blue_bots_killed + 1
-                            #statistics.save()
+                        if settings.god_mode == 0:
+                            statistics.blue_bots_killed = statistics.blue_bots_killed + 1
+                            statistics.save()
                 elif blue_machine.blue_machines_update_values[current_blue_update_value_index] != 0:
                     # Kill the enemy
                     bm.kill_enemy(1, coin.coins_on_screen_list, window.scale_factor_X)
@@ -367,8 +375,8 @@ def main():
                             bm.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0: #and settings.god_mode == 0:
                                 # If so kill the player and set the score down to 0 to reset the game
-                                p.kill_player(1)
-                                #statistics.score = 0
+                                p.kill_player(settings.player_death_sound)
+                                statistics.score = 0
                                 machine_player.player_update_value = machine_player.player_update_value + 1
                                 # If the player has thorns enabled, initiate the thorns damage on the enemy
                                 #if shop_config.thorns_enabled:
@@ -380,9 +388,9 @@ def main():
                 p.hit_player(1)
                 machine_player.player_hit_value = machine_player.player_hit_value + 1
                 # Update the stats
-                #if p.get_hit_delay() == 2:
-                #    statistics.machine_damage_taken = statistics.machine_damage_taken + 1
-                #    statistics.save()
+                if p.get_hit_delay() == 2:
+                    statistics.machine_damage_taken = statistics.machine_damage_taken + 1
+                    statistics.save()
                 if p.get_hit_delay() == 0:
                     machine_player.player_hit_value = 0
             # If there is no hit delay
@@ -395,7 +403,7 @@ def main():
                             bm.set_laser_has_attacked(1)
                             if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0:# and settings.god_mode == 0:
                                 # Hit the player
-                                p.hit_player(1)
+                                p.hit_player(settings.player_hit_sound)
                                 machine_player.player_hit_value = machine_player.player_hit_value + 1
                                 # If the player has thorns enabled, initiate the thorns damage on the enemy
                                 #if shop_config.thorns_enabled:
@@ -404,8 +412,28 @@ def main():
         for bm in blue_machine.blue_machines:
             bm.float_effect()
 
-        for bm in blue_machine.blue_machines:
-            bm.move_enemy(0)
+        for p in machine_player.current_player:
+            for bm in blue_machine.blue_machines:
+                bm.move_enemy(p.get_death_animation())
+
+        # Check if the power ups are active or not
+        for t in textbox.text_on_screen_list:
+            # If they are, activate the power up timers
+            if t.id == 2:
+                if yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                    t.set_color("yellow")
+                else:
+                    t.set_color("#737000")
+            elif t.id == 3:
+                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                    t.set_color("#02CCFE")
+                else:
+                    t.set_color("#00004A")
+            elif t.id == 4:
+                if extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                    t.set_color("#65FE08")
+                else:
+                    t.set_color("#001C00")
 
         # Activate the power up indicators if the power ups become active
         for yi in yellow_power_up_indicator.yellow_power_up_indicator_sprite:
@@ -423,31 +451,31 @@ def main():
         if (power_up.power_up_update == 1 or (machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 2)) and \
                 yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active() == 0:
             if power_up.power_up_index[0] == 0:
-                power_up.spawn_power_up(1, "Machine_Mode", 1)
+                power_up.spawn_power_up(1, "Machine_Mode", settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 1:
-                        pu.spawn(1)
+                        pu.spawn(settings.power_up_spawn_sound)
 
         # 50 for blue power up
         if (power_up.power_up_update == 50 or (machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 51)) and \
                 blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 0:
             if power_up.power_up_index[1] == 0:
-                power_up.spawn_power_up(2, "Machine_Mode", 1)
+                power_up.spawn_power_up(2, "Machine_Mode", settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 2:
-                        pu.spawn(1)
+                        pu.spawn(settings.power_up_spawn_sound)
 
         # 100 for the extra power up
         if (power_up.power_up_update == 100 or (machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 101)) and \
                 extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active() == 0:
             if power_up.power_up_index[2] == 0:
-                power_up.spawn_power_up(3, "Machine_Mode", 1)
+                power_up.spawn_power_up(3, "Machine_Mode", settings.power_up_spawn_sound)
             else:
                 for pu in power_up.current_power_ups:
                     if pu.get_type() == 3:
-                        pu.spawn(1)
+                        pu.spawn(settings.power_up_spawn_sound)
 
         # 75 for the heart power up if the heart gadget is enabled
         # if shop_config.hearts_enabled:
@@ -470,28 +498,28 @@ def main():
                     if pu.type == 1 and pu.get_power_up().distance(p.get_player()) < 50 * window.scale_factor and p.get_death_animation() == 0 and \
                             yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active() == 0:
                         # Pick it up
-                        pu.pick_up(1)
+                        pu.pick_up(settings.power_up_pickup_sound)
                         # Update the stats
-                        # if settings.god_mode == 0:
-                        #     statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
-                        #     statistics.save()
+                        if settings.god_mode == 0:
+                            statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
+                            statistics.save()
                         # Activate the specified power up (In this case yellow)
                         yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].set_power_up_active(1)
 
                     if pu.type == 2 and pu.get_power_up().distance(p.get_player()) < 50 * window.scale_factor and p.get_death_animation() == 0 and \
                             blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 0:
-                        pu.pick_up(1)
-                        # if settings.god_mode == 0:
-                        #     statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
-                        #     statistics.save()
+                        pu.pick_up(settings.power_up_pickup_sound)
+                        if settings.god_mode == 0:
+                            statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
+                            statistics.save()
                         blue_power_up_indicator.blue_power_up_indicator_sprite[0].set_power_up_active(1)
 
                     if pu.type == 3 and pu.get_power_up().distance(p.get_player()) < 50 * window.scale_factor and p.get_death_animation() == 0 and \
                             extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active() == 0:
-                        pu.pick_up(1)
-                        # if settings.god_mode == 0:
-                        #     statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
-                        #     statistics.save()
+                        pu.pick_up(settings.power_up_pickup_sound)
+                        if settings.god_mode == 0:
+                            statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
+                            statistics.save()
                         extra_power_up_indicator.extra_power_up_indicator_sprite[0].set_power_up_active(1)
 
                     # Allow for the heart power up if the heart gadget is enabled

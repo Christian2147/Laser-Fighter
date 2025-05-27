@@ -24,7 +24,7 @@
         updated and saved here.
 """
 
-from utils.PlayerDataManager import PlayerDataManager
+from utils.PlayerDataManagerPygame import PlayerDataManager
 
 
 class ShopConfig:
