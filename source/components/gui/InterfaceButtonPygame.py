@@ -272,7 +272,10 @@ class Button(pygame.sprite.Sprite):
 
         self.button_frame_visible = 0
         self.button_text.button_text_visible = 0
-        self.button_indicator.indicator_visible = 0
+
+        if hasattr(self, "button_indicator"):
+            self.button_indicator.indicator_visible = 0
+
         self.button_text.color = "White"
 
     def write_lines(self):
@@ -285,9 +288,9 @@ class Button(pygame.sprite.Sprite):
         if self.type != "Shop_Slot":
             if self.type == "Title":
                 if self.id == 1:
-                    self.button_text.write_text("Machine_Mode", "semi-large", "normal")
+                    self.button_text.write_text("Machine Mode", "semi-large", "normal")
                 elif self.id == 2:
-                    self.button_text.write_text("Coin_Shop", "semi-large", "normal")
+                    self.button_text.write_text("Coin Shop", "semi-large", "normal")
                 elif self.id == 3:
                     self.button_text.write_text("Exit", "semi-large", "normal")
             elif self.type == "Title_Small":
