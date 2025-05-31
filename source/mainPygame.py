@@ -48,6 +48,7 @@ from components.spawn.SpawnTextboxPygame import SpawnTextbox
 from components.spawn.SpawnButtonPygame import SpawnButton
 from physics.MachineCollisionPygame import MachineCollision
 from utils.MovementManagerPygame import Movement
+from utils.ScreenManagerPygame import ScreenUpdate
 
 
 def main():
@@ -71,6 +72,9 @@ def main():
 
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
     movement = Movement(machine_player, window.scale_factor_Y)
+    screen = ScreenUpdate(window, button, settings, shop_config,
+                          power_up_setup, machine_mode_setup,
+                          window.scale_factor_X, window.scale_factor_Y)
 
     MOVE_REPEAT_DELAY = 0.05
     last_move_time = 0
@@ -82,6 +86,7 @@ def main():
     while running:
         window.CLOCK.tick(window.TARGET_FPS)
 
+        # EVENT HANDLER
         mouse_pos = pygame.mouse.get_pos()
 
         for bu in button.buttons_on_screen_list:
@@ -90,13 +95,19 @@ def main():
             else:
                 bu.toggle_default()
 
-        # EVENT HANDLER
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:  # Shoot
                     movement.shoot(machine_collision)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for bu in button.buttons_on_screen_list:
+                        if bu.rect.collidepoint(mouse_pos):
+                            if bu.type == "Game":
+                                if bu.id == 1:
+                                    screen.launch_title_mode()
 
         current_time = time.time()
 
