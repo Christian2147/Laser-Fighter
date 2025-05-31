@@ -46,7 +46,7 @@ class TextRefresh:
     """
 
     def __init__(self, #screen,
-                 #button, panel,
+                 button, #panel,
                  textbox, yellow_power_up_indicator,
                  blue_power_up_indicator, extra_power_up_indicator,
                  # settings, settings_toggle,
@@ -105,7 +105,7 @@ class TextRefresh:
         """
 
         # self._screen = screen
-        # self._button = button
+        self._button = button
         # self._panel = panel
         self._textbox = textbox
         self._yellow_power_up_indicator = yellow_power_up_indicator
@@ -188,6 +188,8 @@ class TextRefresh:
             #     for pa in self._panel.panel_turtle:
             #         pa.write_text()
             #     self._refresh.refresh_panel = 0
+        for bu in self._button.buttons_on_screen_list:
+            bu.write_lines()
         for t in self._textbox.text_on_screen_list:
             if t.id == 1:
                 t.write("Score: {}  High Score: {}".format(self._statistics.score, self._statistics.high_score_machine_war), 24, "normal")

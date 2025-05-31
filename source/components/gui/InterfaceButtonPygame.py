@@ -601,13 +601,13 @@ class ButtonText(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.color = "white"
         if type == "Title":
-            self.rect.center = (640 * scale_factor_x, y - 22 * scale_factor_y)
+            self.rect.center = (640 * scale_factor_x, y)
         elif type == "Title_Locked":
             self.image = pygame.image.load(LOCKED_TEXTURE)
             self.rect = self.image.get_rect()
-            self.rect.center = (640 * scale_factor_x, y - 22 * scale_factor_y)
+            self.rect.center = (640 * scale_factor_x, y)
         elif type == "Title_Small" or type == "Game":
-            self.rect.center = (x, y - 22 * scale_factor_y)
+            self.rect.center = (x, y)
         elif type == "Tab":
             if id == 1:
                 self.image = pygame.image.load(MACHINE_MODE_TAB_ICON_TEXTURE)

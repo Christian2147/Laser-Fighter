@@ -45,6 +45,7 @@ from components.spawn.SpawnPowerUpPygame import SpawnBluePowerUpIndicator
 from components.spawn.SpawnPowerUpPygame import SpawnExtraPowerUpIndicator
 from components.spawn.SpawnCoinPygame import SpawnCoinIndicator
 from components.spawn.SpawnTextboxPygame import SpawnTextbox
+from components.spawn.SpawnButtonPygame import SpawnButton
 from physics.MachineCollisionPygame import MachineCollision
 from utils.MovementManagerPygame import Movement
 
@@ -61,9 +62,10 @@ def main():
     extra_power_up_indicator = SpawnExtraPowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
     coin_indicator = SpawnCoinIndicator(window.scale_factor_X, window.scale_factor_Y)
 
+    button = SpawnButton(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
     textbox = SpawnTextbox(window.scale_factor, window.scale_factor_X)
 
-    text_refresh = TextRefresh(textbox, yellow_power_up_indicator, blue_power_up_indicator,
+    text_refresh = TextRefresh(button, textbox, yellow_power_up_indicator, blue_power_up_indicator,
                                extra_power_up_indicator,
                                statistics, shop_config)
 
@@ -79,6 +81,14 @@ def main():
     running = True
     while running:
         window.CLOCK.tick(window.TARGET_FPS)
+
+        mouse_pos = pygame.mouse.get_pos()
+
+        for bu in button.buttons_on_screen_list:
+            if bu.rect.collidepoint(mouse_pos):
+                bu.toggle_highlighted()
+            else:
+                bu.toggle_default()
 
         # EVENT HANDLER
         for event in pygame.event.get():
@@ -150,6 +160,16 @@ def main():
             if ci.coin_indicator_visible == 1:
                 window.screen.blit(ci.image, ci.rect)
 
+        for bu in button.buttons_on_screen_list:
+            if bu.button_frame_visible == 1:
+                window.screen.blit(bu.image, bu.rect)
+
+            if bu.button_text.button_text_visible == 1:
+                window.screen.blit(bu.button_text.image, bu.button_text.rect)
+
+            if hasattr(bu, "button_indicator") and bu.button_indicator.indicator_visible == 1:
+                window.screen.blit(bu.button_indicator.image, bu.button_indicator.rect)
+
         for t in textbox.text_on_screen_list:
             if t.text_box_visible == 1:
                 window.screen.blit(t.image, t.rect)
@@ -177,6 +197,9 @@ def main():
 
 
         # Machine Mode logic
+
+        if button.current_button_index == 0:
+            button.spawn_button("Game", 1)
 
         if textbox.current_text_index == 0:
             textbox.spawn_text_box(1, 640 * window.scale_factor_X, 20 * window.scale_factor_Y, "white")
