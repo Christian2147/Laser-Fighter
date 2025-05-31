@@ -351,12 +351,12 @@ class Button(pygame.sprite.Sprite):
                 self.button_text.image = pygame.Surface((0, 0), pygame.SRCALPHA)
                 self.button_text.image.fill((0, 0, 0, 0))
                 self.button_text.rect = self.button_text.image.get_rect()
-                self.button_text.rect.center = (640 * self.scale_factor_x, self.rect.centery - 22 * self.scale_factor_y)
+                self.button_text.rect.center = (640 * self.scale_factor_x, self.rect.centery)
                 self.button_text.write_text("Alien Mode", "semi-large", "normal")
         else:
             self.button_text.image = pygame.image.load(LOCKED_TEXTURE)
             self.button_text.rect = self.button_text.image.get_rect()
-            self.button_text.center = (640 * self.scale_factor_x, self.rect.centery)
+            self.button_text.rect.center = (640 * self.scale_factor_x, self.rect.centery)
 
     # def write_buy(self, price):
     #     """

@@ -45,7 +45,7 @@ class TextRefresh:
             _refresh (Refresh()): Pointer to the game refresh variables
     """
 
-    def __init__(self, #screen,
+    def __init__(self, screen,
                  button, #panel,
                  textbox, yellow_power_up_indicator,
                  blue_power_up_indicator, extra_power_up_indicator,
@@ -104,7 +104,7 @@ class TextRefresh:
             :type refresh: Refresh()
         """
 
-        # self._screen = screen
+        self._screen = screen
         self._button = button
         # self._panel = panel
         self._textbox = textbox
@@ -127,7 +127,7 @@ class TextRefresh:
             :return: None
         """
 
-        # del self._screen
+        del self._screen
         # del self._button
         # del self._panel
         del self._textbox
@@ -188,33 +188,48 @@ class TextRefresh:
             #     for pa in self._panel.panel_turtle:
             #         pa.write_text()
             #     self._refresh.refresh_panel = 0
-        for bu in self._button.buttons_on_screen_list:
-            bu.write_lines()
-        for t in self._textbox.text_on_screen_list:
-            if t.id == 1:
-                t.write("Score: {}  High Score: {}".format(self._statistics.score, self._statistics.high_score_machine_war), 24, "normal")
-            elif t.id == 2:
-                for yi in self._yellow_power_up_indicator.yellow_power_up_indicator_sprite:
-                    if yi.get_power_up_active() == 1:
-                        t.write("{}".format(yi.get_power_up_timer()), 24, "normal")
-                    else:
-                        t.write("0", 24, "normal")
-            elif t.id == 3:
-                for bi in self._blue_power_up_indicator.blue_power_up_indicator_sprite:
-                    if bi.get_power_up_active() == 1:
-                        t.write("{}".format(bi.get_power_up_timer()), 24, "normal")
-                    else:
-                        t.write("0", 24, "normal")
-            elif t.id == 4:
-                for ei in self._extra_power_up_indicator.extra_power_up_indicator_sprite:
-                    if ei.get_power_up_active() == 1:
-                        t.write("{}".format(ei.get_power_up_timer()), 24, "normal")
-                    else:
-                        t.write("0", 24, "normal")
-            elif t.id == 5:
-                t.write_left("{}".format(self._shop_config.total_coins), 24, "normal")
-            elif t.id == 6:
-                t.write("God Mode Is On!", 24, "normal")
+        if self._screen.mode == "Title_Mode":
+            # Refreshes button text
+            for bu in self._button.buttons_on_screen_list:
+                if bu.type != "Title_Locked":
+                    bu.write_lines()
+                else:
+                    bu.toggle_title_lock(self._shop_config.alien_slot_selected)
+            for t in self._textbox.text_on_screen_list:
+                if t.id == 1:
+                    t.write("Laser Fighter", "title", "bold")
+                elif t.id == 2:
+                    t.write("Beta 1.2.2b", "normal", "normal")
+                elif t.id == 3:
+                    t.write("God Mode Is On!", "normal", "normal")
+        if self._screen.mode == "Machine_Mode":
+            for bu in self._button.buttons_on_screen_list:
+                bu.write_lines()
+            for t in self._textbox.text_on_screen_list:
+                if t.id == 1:
+                    t.write("Score: {}  High Score: {}".format(self._statistics.score, self._statistics.high_score_machine_war), 24, "normal")
+                elif t.id == 2:
+                    for yi in self._yellow_power_up_indicator.yellow_power_up_indicator_sprite:
+                        if yi.get_power_up_active() == 1:
+                            t.write("{}".format(yi.get_power_up_timer()), "normal", "normal")
+                        else:
+                            t.write("0", "normal", "normal")
+                elif t.id == 3:
+                    for bi in self._blue_power_up_indicator.blue_power_up_indicator_sprite:
+                        if bi.get_power_up_active() == 1:
+                            t.write("{}".format(bi.get_power_up_timer()), "normal", "normal")
+                        else:
+                            t.write("0", "normal", "normal")
+                elif t.id == 4:
+                    for ei in self._extra_power_up_indicator.extra_power_up_indicator_sprite:
+                        if ei.get_power_up_active() == 1:
+                            t.write("{}".format(ei.get_power_up_timer()), "normal", "normal")
+                        else:
+                            t.write("0", "normal", "normal")
+                elif t.id == 5:
+                    t.write_left("{}".format(self._shop_config.total_coins), "normal", "normal")
+                elif t.id == 6:
+                    t.write("God Mode Is On!", "normal", "normal")
         # elif self._screen.mode == "Alien_Mode":
         #     if self._refresh.refresh_button == 1:
         #         for bu in self._button.buttons_on_screen_list:

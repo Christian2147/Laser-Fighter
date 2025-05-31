@@ -67,15 +67,16 @@ def main():
     button = SpawnButton(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
     textbox = SpawnTextbox(window.scale_factor, window.scale_factor_X)
 
-    text_refresh = TextRefresh(button, textbox, yellow_power_up_indicator, blue_power_up_indicator,
+    screen = ScreenUpdate(window, button, settings, shop_config,
+                          power_up_setup, machine_mode_setup,
+                          window.scale_factor_X, window.scale_factor_Y)
+
+    text_refresh = TextRefresh(screen, button, textbox, yellow_power_up_indicator, blue_power_up_indicator,
                                extra_power_up_indicator,
                                statistics, shop_config)
 
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
     movement = Movement(machine_player, window.scale_factor_Y)
-    screen = ScreenUpdate(window, button, settings, shop_config,
-                          power_up_setup, machine_mode_setup,
-                          window.scale_factor_X, window.scale_factor_Y)
 
     MOVE_REPEAT_DELAY = 0.05
     last_move_time = 0
@@ -274,6 +275,16 @@ def main():
                     button.spawn_button("Title_Locked", i + 1)
                 for i in range(2):
                     button.spawn_button("Title_Small", i + 1)
+
+            # Spawn the title mode text (Like title and version number in the bottom corner)
+            if textbox.current_text_index == 0:
+                textbox.spawn_text_box(1, 640 * window.scale_factor_X, 155 * window.scale_factor_Y, "red")
+                textbox.spawn_text_box(2, 1150 * window.scale_factor_X, 693 * window.scale_factor_Y, "white")
+                if settings.god_mode == 1:
+                    textbox.spawn_text_box(3, 1121 * window.scale_factor_X, 40 * window.scale_factor_Y, "white")
+            for t in textbox.text_on_screen_list:
+                if t.id == 1:
+                    t.move(screen.mode)
 
         # Machine Mode logic
 
