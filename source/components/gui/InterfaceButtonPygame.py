@@ -155,7 +155,7 @@ class Button(pygame.sprite.Sprite):
             self.image = pygame.image.load(SETTINGS_AND_CONTROLS_BUTTON_TEXTURE)
             self.rect = self.image.get_rect()
             if id < 8:
-                self.rect.center = (int(315 * scale_factor_x), (165 - (80 * (id - 1))) * scale_factor_y)
+                self.rect.center = (int(315 * scale_factor_x), (165 + (80 * (id - 1))) * scale_factor_y)
             elif id == 8:
                 self.rect.center = (int(955.5 * scale_factor_x), 165 * scale_factor_y)
             elif id == 9:
@@ -524,7 +524,6 @@ class Button(pygame.sprite.Sprite):
                 self.button_indicator.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
 
     def toggle_default(self):
-        self.button_text.color = "white"
         if self.type == "Title" or self.type == "Title_Locked":
             self.image = pygame.image.load(TITLE_SCREEN_BUTTON_TEXTURE)
         elif self.type == "Title_Small":
@@ -542,7 +541,6 @@ class Button(pygame.sprite.Sprite):
             self.image = pygame.image.load(SETTINGS_AND_CONTROLS_BUTTON_TEXTURE)
 
     def toggle_highlighted(self):
-        self.button_text.color = "yellow"
         if self.type == "Title" or self.type == "Title_Locked":
             self.image = pygame.image.load(TITLE_SCREEN_BUTTON_HIGHLIGHTED_TEXTURE)
         elif self.type == "Title_Small":
@@ -669,12 +667,12 @@ class ButtonText(pygame.sprite.Sprite):
             self.rect.center = (x - 80 * scale_factor_x, y + 10 * scale_factor_y)
             self.color = "Yellow"
         elif type == "Enable":
-            self.rect.center = (x, y - 22 * scale_factor_y)
+            self.rect.center = (x, y)
             self.color = "Red"
         elif type == "Regular_Settings_And_Controls":
-            self.rect.center = (x, y - 22 * scale_factor_y)
+            self.rect.center = (x, y)
         elif type == "Settings_Toggle" or type == "Controls_Toggle":
-            self.rect.center = (x - 30 * scale_factor_x, y - 22 * scale_factor_y)
+            self.rect.center = (x - 30 * scale_factor_x, y)
         self.button_text_visible = 1
 
         self.small_font = pygame.font.SysFont("Courier", int(29.5 * scale_factor))
@@ -766,29 +764,29 @@ class ButtonIndicator(pygame.sprite.Sprite):
         self.color = "red"
         if type == "Settings_Toggle":
             if id == 1:
-                self.rect.center = (463 * scale_factor_x, 187 * scale_factor_y)
+                self.rect.center = (463 * scale_factor_x, 165 * scale_factor_y)
             elif id == 2:
-                self.rect.center = (561 * scale_factor_x, 267 * scale_factor_y)
+                self.rect.center = (561 * scale_factor_x, 245 * scale_factor_y)
             elif id == 3:
-                self.rect.center = (552 * scale_factor_x, 347 * scale_factor_y)
+                self.rect.center = (552 * scale_factor_x, 325 * scale_factor_y)
             elif id == 4:
-                self.rect.center = (529 * scale_factor_x, 427 * scale_factor_y)
+                self.rect.center = (529 * scale_factor_x, 405 * scale_factor_y)
             elif id == 5:
-                self.rect.center = (519 * scale_factor_x, 507 * scale_factor_y)
+                self.rect.center = (519 * scale_factor_x, 485 * scale_factor_y)
             elif id == 6:
-                self.rect.center = (508 * scale_factor_x, 587 * scale_factor_y)
+                self.rect.center = (508 * scale_factor_x, 565 * scale_factor_y)
             elif id == 7:
-                self.rect.center = (497 * scale_factor_x, 667 * scale_factor_y)
+                self.rect.center = (497 * scale_factor_x, 645 * scale_factor_y)
             elif id == 8:
-                self.rect.center = (int(1201.5 * scale_factor_x), 187 * scale_factor_y)
+                self.rect.center = (int(1201.5 * scale_factor_x), 165 * scale_factor_y)
             elif id == 9:
-                self.rect.center = (int(1192.5 * scale_factor_x), 267 * scale_factor_y)
+                self.rect.center = (int(1192.5 * scale_factor_x), 245 * scale_factor_y)
             elif id == 10:
-                self.rect.center = (int(1170.5 * scale_factor_x), 347 * scale_factor_y)
+                self.rect.center = (int(1170.5 * scale_factor_x), 325 * scale_factor_y)
             elif id == 11:
-                self.rect.center = (int(1080.5 * scale_factor_x), 427 * scale_factor_y)
+                self.rect.center = (int(1080.5 * scale_factor_x), 405 * scale_factor_y)
             elif id == 12:
-                self.rect.center = (int(1024.5 * scale_factor_x), 507 * scale_factor_y)
+                self.rect.center = (int(1024.5 * scale_factor_x), 485 * scale_factor_y)
         elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadgets_Slot":
             self.color = "white"
             self.image = pygame.image.load(LOCKED_TEXTURE)

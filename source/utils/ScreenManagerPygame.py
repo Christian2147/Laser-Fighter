@@ -225,6 +225,28 @@ class ScreenUpdate:
             self._screen_update = 1
             self._power_up_setup.setup_power_ups()
             self._machine_mode_setup.setup_machine_mode()
+        if self._mode == "Settings" or self._mode == "Controls":
+            if self._settings.button_sound == 1:
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+                sound.play()
+            if self._updated_controls == 1:
+                message_output = messagebox.askyesno("Restart Required!","A restart is required for these changes to take effect!\nDo you want to restart now?", icon='warning')
+                if message_output:
+                    print("wip")
+                else:
+                    # Set the mode to "Title_Mode" to change the screen
+                    self._mode = "Title_Mode"
+                    self._screen_update = 1
+                    # Setup the power ups and both Machine Mode and Alien Mode
+                    self._power_up_setup.setup_power_ups()
+                    self._machine_mode_setup.setup_machine_mode()
+                    self._updated_controls = 0
+            else:
+                self._mode = "Title_Mode"
+                self._screen_update = 1
+                # Setup the power ups and both Machine Mode and Alien Mode
+                self._power_up_setup.setup_power_ups()
+                self._machine_mode_setup.setup_machine_mode()
 
         # self._screen.onscreenclick(None)
         # if self._mode == "Machine_Mode" or self._mode == "Alien_Mode" or self._mode == "Stats" or self._mode == "Shop":
@@ -508,6 +530,20 @@ class ScreenUpdate:
     #         self._mode = "Stats"
     #         self._screen_update = 1
     #         self._refresh.refresh_text = 1
+
+    def launch_settings_mode(self):
+        """
+            Function used to enter the settings screen.
+
+            :return: None
+        """
+
+        if self._mode == "Title_Mode":
+            if self._settings.button_sound == 1:
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+                sound.play()
+            self._mode = "Settings"
+            self._screen_update = 1
 
     # def launch_settings_mode(self, x, y):
     #     """

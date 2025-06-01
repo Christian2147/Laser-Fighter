@@ -73,7 +73,7 @@ def main():
                           window.scale_factor_X, window.scale_factor_Y)
 
     text_refresh = TextRefresh(screen, button, textbox, yellow_power_up_indicator, blue_power_up_indicator,
-                               extra_power_up_indicator,
+                               extra_power_up_indicator, settings,
                                statistics, shop_config, refresh_variables)
 
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
@@ -114,9 +114,14 @@ def main():
                                 elif bu.id == 3:
                                     running = False
                             elif bu.type == "Title_Small":
-                                if bu.id == 2:
+                                if bu.id == 1:
+                                    screen.launch_settings_mode()
+                                elif bu.id == 2:
                                     screen.launch_stats_mode()
                             elif bu.type == "Game":
+                                if bu.id == 1:
+                                    screen.launch_title_mode()
+                            elif bu.type == "Regular_Settings_And_Controls":
                                 if bu.id == 1:
                                     screen.launch_title_mode()
 
@@ -707,6 +712,30 @@ def main():
                     textbox.spawn_text_box(25, 1121 * window.scale_factor_X, 40 * window.scale_factor_Y, "white")
 
             # Move the title text back and fourth across the screen as needed
+            for t in textbox.text_on_screen_list:
+                if t.id == 1:
+                    t.move(screen.mode)
+                    break
+
+        """
+            Code Below is for when Settings Mode is turned on.
+        """
+
+        if screen.mode == "Settings":
+            # Create all the screen buttons, including the toggle buttons
+            if button.current_button_index == 0:
+                for i in range(2):
+                    button.spawn_button("Regular_Settings_And_Controls", i + 1)
+                for i in range(12):
+                    button.spawn_button("Settings_Toggle", i + 1)
+
+            # Create all additional text boxes
+            if textbox.current_text_index == 0:
+                textbox.spawn_text_box(1, 640 * window.scale_factor_X, 70 * window.scale_factor_Y, "red")
+                if settings.god_mode == 1:
+                    textbox.spawn_text_box(2, 159 * window.scale_factor_X, 40 * window.scale_factor_Y, "white")
+
+            # Move the title text left and right across the screen
             for t in textbox.text_on_screen_list:
                 if t.id == 1:
                     t.move(screen.mode)

@@ -49,7 +49,7 @@ class TextRefresh:
                  button, #panel,
                  textbox, yellow_power_up_indicator,
                  blue_power_up_indicator, extra_power_up_indicator,
-                 # settings, settings_toggle,
+                 settings, #settings_toggle,
                  statistics, # shop,
                  shop_config, refresh # controls,
                  ):
@@ -111,7 +111,7 @@ class TextRefresh:
         self._yellow_power_up_indicator = yellow_power_up_indicator
         self._blue_power_up_indicator = blue_power_up_indicator
         self._extra_power_up_indicator = extra_power_up_indicator
-        # self._settings = settings
+        self._settings = settings
         # self._settings_toggle = settings_toggle
         self._statistics = statistics
         # self._shop = shop
@@ -134,7 +134,7 @@ class TextRefresh:
         del self._yellow_power_up_indicator
         del self._blue_power_up_indicator
         del self._extra_power_up_indicator
-        # del self._settings
+        del self._settings
         # del self._settings_toggle
         del self._statistics
         # del self._shop
@@ -297,6 +297,48 @@ class TextRefresh:
                         t.write("Coins Collected: {}".format(self._statistics.alien_coins_collected), "normal", "normal")
                         self._refresh.refresh_text = 0
                 if t.id == 25:
+                    t.write("God Mode Is On!", "normal", "normal")
+        elif self._screen.mode == "Settings":
+            for bu in self._button.buttons_on_screen_list:
+                if self._refresh.refresh_button == 1:
+                    bu.write_lines()
+                if self._refresh.refresh_indicator == 1 or self._refresh.refresh_indicator == 2:
+                    if bu.type == "Settings_Toggle":
+                        if bu.id == 1:
+                            bu.write_indicator(self._settings.button_sound)
+                        elif bu.id == 2:
+                            bu.write_indicator(self._settings.player_shooting_sound)
+                        elif bu.id == 3:
+                            bu.write_indicator(self._settings.enemy_shooting_sound)
+                        elif bu.id == 4:
+                            bu.write_indicator(self._settings.player_death_sound)
+                        elif bu.id == 5:
+                            bu.write_indicator(self._settings.enemy_death_sound)
+                        elif bu.id == 6:
+                            bu.write_indicator(self._settings.player_hit_sound)
+                        elif bu.id == 7:
+                            bu.write_indicator(self._settings.enemy_hit_sound)
+                        elif bu.id == 8:
+                            bu.write_indicator(self._settings.power_up_pickup_sound)
+                        elif bu.id == 9:
+                            bu.write_indicator(self._settings.power_up_spawn_sound)
+                        elif bu.id == 10:
+                            bu.write_indicator(self._settings.coin_pickup_sound)
+                        elif bu.id == 11:
+                            # bu.write_fullscreen_indicator(self._settings.fullscreen, self._settings_toggle.fullscreen_toggled)
+                            print("wip")
+                        elif bu.id == 12:
+                            bu.write_indicator(self._settings.vsync)
+            if self._refresh.refresh_button == 1:
+                self._refresh.refresh_button = 0
+            if self._refresh.refresh_indicator == 2:
+                self._refresh.refresh_indicator = 0
+            elif self._refresh.refresh_indicator == 1:
+                self._refresh.refresh_indicator = 2
+            for t in self._textbox.text_on_screen_list:
+                if t.id == 1:
+                    t.write("Settings", "title", "bold")
+                elif t.id == 2:
                     t.write("God Mode Is On!", "normal", "normal")
         # elif self._screen.mode == "Alien_Mode":
         #     if self._refresh.refresh_button == 1:
