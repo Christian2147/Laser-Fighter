@@ -56,7 +56,7 @@ class ScreenUpdate:
             _quit_loop (int): Determines if the program has been terminated
     """
 
-    def __init__(self, screen, button, settings, shop_config, power_up_setup, machine_mode_setup, scale_factor_x, scale_factor_y):
+    def __init__(self, screen, button, settings, shop_config, refresh, power_up_setup, machine_mode_setup, scale_factor_x, scale_factor_y):
         """
             Initializes all the necessary pointers for the Screen Manager.
 
@@ -95,7 +95,7 @@ class ScreenUpdate:
         self._button = button
         self._settings = settings
         self._shop_config = shop_config
-        # self._refresh = refresh
+        self._refresh = refresh
         self._power_up_setup = power_up_setup
         self._machine_mode_setup = machine_mode_setup
         # self._alien_mode_setup = alien_mode_setup
@@ -109,7 +109,6 @@ class ScreenUpdate:
         self._page_update = 0
         self._tick_update = 0
         self._updated_controls = 0
-        self._quit_loop = 0
 
     def __del__(self):
         """
@@ -122,6 +121,7 @@ class ScreenUpdate:
         del self._button
         del self._settings
         del self._shop_config
+        del self._refresh
         del self._power_up_setup
         del self._machine_mode_setup
         del self._scale_factor_x
@@ -131,7 +131,6 @@ class ScreenUpdate:
         del self._screen_update
         del self._page_update
         del self._updated_controls
-        del self._quit_loop
 
     @property
     def mode(self):
@@ -211,20 +210,9 @@ class ScreenUpdate:
         else:
             raise ValueError("Mode must be a integer")
 
-    @property
-    def quit_loop(self):
-        """quit_loop getter"""
-        return self._quit_loop
-
     def launch_title_mode(self):
         """
             Function used to go back to the title screen from a different screen.
-
-            :param x: The current x-coordinate of the cursor
-            :type x: float
-
-            :param y: The current y-coordinate of the cursor
-            :type y: float
 
             :return: None
         """
@@ -314,12 +302,6 @@ class ScreenUpdate:
     def launch_machine_mode(self):
         """
             Function used to enter Machine Mode.
-
-            :param x: The current x-coordinate of the cursor
-            :type x: float
-
-            :param y: The current y-coordinate of the cursor
-            :type y: float
 
             :return: None
         """
@@ -501,6 +483,7 @@ class ScreenUpdate:
             sound.play()
         self._mode = "Stats"
         self._screen_update = 1
+        self._refresh.refresh_text = 1
 
     # def launch_stats_mode(self, x, y):
     #     """
@@ -586,37 +569,3 @@ class ScreenUpdate:
     #         self._screen_update = 1
     #         # Used so that there is no delay in clicking this button from the settings screen
     #         self._button.clickable = 2
-
-    # def exit_game(self, x, y):
-    #     """
-    #         Function used to force exit the game.
-    #
-    #         :param x: The current x-coordinate of the cursor
-    #         :type x: float
-    #
-    #         :param y: The current y-coordinate of the cursor
-    #         :type y: float
-    #
-    #         :return: None
-    #     """
-    #
-    #     self._screen.onscreenclick(None)
-    #     # Check to see if the cursor is in the bound of the button to be clicked
-    #     if (x > -252 * self._scale_factor_x) and (x < 250 * self._scale_factor_x) and (y > -315 * self._scale_factor_y) and (y < -241 * self._scale_factor_y):
-    #         if self._settings.button_sound == 1:
-    #             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
-    #             sound.play()
-    #         # Quit the game and exit the application
-    #         self.on_quit()
-
-    # def on_quit(self):
-    #     """
-    #         Closes the game and terminates the turtle graphics window properly
-    #
-    #         :return: None
-    #     """
-    #
-    #     # Quit loop means the game loop must be closed
-    #     self._quit_loop = 1
-    #     # After 300 milliseconds, destroy the window and terminate the program
-    #     self._screen._root.after(300, self._screen._root.destroy)

@@ -51,7 +51,7 @@ class TextRefresh:
                  blue_power_up_indicator, extra_power_up_indicator,
                  # settings, settings_toggle,
                  statistics, # shop,
-                 shop_config, # controls,
+                 shop_config, refresh # controls,
                  ):
                  # controls_toggle, refresh):
 
@@ -118,7 +118,7 @@ class TextRefresh:
         self._shop_config = shop_config
         # self._controls = controls
         # self._controls_toggle = controls_toggle
-        # self._refresh = refresh
+        self._refresh = refresh
 
     def __del__(self):
         """
@@ -128,7 +128,7 @@ class TextRefresh:
         """
 
         del self._screen
-        # del self._button
+        del self._button
         # del self._panel
         del self._textbox
         del self._yellow_power_up_indicator
@@ -141,7 +141,7 @@ class TextRefresh:
         del self._shop_config
         # del self._controls
         # del self._controls_toggle
-        # del self._refresh
+        del self._refresh
 
     def update_text(self):
         """
@@ -190,11 +190,17 @@ class TextRefresh:
             #     self._refresh.refresh_panel = 0
         if self._screen.mode == "Title_Mode":
             # Refreshes button text
-            for bu in self._button.buttons_on_screen_list:
-                if bu.type != "Title_Locked":
-                    bu.write_lines()
-                else:
-                    bu.toggle_title_lock(self._shop_config.alien_slot_selected)
+            if self._refresh.refresh_button == 1 or self._refresh.refresh_button == 2:
+                for bu in self._button.buttons_on_screen_list:
+                    if bu.type != "Title_Locked":
+                        bu.write_lines()
+                    else:
+                        bu.toggle_title_lock(self._shop_config.alien_slot_selected)
+            if self._refresh.refresh_button == 1:
+                self._refresh.refresh_button = 2
+            elif self._refresh.refresh_button == 2:
+                self._refresh.refresh_button = 0
+            # Refreshes text boxes
             for t in self._textbox.text_on_screen_list:
                 if t.id == 1:
                     t.write("Laser Fighter", "title", "bold")
@@ -203,8 +209,11 @@ class TextRefresh:
                 elif t.id == 3:
                     t.write("God Mode Is On!", "normal", "normal")
         elif self._screen.mode == "Machine_Mode":
-            for bu in self._button.buttons_on_screen_list:
-                bu.write_lines()
+            if self._refresh.refresh_button == 1:
+                for bu in self._button.buttons_on_screen_list:
+                    bu.write_lines()
+            if self._refresh.refresh_button == 1:
+                self._refresh.refresh_button = 0
             for t in self._textbox.text_on_screen_list:
                 if t.id == 1:
                     t.write("Score: {}  High Score: {}".format(self._statistics.score, self._statistics.high_score_machine_war), 24, "normal")
@@ -231,58 +240,63 @@ class TextRefresh:
                 elif t.id == 6:
                     t.write("God Mode Is On!", "normal", "normal")
         elif self._screen.mode == "Stats":
-            for bu in self._button.buttons_on_screen_list:
-                bu.write_lines()
+            if self._refresh.refresh_button == 1:
+                for bu in self._button.buttons_on_screen_list:
+                    bu.write_lines()
+            if self._refresh.refresh_button == 1:
+                self._refresh.refresh_button = 0
             for t in self._textbox.text_on_screen_list:
                 if t.id == 1:
                     t.write("Statistics", "title", "bold")
-                elif t.id == 2:
-                    t.write("Machine Mode", "subtitle", "bold")
-                elif t.id == 3:
-                    t.write("Alien Mode", "subtitle", "bold")
-                elif t.id == 4:
-                    t.write("High Score: {}".format(self._statistics.high_score_machine_war), "normal", "normal")
-                elif t.id == 5:
-                    t.write("Bosses Killed: {}".format(self._statistics.bosses_killed), "normal", "normal")
-                elif t.id == 6:
-                    t.write("Red Bots Killed: {}".format(self._statistics.red_bots_killed), "normal", "normal")
-                elif t.id == 7:
-                    t.write("Yellow Bots Killed: {}".format(self._statistics.yellow_bots_killed), "normal", "normal")
-                elif t.id == 8:
-                    t.write("Blue Bots Killed: {}".format(self._statistics.blue_bots_killed), "normal", "normal")
-                elif t.id == 9:
-                    t.write("Deaths: {}".format(self._statistics.classic_deaths), "normal", "normal")
-                elif t.id == 10:
-                    t.write("Damage Taken: {}".format(self._statistics.machine_damage_taken), "normal", "normal")
-                elif t.id == 11:
-                    t.write("Lasers Fired: {}".format(self._statistics.classic_lasers_fired), "normal", "normal")
-                elif t.id == 12:
-                    t.write("Power Ups Picked Up: {}".format(self._statistics.classic_power_ups_picked_up), "normal", "normal")
-                elif t.id == 13:
-                    t.write("Coins Collected: {}".format(self._statistics.machine_coins_collected), "normal", "normal")
-                elif t.id == 14:
-                    t.write("High Score: {}".format(self._statistics.high_score_alien_mode), "normal", "normal")
-                elif t.id == 15:
-                    t.write("UFOs Killed: {}".format(self._statistics.ufos_killed), "normal", "normal")
-                elif t.id == 16:
-                    t.write("Big Aliens Killed: {}".format(self._statistics.big_aliens_killed), "normal", "normal")
-                elif t.id == 17:
-                    t.write("Medium Aliens Killed: {}".format(self._statistics.medium_aliens_killed), "normal", "normal")
-                elif t.id == 18:
-                    t.write("Small Aliens Killed: {}".format(self._statistics.small_aliens_killed), "normal", "normal")
-                elif t.id == 19:
-                    t.write("Deaths: {}".format(self._statistics.alien_deaths), "normal", "normal")
-                elif t.id == 20:
-                    t.write("Damage Taken: {}".format(self._statistics.damage_taken), "normal", "normal")
-                elif t.id == 21:
-                    t.write("Lasers Fired: {}".format(self._statistics.alien_lasers_fired), "normal", "normal")
-                elif t.id == 22:
-                    t.write("Jumps: {}".format(self._statistics.jumps), "normal", "normal")
-                elif t.id == 23:
-                    t.write("Power Ups Picked Up: {}".format(self._statistics.alien_power_ups_picked_up), "normal", "normal")
-                elif t.id == 24:
-                    t.write("Coins Collected: {}".format(self._statistics.alien_coins_collected), "normal", "normal")
-                elif t.id == 25:
+                if self._refresh.refresh_text == 1:
+                    if t.id == 2:
+                        t.write("Machine Mode", "subtitle", "bold")
+                    elif t.id == 3:
+                        t.write("Alien Mode", "subtitle", "bold")
+                    elif t.id == 4:
+                        t.write("High Score: {}".format(self._statistics.high_score_machine_war), "normal", "normal")
+                    elif t.id == 5:
+                        t.write("Bosses Killed: {}".format(self._statistics.bosses_killed), "normal", "normal")
+                    elif t.id == 6:
+                        t.write("Red Bots Killed: {}".format(self._statistics.red_bots_killed), "normal", "normal")
+                    elif t.id == 7:
+                        t.write("Yellow Bots Killed: {}".format(self._statistics.yellow_bots_killed), "normal", "normal")
+                    elif t.id == 8:
+                        t.write("Blue Bots Killed: {}".format(self._statistics.blue_bots_killed), "normal", "normal")
+                    elif t.id == 9:
+                        t.write("Deaths: {}".format(self._statistics.classic_deaths), "normal", "normal")
+                    elif t.id == 10:
+                        t.write("Damage Taken: {}".format(self._statistics.machine_damage_taken), "normal", "normal")
+                    elif t.id == 11:
+                        t.write("Lasers Fired: {}".format(self._statistics.classic_lasers_fired), "normal", "normal")
+                    elif t.id == 12:
+                        t.write("Power Ups Picked Up: {}".format(self._statistics.classic_power_ups_picked_up), "normal", "normal")
+                    elif t.id == 13:
+                        t.write("Coins Collected: {}".format(self._statistics.machine_coins_collected), "normal", "normal")
+                    elif t.id == 14:
+                        t.write("High Score: {}".format(self._statistics.high_score_alien_mode), "normal", "normal")
+                    elif t.id == 15:
+                        t.write("UFOs Killed: {}".format(self._statistics.ufos_killed), "normal", "normal")
+                    elif t.id == 16:
+                        t.write("Big Aliens Killed: {}".format(self._statistics.big_aliens_killed), "normal", "normal")
+                    elif t.id == 17:
+                        t.write("Medium Aliens Killed: {}".format(self._statistics.medium_aliens_killed), "normal", "normal")
+                    elif t.id == 18:
+                        t.write("Small Aliens Killed: {}".format(self._statistics.small_aliens_killed), "normal", "normal")
+                    elif t.id == 19:
+                        t.write("Deaths: {}".format(self._statistics.alien_deaths), "normal", "normal")
+                    elif t.id == 20:
+                        t.write("Damage Taken: {}".format(self._statistics.damage_taken), "normal", "normal")
+                    elif t.id == 21:
+                        t.write("Lasers Fired: {}".format(self._statistics.alien_lasers_fired), "normal", "normal")
+                    elif t.id == 22:
+                        t.write("Jumps: {}".format(self._statistics.jumps), "normal", "normal")
+                    elif t.id == 23:
+                        t.write("Power Ups Picked Up: {}".format(self._statistics.alien_power_ups_picked_up), "normal", "normal")
+                    elif t.id == 24:
+                        t.write("Coins Collected: {}".format(self._statistics.alien_coins_collected), "normal", "normal")
+                        self._refresh.refresh_text = 0
+                if t.id == 25:
                     t.write("God Mode Is On!", "normal", "normal")
         # elif self._screen.mode == "Alien_Mode":
         #     if self._refresh.refresh_button == 1:

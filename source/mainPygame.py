@@ -33,6 +33,7 @@ import gc
 from setup.WindowSetupPygame import GameWindow
 from setup.ModeSetupMasterPygame import machine_mode_setup
 from setup.ModeSetupMasterPygame import power_up_setup
+from setup.ConfigurationSetupPygame import refresh_variables
 from setup.ConfigurationSetupPygame import settings
 from setup.ConfigurationSetupPygame import statistics
 from setup.ConfigurationSetupPygame import shop_config
@@ -67,13 +68,13 @@ def main():
     button = SpawnButton(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
     textbox = SpawnTextbox(window.scale_factor, window.scale_factor_X)
 
-    screen = ScreenUpdate(window, button, settings, shop_config,
+    screen = ScreenUpdate(window, button, settings, shop_config, refresh_variables,
                           power_up_setup, machine_mode_setup,
                           window.scale_factor_X, window.scale_factor_Y)
 
     text_refresh = TextRefresh(screen, button, textbox, yellow_power_up_indicator, blue_power_up_indicator,
                                extra_power_up_indicator,
-                               statistics, shop_config)
+                               statistics, shop_config, refresh_variables)
 
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
     movement = Movement(screen, machine_player, yellow_power_up_indicator, settings, statistics, window.scale_factor_Y)
@@ -98,7 +99,7 @@ def main():
                 bu.toggle_default()
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+            if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:  # Shoot
@@ -110,6 +111,8 @@ def main():
                             if bu.type == "Title":
                                 if bu.id == 1:
                                     screen.launch_machine_mode()
+                                elif bu.id == 3:
+                                    running = False
                             elif bu.type == "Title_Small":
                                 if bu.id == 2:
                                     screen.launch_stats_mode()
@@ -227,6 +230,9 @@ def main():
                 t.remove()
             textbox.text_on_screen_list.clear()
             textbox.current_text_index = 0
+            refresh_variables.refresh_button = 1
+            refresh_variables.refresh_indicator = 1
+            refresh_variables.refresh_text = 1
             screen.screen_update = 0
             screen.page_update = 0
             button.buy_button_pressed = 0

@@ -24,9 +24,13 @@
 import subprocess
 import os
 
+from utils.RefreshPygame import Refresh
 from utils.UpdateSettingsDataPygame import Settings
 from utils.UpdateStatsDataPygame import Stats
 from utils.UpdateShopDataPygame import ShopConfig
+
+# Initialize the refresh variables
+refresh_variables = Refresh()
 
 # Create Settings Object to store the settings variables
 settings = Settings()
