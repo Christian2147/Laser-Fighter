@@ -489,6 +489,19 @@ class ScreenUpdate:
     #         self._refresh.refresh_text = 1
     #         self._refresh.move_tab_selector = 1
 
+    def launch_stats_mode(self):
+        """
+            Function used to enter the statistics screen.
+
+            :return: None
+        """
+
+        if self._settings.button_sound == 1:
+            sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+            sound.play()
+        self._mode = "Stats"
+        self._screen_update = 1
+
     # def launch_stats_mode(self, x, y):
     #     """
     #         Function used to enter the statistics screen.

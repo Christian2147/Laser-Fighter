@@ -110,6 +110,9 @@ def main():
                             if bu.type == "Title":
                                 if bu.id == 1:
                                     screen.launch_machine_mode()
+                            elif bu.type == "Title_Small":
+                                if bu.id == 2:
+                                    screen.launch_stats_mode()
                             elif bu.type == "Game":
                                 if bu.id == 1:
                                     screen.launch_title_mode()
@@ -229,6 +232,10 @@ def main():
             button.buy_button_pressed = 0
             gc.collect()
 
+        """
+            When Title Mode is on
+        """
+
         if screen.mode == "Title_Mode":
             # Remove and reset all power ups
             for pu in power_up.current_power_ups:
@@ -286,7 +293,9 @@ def main():
                 if t.id == 1:
                     t.move(screen.mode)
 
-        # Machine Mode logic
+        """
+            When Machine Mode is on
+        """
 
         if screen.mode == "Machine_Mode":
             if button.current_button_index == 0:
@@ -668,6 +677,34 @@ def main():
             blue_machine.blue_machines.clear()
             blue_machine.blue_machine_index = 0
             blue_machine.blue_machines_update_values.clear()
+
+        """
+             Code Below is for when Statistics Mode is turned on.
+        """
+
+        if screen.mode == "Stats":
+            # Create Main Menu button
+            if button.current_button_index == 0:
+                button.spawn_button("Game", 1)
+
+            # Create the statistics text
+            if textbox.current_text_index == 0:
+                textbox.spawn_text_box(1, 640 * window.scale_factor_X, 120 * window.scale_factor_Y, "red")
+                textbox.spawn_text_box(2, 320 * window.scale_factor_X, 220 * window.scale_factor_Y, "#ff5349")
+                textbox.spawn_text_box(3, 960 * window.scale_factor_X, 220 * window.scale_factor_Y, "#ff5349")
+                for i in range(10):
+                    textbox.spawn_text_box(i + 4, 320 * window.scale_factor_X, (270 + (i * 40)) * window.scale_factor_Y, "white")
+                for i in range(11):
+                    textbox.spawn_text_box(13 + i + 1, 960 * window.scale_factor_X, (270 + (i * 40)) * window.scale_factor_Y,
+                                           "white")
+                if settings.god_mode == 1:
+                    textbox.spawn_text_box(25, 1121 * window.scale_factor_X, 40 * window.scale_factor_Y, "white")
+
+            # Move the title text back and fourth across the screen as needed
+            for t in textbox.text_on_screen_list:
+                if t.id == 1:
+                    t.move(screen.mode)
+                    break
 
         pygame.display.flip()
 
