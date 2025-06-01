@@ -76,7 +76,7 @@ def main():
                                statistics, shop_config)
 
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
-    movement = Movement(machine_player, window.scale_factor_Y)
+    movement = Movement(screen, machine_player, yellow_power_up_indicator, settings, statistics, window.scale_factor_Y)
 
     MOVE_REPEAT_DELAY = 0.05
     last_move_time = 0
@@ -481,10 +481,10 @@ def main():
                         for bm in blue_machine.blue_machines:
                             bm.set_death_count(0)
                         # Update the stats if god mode is off
-                        #if settings.god_mode == 0:
-                        #    statistics.classic_deaths = statistics.classic_deaths + 1
-                        #    statistics.machine_damage_taken = statistics.machine_damage_taken + 1
-                        #    statistics.save()
+                        if settings.god_mode == 0:
+                            statistics.classic_deaths = statistics.classic_deaths + 1
+                            statistics.machine_damage_taken = statistics.machine_damage_taken + 1
+                            statistics.save()
                     # Check if the death animation is finished
                     if p.get_player_death_update() == 0:
                         machine_player.player_update_value = 0

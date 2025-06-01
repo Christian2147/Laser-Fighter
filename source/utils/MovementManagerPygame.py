@@ -43,7 +43,7 @@ class Movement:
             _scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode.
     """
 
-    def __init__(self, machine_player, scale_factor_y):
+    def __init__(self, screen, machine_player, yellow_power_up_indicator, settings, statistics, scale_factor_y):
         """
             Initializes all the necessary pointers for the Movement Manager.
 
@@ -70,7 +70,11 @@ class Movement:
         """
 
         # Initialize all the pointers
+        self._screen = screen
         self._machine_player = machine_player
+        self._yellow_power_up_indicator = yellow_power_up_indicator
+        self._settings = settings
+        self._statistics = statistics
 
         self._scale_factor_y = scale_factor_y
 
@@ -81,7 +85,11 @@ class Movement:
             :return: None
         """
 
+        del self._screen
         del self._machine_player
+        del self._yellow_power_up_indicator
+        del self._settings
+        del self._statistics
         del self._scale_factor_y
 
     def go_right(self):
@@ -91,10 +99,11 @@ class Movement:
             :return: None
         """
 
-        for p in self._machine_player.current_player:
-            # The machine player is prepared to move right and faces right
-            p.set_direction_right()
-        self.move()
+        if self._screen.mode == "Machine_Mode":
+            for p in self._machine_player.current_player:
+                # The machine player is prepared to move right and faces right
+                p.set_direction_right()
+            self.move()
 
     def go_left(self):
         """
@@ -103,10 +112,11 @@ class Movement:
             :return: None
         """
 
-        for p in self._machine_player.current_player:
-            # The machine player is prepared to move left and faces left
-            p.set_direction_left()
-        self.move()
+        if self._screen.mode == "Machine_Mode":
+            for p in self._machine_player.current_player:
+                # The machine player is prepared to move left and faces left
+                p.set_direction_left()
+            self.move()
 
     def move(self):
         """
@@ -116,8 +126,10 @@ class Movement:
         """
 
         # Player is moved in its current facing direction when this function is activated.
-        for p in self._machine_player.current_player:
-            p.move_player(0)
+        if self._screen.mode == "Machine_Mode":
+            for p in self._machine_player.current_player:
+                for yi in self._yellow_power_up_indicator.yellow_power_up_indicator_sprite:
+                    p.move_player(yi.yellow_power_up_active)
 
     def shoot(self, machine_collision):
         """
@@ -126,13 +138,16 @@ class Movement:
             :return: None
         """
 
-        for p in self._machine_player.current_player:
-            # If the laser is not currently moving across the screen and if the player is not dying
-            if p.get_laser()[0].rect.centery < machine_mode_setup.laser_max_distance + 1 and p.get_death_animation() == 0:
-                # Reset the collision variables
-                machine_collision.remove_collisions()
-                p.remove_laser_start_y()
-                # The laser is fired
-                print("dude")
-                p.fire(1)
-                # Update the game statistics
+        if self._screen.mode == "Machine_Mode":
+            for p in self._machine_player.current_player:
+                # If the laser is not currently moving across the screen and if the player is not dying
+                if p.get_laser()[0].rect.centery < machine_mode_setup.laser_max_distance + 1 and p.get_death_animation() == 0:
+                    # Reset the collision variables
+                    machine_collision.remove_collisions()
+                    p.remove_laser_start_y()
+                    # The laser is fired
+                    p.fire(self._settings.player_shooting_sound)
+                    # Update the game statistics
+                    if self._settings.god_mode == 0:
+                        self._statistics.classic_lasers_fired = self._statistics.classic_lasers_fired + 1
+                        self._statistics.save()
