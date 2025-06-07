@@ -390,7 +390,7 @@ class Button(pygame.sprite.Sprite):
             self.button_text.write_text("Disable", "semi-medium", "bold")
         else:
             # If it is disabled, give the option to enable
-            self.button_text.color = "green"
+            self.button_text.color = (0, 128, 0)
             self.button_text.write_text("Enable", "semi-medium", "bold")
 
     def write_control(self, go_right_key, go_left_key, shoot_key, jump_key):
@@ -435,7 +435,7 @@ class Button(pygame.sprite.Sprite):
         if self.type == "Settings_Toggle":
             # For the settings toggle buttons, make them show on/off in green/red
             if setting == 1:
-                self.button_indicator.color = "green"
+                self.button_indicator.color = (0, 128, 0)
                 self.button_indicator.write_text("On", "semi-medium", "bold")
             else:
                 self.button_indicator.color = "red"
@@ -447,7 +447,7 @@ class Button(pygame.sprite.Sprite):
         elif self.type == "Gadget_Slot":
             # For the gadget slots, write if they are enabled or disabled
             if setting:
-                self.button_indicator.color = "green"
+                self.button_indicator.color = (0, 128, 0)
                 self.button_indicator.write_text("Enabled", "tiny", "bold")
             else:
                 self.button_indicator.color = "red"
@@ -473,7 +473,7 @@ class Button(pygame.sprite.Sprite):
         else:
             # No in game switch has been made, display the indicator like normal
             if setting == 1:
-                self.button_indicator.color = "green"
+                self.button_indicator.color = (0, 128, 0)
                 self.button_indicator.write_text("On", "semi-medium", "bold")
             else:
                 self.button_indicator.color = "red"
