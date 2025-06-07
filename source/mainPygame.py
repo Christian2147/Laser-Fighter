@@ -129,6 +129,10 @@ def main():
                             elif bu.type == "Regular_Settings_And_Controls":
                                 if bu.id == 1:
                                     screen.launch_title_mode()
+                                elif bu.id == 2:
+                                    screen.launch_controls_mode()
+                                elif bu.id == 3:
+                                    screen.launch_settings_mode()
                             elif bu.type == "Settings_Toggle":
                                 if bu.id == 1:
                                     settings_toggle.toggle_button_sound()
@@ -770,6 +774,49 @@ def main():
                 if t.id == 1:
                     t.move(screen.mode)
                     break
+
+        if screen.mode == "Controls":
+            # Create all the buttons for the screen, including the toggle buttons.
+            if button.current_button_index == 0:
+                button.spawn_button("Regular_Settings_And_Controls", 1)
+                button.spawn_button("Regular_Settings_And_Controls", 3)
+                for i in range(4):
+                    button.spawn_button("Controls_Toggle", i + 1)
+
+            # Create any additional text boxes
+            if textbox.current_text_index == 0:
+                textbox.spawn_text_box(1, 640 * window.scale_factor_X, 120 * window.scale_factor_Y, "red")
+                if settings.god_mode == 1:
+                    textbox.spawn_text_box(2, 1121 * window.scale_factor_X, 40 * window.scale_factor_Y, "white")
+
+            # Move the title text left and right across the screen
+            for t in textbox.text_on_screen_list:
+                if t.id == 1:
+                    t.move(screen.mode)
+                    break
+
+            # Control Setting Conflict Updates
+            # This checks if there are any conflicts with the current controls.
+            # This is done here in case any new updates to the controls cause conflicts.
+            # if controls_toggle.go_right_key != controls_toggle.go_left_key and controls_toggle.go_right_key != controls_toggle.shoot_key and controls_toggle.go_right_key != controls_toggle.jump_key:
+            #     controls.go_right_key_alert = 0
+            # else:
+            #     controls.go_right_key_alert = 1
+            #
+            # if controls_toggle.go_left_key != controls_toggle.go_right_key and controls_toggle.go_left_key != controls_toggle.shoot_key and controls_toggle.go_left_key != controls_toggle.jump_key:
+            #     controls.go_left_key_alert = 0
+            # else:
+            #     controls.go_left_key_alert = 1
+            #
+            # if controls_toggle.shoot_key != controls_toggle.go_left_key and controls_toggle.shoot_key != controls_toggle.go_right_key and controls_toggle.shoot_key != controls_toggle.jump_key:
+            #     controls.shoot_key_alert = 0
+            # else:
+            #     controls.shoot_key_alert = 1
+            #
+            # if controls_toggle.jump_key != controls_toggle.go_left_key and controls_toggle.jump_key != controls_toggle.shoot_key and controls_toggle.jump_key != controls_toggle.go_right_key:
+            #     controls.jump_key_alert = 0
+            # else:
+            #     controls.jump_key_alert = 1
 
         pygame.display.flip()
 

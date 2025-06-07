@@ -555,6 +555,13 @@ class ScreenUpdate:
                 sound.play()
             self._mode = "Settings"
             self._screen_update = 1
+        elif self._mode == "Controls":
+            if self._settings.button_sound == 1:
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+                sound.play()
+            self._mode = "Settings"
+            self._screen_update = 1
+            self._button.clickable = 1
 
     # def launch_settings_mode(self, x, y):
     #     """
@@ -593,26 +600,18 @@ class ScreenUpdate:
     #             # Used so that there is no delay in clicking this button from the controls screen
     #             self._button.clickable = 1
 
-    # def launch_controls_mode(self, x, y):
-    #     """
-    #         Function used to enter the controls screen.
-    #
-    #         :param x: The current x-coordinate of the cursor
-    #         :type x: float
-    #
-    #         :param y: The current y-coordinate of the cursor
-    #         :type y: float
-    #
-    #         :return: None
-    #     """
-    #
-    #     # Check to see if the cursor is in the bound of the button to be clicked
-    #     if (x > 29 * self._scale_factor_x) and (x < 600 * self._scale_factor_x) and (y > -235 * self._scale_factor_y) and (y < -173 * self._scale_factor_y):
-    #         if self._settings.button_sound == 1:
-    #             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
-    #             sound.play()
-    #         # Go to the controls screen
-    #         self._mode = "Controls"
-    #         self._screen_update = 1
-    #         # Used so that there is no delay in clicking this button from the settings screen
-    #         self._button.clickable = 2
+    def launch_controls_mode(self):
+        """
+            Function used to enter the controls screen.
+
+            :return: None
+        """
+
+        if self._settings.button_sound == 1:
+            sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+            sound.play()
+        # Go to the controls screen
+        self._mode = "Controls"
+        self._screen_update = 1
+        # Used so that there is no delay in clicking this button from the settings screen
+        self._button.clickable = 2

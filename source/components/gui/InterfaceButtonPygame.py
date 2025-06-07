@@ -169,7 +169,7 @@ class Button(pygame.sprite.Sprite):
         elif type == "Controls_Toggle":
             self.image = pygame.image.load(SETTINGS_AND_CONTROLS_BUTTON_TEXTURE)
             self.rect = self.image.get_rect()
-            self.rect.center = (315 * scale_factor_x, (165 - (80 * (id - 1))) * scale_factor_y)
+            self.rect.center = (int(315 * scale_factor_x), (165 + (80 * (id - 1))) * scale_factor_y)
         self.button_frame_visible = 1
 
         self.button_text = ButtonText(type, id, self.rect.centerx, self.rect.centery,
