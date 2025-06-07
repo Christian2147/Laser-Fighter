@@ -104,7 +104,7 @@ def main():
                 bu.toggle_default()
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT or screen.quit == 1:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:  # Shoot

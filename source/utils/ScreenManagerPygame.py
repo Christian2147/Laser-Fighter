@@ -23,6 +23,7 @@
 """
 
 import pygame
+import tkinter as tk
 from tkinter import messagebox
 
 
@@ -109,6 +110,7 @@ class ScreenUpdate:
         self._page_update = 0
         self._tick_update = 0
         self._updated_controls = 0
+        self._quit_loop = 0
 
     def __del__(self):
         """
@@ -131,6 +133,7 @@ class ScreenUpdate:
         del self._screen_update
         del self._page_update
         del self._updated_controls
+        del self._quit_loop
 
     @property
     def mode(self):
@@ -210,6 +213,10 @@ class ScreenUpdate:
         else:
             raise ValueError("Mode must be a integer")
 
+    @property
+    def quit(self):
+        return self._quit_loop
+
     def launch_title_mode(self):
         """
             Function used to go back to the title screen from a different screen.
@@ -230,9 +237,13 @@ class ScreenUpdate:
                 sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
             if self._updated_controls == 1:
+                root = tk.Tk()
+                root.withdraw()
+                root.attributes("-topmost", True)
                 message_output = messagebox.askyesno("Restart Required!","A restart is required for these changes to take effect!\nDo you want to restart now?", icon='warning')
+                root.destroy()
                 if message_output:
-                    print("wip")
+                    self._quit_loop = 1
                 else:
                     # Set the mode to "Title_Mode" to change the screen
                     self._mode = "Title_Mode"
