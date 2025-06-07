@@ -671,8 +671,10 @@ class ButtonText(pygame.sprite.Sprite):
             self.color = "Red"
         elif type == "Regular_Settings_And_Controls":
             self.rect.center = (x, y)
-        elif type == "Settings_Toggle" or type == "Controls_Toggle":
+        elif type == "Settings_Toggle":
             self.rect.center = (x - 30 * scale_factor_x, y)
+        elif type == "Controls_Toggle":
+            self.rect.center = (x, y)
         self.button_text_visible = 1
 
         self.small_font = pygame.font.SysFont("Courier", int(29.5 * scale_factor))

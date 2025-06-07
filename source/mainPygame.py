@@ -37,6 +37,7 @@ from setup.ConfigurationSetupPygame import refresh_variables
 from setup.ConfigurationSetupPygame import settings
 from setup.ConfigurationSetupPygame import statistics
 from setup.ConfigurationSetupPygame import shop_config
+from setup.ConfigurationSetupPygame import controls_toggle
 from utils.UpdateTextPygame import TextRefresh
 from components.spawn.SpawnCoinPygame import SpawnCoin
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
@@ -52,6 +53,8 @@ from physics.MachineCollisionPygame import MachineCollision
 from utils.MovementManagerPygame import Movement
 from utils.ScreenManagerPygame import ScreenUpdate
 from utils.SettingsManagerPygame import SettingsToggle
+from utils.ControlsManagerPygame import Controls
+from utils.PreventSleepPygame import MonitorSleepController
 
 
 def main():
@@ -79,9 +82,13 @@ def main():
     settings_toggle = SettingsToggle(screen, settings, refresh_variables, window.scale_factor_X,
                                      window.scale_factor_Y)
 
+    controls = Controls(screen, settings,
+                        controls_toggle, refresh_variables, window.scale_factor_X,
+                        window.scale_factor_Y)
+
     text_refresh = TextRefresh(screen, button, textbox, yellow_power_up_indicator, blue_power_up_indicator,
                                extra_power_up_indicator, settings, settings_toggle,
-                               statistics, shop_config, refresh_variables)
+                               statistics, shop_config, controls, controls_toggle, refresh_variables)
 
     MOVE_REPEAT_DELAY = 0.05
     last_move_time = 0
@@ -734,13 +741,13 @@ def main():
 
             # Create the statistics text
             if textbox.current_text_index == 0:
-                textbox.spawn_text_box(1, 640 * window.scale_factor_X, 120 * window.scale_factor_Y, "red")
-                textbox.spawn_text_box(2, 320 * window.scale_factor_X, 220 * window.scale_factor_Y, "#ff5349")
-                textbox.spawn_text_box(3, 960 * window.scale_factor_X, 220 * window.scale_factor_Y, "#ff5349")
+                textbox.spawn_text_box(1, 640 * window.scale_factor_X, 70 * window.scale_factor_Y, "red")
+                textbox.spawn_text_box(2, 320 * window.scale_factor_X, 190 * window.scale_factor_Y, "#ff5349")
+                textbox.spawn_text_box(3, 960 * window.scale_factor_X, 190 * window.scale_factor_Y, "#ff5349")
                 for i in range(10):
-                    textbox.spawn_text_box(i + 4, 320 * window.scale_factor_X, (270 + (i * 40)) * window.scale_factor_Y, "white")
+                    textbox.spawn_text_box(i + 4, 320 * window.scale_factor_X, (240 + (i * 40)) * window.scale_factor_Y, "white")
                 for i in range(11):
-                    textbox.spawn_text_box(13 + i + 1, 960 * window.scale_factor_X, (270 + (i * 40)) * window.scale_factor_Y,
+                    textbox.spawn_text_box(13 + i + 1, 960 * window.scale_factor_X, (240 + (i * 40)) * window.scale_factor_Y,
                                            "white")
                 if settings.god_mode == 1:
                     textbox.spawn_text_box(25, 1121 * window.scale_factor_X, 40 * window.scale_factor_Y, "white")
@@ -785,7 +792,7 @@ def main():
 
             # Create any additional text boxes
             if textbox.current_text_index == 0:
-                textbox.spawn_text_box(1, 640 * window.scale_factor_X, 120 * window.scale_factor_Y, "red")
+                textbox.spawn_text_box(1, 640 * window.scale_factor_X, 70 * window.scale_factor_Y, "red")
                 if settings.god_mode == 1:
                     textbox.spawn_text_box(2, 1121 * window.scale_factor_X, 40 * window.scale_factor_Y, "white")
 
@@ -824,4 +831,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # Make sure the computer does not enter sleep mode while the game is running
+    with MonitorSleepController():
+        main()

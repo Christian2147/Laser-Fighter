@@ -51,9 +51,7 @@ class TextRefresh:
                  blue_power_up_indicator, extra_power_up_indicator,
                  settings, settings_toggle,
                  statistics, # shop,
-                 shop_config, refresh # controls,
-                 ):
-                 # controls_toggle, refresh):
+                 shop_config, controls, controls_toggle, refresh):
 
         """
             Passes in all the necessary pointers to update and refresh the text.
@@ -116,8 +114,8 @@ class TextRefresh:
         self._statistics = statistics
         # self._shop = shop
         self._shop_config = shop_config
-        # self._controls = controls
-        # self._controls_toggle = controls_toggle
+        self._controls = controls
+        self._controls_toggle = controls_toggle
         self._refresh = refresh
 
     def __del__(self):
@@ -139,8 +137,8 @@ class TextRefresh:
         del self._statistics
         # del self._shop
         del self._shop_config
-        # del self._controls
-        # del self._controls_toggle
+        del self._controls
+        del self._controls_toggle
         del self._refresh
 
     def update_text(self):
@@ -599,39 +597,39 @@ class TextRefresh:
         #             t.write("Settings", 72, "bold")
         #         elif t.id == 2:
         #             t.write("God Mode Is On!", 24, "normal")
-        # elif self._screen.mode == "Controls":
-        #     if self._refresh.refresh_button == 1 or self._refresh.refresh_button == 2:
-        #         for bu in self._button.buttons_on_screen_list:
-        #             if bu.type != "Controls_Toggle":
-        #                 bu.write_lines()
-        #             else:
-        #                 bu.write_control(self._controls_toggle.go_right_key, self._controls_toggle.go_left_key, self._controls_toggle.shoot_key, self._controls_toggle.jump_key)
-        #                 if bu.id == 1:
-        #                     if self._controls.go_right_key_alert == 1:
-        #                         bu.update_controls_text_color(bu.id)
-        #                     else:
-        #                         bu.update_controls_text_color(0)
-        #                 elif bu.id == 2:
-        #                     if self._controls.go_left_key_alert == 1:
-        #                         bu.update_controls_text_color(bu.id)
-        #                     else:
-        #                         bu.update_controls_text_color(0)
-        #                 elif bu.id == 3:
-        #                     if self._controls.shoot_key_alert == 1:
-        #                         bu.update_controls_text_color(bu.id)
-        #                     else:
-        #                         bu.update_controls_text_color(0)
-        #                 elif bu.id == 4:
-        #                     if self._controls.jump_key_alert == 1:
-        #                         bu.update_controls_text_color(bu.id)
-        #                     else:
-        #                         bu.update_controls_text_color(0)
-        #     if self._refresh.refresh_button == 1:
-        #         self._refresh.refresh_button = 2
-        #     elif self._refresh.refresh_button == 2:
-        #         self._refresh.refresh_button = 0
-        #     for t in self._textbox.text_on_screen_list:
-        #         if t.id == 1:
-        #             t.write("Controls", 72, "bold")
-        #         elif t.id == 2:
-        #             t.write("God Mode Is On!", 24, "normal")
+        elif self._screen.mode == "Controls":
+            if self._refresh.refresh_button == 1 or self._refresh.refresh_button == 2:
+                for bu in self._button.buttons_on_screen_list:
+                    if bu.type != "Controls_Toggle":
+                        bu.write_lines()
+                    else:
+                        bu.write_control(self._controls_toggle.go_right_key, self._controls_toggle.go_left_key, self._controls_toggle.shoot_key, self._controls_toggle.jump_key)
+                        if bu.id == 1:
+                            if self._controls.go_right_key_alert == 1:
+                                bu.update_controls_text_color(bu.id)
+                            else:
+                                bu.update_controls_text_color(0)
+                        elif bu.id == 2:
+                            if self._controls.go_left_key_alert == 1:
+                                bu.update_controls_text_color(bu.id)
+                            else:
+                                bu.update_controls_text_color(0)
+                        elif bu.id == 3:
+                            if self._controls.shoot_key_alert == 1:
+                                bu.update_controls_text_color(bu.id)
+                            else:
+                                bu.update_controls_text_color(0)
+                        elif bu.id == 4:
+                            if self._controls.jump_key_alert == 1:
+                                bu.update_controls_text_color(bu.id)
+                            else:
+                                bu.update_controls_text_color(0)
+            if self._refresh.refresh_button == 1:
+                self._refresh.refresh_button = 2
+            elif self._refresh.refresh_button == 2:
+                self._refresh.refresh_button = 0
+            for t in self._textbox.text_on_screen_list:
+                if t.id == 1:
+                    t.write("Controls", "title", "bold")
+                elif t.id == 2:
+                    t.write("God Mode Is On!", "normal", "normal")

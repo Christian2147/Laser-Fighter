@@ -309,29 +309,6 @@ class ScreenUpdate:
         #             self._alien_mode_setup.setup_alien_mode()
         #             self._screen.onscreenclick(None)
 
-    # def launch_machine_mode(self, x, y):
-    #     """
-    #         Function used to enter Machine Mode.
-    #
-    #         :param x: The current x-coordinate of the cursor
-    #         :type x: float
-    #
-    #         :param y: The current y-coordinate of the cursor
-    #         :type y: float
-    #
-    #         :return: None
-    #     """
-    #
-    #     self._screen.onscreenclick(None)
-    #     # Check to see if the cursor is in the bound of the button to be clicked
-    #     if (x > -252 * self._scale_factor_x) and (x < 250 * self._scale_factor_x) and (y > 49 * self._scale_factor_y) and (y < 121 * self._scale_factor_y):
-    #         if self._settings.button_sound == 1:
-    #             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
-    #             sound.play()
-    #         # Enter Machine Mode
-    #         self._mode = "Machine_Mode"
-    #         self._screen_update = 1
-
     def launch_machine_mode(self):
         """
             Function used to enter Machine Mode.
@@ -518,30 +495,6 @@ class ScreenUpdate:
         self._screen_update = 1
         self._refresh.refresh_text = 1
 
-    # def launch_stats_mode(self, x, y):
-    #     """
-    #         Function used to enter the statistics screen.
-    #
-    #         :param x: The current x-coordinate of the cursor
-    #         :type x: float
-    #
-    #         :param y: The current y-coordinate of the cursor
-    #         :type y: float
-    #
-    #         :return: None
-    #     """
-    #
-    #     self._screen.onscreenclick(None)
-    #     # Check to see if the cursor is in the bound of the button to be clicked
-    #     if (x > 9 * self._scale_factor_x) and (x < 250 * self._scale_factor_x) and (y > -224 * self._scale_factor_y) and (y < -150 * self._scale_factor_y):
-    #         if self._settings.button_sound == 1:
-    #             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
-    #             sound.play()
-    #         # Go to the statistics screen
-    #         self._mode = "Stats"
-    #         self._screen_update = 1
-    #         self._refresh.refresh_text = 1
-
     def launch_settings_mode(self):
         """
             Function used to enter the settings screen.
@@ -562,43 +515,6 @@ class ScreenUpdate:
             self._mode = "Settings"
             self._screen_update = 1
             self._button.clickable = 1
-
-    # def launch_settings_mode(self, x, y):
-    #     """
-    #         Function used to enter the settings screen.
-    #
-    #         :param x: The current x-coordinate of the cursor
-    #         :type x: float
-    #
-    #         :param y: The current y-coordinate of the cursor
-    #         :type y: float
-    #
-    #         :return: None
-    #     """
-    #
-    #     self._screen.onscreenclick(None)
-    #     # If entering from the title screen
-    #     if self._mode == "Title_Mode":
-    #         # Check to see if the cursor is in the bound of the button to be clicked
-    #         if (x > -252 * self._scale_factor_x) and (x < -10 * self._scale_factor_x) and (y > -224 * self._scale_factor_y) and (y < -150 * self._scale_factor_y):
-    #             if self._settings.button_sound == 1:
-    #                 sound = pygame.mixer.Sound("sound/Button_Sound.wav")
-    #                 sound.play()
-    #             # Change to settings
-    #             self._mode = "Settings"
-    #             self._screen_update = 1
-    #     # If entering from the controls screen
-    #     if self._mode == "Controls":
-    #         # Check to see if the cursor is in the bound of the button to be clicked
-    #         if (x > 29 * self._scale_factor_x) and (x < 600 * self._scale_factor_x) and (y > -235 * self._scale_factor_y) and (y < -173 * self._scale_factor_y):
-    #             if self._settings.button_sound == 1:
-    #                 sound = pygame.mixer.Sound("sound/Button_Sound.wav")
-    #                 sound.play()
-    #             # Change to settings
-    #             self._mode = "Settings"
-    #             self._screen_update = 1
-    #             # Used so that there is no delay in clicking this button from the controls screen
-    #             self._button.clickable = 1
 
     def launch_controls_mode(self):
         """

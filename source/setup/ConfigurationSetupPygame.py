@@ -26,6 +26,7 @@ import os
 
 from utils.RefreshPygame import Refresh
 from utils.UpdateSettingsDataPygame import Settings
+from utils.UpdateControlsPygame import ControlsConfig
 from utils.UpdateStatsDataPygame import Stats
 from utils.UpdateShopDataPygame import ShopConfig
 
@@ -34,6 +35,9 @@ refresh_variables = Refresh()
 
 # Create Settings Object to store the settings variables
 settings = Settings()
+
+# Create Controls Toggle Object to store the control keybinds
+controls_toggle = ControlsConfig()
 
 # Create a Stats Object to store the current statistics
 statistics = Stats(settings.god_mode)
