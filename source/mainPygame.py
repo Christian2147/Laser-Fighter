@@ -91,7 +91,8 @@ def main():
     # The main game loop:
     running = True
     while running:
-        window.CLOCK.tick(window.TARGET_FPS)
+        if settings.vsync:
+            window.CLOCK.tick(window.TARGET_FPS)
 
         # EVENT HANDLER
         mouse_pos = pygame.mouse.get_pos()
@@ -128,6 +129,31 @@ def main():
                             elif bu.type == "Regular_Settings_And_Controls":
                                 if bu.id == 1:
                                     screen.launch_title_mode()
+                            elif bu.type == "Settings_Toggle":
+                                if bu.id == 1:
+                                    settings_toggle.toggle_button_sound()
+                                elif bu.id == 2:
+                                    settings_toggle.toggle_player_shooting_sound()
+                                elif bu.id == 3:
+                                    settings_toggle.toggle_enemy_shooting_sound()
+                                elif bu.id == 4:
+                                    settings_toggle.toggle_player_death_sound()
+                                elif bu.id == 5:
+                                    settings_toggle.toggle_enemy_death_sound()
+                                elif bu.id == 6:
+                                    settings_toggle.toggle_player_hit_sound()
+                                elif bu.id == 7:
+                                    settings_toggle.toggle_enemy_hit_sound()
+                                elif bu.id == 8:
+                                    settings_toggle.toggle_power_up_pickup_sound()
+                                elif bu.id == 9:
+                                    settings_toggle.toggle_power_up_spawn_sound()
+                                elif bu.id == 10:
+                                    settings_toggle.toggle_coin_pick_up_sound()
+                                elif bu.id == 11:
+                                    settings_toggle.toggle_fullscreen()
+                                elif bu.id == 12:
+                                    settings_toggle.toggle_vsync()
 
         current_time = time.time()
 
@@ -453,7 +479,7 @@ def main():
                         # If the killing of the enemy has been initiated
                         if attacked == 1:
                             # Kill the enemy
-                            bm.kill_enemy(1, coin.coins_on_screen_list, window.scale_factor_X)
+                            bm.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, window.scale_factor_X)
                             blue_machine.blue_machines_update_values[current_blue_update_value_index] = \
                             blue_machine.blue_machines_update_values[current_blue_update_value_index] + 1
 
@@ -470,7 +496,7 @@ def main():
                                 statistics.save()
                     elif blue_machine.blue_machines_update_values[current_blue_update_value_index] != 0:
                         # Kill the enemy
-                        bm.kill_enemy(1, coin.coins_on_screen_list, window.scale_factor_X)
+                        bm.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list, window.scale_factor_X)
                         blue_machine.blue_machines_update_values[current_blue_update_value_index] = \
                         blue_machine.blue_machines_update_values[current_blue_update_value_index] + 1
 
@@ -489,7 +515,7 @@ def main():
                 # If the death animation has already started
                 if machine_player.player_update_value != 0:
                     # Keep going with the player death animation if it has started
-                    p.kill_player(1)
+                    p.kill_player(settings.player_death_sound)
                     machine_player.player_update_value = machine_player.player_update_value + 1
                     if p.get_player_death_update() == 0.6:
                         # Reset the initial and staying blue machines death count

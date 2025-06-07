@@ -277,26 +277,11 @@ class SettingsToggle:
             :return: None
         """
 
-        # If VSync was originally off
-        if self._settings.vsync == 0:
-            # Warn the user about effects on performance
-            message_output = messagebox.askyesno("Warning!", "Turning on VSync may lower performance. Are you sure you want to enable VSync?", icon='warning')
-            # If the user selects yes
-            if message_output:
-                # Toggle VSync
-                if self._settings.vsync == 1:
-                    self._settings.vsync = 0
-                else:
-                    self._settings.vsync = 1
-                    self.execute_setting_function()
-        # If VSync was originally on
+        if self._settings.vsync == 1:
+            self._settings.vsync = 0
         else:
-            # Toggle like normal
-            if self._settings.vsync == 1:
-                self._settings.vsync = 0
-            else:
-                self._settings.vsync = 1
-            self.execute_setting_function()
+            self._settings.vsync = 1
+        self.execute_setting_function()
 
     def execute_setting_function(self):
         """
