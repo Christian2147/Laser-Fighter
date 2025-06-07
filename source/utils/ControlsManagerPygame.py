@@ -47,12 +47,9 @@ class Controls:
             _jump_key_alert (int): Determines if the jump keybind conflicts with any other keybind.
     """
 
-    def __init__(self, screen, settings, controls_toggle, refresh, scale_factor_x, scale_factor_y):
+    def __init__(self, settings, controls_toggle, refresh, scale_factor_x, scale_factor_y):
         """
             Initializes all of the pointers necessary for the Controls Manager.
-
-            :param screen: Pointer to the current displayed screen and the screen changing functions.
-            :type screen: ScreenUpdate()
 
             :param settings: Pointer to the current game settings.
             :type settings: Settings()
@@ -70,7 +67,6 @@ class Controls:
             :type scale_factor_y: float
         """
 
-        self._screen = screen
         self._settings = settings
         self._controls_toggle = controls_toggle
         self._refresh = refresh
@@ -90,7 +86,6 @@ class Controls:
             :return: None
         """
 
-        del self._screen
         del self._settings
         del self._controls_toggle
         del self._refresh
@@ -317,12 +312,8 @@ class Controls:
                     else:
                         # Update the main config file to confirm the changes
                         self._controls_toggle.save()
-                        # Alert that a restart is needed for changes to take effect
-                        self._screen.updated_controls = 1
                 else:
                     # If there are no conflicts, update the main config file like normal.
                     self._controls_toggle.save()
-                    # Alert that a restart is needed for changes to take effect
-                    self._screen.updated_controls = 1
         # Refresh all the buttons on the screen
         self._refresh.refresh_button = 1

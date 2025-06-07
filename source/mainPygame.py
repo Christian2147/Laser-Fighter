@@ -82,7 +82,7 @@ def main():
     settings_toggle = SettingsToggle(screen, settings, refresh_variables, window.scale_factor_X,
                                      window.scale_factor_Y)
 
-    controls = Controls(screen, settings,
+    controls = Controls(settings,
                         controls_toggle, refresh_variables, window.scale_factor_X,
                         window.scale_factor_Y)
 
@@ -104,6 +104,21 @@ def main():
         # EVENT HANDLER
         mouse_pos = pygame.mouse.get_pos()
 
+        special_keys = {
+            "space": pygame.K_SPACE,
+            "left": pygame.K_LEFT,
+            "right": pygame.K_RIGHT,
+            "up": pygame.K_UP,
+            "down": pygame.K_DOWN,
+            "return": pygame.K_RETURN,
+            "escape": pygame.K_ESCAPE,
+            "backspace": pygame.K_BACKSPACE,
+            "tab": pygame.K_TAB,
+            "shift": pygame.K_LSHIFT,
+            "ctrl": pygame.K_LCTRL,
+            "alt": pygame.K_LALT,
+        }
+
         for bu in button.buttons_on_screen_list:
             if bu.rect.collidepoint(mouse_pos):
                 bu.toggle_highlighted()
@@ -114,7 +129,12 @@ def main():
             if event.type == pygame.QUIT or screen.quit == 1:
                 running = False
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:  # Shoot
+                key_str = controls_toggle.shoot_key.lower()
+                if key_str in special_keys:
+                    key_shoot = special_keys[key_str]
+                else:
+                    key_shoot = ord(key_str)
+                if event.key == key_shoot:
                     movement.shoot(machine_collision)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -165,15 +185,34 @@ def main():
                                     settings_toggle.toggle_fullscreen()
                                 elif bu.id == 12:
                                     settings_toggle.toggle_vsync()
+                            elif bu.type == "Controls_Toggle":
+                                if bu.id == 1:
+                                    controls.change_go_right_key()
+                                elif bu.id == 2:
+                                    controls.change_go_left_key()
+                                elif bu.id == 2:
+                                    controls.change_shoot_key()
+                                elif bu.id == 2:
+                                    controls.change_jump_key()
 
         current_time = time.time()
 
         keys = pygame.key.get_pressed()
         if current_time - last_move_time >= MOVE_REPEAT_DELAY:
-            if keys[pygame.K_a]:
+            key_right_str = controls_toggle.go_right_key.lower()
+            key_left_str = controls_toggle.go_left_key.lower()
+            if key_right_str in special_keys:
+                key_right = special_keys[key_right_str]
+            else:
+                key_right = ord(key_right_str)
+            if key_left_str in special_keys:
+                key_left = special_keys[key_left_str]
+            else:
+                key_left = ord(key_left_str)
+            if keys[key_left]:
                 movement.go_left()
                 last_move_time = current_time
-            elif keys[pygame.K_d]:
+            elif keys[key_right]:
                 movement.go_right()
                 last_move_time = current_time
 
@@ -805,25 +844,25 @@ def main():
             # Control Setting Conflict Updates
             # This checks if there are any conflicts with the current controls.
             # This is done here in case any new updates to the controls cause conflicts.
-            # if controls_toggle.go_right_key != controls_toggle.go_left_key and controls_toggle.go_right_key != controls_toggle.shoot_key and controls_toggle.go_right_key != controls_toggle.jump_key:
-            #     controls.go_right_key_alert = 0
-            # else:
-            #     controls.go_right_key_alert = 1
-            #
-            # if controls_toggle.go_left_key != controls_toggle.go_right_key and controls_toggle.go_left_key != controls_toggle.shoot_key and controls_toggle.go_left_key != controls_toggle.jump_key:
-            #     controls.go_left_key_alert = 0
-            # else:
-            #     controls.go_left_key_alert = 1
-            #
-            # if controls_toggle.shoot_key != controls_toggle.go_left_key and controls_toggle.shoot_key != controls_toggle.go_right_key and controls_toggle.shoot_key != controls_toggle.jump_key:
-            #     controls.shoot_key_alert = 0
-            # else:
-            #     controls.shoot_key_alert = 1
-            #
-            # if controls_toggle.jump_key != controls_toggle.go_left_key and controls_toggle.jump_key != controls_toggle.shoot_key and controls_toggle.jump_key != controls_toggle.go_right_key:
-            #     controls.jump_key_alert = 0
-            # else:
-            #     controls.jump_key_alert = 1
+            if controls_toggle.go_right_key != controls_toggle.go_left_key and controls_toggle.go_right_key != controls_toggle.shoot_key and controls_toggle.go_right_key != controls_toggle.jump_key:
+                controls.go_right_key_alert = 0
+            else:
+                controls.go_right_key_alert = 1
+
+            if controls_toggle.go_left_key != controls_toggle.go_right_key and controls_toggle.go_left_key != controls_toggle.shoot_key and controls_toggle.go_left_key != controls_toggle.jump_key:
+                controls.go_left_key_alert = 0
+            else:
+                controls.go_left_key_alert = 1
+
+            if controls_toggle.shoot_key != controls_toggle.go_left_key and controls_toggle.shoot_key != controls_toggle.go_right_key and controls_toggle.shoot_key != controls_toggle.jump_key:
+                controls.shoot_key_alert = 0
+            else:
+                controls.shoot_key_alert = 1
+
+            if controls_toggle.jump_key != controls_toggle.go_left_key and controls_toggle.jump_key != controls_toggle.shoot_key and controls_toggle.jump_key != controls_toggle.go_right_key:
+                controls.jump_key_alert = 0
+            else:
+                controls.jump_key_alert = 1
 
         pygame.display.flip()
 
