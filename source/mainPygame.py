@@ -51,6 +51,7 @@ from components.spawn.SpawnButtonPygame import SpawnButton
 from physics.MachineCollisionPygame import MachineCollision
 from utils.MovementManagerPygame import Movement
 from utils.ScreenManagerPygame import ScreenUpdate
+from utils.SettingsManagerPygame import SettingsToggle
 
 
 def main():
@@ -72,12 +73,15 @@ def main():
                           power_up_setup, machine_mode_setup,
                           window.scale_factor_X, window.scale_factor_Y)
 
-    text_refresh = TextRefresh(screen, button, textbox, yellow_power_up_indicator, blue_power_up_indicator,
-                               extra_power_up_indicator, settings,
-                               statistics, shop_config, refresh_variables)
-
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
     movement = Movement(screen, machine_player, yellow_power_up_indicator, settings, statistics, window.scale_factor_Y)
+
+    settings_toggle = SettingsToggle(screen, settings, refresh_variables, window.scale_factor_X,
+                                     window.scale_factor_Y)
+
+    text_refresh = TextRefresh(screen, button, textbox, yellow_power_up_indicator, blue_power_up_indicator,
+                               extra_power_up_indicator, settings, settings_toggle,
+                               statistics, shop_config, refresh_variables)
 
     MOVE_REPEAT_DELAY = 0.05
     last_move_time = 0

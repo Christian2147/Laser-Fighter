@@ -49,7 +49,7 @@ class TextRefresh:
                  button, #panel,
                  textbox, yellow_power_up_indicator,
                  blue_power_up_indicator, extra_power_up_indicator,
-                 settings, #settings_toggle,
+                 settings, settings_toggle,
                  statistics, # shop,
                  shop_config, refresh # controls,
                  ):
@@ -112,7 +112,7 @@ class TextRefresh:
         self._blue_power_up_indicator = blue_power_up_indicator
         self._extra_power_up_indicator = extra_power_up_indicator
         self._settings = settings
-        # self._settings_toggle = settings_toggle
+        self._settings_toggle = settings_toggle
         self._statistics = statistics
         # self._shop = shop
         self._shop_config = shop_config
@@ -135,7 +135,7 @@ class TextRefresh:
         del self._blue_power_up_indicator
         del self._extra_power_up_indicator
         del self._settings
-        # del self._settings_toggle
+        del self._settings_toggle
         del self._statistics
         # del self._shop
         del self._shop_config
@@ -325,8 +325,7 @@ class TextRefresh:
                         elif bu.id == 10:
                             bu.write_indicator(self._settings.coin_pickup_sound)
                         elif bu.id == 11:
-                            # bu.write_fullscreen_indicator(self._settings.fullscreen, self._settings_toggle.fullscreen_toggled)
-                            print("wip")
+                            bu.write_fullscreen_indicator(self._settings.fullscreen, self._settings_toggle.fullscreen_toggled)
                         elif bu.id == 12:
                             bu.write_indicator(self._settings.vsync)
             if self._refresh.refresh_button == 1:
