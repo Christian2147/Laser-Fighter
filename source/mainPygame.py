@@ -190,9 +190,9 @@ def main():
                                     controls.change_go_right_key()
                                 elif bu.id == 2:
                                     controls.change_go_left_key()
-                                elif bu.id == 2:
+                                elif bu.id == 3:
                                     controls.change_shoot_key()
-                                elif bu.id == 2:
+                                elif bu.id == 4:
                                     controls.change_jump_key()
 
         current_time = time.time()

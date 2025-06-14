@@ -598,7 +598,7 @@ class TextRefresh:
         #         elif t.id == 2:
         #             t.write("God Mode Is On!", 24, "normal")
         elif self._screen.mode == "Controls":
-            if self._refresh.refresh_button == 1 or self._refresh.refresh_button == 2:
+            if self._refresh.refresh_button == 1 or self._refresh.refresh_button == 2 or self._refresh.refresh_button == 3:
                 for bu in self._button.buttons_on_screen_list:
                     if bu.type != "Controls_Toggle":
                         bu.write_lines()
@@ -627,6 +627,8 @@ class TextRefresh:
             if self._refresh.refresh_button == 1:
                 self._refresh.refresh_button = 2
             elif self._refresh.refresh_button == 2:
+                self._refresh.refresh_button = 3
+            elif self._refresh.refresh_button == 3:
                 self._refresh.refresh_button = 0
             for t in self._textbox.text_on_screen_list:
                 if t.id == 1:
