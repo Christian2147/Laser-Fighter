@@ -46,9 +46,12 @@ from components.spawn.SpawnPowerUpPygame import SpawnPowerUp
 from components.spawn.SpawnPowerUpPygame import SpawnYellowPowerUpIndicator
 from components.spawn.SpawnPowerUpPygame import SpawnBluePowerUpIndicator
 from components.spawn.SpawnPowerUpPygame import SpawnExtraPowerUpIndicator
+from components.spawn.SpawnGUIPygame import SpawnPanel
 from components.spawn.SpawnCoinPygame import SpawnCoinIndicator
 from components.spawn.SpawnTextboxPygame import SpawnTextbox
 from components.spawn.SpawnButtonPygame import SpawnButton
+from components.spawn.SpawnGUIPygame import SpawnPriceLabel
+from components.spawn.SpawnGUIPygame import SpawnSelector
 from physics.MachineCollisionPygame import MachineCollision
 from utils.MovementManagerPygame import Movement
 from utils.ScreenManagerPygame import ScreenUpdate
@@ -64,6 +67,8 @@ def main():
     power_up = SpawnPowerUp(window.scale_factor_X, window.scale_factor_Y)
     machine_player = SpawnMachinePlayer(window.scale_factor_X, window.scale_factor_Y)
 
+    panel = SpawnPanel(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
+
     yellow_power_up_indicator = SpawnYellowPowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
     blue_power_up_indicator = SpawnBluePowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
     extra_power_up_indicator = SpawnExtraPowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
@@ -71,6 +76,9 @@ def main():
 
     button = SpawnButton(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
     textbox = SpawnTextbox(window.scale_factor, window.scale_factor_X)
+
+    selector = SpawnSelector(window.scale_factor_X, window.scale_factor_Y)
+    price_label = SpawnPriceLabel()
 
     screen = ScreenUpdate(window, button, settings, shop_config, refresh_variables,
                           power_up_setup, machine_mode_setup,
