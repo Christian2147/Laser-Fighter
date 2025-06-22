@@ -133,6 +133,11 @@ class Button(pygame.sprite.Sprite):
             self.rect = self.image.get_rect()
             if id == 1:
                 self.rect.center = (103 * scale_factor_x, 21 * scale_factor_y)
+        elif type == "Tab":
+            self.image = pygame.image.load(TAB_TEXTURE)
+            self.rect = self.image.get_rect()
+            if id < 5:
+                self.rect.center = (int(37.5 * scale_factor_x), int((210 + (120 * (id - 1))) * scale_factor_y))
         elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadgets_Slot":
             self.image = pygame.image.load(INVENTORY_SLOT_FRAME_TEXTURE)
             self.rect = self.image.get_rect()

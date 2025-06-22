@@ -59,6 +59,8 @@ from utils.SettingsManagerPygame import SettingsToggle
 from utils.ControlsManagerPygame import Controls
 from utils.PreventSleepPygame import MonitorSleepController
 
+MOVE_REPEAT_DELAY = 0.05
+
 
 def main():
     window = GameWindow()
@@ -94,13 +96,11 @@ def main():
                         controls_toggle, refresh_variables, window.scale_factor_X,
                         window.scale_factor_Y)
 
-    text_refresh = TextRefresh(screen, button, textbox, yellow_power_up_indicator, blue_power_up_indicator,
+    text_refresh = TextRefresh(screen, button, panel, textbox, yellow_power_up_indicator, blue_power_up_indicator,
                                extra_power_up_indicator, settings, settings_toggle,
                                statistics, shop_config, controls, controls_toggle, refresh_variables)
 
-    MOVE_REPEAT_DELAY = 0.05
     last_move_time = 0
-
     start_ticks = pygame.time.get_ticks()
 
     # The main game loop:
@@ -151,6 +151,8 @@ def main():
                             if bu.type == "Title":
                                 if bu.id == 1:
                                     screen.launch_machine_mode()
+                                elif bu.id == 2:
+                                    screen.launch_shop_mode()
                                 elif bu.id == 3:
                                     running = False
                             elif bu.type == "Title_Small":
@@ -259,6 +261,10 @@ def main():
                 if hasattr(mp, 'armor_bar') and mp.armor_bar.armor_bar_visible == 1:
                     window.screen.blit(mp.armor_bar.image, mp.armor_bar.rect)
 
+        for pa in panel.panel_sprite:
+            if pa.panel_visible == 1:
+                window.screen.blit(pa.image, pa.rect)
+
         for ypi in yellow_power_up_indicator.yellow_power_up_indicator_sprite:
             if ypi.yellow_power_up_indicator_visible == 1:
                 window.screen.blit(ypi.image, ypi.rect)
@@ -318,6 +324,10 @@ def main():
                 bu.remove()
             button.buttons_on_screen_list.clear()
             button.current_button_index = 0
+            if screen.page_update != 1:
+                for pa in panel.panel_sprite:
+                    pa.remove()
+                panel.panel_index = 0
             for t in textbox.text_on_screen_list:
                 t.get_text_box().clear()
                 t.remove()
@@ -776,6 +786,43 @@ def main():
             blue_machine.blue_machines.clear()
             blue_machine.blue_machine_index = 0
             blue_machine.blue_machines_update_values.clear()
+
+        """
+            Code below is for when the Shop is entered
+        """
+
+        if screen.mode == "Shop":
+            # Create the side panel
+            if panel.panel_index == 0:
+                panel.spawn_panel(screen.mode)
+
+            # Create Main Menu button and the different Tabs
+            if button.current_button_index == 0:
+                button.spawn_button("Game", 1)
+                for i in range(4):
+                    button.spawn_button("Tab", i + 1)
+
+            # Spawn all the necessary standalone text
+            if textbox.current_text_index == 0:
+                textbox.spawn_text_box(1, 565 * window.scale_factor_X, 70 * window.scale_factor_Y, "red")
+                textbox.spawn_text_box(2, 52 * window.scale_factor_X, 44 * window.scale_factor_Y, "yellow")
+                textbox.spawn_text_box(3, 140 * window.scale_factor_X, 170 * window.scale_factor_Y, "#ff5349")
+
+            # Spawn the tab selector if it does not exist
+            if selector.current_selector_index == 0:
+                selector.spawn_selector("Tab")
+
+            # If pages goes here
+
+            # Spawn the coin indicator
+            if coin_indicator.coin_indicator_index == 0:
+                coin_indicator.spawn_coin_indicator()
+
+            # Move the title text back and fourth across the screen as needed
+            for t in textbox.text_on_screen_list:
+                if t.id == 1:
+                    t.move(screen.mode)
+                    break
 
         """
              Code Below is for when Statistics Mode is turned on.

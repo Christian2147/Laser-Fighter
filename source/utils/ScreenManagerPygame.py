@@ -481,6 +481,25 @@ class ScreenUpdate:
     #         self._refresh.refresh_text = 1
     #         self._refresh.move_tab_selector = 1
 
+    def launch_shop_mode(self):
+        """
+            Function used to enter the shop in Laser Fighter.
+
+            :return: None
+        """
+
+        if self._settings.button_sound == 1:
+            sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+            sound.play()
+        # Enter The Shop
+        self._mode = "Shop"
+        # Display the Machine Mode page by default
+        self._page = "Machine_Mode"
+        self._screen_update = 1
+        self._refresh.refresh_panel = 1
+        self._refresh.refresh_text = 1
+        self._refresh.move_slot_selector = 1
+
     def launch_stats_mode(self):
         """
             Function used to enter the statistics screen.

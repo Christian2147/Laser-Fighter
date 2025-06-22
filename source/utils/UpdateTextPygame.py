@@ -46,7 +46,7 @@ class TextRefresh:
     """
 
     def __init__(self, screen,
-                 button, #panel,
+                 button, panel,
                  textbox, yellow_power_up_indicator,
                  blue_power_up_indicator, extra_power_up_indicator,
                  settings, settings_toggle,
@@ -104,7 +104,7 @@ class TextRefresh:
 
         self._screen = screen
         self._button = button
-        # self._panel = panel
+        self._panel = panel
         self._textbox = textbox
         self._yellow_power_up_indicator = yellow_power_up_indicator
         self._blue_power_up_indicator = blue_power_up_indicator
@@ -127,7 +127,7 @@ class TextRefresh:
 
         del self._screen
         del self._button
-        # del self._panel
+        del self._panel
         del self._textbox
         del self._yellow_power_up_indicator
         del self._blue_power_up_indicator
@@ -237,6 +237,130 @@ class TextRefresh:
                     t.write_left("{}".format(self._shop_config.total_coins), "normal", "normal")
                 elif t.id == 6:
                     t.write("God Mode Is On!", "normal", "normal")
+        elif self._screen.mode == "Shop":
+            if self._refresh.refresh_button == 1:
+                for bu in self._button.buttons_on_screen_list:
+                    if bu.get_type() != "Shop_Slot" and bu.get_type() != "Buy":
+                        bu.write_lines()
+                    # Refreshes indicators
+                    if bu.get_type() == "Power_Up_Slot":
+                        if bu.get_id() == 1:
+                            bu.write_indicator(self._shop_config.yellow_power_up_level)
+                        elif bu.get_id() == 2:
+                            bu.write_indicator(self._shop_config.blue_power_up_level)
+                        elif bu.get_id() == 3:
+                            bu.write_indicator(self._shop_config.green_power_up_level)
+                        elif bu.get_id() == 4:
+                            bu.write_indicator(self._shop_config.red_power_up_level)
+                    elif bu.get_type() == "Gadget_Slot":
+                        if bu.get_id() == 1:
+                            if self._shop_config.coin_magnet_unlocked:
+                                bu.write_indicator(self._shop_config.coin_magnet_enabled)
+                        elif bu.get_id() == 2:
+                            if self._shop_config.shield_unlocked:
+                                bu.write_indicator(self._shop_config.shield_enabled)
+                        elif bu.get_id() == 3:
+                            if self._shop_config.thorns_unlocked:
+                                bu.write_indicator(self._shop_config.thorns_enabled)
+                        elif bu.get_id() == 4:
+                            if self._shop_config.hearts_unlocked:
+                                bu.write_indicator(self._shop_config.hearts_enabled)
+                    # elif bu.get_type() == "Buy":
+                    #    bu.write_buy(self._shop.price_displayed)
+                    # Display the enable button text based on which gadget is currently being displayed
+                    #   in the side panel
+                    elif bu.get_type() == "Enable":
+                        for pa in self._panel.panel_turtle:
+                            if pa.category == "Gadget":
+                                if pa.id == 1:
+                                    bu.write_enable(self._shop_config.coin_magnet_enabled)
+                                elif pa.id == 2:
+                                    bu.write_enable(self._shop_config.shield_enabled)
+                                elif pa.id == 3:
+                                    bu.write_enable(self._shop_config.thorns_enabled)
+                                elif pa.id == 4:
+                                    bu.write_enable(self._shop_config.hearts_enabled)
+            if self._refresh.refresh_button == 1:
+                self._refresh.refresh_button = 0
+            # Refreshes panel text
+            if self._refresh.refresh_panel == 1:
+                for pa in self._panel.panel_sprite:
+                    pa.write_text()
+                self._refresh.refresh_panel = 0
+            for t in self._textbox.text_on_screen_list:
+                if t.id == 1:
+                    t.write("Shop", "title", "bold")
+                elif t.id == 2:
+                    t.write_left("{}".format(self._shop_config.total_coins), "normal", "normal")
+                if self._refresh.refresh_text == 1:
+                    if self._screen.page == "Machine_Mode":
+                        if t.id == 3:
+                            t.write_left("Machine Mode", "large", "bold")
+                        elif t.id == 5:
+                            t.write_left(" 5000", "small", "normal")
+                        elif t.id == 6:
+                            t.write_left(" 15000", "small", "normal")
+                        elif t.id == 7:
+                            t.write_left(" 40000", "small", "normal")
+                        elif t.id == 8:
+                            t.write_left(" 100000", "small", "normal")
+                    elif self._screen.page == "Alien_Mode":
+                        if t.id == 3:
+                            t.write_left("Alien Mode", "large", "bold")
+                        elif t.id == 5:
+                            t.write_left(" 5000", "small", "normal")
+                        elif t.id == 6:
+                            t.write_left(" 15000", "small", "normal")
+                        elif t.id == 7:
+                            t.write_left(" 40000", "small", "normal")
+                        elif t.id == 8:
+                            t.write_left(" 100000", "small", "normal")
+                    elif self._screen.page == "Power_Ups":
+                        if t.id == 3:
+                            t.write_left("Power Ups", "large", "bold")
+                        elif t.id == 4:
+                            if self._shop_config.yellow_power_up_level == 1:
+                                t.write_left(" 1000", "small", "normal")
+                            elif self._shop_config.yellow_power_up_level == 2:
+                                t.write_left(" 5000", "small", "normal")
+                            elif self._shop_config.yellow_power_up_level == 3:
+                                t.write_left(" 15000", "small", "normal")
+                            elif self._shop_config.yellow_power_up_level == 4:
+                                t.write_left(" 30000", "small", "normal")
+                        elif t.id == 5:
+                            if self._shop_config.blue_power_up_level == 1:
+                                t.write_left(" 1000", "small", "normal")
+                            elif self._shop_config.blue_power_up_level == 2:
+                                t.write_left(" 5000", "small", "normal")
+                            elif self._shop_config.blue_power_up_level == 3:
+                                t.write_left(" 15000", "small", "normal")
+                            elif self._shop_config.blue_power_up_level == 4:
+                                t.write_left(" 30000", "small", "normal")
+                        elif t.id == 6:
+                            if self._shop_config.green_power_up_level == 1:
+                                t.write_left(" 1000", "small", "normal")
+                            elif self._shop_config.green_power_up_level == 2:
+                                t.write_left(" 5000", "small", "normal")
+                            elif self._shop_config.green_power_up_level == 3:
+                                t.write_left(" 15000", "small", "normal")
+                            elif self._shop_config.green_power_up_level == 4:
+                                t.write_left(" 30000", "small", "normal")
+                        elif t.id == 7:
+                            if self._shop_config.red_power_up_level == 1:
+                                t.write_left(" 1000", "small", "normal")
+                            elif self._shop_config.red_power_up_level == 2:
+                                t.write_left(" 5000", "small", "normal")
+                            elif self._shop_config.red_power_up_level == 3:
+                                t.write_left(" 15000", "small", "normal")
+                            elif self._shop_config.red_power_up_level == 4:
+                                t.write_left(" 30000", "small", "normal")
+                    elif self._screen.page == "Gadgets":
+                        if t.id == 3:
+                            t.write_left("Gadgets", "large", "bold")
+                        elif 4 <= t.id < 8:
+                            t.write_left(" 50000", "small", "normal")
+            if self._refresh.refresh_text == 1:
+                self._refresh.refresh_text = 0
         elif self._screen.mode == "Stats":
             if self._refresh.refresh_button == 1:
                 for bu in self._button.buttons_on_screen_list:
@@ -372,230 +496,6 @@ class TextRefresh:
         #         elif t.id == 5:
         #             t.write_left("{}".format(self._shop_config.total_coins), 24, "normal")
         #         elif t.id == 6:
-        #             t.write("God Mode Is On!", 24, "normal")
-        # elif self._screen.mode == "Shop":
-        #     if self._refresh.refresh_button == 1:
-        #         for bu in self._button.buttons_on_screen_list:
-        #             if bu.get_type() != "Shop_Slot" and bu.get_type() != "Buy":
-        #                 bu.write_lines()
-        #             # Refreshes indicators
-        #             if bu.get_type() == "Power_Up_Slot":
-        #                 if bu.get_id() == 1:
-        #                     bu.write_indicator(self._shop_config.yellow_power_up_level)
-        #                 elif bu.get_id() == 2:
-        #                     bu.write_indicator(self._shop_config.blue_power_up_level)
-        #                 elif bu.get_id() == 3:
-        #                     bu.write_indicator(self._shop_config.green_power_up_level)
-        #                 elif bu.get_id() == 4:
-        #                     bu.write_indicator(self._shop_config.red_power_up_level)
-        #             elif bu.get_type() == "Gadget_Slot":
-        #                 if bu.get_id() == 1:
-        #                     if self._shop_config.coin_magnet_unlocked:
-        #                         bu.write_indicator(self._shop_config.coin_magnet_enabled)
-        #                 elif bu.get_id() == 2:
-        #                     if self._shop_config.shield_unlocked:
-        #                         bu.write_indicator(self._shop_config.shield_enabled)
-        #                 elif bu.get_id() == 3:
-        #                     if self._shop_config.thorns_unlocked:
-        #                         bu.write_indicator(self._shop_config.thorns_enabled)
-        #                 elif bu.get_id() == 4:
-        #                     if self._shop_config.hearts_unlocked:
-        #                         bu.write_indicator(self._shop_config.hearts_enabled)
-        #             elif bu.get_type() == "Buy":
-        #                 bu.write_buy(self._shop.price_displayed)
-        #             # Display the enable button text based on which gadget is currently being displayed
-        #             #   in the side panel
-        #             elif bu.get_type() == "Enable":
-        #                 for pa in self._panel.panel_turtle:
-        #                     if pa.category == "Gadget":
-        #                         if pa.id == 1:
-        #                             bu.write_enable(self._shop_config.coin_magnet_enabled)
-        #                         elif pa.id == 2:
-        #                             bu.write_enable(self._shop_config.shield_enabled)
-        #                         elif pa.id == 3:
-        #                             bu.write_enable(self._shop_config.thorns_enabled)
-        #                         elif pa.id == 4:
-        #                             bu.write_enable(self._shop_config.hearts_enabled)
-        #     if self._refresh.refresh_button == 1:
-        #         self._refresh.refresh_button = 0
-        #     # Refreshes panel text
-        #     if self._refresh.refresh_panel == 1:
-        #         for pa in self._panel.panel_turtle:
-        #             pa.write_text()
-        #         self._refresh.refresh_panel = 0
-        #     for t in self._textbox.text_on_screen_list:
-        #         if t.id == 1:
-        #             t.write("Shop", 72, "bold")
-        #         elif t.id == 2:
-        #             t.write_left("{}".format(self._shop_config.total_coins), 24, "normal")
-        #         if self._refresh.refresh_text == 1:
-        #             if self._screen.page == "Machine_Mode":
-        #                 if t.id == 3:
-        #                     t.write_left("Machine Mode", 36, "bold")
-        #                 elif t.id == 5:
-        #                     t.write_left(" 5000", 22, "normal")
-        #                 elif t.id == 6:
-        #                     t.write_left(" 15000", 22, "normal")
-        #                 elif t.id == 7:
-        #                     t.write_left(" 40000", 22, "normal")
-        #                 elif t.id == 8:
-        #                     t.write_left(" 100000", 22, "normal")
-        #             elif self._screen.page == "Alien_Mode":
-        #                 if t.id == 3:
-        #                     t.write_left("Alien Mode", 36, "bold")
-        #                 elif t.id == 5:
-        #                     t.write_left(" 5000", 22, "normal")
-        #                 elif t.id == 6:
-        #                     t.write_left(" 15000", 22, "normal")
-        #                 elif t.id == 7:
-        #                     t.write_left(" 40000", 22, "normal")
-        #                 elif t.id == 8:
-        #                     t.write_left(" 100000", 22, "normal")
-        #             elif self._screen.page == "Power_Ups":
-        #                 if t.id == 3:
-        #                     t.write_left("Power Ups", 36, "bold")
-        #                 elif t.id == 4:
-        #                     if self._shop_config.yellow_power_up_level == 1:
-        #                         t.write_left(" 1000", 22, "normal")
-        #                     elif self._shop_config.yellow_power_up_level == 2:
-        #                         t.write_left(" 5000", 22, "normal")
-        #                     elif self._shop_config.yellow_power_up_level == 3:
-        #                         t.write_left(" 15000", 22, "normal")
-        #                     elif self._shop_config.yellow_power_up_level == 4:
-        #                         t.write_left(" 30000", 22, "normal")
-        #                 elif t.id == 5:
-        #                     if self._shop_config.blue_power_up_level == 1:
-        #                         t.write_left(" 1000", 22, "normal")
-        #                     elif self._shop_config.blue_power_up_level == 2:
-        #                         t.write_left(" 5000", 22, "normal")
-        #                     elif self._shop_config.blue_power_up_level == 3:
-        #                         t.write_left(" 15000", 22, "normal")
-        #                     elif self._shop_config.blue_power_up_level == 4:
-        #                         t.write_left(" 30000", 22, "normal")
-        #                 elif t.id == 6:
-        #                     if self._shop_config.green_power_up_level == 1:
-        #                         t.write_left(" 1000", 22, "normal")
-        #                     elif self._shop_config.green_power_up_level == 2:
-        #                         t.write_left(" 5000", 22, "normal")
-        #                     elif self._shop_config.green_power_up_level == 3:
-        #                         t.write_left(" 15000", 22, "normal")
-        #                     elif self._shop_config.green_power_up_level == 4:
-        #                         t.write_left(" 30000", 22, "normal")
-        #                 elif t.id == 7:
-        #                     if self._shop_config.red_power_up_level == 1:
-        #                         t.write_left(" 1000", 22, "normal")
-        #                     elif self._shop_config.red_power_up_level == 2:
-        #                         t.write_left(" 5000", 22, "normal")
-        #                     elif self._shop_config.red_power_up_level == 3:
-        #                         t.write_left(" 15000", 22, "normal")
-        #                     elif self._shop_config.red_power_up_level == 4:
-        #                         t.write_left(" 30000", 22, "normal")
-        #             elif self._screen.page == "Gadgets":
-        #                 if t.id == 3:
-        #                     t.write_left("Gadgets", 36, "bold")
-        #                 elif 4 <= t.id < 8:
-        #                     t.write_left(" 50000", 22, "normal")
-        #     if self._refresh.refresh_text == 1:
-        #         self._refresh.refresh_text = 0
-        # elif self._screen.mode == "Stats":
-        #     if self._refresh.refresh_button == 1:
-        #         for bu in self._button.buttons_on_screen_list:
-        #             bu.write_lines()
-        #     if self._refresh.refresh_button == 1:
-        #         self._refresh.refresh_button = 0
-        #     for t in self._textbox.text_on_screen_list:
-        #         if t.id == 1:
-        #             t.write("Statistics", 72, "bold")
-        #         if self._refresh.refresh_text == 1:
-        #             if t.id == 2:
-        #                 t.write("Machine Mode", 48, "bold")
-        #             elif t.id == 3:
-        #                 t.write("Alien Mode", 48, "bold")
-        #             elif t.id == 4:
-        #                 t.write("High Score: {}".format(self._statistics.high_score_machine_war), 24, "normal")
-        #             elif t.id == 5:
-        #                 t.write("Bosses Killed: {}".format(self._statistics.bosses_killed), 24, "normal")
-        #             elif t.id == 6:
-        #                 t.write("Red Bots Killed: {}".format(self._statistics.red_bots_killed), 24, "normal")
-        #             elif t.id == 7:
-        #                 t.write("Yellow Bots Killed: {}".format(self._statistics.yellow_bots_killed), 24, "normal")
-        #             elif t.id == 8:
-        #                 t.write("Blue Bots Killed: {}".format(self._statistics.blue_bots_killed), 24, "normal")
-        #             elif t.id == 9:
-        #                 t.write("Deaths: {}".format(self._statistics.classic_deaths), 24, "normal")
-        #             elif t.id == 10:
-        #                 t.write("Damage Taken: {}".format(self._statistics.machine_damage_taken), 24, "normal")
-        #             elif t.id == 11:
-        #                 t.write("Lasers Fired: {}".format(self._statistics.classic_lasers_fired), 24, "normal")
-        #             elif t.id == 12:
-        #                 t.write("Power Ups Picked Up: {}".format(self._statistics.classic_power_ups_picked_up), 24, "normal")
-        #             elif t.id == 13:
-        #                 t.write("Coins Collected: {}".format(self._statistics.machine_coins_collected), 24, "normal")
-        #             elif t.id == 14:
-        #                 t.write("High Score: {}".format(self._statistics.high_score_alien_mode), 24, "normal")
-        #             elif t.id == 15:
-        #                 t.write("UFOs Killed: {}".format(self._statistics.ufos_killed), 24, "normal")
-        #             elif t.id == 16:
-        #                 t.write("Big Aliens Killed: {}".format(self._statistics.big_aliens_killed), 24, "normal")
-        #             elif t.id == 17:
-        #                 t.write("Medium Aliens Killed: {}".format(self._statistics.medium_aliens_killed), 24, "normal")
-        #             elif t.id == 18:
-        #                 t.write("Small Aliens Killed: {}".format(self._statistics.small_aliens_killed), 24, "normal")
-        #             elif t.id == 19:
-        #                 t.write("Deaths: {}".format(self._statistics.alien_deaths), 24, "normal")
-        #             elif t.id == 20:
-        #                 t.write("Damage Taken: {}".format(self._statistics.damage_taken), 24, "normal")
-        #             elif t.id == 21:
-        #                 t.write("Lasers Fired: {}".format(self._statistics.alien_lasers_fired), 24, "normal")
-        #             elif t.id == 22:
-        #                 t.write("Jumps: {}".format(self._statistics.jumps), 24, "normal")
-        #             elif t.id == 23:
-        #                 t.write("Power Ups Picked Up: {}".format(self._statistics.alien_power_ups_picked_up), 24, "normal")
-        #             elif t.id == 24:
-        #                 t.write("Coins Collected: {}".format(self._statistics.alien_coins_collected), 24, "normal")
-        #                 self._refresh.refresh_text = 0
-        #         if t.id == 25:
-        #             t.write("God Mode Is On!", 24, "normal")
-        # elif self._screen.mode == "Settings":
-        #     for bu in self._button.buttons_on_screen_list:
-        #         if self._refresh.refresh_button == 1:
-        #             bu.write_lines()
-        #         if self._refresh.refresh_indicator == 1 or self._refresh.refresh_indicator == 2:
-        #             if bu.type == "Settings_Toggle":
-        #                 if bu.id == 1:
-        #                     bu.write_indicator(self._settings.button_sound)
-        #                 elif bu.id == 2:
-        #                     bu.write_indicator(self._settings.player_shooting_sound)
-        #                 elif bu.id == 3:
-        #                     bu.write_indicator(self._settings.enemy_shooting_sound)
-        #                 elif bu.id == 4:
-        #                     bu.write_indicator(self._settings.player_death_sound)
-        #                 elif bu.id == 5:
-        #                     bu.write_indicator(self._settings.enemy_death_sound)
-        #                 elif bu.id == 6:
-        #                     bu.write_indicator(self._settings.player_hit_sound)
-        #                 elif bu.id == 7:
-        #                     bu.write_indicator(self._settings.enemy_hit_sound)
-        #                 elif bu.id == 8:
-        #                     bu.write_indicator(self._settings.power_up_pickup_sound)
-        #                 elif bu.id == 9:
-        #                     bu.write_indicator(self._settings.power_up_spawn_sound)
-        #                 elif bu.id == 10:
-        #                     bu.write_indicator(self._settings.coin_pickup_sound)
-        #                 elif bu.id == 11:
-        #                     bu.write_fullscreen_indicator(self._settings.fullscreen, self._settings_toggle.fullscreen_toggled)
-        #                 elif bu.id == 12:
-        #                     bu.write_indicator(self._settings.vsync)
-        #     if self._refresh.refresh_button == 1:
-        #         self._refresh.refresh_button = 0
-        #     if self._refresh.refresh_indicator == 2:
-        #         self._refresh.refresh_indicator = 0
-        #     elif self._refresh.refresh_indicator == 1:
-        #         self._refresh.refresh_indicator = 2
-        #     for t in self._textbox.text_on_screen_list:
-        #         if t.id == 1:
-        #             t.write("Settings", 72, "bold")
-        #         elif t.id == 2:
         #             t.write("God Mode Is On!", 24, "normal")
         elif self._screen.mode == "Controls":
             if self._refresh.refresh_button == 1 or self._refresh.refresh_button == 2 or self._refresh.refresh_button == 3:
