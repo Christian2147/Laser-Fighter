@@ -65,7 +65,6 @@ class Selector(pygame.sprite.Sprite):
 
         self.kill()
         del self
-        del self.type
 
     def get_selector(self):
         """

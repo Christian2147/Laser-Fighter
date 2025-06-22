@@ -806,7 +806,7 @@ def main():
             if textbox.current_text_index == 0:
                 textbox.spawn_text_box(1, 565 * window.scale_factor_X, 70 * window.scale_factor_Y, "red")
                 textbox.spawn_text_box(2, 52 * window.scale_factor_X, 44 * window.scale_factor_Y, "yellow")
-                textbox.spawn_text_box(3, 140 * window.scale_factor_X, 170 * window.scale_factor_Y, "#ff5349")
+                textbox.spawn_text_box(3, 140 * window.scale_factor_X, 119 * window.scale_factor_Y, "#ff5349")
 
             # Spawn the tab selector if it does not exist
             if selector.current_selector_index == 0:
