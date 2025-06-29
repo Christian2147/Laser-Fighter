@@ -384,12 +384,6 @@ class Shop:
         """
             Buys the item that is selected in the shop and selects the item to be used.
 
-            :param x: The current x-coordinate of the cursor
-            :type x: float
-
-            :param y: The current y-coordinate of the cursor
-            :type y: float
-
             :return: None
         """
 
@@ -423,7 +417,7 @@ class Shop:
                 self._shop_config.total_coins = self._shop_config.total_coins - self._price_displayed
                 self._shop_config.save()
                 current_slot = 0
-                for pl in self._panel.panel_turtle:
+                for pl in self._panel.panel_sprite:
                     current_slot = pl.get_panel_id()
                 # Unlock the slot and select it
                 if self._screen.page == "Machine_Mode":
@@ -520,7 +514,7 @@ class Shop:
         if self._settings.button_sound == 1:
             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
             sound.play()
-        for pa in self._panel.panel_turtle:
+        for pa in self._panel.panel_sprite:
             # Check to see what gadgets is currently being displayed
             if pa.category == "Gadget":
                 if pa.id == 1:
@@ -547,5 +541,5 @@ class Shop:
         # Save the settings and update the screen
         self._shop_config.save()
         self._refresh.refresh_panel = 1
-        self._refresh.refresh_text = 1
+        self._refresh.refresh_text = 2
         self._refresh.refresh_button = 1

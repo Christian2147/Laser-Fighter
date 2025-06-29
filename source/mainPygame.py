@@ -189,6 +189,10 @@ def main():
                                     shop.slot_4_select()
                                 elif bu.id == 5:
                                     shop.slot_5_select()
+                            elif bu.type == "Buy":
+                                shop.execute_buy_button()
+                            elif bu.type == "Enable":
+                                shop.execute_enable_button()
                             elif bu.type == "Regular_Settings_And_Controls":
                                 if bu.id == 1:
                                     screen.launch_title_mode()

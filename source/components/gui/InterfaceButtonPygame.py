@@ -382,8 +382,9 @@ class Button(pygame.sprite.Sprite):
 
         self.button_text.rect.center = (self.rect.centerx - 80 * self.scale_factor_x, self.rect.centery - 30 * self.scale_factor_y)
         self.button_text.write_text("Buy: ", "semi-medium", "normal")
-        self.extra_button_text.rect.center = (self.rect.centerx - 105 * self.scale_factor_x, self.rect.centery + 10 * self.scale_factor_y)
-        self.extra_button_text.write_text_left("{}".format(price), "semi-medium", "normal")
+        topleft_x = self.rect.centerx - 105 * self.scale_factor_x
+        topleft_y = self.rect.centery + 10 * self.scale_factor_y
+        self.extra_button_text.write_text_left(f"{price}", "semi-medium", "normal", topleft_x, topleft_y)
 
     def write_enable(self, check_gadget):
         """
@@ -768,8 +769,7 @@ class ButtonText(pygame.sprite.Sprite):
                     self.image = self.normal_font.render(text, True, self.color)
             self.rect = self.image.get_rect(center=old_center)
 
-    def write_text_left(self, text, size, type):
-        old_topleft = self.rect.topleft
+    def write_text_left(self, text, size, type, x, y):
         if size == "small":
             if type == "bold":
                 self.image = self.small_font_bold.render(text, True, self.color)
@@ -818,7 +818,7 @@ class ButtonText(pygame.sprite.Sprite):
                 self.image = self.normal_font_bold.render(text, True, self.color)
             else:
                 self.image = self.normal_font.render(text, True, self.color)
-        self.rect = self.image.get_rect(topleft=old_topleft)
+        self.rect = self.image.get_rect(topleft=(x, y))
 
 
 class ButtonIndicator(pygame.sprite.Sprite):
