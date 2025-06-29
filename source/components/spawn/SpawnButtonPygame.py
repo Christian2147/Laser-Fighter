@@ -100,7 +100,7 @@ class SpawnButton:
         """
 
         # Create a new button object
-        if type != "Shop_Slot":
+        if type != "Shop_Slot" and type != "Power_Up_Slot" and type != "Gadget_Slot":
             button = Button(type, id, self.scale_factor, self.scale_factor_x, self.scale_factor_y)
         else:
             # The page the user is on is needed for the Shop Slot

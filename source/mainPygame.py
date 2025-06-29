@@ -312,6 +312,14 @@ def main():
             if t.text_box_visible == 1:
                 window.screen.blit(t.image, t.rect)
 
+        for p in price_label.price_label_on_screen_list:
+            if p.price_label_visible == 1:
+                window.screen.blit(p.image, p.rect)
+
+        for s in selector.selector_on_screen_list:
+            if s.selector_visible == 1:
+                window.screen.blit(s.image, s.rect)
+
 
 
         # Rest of regular logic
@@ -350,6 +358,15 @@ def main():
                 t.remove()
             textbox.text_on_screen_list.clear()
             textbox.current_text_index = 0
+            for pl in price_label.price_label_on_screen_list:
+                pl.remove()
+            price_label.price_label_on_screen_list.clear()
+            price_label.current_price_index = 0
+            for s in selector.selector_on_screen_list:
+                s.remove()
+            selector.selector_on_screen_list.clear()
+            selector.current_selector_index = 0
+            statistics.score = 0
             refresh_variables.refresh_button = 1
             refresh_variables.refresh_indicator = 1
             refresh_variables.refresh_text = 1
@@ -831,6 +848,230 @@ def main():
 
             # If pages goes here
 
+            if screen.page == "Machine_Mode":
+                if button.current_button_index == 5:
+                    for i in range(5):
+                        button.spawn_button("Shop_Slot", i + 1, screen.page)
+
+                if textbox.current_text_index == 3 and button.buy_button_pressed == 0:
+                    counter = 4
+                    for bu in button.buttons_on_screen_list:
+                        if bu.get_type() == "Shop_Slot":
+                            if bu.get_indicator_toggled() == 1:
+                                textbox.spawn_text_box(counter, bu.rect.centerx - 50 * window.scale_factor_X, bu.rect.centery + 45 * window.scale_factor_Y, "yellow")
+                                price_label.spawn_price_label(counter, bu.rect.centerx - 50 * window.scale_factor_X, bu.rect.centery + 60 * window.scale_factor_Y)
+                                refresh_variables.refresh_text = 1
+                            counter = counter + 1
+
+                # Spawn the slot selector if it does not exist
+                if selector.current_selector_index == 1:
+                    selector.spawn_selector("Slot")
+
+                # Check if the tab selector must be moved
+                if refresh_variables.move_tab_selector == 1:
+                    for s in selector.selector_on_screen_list:
+                        if s.get_type() == "Tab":
+                            for bu in button.buttons_on_screen_list:
+                                if bu.get_type() == "Tab" and bu.get_id() == 1:
+                                    s.new_select(bu.rect.centerx - 1 * window.scale_factor_X,
+                                                 bu.rect.centery)
+                                    refresh_variables.move_tab_selector = 0
+
+                # Check if the slot selector must be moved
+                if refresh_variables.move_slot_selector == 1:
+                    for s in selector.selector_on_screen_list:
+                        if s.get_type() == "Slot":
+                            for bu in button.buttons_on_screen_list:
+                                if bu.get_type() == "Shop_Slot" and bu.get_id() == shop_config.machine_slot_selected:
+                                    s.new_select(bu.rect.centerx, bu.rect.centery)
+                                    refresh_variables.move_slot_selector = 0
+
+                # Check if the slots are locked or not
+                for bu in button.buttons_on_screen_list:
+                    if bu.get_type() == "Shop_Slot":
+                        if bu.get_id() == 1:
+                            bu.toggle_indicator(shop_config.machine_slots_unlocked[0])
+                        elif bu.get_id() == 2:
+                            bu.toggle_indicator(shop_config.machine_slots_unlocked[1])
+                        elif bu.get_id() == 3:
+                            bu.toggle_indicator(shop_config.machine_slots_unlocked[2])
+                        elif bu.get_id() == 4:
+                            bu.toggle_indicator(shop_config.machine_slots_unlocked[3])
+                        elif bu.get_id() == 5:
+                            bu.toggle_indicator(shop_config.machine_slots_unlocked[4])
+            # If the page is "Alien_Mode"
+            elif screen.page == "Alien_Mode":
+                # Create 5 shop slots
+                if button.current_button_index == 5:
+                    for i in range(5):
+                        button.spawn_button("Shop_Slot", i + 1, screen.page)
+
+                # Create 0-4 price labels if needed (They are only needed if items are locked)
+                if textbox.current_text_index == 3 and button.buy_button_pressed == 0:
+                    counter = 4
+                    for bu in button.buttons_on_screen_list:
+                        if bu.get_type() == "Shop_Slot":
+                            if bu.get_indicator_toggled() == 1 and shop_config.alien_slots_unlocked[counter - 4] != -1:
+                                textbox.spawn_text_box(counter,
+                                                       bu.rect.centerx - 50 * window.scale_factor_X,
+                                                       bu.rect.centery + 45 * window.scale_factor_Y,
+                                                       "yellow")
+                                price_label.spawn_price_label(counter,
+                                                              bu.rect.centerx - 50 * window.scale_factor_X,
+                                                              bu.rect.centery + 60 * window.scale_factor_Y)
+                                refresh_variables.refresh_text = 1
+                            counter = counter + 1
+
+                # Spawn a slot selector if one does not exist already
+                if shop_config.alien_slot_selected != 0:
+                    if selector.current_selector_index == 1:
+                        selector.spawn_selector("Slot")
+
+                # Check to see if the tab selector needs to be moved
+                if refresh_variables.move_tab_selector == 1:
+                    for s in selector.selector_on_screen_list:
+                        if s.get_type() == "Tab":
+                            for bu in button.buttons_on_screen_list:
+                                if bu.get_type() == "Tab" and bu.get_id() == 2:
+                                    s.new_select(bu.rect.centerx - 1 * window.scale_factor_X, bu.rect.centery)
+                                    refresh_variables.move_tab_selector = 0
+
+                # Check to see if the slot selector needs to be moved
+                if refresh_variables.move_slot_selector == 1:
+                    for s in selector.selector_on_screen_list:
+                        if s.get_type() == "Slot":
+                            for bu in button.buttons_on_screen_list:
+                                if bu.get_type() == "Shop_Slot" and bu.get_id() == shop_config.alien_slot_selected:
+                                    s.new_select(bu.rect.centerx, bu.rect.centery)
+                                    refresh_variables.move_slot_selector = 0
+
+                # Check to see if each slot is locked or not
+                for bu in button.buttons_on_screen_list:
+                    if bu.get_type() == "Shop_Slot":
+                        if bu.get_id() == 1:
+                            bu.toggle_indicator(shop_config.alien_slots_unlocked[0])
+                        elif bu.get_id() == 2:
+                            bu.toggle_indicator(shop_config.alien_slots_unlocked[1])
+                        elif bu.get_id() == 3:
+                            bu.toggle_indicator(shop_config.alien_slots_unlocked[2])
+                        elif bu.get_id() == 4:
+                            bu.toggle_indicator(shop_config.alien_slots_unlocked[3])
+                        elif bu.get_id() == 5:
+                            bu.toggle_indicator(shop_config.alien_slots_unlocked[4])
+            # If the page is "Power_Ups"
+            elif screen.page == "Power_Ups":
+                # Spawn 4 power up slots
+                if button.current_button_index == 5:
+                    for i in range(4):
+                        button.spawn_button("Power_Up_Slot", i + 1, screen.page)
+
+                # Check to see if a price label is still needed and if the power ups are on their max level or not
+                if textbox.current_text_index == 3 and button.buy_button_pressed == 0:
+                    counter = 4
+                    for bu in button.buttons_on_screen_list:
+                        if bu.get_type() == "Power_Up_Slot":
+                            if bu.get_id() == 1:
+                                if shop_config.yellow_power_up_level != 5 and shop_config.yellow_power_up_level != 0:
+                                    textbox.spawn_text_box(counter,
+                                                           bu.rect.centerx - 50 * window.scale_factor_X,
+                                                           bu.rect.centery + 45 * window.scale_factor_Y,
+                                                           "yellow")
+                                    price_label.spawn_price_label(counter,
+                                                                  bu.rect.centerx - 50 * window.scale_factor_X,
+                                                                  bu.rect.centery + 60 * window.scale_factor_Y)
+                                    refresh_variables.refresh_text = 1
+                            elif bu.get_id() == 2:
+                                if shop_config.blue_power_up_level != 5 and shop_config.blue_power_up_level != 0:
+                                    textbox.spawn_text_box(counter,
+                                                           bu.rect.centerx - 50 * window.scale_factor_X,
+                                                           bu.rect.centery + 45 * window.scale_factor_Y,
+                                                           "yellow")
+                                    price_label.spawn_price_label(counter,
+                                                                  bu.rect.centerx - 50 * window.scale_factor_X,
+                                                                  bu.rect.centery + 60 * window.scale_factor_Y)
+                                    refresh_variables.refresh_text = 1
+                            elif bu.get_id() == 3:
+                                if shop_config.green_power_up_level != 5 and shop_config.green_power_up_level != 0:
+                                    textbox.spawn_text_box(counter,
+                                                           bu.rect.centerx - 50 * window.scale_factor_X,
+                                                           bu.rect.centery + 45 * window.scale_factor_Y,
+                                                           "yellow")
+                                    price_label.spawn_price_label(counter,
+                                                                  bu.rect.centerx - 50 * window.scale_factor_X,
+                                                                  bu.rect.centery + 60 * window.scale_factor_Y)
+                                    refresh_variables.refresh_text = 1
+                            elif bu.get_id() == 4:
+                                if shop_config.red_power_up_level != 5 and shop_config.red_power_up_level != 0:
+                                    textbox.spawn_text_box(counter,
+                                                           bu.rect.centerx - 50 * window.scale_factor_X,
+                                                           bu.rect.centery + 45 * window.scale_factor_Y,
+                                                           "yellow")
+                                    price_label.spawn_price_label(counter,
+                                                                  bu.rect.centerx - 50 * window.scale_factor_X,
+                                                                  bu.rect.centery + 60 * window.scale_factor_Y)
+                                    refresh_variables.refresh_text = 1
+                            counter = counter + 1
+
+                # Check to see if the tab selector needs to be moved
+                if refresh_variables.move_tab_selector == 1:
+                    for s in selector.selector_on_screen_list:
+                        if s.get_type() == "Tab":
+                            for bu in button.buttons_on_screen_list:
+                                if bu.get_type() == "Tab" and bu.get_id() == 3:
+                                    s.new_select(bu.rect.centerx - 1 * window.scale_factor_X, bu.rect.centery)
+                                    refresh_variables.move_tab_selector = 0
+
+                # Check what level each power up is at
+                for bu in button.buttons_on_screen_list:
+                    if bu.get_type() == "Power_Up_Slot":
+                        if bu.get_id() == 1:
+                            bu.toggle_indicator(shop_config.yellow_power_up_level)
+                        elif bu.get_id() == 2:
+                            bu.toggle_indicator(shop_config.blue_power_up_level)
+                        elif bu.get_id() == 3:
+                            bu.toggle_indicator(shop_config.green_power_up_level)
+                        elif bu.get_id() == 4:
+                            bu.toggle_indicator(shop_config.red_power_up_level)
+                        bu.set_indicator_location()
+            # If the page is "Gadgets"
+            elif screen.page == "Gadgets":
+                # Spawn 4 gadget slots
+                if button.current_button_index == 5:
+                    for i in range(4):
+                        button.spawn_button("Gadget_Slot", i + 1, screen.page)
+
+                # Check to see if a price label is still needed depending on if the item has been bought or not
+                if textbox.current_text_index == 3 and button.buy_button_pressed == 0:
+                    counter = 4
+                    for bu in button.buttons_on_screen_list:
+                        if bu.get_type() == "Gadget_Slot":
+                            if bu.get_indicator_toggled() == 1:
+                                textbox.spawn_text_box(counter, bu.rect.centerx - 50 * window.scale_factor_X, bu.rect.centery + 45 * window.scale_factor_Y, "yellow")
+                                price_label.spawn_price_label(counter, bu.rect.centerx - 50 * window.scale_factor_X, bu.rect.centery + 60 * window.scale_factor_Y)
+                                refresh_variables.refresh_text = 1
+                            counter = counter + 1
+
+                # Check to see if each gadget is unlocked or not
+                for bu in button.buttons_on_screen_list:
+                    if bu.get_type() == "Gadget_Slot":
+                        if bu.get_id() == 1:
+                            bu.toggle_indicator(shop_config.coin_magnet_unlocked)
+                        elif bu.get_id() == 2:
+                            bu.toggle_indicator(shop_config.shield_unlocked)
+                        elif bu.get_id() == 3:
+                            bu.toggle_indicator(shop_config.thorns_unlocked)
+                        elif bu.get_id() == 4:
+                            bu.toggle_indicator(shop_config.hearts_unlocked)
+                        bu.set_indicator_location()
+
+                # Check to see if the tab selector needs to be moved
+                if refresh_variables.move_tab_selector == 1:
+                    for s in selector.selector_on_screen_list:
+                        if s.get_type() == "Tab":
+                            for bu in button.buttons_on_screen_list:
+                                if bu.get_type() == "Tab" and bu.get_id() == 4:
+                                    s.new_select(bu.rect.centerx - 1 * window.scale_factor_X, bu.rect.centery)
+                                    refresh_variables.move_tab_selector = 0
 
 
             # Spawn the coin indicator

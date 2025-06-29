@@ -138,7 +138,7 @@ class Button(pygame.sprite.Sprite):
             self.rect = self.image.get_rect()
             if id < 5:
                 self.rect.center = (int(37.5 * scale_factor_x), int((210 + (120 * (id - 1))) * scale_factor_y))
-        elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadgets_Slot":
+        elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadget_Slot":
             self.image = pygame.image.load(INVENTORY_SLOT_FRAME_TEXTURE)
             self.rect = self.image.get_rect()
             if id < 5:
@@ -181,10 +181,11 @@ class Button(pygame.sprite.Sprite):
                                       scale_factor, scale_factor_x, scale_factor_y, page)
 
         if type == "Settings_Toggle" or type == "Shop_Slot" or \
-                type == "Power_Up_Slot" or type == "Gadgets_Slot" or type == "Buy":
+                type == "Power_Up_Slot" or type == "Gadget_Slot" or type == "Buy":
             self.button_indicator = ButtonIndicator(type, id, self.rect.centerx, self.rect.centery,
                                                     scale_factor, scale_factor_x, scale_factor_y)
             self.indicator = 1
+            self.indicator_toggled = 0
         else:
             self.indicator = 0
 
@@ -266,7 +267,7 @@ class Button(pygame.sprite.Sprite):
         """
 
         if self.type == "Shop_Slot" or self.type == "Gadget_Slot":
-            return self.button_indicator.indicator_toggled
+            return self.indicator_toggled
 
     def remove(self):
         """
@@ -497,17 +498,19 @@ class Button(pygame.sprite.Sprite):
         if self.type != "Gadget_Slot":
             if check_value == 0 or check_value == -1:
                 self.button_indicator.indicator_visible = 1
-                self.button_text.rect.center = (self.rect.centerx, self.rect.centery + 20 * self.scale_factor_y)
+                self.button_text.rect.center = (self.rect.centerx, self.rect.centery - 20 * self.scale_factor_y)
                 self.indicator_toggled = 1
             else:
-                self.button_indicator.indicator_visible = 0
                 if self.type != "Power_Up_Slot":
-                    self.button_text.center = (self.rect.centerx, self.rect.centery)
+                    self.button_text.rect.center = (self.rect.centerx, self.rect.centery)
+                    self.button_indicator.indicator_visible = 0
+                else:
+                    self.button_indicator.indicator_visible = 1 # Check back on this
                 self.indicator_toggled = 0
         else:
             if not check_value:
                 self.button_indicator.indicator_visible = 1
-                self.button_text.center = (self.rect.centerx, self.rect.centery + 20 * self.scale_factor_y)
+                self.button_text.center = (self.rect.centerx, self.rect.centery - 20 * self.scale_factor_y)
                 self.indicator_toggled = 1
             else:
                 self.button_indicator.indicator_visible = 0
@@ -521,12 +524,13 @@ class Button(pygame.sprite.Sprite):
         """
 
         if self.indicator_toggled == 1:
-            self.button_indicator.center = (self.rect.centerx, self.rect.centery + 20 * self.scale_factor_y)
+            print("")
+            self.button_indicator.rect.center = (self.rect.centerx, self.rect.centery - 20 * self.scale_factor_y)
         else:
             if self.type == "Power_Up_Slot":
-                self.button_indicator.center = (self.rect.centerx, self.rect.centery - 45 * self.scale_factor_y)
+                self.button_indicator.rect.center = (self.rect.centerx, self.rect.centery + 25 * self.scale_factor_y)
             else:
-                self.button_indicator.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+                self.button_indicator.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
 
     def toggle_default(self):
         if self.type == "Title" or self.type == "Title_Locked":
@@ -625,49 +629,49 @@ class ButtonText(pygame.sprite.Sprite):
                 self.image = pygame.image.load(GADGETS_TAB_ICON_TEXTURE)
             self.rect = self.image.get_rect()
             self.rect.center = (x, y)
-        elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadgets_Slot":
+        elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadget_Slot":
             if page == "Machine_Mode":
                 if id == 1:
-                    self.button_image = pygame.image.load(MACHINE_DEFAULT_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(MACHINE_DEFAULT_SLOT_ICON_TEXTURE)
                 elif id == 2:
-                    self.button_image = pygame.image.load(MACHINE_WASHER_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(MACHINE_WASHER_SLOT_ICON_TEXTURE)
                 elif id == 3:
-                    self.button_image = pygame.image.load(THE_INCINERATOR_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(THE_INCINERATOR_SLOT_ICON_TEXTURE)
                 elif id == 4:
-                    self.button_image = pygame.image.load(THE_BLACK_HOLE_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(THE_BLACK_HOLE_SLOT_ICON_TEXTURE)
                 elif id == 5:
-                    self.button_image = pygame.image.load(THE_STAR_KILLER_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(THE_STAR_KILLER_SLOT_ICON_TEXTURE)
             elif page == "Alien_Mode":
                 if id == 1:
-                    self.button_image = pygame.image.load(ALIEN_DEFAULT_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(ALIEN_DEFAULT_SLOT_ICON_TEXTURE)
                 elif id == 2:
-                    self.button_image = pygame.image.load(THE_COOKER_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(THE_COOKER_SLOT_ICON_TEXTURE)
                 elif id == 3:
-                    self.button_image = pygame.image.load(POISON_DART_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(POISON_DART_SLOT_ICON_TEXTURE)
                 elif id == 4:
-                    self.button_image = pygame.image.load(METEOR_GUN_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(METEOR_GUN_SLOT_ICON_TEXTURE)
                 elif id == 5:
-                    self.button_image = pygame.image.load(SUPERNOVA_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(SUPERNOVA_SLOT_ICON_TEXTURE)
             elif page == "Power_Ups":
                 if id == 1:
-                    self.button_image = pygame.image.load(YELLOW_POWER_UP_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(YELLOW_POWER_UP_SLOT_ICON_TEXTURE)
                 elif id == 2:
-                    self.button_image = pygame.image.load(BLUE_POWER_UP_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(BLUE_POWER_UP_SLOT_ICON_TEXTURE)
                 elif id == 3:
-                    self.button_image = pygame.image.load(GREEN_POWER_UP_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(GREEN_POWER_UP_SLOT_ICON_TEXTURE)
                 elif id == 4:
-                    self.button_image = pygame.image.load(RED_POWER_UP_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(RED_POWER_UP_SLOT_ICON_TEXTURE)
             elif page == "Gadgets":
                 if id == 1:
-                    self.button_image = pygame.image.load(COIN_MAGNET_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(COIN_MAGNET_SLOT_ICON_TEXTURE)
                 elif id == 2:
-                    self.button_image = pygame.image.load(ARMOR_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(ARMOR_SLOT_ICON_TEXTURE)
                 elif id == 3:
-                    self.button_image = pygame.image.load(THORNS_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(THORNS_SLOT_ICON_TEXTURE)
                 elif id == 4:
-                    self.button_image = pygame.image.load(HEART_POWER_UP_SLOT_ICON_TEXTURE)
+                    self.image = pygame.image.load(HEART_POWER_UP_SLOT_ICON_TEXTURE)
             self.rect = self.image.get_rect()
-            self.rect.center = (x, y + 20 * scale_factor_y)
+            self.rect.center = (x, y - 20 * scale_factor_y)
         elif type == "Buy":
             self.rect.center = (x - 80 * scale_factor_x, y + 10 * scale_factor_y)
             self.color = "Yellow"
@@ -794,11 +798,11 @@ class ButtonIndicator(pygame.sprite.Sprite):
                 self.rect.center = (int(1080.5 * scale_factor_x), 405 * scale_factor_y)
             elif id == 12:
                 self.rect.center = (int(1024.5 * scale_factor_x), 485 * scale_factor_y)
-        elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadgets_Slot":
+        elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadget_Slot":
             self.color = "white"
             self.image = pygame.image.load(LOCKED_TEXTURE)
             self.rect = self.image.get_rect()
-            self.rect.center = (x, y + 20 * scale_factor_y)
+            self.rect.center = (x, y - 20 * scale_factor_y)
             self.indicator_toggled = 0
         elif type == "Buy":
             self.image = pygame.image.load(COIN_INDICATOR_TEXTURE)
