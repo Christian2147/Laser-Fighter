@@ -119,6 +119,9 @@ class Panel(pygame.sprite.Sprite):
             "tiny_regular": pygame.font.SysFont("Courier", int(24.3 * scale_factor)),
             "tiny_bold": pygame.font.SysFont("Courier", int(24.3 * scale_factor), bold=True),
 
+            "semi_tiny_regular": pygame.font.SysFont("Courier", int(27 * scale_factor)),
+            "semi_tiny_bold": pygame.font.SysFont("Courier", int(27 * scale_factor), bold=True),
+
             "small_regular": pygame.font.SysFont("Courier", int(29.5 * scale_factor)),
             "small_bold": pygame.font.SysFont("Courier", int(29.5 * scale_factor), bold=True),
 
@@ -143,7 +146,7 @@ class Panel(pygame.sprite.Sprite):
         self.text_visible = 1
 
         if type == "Shop":
-            self.panel_indicator = PanelIndicator(self.rect.centerx, self.rect.centery + 190 * scale_factor_y, scale_factor_x, scale_factor_y)
+            self.panel_indicator = PanelIndicator(self.rect.centerx, self.rect.centery - 190 * scale_factor_y, scale_factor_x, scale_factor_y)
             self.indicator_created = 1
         else:
             self.indicator_created = 0
@@ -250,6 +253,7 @@ class Panel(pygame.sprite.Sprite):
         size_map = {
             16: "super_tiny",
             18: "tiny",
+            20: "semi_tiny",
             22: "small",
             24: "normal",
             28: "semi_medium",
@@ -287,7 +291,7 @@ class Panel(pygame.sprite.Sprite):
                 font_type = "regular"
                 line_spacing = 24
                 start_x = self.rect.centerx - 155 * self.scale_factor_x
-                start_y = self.rect.centery + 40 * self.scale_factor_y
+                start_y = self.rect.centery - 65 * self.scale_factor_y
 
                 self.rendered_text = self.render_multiline_text(
                     lines=lines,
@@ -307,7 +311,7 @@ class Panel(pygame.sprite.Sprite):
                     font_type = "regular"
                     line_spacing = 24
                     start_x = self.rect.centerx - 155 * self.scale_factor_x
-                    start_y = self.rect.centery + 55 * self.scale_factor_y
+                    start_y = self.rect.centery - 80 * self.scale_factor_y
 
                     self.rendered_text = self.render_multiline_text(
                         lines=lines,
@@ -326,7 +330,7 @@ class Panel(pygame.sprite.Sprite):
                     font_type = "regular"
                     line_spacing = 24
                     start_x = self.rect.centerx - 155 * self.scale_factor_x
-                    start_y = self.rect.centery + 55 * self.scale_factor_y
+                    start_y = self.rect.centery - 80 * self.scale_factor_y
 
                     self.rendered_text = self.render_multiline_text(
                         lines=lines,
@@ -347,7 +351,7 @@ class Panel(pygame.sprite.Sprite):
                 font_type = "regular"
                 line_spacing = 30
                 start_x = self.rect.centerx - 155 * self.scale_factor_x
-                start_y = self.rect.centery + 40 * self.scale_factor_y
+                start_y = self.rect.centery - 65 * self.scale_factor_y
 
                 self.rendered_text = self.render_multiline_text(
                     lines=lines,
@@ -368,7 +372,7 @@ class Panel(pygame.sprite.Sprite):
                 font_type = "regular"
                 line_spacing = 30
                 start_x = self.rect.centerx - 155 * self.scale_factor_x
-                start_y = self.rect.centery + 40 * self.scale_factor_y
+                start_y = self.rect.centery - 65 * self.scale_factor_y
 
                 self.rendered_text = self.render_multiline_text(
                     lines=lines,
@@ -389,7 +393,7 @@ class Panel(pygame.sprite.Sprite):
                 font_type = "regular"
                 line_spacing = 30
                 start_x = self.rect.centerx - 155 * self.scale_factor_x
-                start_y = self.rect.centery + 40 * self.scale_factor_y
+                start_y = self.rect.centery - 65 * self.scale_factor_y
 
                 self.rendered_text = self.render_multiline_text(
                     lines=lines,
@@ -410,7 +414,7 @@ class Panel(pygame.sprite.Sprite):
                 font_type = "regular"
                 line_spacing = 30
                 start_x = self.rect.centerx - 155 * self.scale_factor_x
-                start_y = self.rect.centery + 40 * self.scale_factor_y
+                start_y = self.rect.centery - 65 * self.scale_factor_y
 
                 self.rendered_text = self.render_multiline_text(
                     lines=lines,
@@ -429,7 +433,7 @@ class Panel(pygame.sprite.Sprite):
                 font_type = "regular"
                 line_spacing = 27
                 start_x = self.rect.centerx - 155 * self.scale_factor_x
-                start_y = self.rect.centery + 40 * self.scale_factor_y
+                start_y = self.rect.centery - 65 * self.scale_factor_y
 
                 self.rendered_text = self.render_multiline_text(
                     lines=lines,
@@ -590,7 +594,9 @@ class Panel(pygame.sprite.Sprite):
                     self.panel_indicator.image = pygame.image.load(THORNS_DISPLAY_ICON_TEXTURE)
                 elif self.id == 4:
                     self.panel_indicator.image = pygame.image.load(HEART_POWER_UP_DISPLAY_ICON_TEXTURE)
+            old_center = self.panel_indicator.rect.center
             self.panel_indicator.rect = self.panel_indicator.image.get_rect()
+            self.panel_indicator.rect.center = old_center
             self.panel_indicator.indicator_visible = 1
 
 

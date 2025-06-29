@@ -270,7 +270,7 @@ class TextRefresh:
                     # Display the enable button text based on which gadget is currently being displayed
                     #   in the side panel
                     elif bu.get_type() == "Enable":
-                        for pa in self._panel.panel_turtle:
+                        for pa in self._panel.panel_sprite:
                             if pa.category == "Gadget":
                                 if pa.id == 1:
                                     bu.write_enable(self._shop_config.coin_magnet_enabled)

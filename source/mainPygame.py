@@ -178,6 +178,17 @@ def main():
                                     screen.display_power_up_page()
                                 elif bu.id == 4:
                                     screen.display_gadgets_page()
+                            elif bu.type == "Shop_Slot" or bu.type == "Power_Up_Slot" or bu.type == "Gadget_Slot":
+                                if bu.id == 1:
+                                    shop.slot_1_select()
+                                elif bu.id == 2:
+                                    shop.slot_2_select()
+                                elif bu.id == 3:
+                                    shop.slot_3_select()
+                                elif bu.id == 4:
+                                    shop.slot_4_select()
+                                elif bu.id == 5:
+                                    shop.slot_5_select()
                             elif bu.type == "Regular_Settings_And_Controls":
                                 if bu.id == 1:
                                     screen.launch_title_mode()
@@ -1078,7 +1089,6 @@ def main():
                                 if bu.get_type() == "Tab" and bu.get_id() == 4:
                                     s.new_select(bu.rect.centerx - 1 * window.scale_factor_X, bu.rect.centery)
                                     refresh_variables.move_tab_selector = 0
-
 
             # Spawn the coin indicator
             if coin_indicator.coin_indicator_index == 0:

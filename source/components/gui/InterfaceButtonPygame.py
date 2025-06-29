@@ -509,11 +509,10 @@ class Button(pygame.sprite.Sprite):
                 self.indicator_toggled = 0
         else:
             if not check_value:
-                self.button_indicator.indicator_visible = 1
+                # Check back on visible part here too
                 self.button_text.center = (self.rect.centerx, self.rect.centery - 20 * self.scale_factor_y)
                 self.indicator_toggled = 1
             else:
-                self.button_indicator.indicator_visible = 0
                 self.indicator_toggled = 0
 
     def set_indicator_location(self):
@@ -524,13 +523,12 @@ class Button(pygame.sprite.Sprite):
         """
 
         if self.indicator_toggled == 1:
-            print("")
             self.button_indicator.rect.center = (self.rect.centerx, self.rect.centery - 20 * self.scale_factor_y)
         else:
             if self.type == "Power_Up_Slot":
                 self.button_indicator.rect.center = (self.rect.centerx, self.rect.centery + 25 * self.scale_factor_y)
             else:
-                self.button_indicator.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+                self.button_indicator.rect.center = (self.rect.centerx, self.rect.centery + 62 * self.scale_factor_y)
 
     def toggle_default(self):
         if self.type == "Title" or self.type == "Title_Locked":
@@ -807,7 +805,7 @@ class ButtonIndicator(pygame.sprite.Sprite):
         elif type == "Buy":
             self.image = pygame.image.load(COIN_INDICATOR_TEXTURE)
             self.rect = self.image.get_rect()
-            self.rect.center = (x - 125 * scale_factor_x,y - 28 * scale_factor_y)
+            self.rect.center = (x - 125 * scale_factor_x, y + 28 * scale_factor_y)
         self.indicator_visible = 1
 
         self.tiny_font = pygame.font.SysFont("Courier", int(24.3 * scale_factor))
