@@ -50,7 +50,7 @@ class TextRefresh:
                  textbox, yellow_power_up_indicator,
                  blue_power_up_indicator, extra_power_up_indicator,
                  settings, settings_toggle,
-                 statistics, # shop,
+                 statistics, shop,
                  shop_config, controls, controls_toggle, refresh):
 
         """
@@ -112,7 +112,7 @@ class TextRefresh:
         self._settings = settings
         self._settings_toggle = settings_toggle
         self._statistics = statistics
-        # self._shop = shop
+        self._shop = shop
         self._shop_config = shop_config
         self._controls = controls
         self._controls_toggle = controls_toggle
@@ -135,7 +135,7 @@ class TextRefresh:
         del self._settings
         del self._settings_toggle
         del self._statistics
-        # del self._shop
+        del self._shop
         del self._shop_config
         del self._controls
         del self._controls_toggle

@@ -57,6 +57,7 @@ from utils.MovementManagerPygame import Movement
 from utils.ScreenManagerPygame import ScreenUpdate
 from utils.SettingsManagerPygame import SettingsToggle
 from utils.ControlsManagerPygame import Controls
+from utils.ShopManagerPygame import Shop
 from utils.PreventSleepPygame import MonitorSleepController
 
 MOVE_REPEAT_DELAY = 0.05
@@ -89,6 +90,11 @@ def main():
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
     movement = Movement(screen, machine_player, yellow_power_up_indicator, settings, statistics, window.scale_factor_Y)
 
+    shop = Shop(window, screen, button,
+                panel, textbox, price_label,
+                settings, refresh_variables, shop_config,
+                window.scale_factor_X, window.scale_factor_Y)
+
     settings_toggle = SettingsToggle(screen, settings, refresh_variables, window.scale_factor_X,
                                      window.scale_factor_Y)
 
@@ -98,7 +104,7 @@ def main():
 
     text_refresh = TextRefresh(screen, button, panel, textbox, yellow_power_up_indicator, blue_power_up_indicator,
                                extra_power_up_indicator, settings, settings_toggle,
-                               statistics, shop_config, controls, controls_toggle, refresh_variables)
+                               statistics, shop, shop_config, controls, controls_toggle, refresh_variables)
 
     last_move_time = 0
     start_ticks = pygame.time.get_ticks()
