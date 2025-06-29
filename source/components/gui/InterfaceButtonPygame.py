@@ -180,6 +180,9 @@ class Button(pygame.sprite.Sprite):
         self.button_text = ButtonText(type, id, self.rect.centerx, self.rect.centery,
                                       scale_factor, scale_factor_x, scale_factor_y, page)
 
+        if type == "Buy":
+            self.extra_button_text = ButtonText(type, id, self.rect.centerx, self.rect.centery, scale_factor, scale_factor_x, scale_factor_y, page)
+
         if type == "Settings_Toggle" or type == "Shop_Slot" or \
                 type == "Power_Up_Slot" or type == "Gadget_Slot" or type == "Buy":
             self.button_indicator = ButtonIndicator(type, id, self.rect.centerx, self.rect.centery,
@@ -279,6 +282,9 @@ class Button(pygame.sprite.Sprite):
         self.button_frame_visible = 0
         self.button_text.button_text_visible = 0
 
+        if hasattr(self, "extra_button_text"):
+            del self.extra_button_text
+
         if hasattr(self, "button_indicator"):
             self.button_indicator.indicator_visible = 0
 
@@ -364,21 +370,20 @@ class Button(pygame.sprite.Sprite):
             self.button_text.rect = self.button_text.image.get_rect()
             self.button_text.rect.center = (640 * self.scale_factor_x, self.rect.centery)
 
-    # def write_buy(self, price):
-    #     """
-    #         Writes the price text on the buy button based on the item that is currently selected.
-    #
-    #         :param price: The price of the current item selected
-    #         :type price: int
-    #
-    #         :return: None
-    #     """
-    #
-    #     self.button_text.clear()
-    #     self.button_text.goto(self.button_frame.xcor() - 80 * self.scale_factor_x, self.button_frame.ycor() + 10 * self.scale_factor_y)
-    #     self.button_text.write("Buy: ", align="center", font=("Courier", int(28 * self.scale_factor), "normal"))
-    #     self.button_text.goto(self.button_frame.xcor() - 105 * self.scale_factor_x, self.button_frame.ycor() - 50 * self.scale_factor_y)
-    #     self.button_text.write("{}".format(price), align="left", font=("Courier", int(28 * self.scale_factor), "normal"))
+    def write_buy(self, price):
+        """
+            Writes the price text on the buy button based on the item that is currently selected.
+
+            :param price: The price of the current item selected
+            :type price: int
+
+            :return: None
+        """
+
+        self.button_text.rect.center = (self.rect.centerx - 80 * self.scale_factor_x, self.rect.centery - 30 * self.scale_factor_y)
+        self.button_text.write_text("Buy: ", "semi-medium", "normal")
+        self.extra_button_text.rect.center = (self.rect.centerx - 105 * self.scale_factor_x, self.rect.centery + 10 * self.scale_factor_y)
+        self.extra_button_text.write_text_left("{}".format(price), "semi-medium", "normal")
 
     def write_enable(self, check_gadget):
         """
@@ -762,6 +767,58 @@ class ButtonText(pygame.sprite.Sprite):
                 else:
                     self.image = self.normal_font.render(text, True, self.color)
             self.rect = self.image.get_rect(center=old_center)
+
+    def write_text_left(self, text, size, type):
+        old_topleft = self.rect.topleft
+        if size == "small":
+            if type == "bold":
+                self.image = self.small_font_bold.render(text, True, self.color)
+            else:
+                self.image = self.small_font.render(text, True, self.color)
+
+        elif size == "normal":
+            if type == "bold":
+                self.image = self.normal_font_bold.render(text, True, self.color)
+            else:
+                self.image = self.normal_font.render(text, True, self.color)
+
+        elif size == "semi-medium":
+            if type == "bold":
+                self.image = self.semi_medium_font_bold.render(text, True, self.color)
+            else:
+                self.image = self.semi_medium_font.render(text, True, self.color)
+
+        elif size == "semi-large":
+            if type == "bold":
+                self.image = self.semi_large_font_bold.render(text, True, self.color)
+            else:
+                self.image = self.semi_large_font.render(text, True, self.color)
+
+        elif size == "large":
+            if type == "bold":
+                self.image = self.large_font_bold.render(text, True, self.color)
+            else:
+                self.image = self.large_font.render(text, True, self.color)
+
+        elif size == "subtitle":
+            if type == "bold":
+                self.image = self.subtitle_font_bold.render(text, True, self.color)
+            else:
+                self.image = self.subtitle_font.render(text, True, self.color)
+
+        elif size == "title":
+            if type == "bold":
+                self.image = self.title_font_bold.render(text, True, self.color)
+            else:
+                self.image = self.title_font.render(text, True, self.color)
+
+        else:
+            # fallback if size not recognized, default to normal
+            if type == "bold":
+                self.image = self.normal_font_bold.render(text, True, self.color)
+            else:
+                self.image = self.normal_font.render(text, True, self.color)
+        self.rect = self.image.get_rect(topleft=old_topleft)
 
 
 class ButtonIndicator(pygame.sprite.Sprite):

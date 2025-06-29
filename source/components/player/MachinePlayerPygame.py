@@ -62,8 +62,6 @@ class Player(pygame.sprite.Sprite):
             armor_created (int): Determines if the armor bar has already been created or not for the player
 
             laser_list (list): The list of the current lasers on the screen
-            all_laser_list (list): The list of all laser sprites created since the program began running (So that they
-                can be reused)
             laser_start_y_list (list): The list of the lasers starting y-coordinates when they are fired
             laser_has_attacked_list (list): The the list of whether each laser has hit a machine or not
             lasers_fired_list (list): The list of whether or not each laser has been fired or not

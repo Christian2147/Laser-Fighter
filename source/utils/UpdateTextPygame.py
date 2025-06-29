@@ -265,8 +265,8 @@ class TextRefresh:
                         elif bu.get_id() == 4:
                             if self._shop_config.hearts_unlocked:
                                 bu.write_indicator(self._shop_config.hearts_enabled)
-                    # elif bu.get_type() == "Buy":
-                    #    bu.write_buy(self._shop.price_displayed)
+                    elif bu.get_type() == "Buy":
+                        bu.write_buy(self._shop.price_displayed)
                     # Display the enable button text based on which gadget is currently being displayed
                     #   in the side panel
                     elif bu.get_type() == "Enable":

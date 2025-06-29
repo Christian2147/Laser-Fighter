@@ -282,7 +282,8 @@ def main():
                     if mpl.laser_visible == 1:
                         window.screen.blit(mpl.image, mpl.rect)
 
-                window.screen.blit(mp.health_bar.image, mp.health_bar.rect)
+                if mp.health_bar.health_bar_visible == 1:
+                    window.screen.blit(mp.health_bar.image, mp.health_bar.rect)
 
                 if hasattr(mp, 'armor_bar') and mp.armor_bar.armor_bar_visible == 1:
                     window.screen.blit(mp.armor_bar.image, mp.armor_bar.rect)
@@ -324,6 +325,9 @@ def main():
 
             if hasattr(bu, "button_indicator") and bu.button_indicator.indicator_visible == 1:
                 window.screen.blit(bu.button_indicator.image, bu.button_indicator.rect)
+
+            if hasattr(bu, "extra_button_text") and bu.extra_button_text.button_text_visible == 1:
+                window.screen.blit(bu.extra_button_text.image, bu.extra_button_text.rect)
 
         for t in textbox.text_on_screen_list:
             if t.text_box_visible == 1:
@@ -448,7 +452,7 @@ def main():
                 textbox.spawn_text_box(1, 640 * window.scale_factor_X, 155 * window.scale_factor_Y, "red")
                 textbox.spawn_text_box(2, 1150 * window.scale_factor_X, 693 * window.scale_factor_Y, "white")
                 if settings.god_mode == 1:
-                    textbox.spawn_text_box(3, 1121 * window.scale_factor_X, 40 * window.scale_factor_Y, "white")
+                    textbox.spawn_text_box(3, 1121 * window.scale_factor_X, 20 * window.scale_factor_Y, "white")
             for t in textbox.text_on_screen_list:
                 if t.id == 1:
                     t.move(screen.mode)
@@ -1120,7 +1124,7 @@ def main():
                     textbox.spawn_text_box(13 + i + 1, 960 * window.scale_factor_X, (240 + (i * 40)) * window.scale_factor_Y,
                                            "white")
                 if settings.god_mode == 1:
-                    textbox.spawn_text_box(25, 1121 * window.scale_factor_X, 40 * window.scale_factor_Y, "white")
+                    textbox.spawn_text_box(25, 1121 * window.scale_factor_X, 20 * window.scale_factor_Y, "white")
 
             # Move the title text back and fourth across the screen as needed
             for t in textbox.text_on_screen_list:
@@ -1144,7 +1148,7 @@ def main():
             if textbox.current_text_index == 0:
                 textbox.spawn_text_box(1, 640 * window.scale_factor_X, 70 * window.scale_factor_Y, "red")
                 if settings.god_mode == 1:
-                    textbox.spawn_text_box(2, 159 * window.scale_factor_X, 40 * window.scale_factor_Y, "white")
+                    textbox.spawn_text_box(2, 1121 * window.scale_factor_X, 20 * window.scale_factor_Y, "white")
 
             # Move the title text left and right across the screen
             for t in textbox.text_on_screen_list:
@@ -1164,7 +1168,7 @@ def main():
             if textbox.current_text_index == 0:
                 textbox.spawn_text_box(1, 640 * window.scale_factor_X, 70 * window.scale_factor_Y, "red")
                 if settings.god_mode == 1:
-                    textbox.spawn_text_box(2, 1121 * window.scale_factor_X, 40 * window.scale_factor_Y, "white")
+                    textbox.spawn_text_box(2, 1121 * window.scale_factor_X, 20 * window.scale_factor_Y, "white")
 
             # Move the title text left and right across the screen
             for t in textbox.text_on_screen_list:
