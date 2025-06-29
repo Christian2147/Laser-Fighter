@@ -283,10 +283,8 @@ class TextRefresh:
             if self._refresh.refresh_button == 1:
                 self._refresh.refresh_button = 0
             # Refreshes panel text
-            if self._refresh.refresh_panel == 1:
-                for pa in self._panel.panel_sprite:
-                    pa.write_text()
-                self._refresh.refresh_panel = 0
+            for pa in self._panel.panel_sprite:
+                pa.write_text()
             for t in self._textbox.text_on_screen_list:
                 if t.id == 1:
                     t.write("Shop", "title", "bold")

@@ -235,6 +235,7 @@ class Panel(pygame.sprite.Sprite):
         if self.indicator_created:
             self.panel_indicator.indicator_visible = 0
         self.rendered_text = []
+        self.text_visible = 0
 
     def write_text(self):
         """
@@ -267,7 +268,7 @@ class Panel(pygame.sprite.Sprite):
                 font_type = "regular"
                 line_spacing = 36
                 start_x = self.rect.centerx - 155 * self.scale_factor_x
-                start_y = self.rect.centery + 290 * self.scale_factor_y
+                start_y = self.rect.centery - 325 * self.scale_factor_y
 
                 self.rendered_text = self.render_multiline_text(
                     lines=lines,

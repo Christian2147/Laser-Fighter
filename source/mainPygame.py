@@ -163,6 +163,15 @@ def main():
                             elif bu.type == "Game":
                                 if bu.id == 1:
                                     screen.launch_title_mode()
+                            elif bu.type == "Tab":
+                                if bu.id == 1:
+                                    screen.display_machine_mode_page()
+                                elif bu.id == 2:
+                                    screen.display_alien_mode_page()
+                                elif bu.id == 3:
+                                    screen.display_power_up_page()
+                                elif bu.id == 4:
+                                    screen.display_gadgets_page()
                             elif bu.type == "Regular_Settings_And_Controls":
                                 if bu.id == 1:
                                     screen.launch_title_mode()
@@ -264,6 +273,14 @@ def main():
         for pa in panel.panel_sprite:
             if pa.panel_visible == 1:
                 window.screen.blit(pa.image, pa.rect)
+
+            if pa.text_visible:
+                for text_surface, text_rect in pa.rendered_text:
+                    window.screen.blit(text_surface, text_rect)
+
+            if pa.indicator_created == 1:
+                if pa.panel_indicator.indicator_visible == 1:
+                    window.screen.blit(pa.panel_indicator.image, pa.panel_indicator.rect)
 
         for ypi in yellow_power_up_indicator.yellow_power_up_indicator_sprite:
             if ypi.yellow_power_up_indicator_visible == 1:
@@ -813,6 +830,8 @@ def main():
                 selector.spawn_selector("Tab")
 
             # If pages goes here
+
+
 
             # Spawn the coin indicator
             if coin_indicator.coin_indicator_index == 0:
