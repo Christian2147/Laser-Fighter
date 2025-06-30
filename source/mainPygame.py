@@ -52,6 +52,7 @@ from components.spawn.SpawnTextboxPygame import SpawnTextbox
 from components.spawn.SpawnButtonPygame import SpawnButton
 from components.spawn.SpawnGUIPygame import SpawnPriceLabel
 from components.spawn.SpawnGUIPygame import SpawnSelector
+from components.ItemGadgetPygame import Gadget
 from physics.MachineCollisionPygame import MachineCollision
 from utils.MovementManagerPygame import Movement
 from utils.ScreenManagerPygame import ScreenUpdate
@@ -82,6 +83,8 @@ def main():
 
     selector = SpawnSelector(window.scale_factor_X, window.scale_factor_Y)
     price_label = SpawnPriceLabel()
+
+    gadget = Gadget(machine_player, coin, window.scale_factor)
 
     screen = ScreenUpdate(window, button, settings, shop_config, refresh_variables,
                           power_up_setup, machine_mode_setup,
@@ -513,16 +516,70 @@ def main():
             for bm in blue_machine.blue_machines:
                 bm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active(), settings.enemy_shooting_sound)
 
-            hit_coin = 0
-            for c in coin.coins_on_screen_list:
-                for p in machine_player.current_player:
-                    # Check each of the players lasers
-                    for l in p.get_laser():
-                        # If the player picks up a coin
-                        if l.isvisible() and \
-                         c.rect.centerx - 50 * window.scale_factor_X < l.rect.centerx < c.rect.centerx + 50 * window.scale_factor_X and \
-                         c.rect.centery - 50 * window.scale_factor_Y < l.rect.centery < c.rect.centery + 50 * window.scale_factor_Y and \
-                         coin.coin_pickup_delay == 0:
+            # If the coin magnet gadget is not enabled
+            if not shop_config.coin_magnet_enabled:
+                hit_coin = 0
+                for c in coin.coins_on_screen_list:
+                    for p in machine_player.current_player:
+                        # Check each of the players lasers
+                        for l in p.get_laser():
+                            # If the player picks up a coin
+                            if l.isvisible() and \
+                             c.rect.centerx - 50 * window.scale_factor_X < l.rect.centerx < c.rect.centerx + 50 * window.scale_factor_X and \
+                             c.rect.centery - 50 * window.scale_factor_Y < l.rect.centery < c.rect.centery + 50 * window.scale_factor_Y and \
+                             coin.coin_pickup_delay == 0:
+                                # Remove the coin from the screen
+                                c.remove()
+                                # Increase the amount of coins the users has based on the type of coin picked up
+                                if c.get_type() == "copper":
+                                    # For each coin, check if the blue power up has a multiplier on it
+                                    if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_blue_value
+                                    else:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.copper_coin_value
+                                elif c.get_type() == "silver":
+                                    if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_blue_value
+                                    else:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.silver_coin_value
+                                elif c.get_type() == "gold":
+                                    if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_blue_value
+                                    else:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.gold_coin_value
+                                elif c.get_type() == "platinum":
+                                    if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_blue_value
+                                    else:
+                                        shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
+                                        statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_value
+                                del c
+                                shop_config.save()
+                                statistics.save()
+                                coin.coins_on_screen_list.pop(hit_coin)
+                                # play the coin pickup sound
+                                if settings.coin_pickup_sound == 1:
+                                    sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
+                                    sound.play()
+                                break
+                        hit_coin = hit_coin + 1
+            # If the coin magnet is enabled
+            else:
+                # Move the coins towards the player
+                gadget.attract_coins("Machine_Mode")
+
+                hit_coin = 0
+                for c in coin.coins_on_screen_list:
+                    for p in machine_player.current_player:
+                        # When the player is close enough to the coin, pick it up
+                        if p.is_visible() and p.death_animation == 0 and p.distance(c) < c.COIN_DISTANCE:
                             # Remove the coin from the screen
                             c.remove()
                             # Increase the amount of coins the users has based on the type of coin picked up
@@ -555,7 +612,6 @@ def main():
                                 else:
                                     shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
                                     statistics.machine_coins_collected = statistics.machine_coins_collected + power_up_setup.platinum_coin_value
-                            del c
                             shop_config.save()
                             statistics.save()
                             coin.coins_on_screen_list.pop(hit_coin)
@@ -563,8 +619,7 @@ def main():
                             if settings.coin_pickup_sound == 1:
                                 sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
                                 sound.play()
-                            break
-                    hit_coin = hit_coin + 1
+                        hit_coin = hit_coin + 1
 
             # Collision still not working
             for p in machine_player.current_player:
@@ -670,8 +725,8 @@ def main():
                                     statistics.score = 0
                                     machine_player.player_update_value = machine_player.player_update_value + 1
                                     # If the player has thorns enabled, initiate the thorns damage on the enemy
-                                    #if shop_config.thorns_enabled:
-                                        #bm.thorns_initiated_damage = 1
+                                    if shop_config.thorns_enabled:
+                                        bm.thorns_initiated_damage = 1
 
                 # If the player has more than 1 health, only deal 1 health of damage
                 # If the hit delay is ongoing
@@ -697,8 +752,8 @@ def main():
                                     p.hit_player(settings.player_hit_sound)
                                     machine_player.player_hit_value = machine_player.player_hit_value + 1
                                     # If the player has thorns enabled, initiate the thorns damage on the enemy
-                                    #if shop_config.thorns_enabled:
-                                    #    bm.thorns_initiated_damage = 1
+                                    if shop_config.thorns_enabled:
+                                        bm.thorns_initiated_damage = 1
 
             for bm in blue_machine.blue_machines:
                 bm.float_effect()

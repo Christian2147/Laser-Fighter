@@ -113,6 +113,16 @@ class Coin(pygame.sprite.Sprite):
 
         return self.type
 
+    def position(self):
+        """
+            Returns the current position of the coin sprite.
+
+            :return: A tuple representing the (x, y) center coordinates of the coin.
+            :rtype: tuple
+        """
+
+        return self.rect.center
+
     def remove(self):
         """
             Removes the coin sprite form the screen

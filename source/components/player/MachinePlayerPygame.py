@@ -26,6 +26,7 @@
 
 import pygame
 import time
+import math
 from components.player.MachinePlayerLaserPygame import MachineLaser
 from setup.ModeSetupMasterPygame import machine_mode_setup
 from setup.TextureSetup import EXPLOSION_1_TEXTURE
@@ -272,6 +273,29 @@ class Player(pygame.sprite.Sprite):
 
     def is_visible(self):
         return self.player_visible
+
+    def position(self):
+        """
+            Returns the current position of the player sprite.
+
+            :return: A tuple representing the (x, y) center coordinates of the player.
+            :rtype: tuple
+        """
+
+        return self.rect.center
+
+    def distance(self, other_sprite):
+        """
+            Calculates the Euclidean distance to another sprite.
+
+            :param other_sprite: Another sprite with a rect attribute
+
+            :return: float
+        """
+
+        dx = self.rect.centerx - other_sprite.rect.centerx
+        dy = self.rect.centery - other_sprite.rect.centery
+        return math.hypot(dx, dy)
 
     def set_laser_has_attacked(self, new_value, index):
         """
