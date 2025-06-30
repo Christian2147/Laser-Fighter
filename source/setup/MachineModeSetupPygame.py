@@ -204,7 +204,7 @@ class MachineModeSetup:
             self.laser_texture = MACHINE_WASHER_LASER_TEXTURE
             self.laser_offset = 135 * self._scale_factor_y
             self.laser_speed = 25 * self._scale_factor_y
-            self.laser_max_distance = 370 * self._scale_factor_y
+            self.laser_max_distance = -10 * self._scale_factor_y
 
             self.damage = 1
             self.laser_count = 1
@@ -216,7 +216,7 @@ class MachineModeSetup:
             self.laser_texture = INCINERATOR_LASER_TEXTURE
             self.laser_offset = 135 * self._scale_factor_y
             self.laser_speed = 20 * self._scale_factor_y
-            self.laser_max_distance = 470 * self._scale_factor_y
+            self.laser_max_distance = -110 * self._scale_factor_y
 
             self.damage = 1
             self.laser_count = 2
@@ -228,7 +228,7 @@ class MachineModeSetup:
             self.laser_texture = BLACK_HOLE_LASER_TEXTURE
             self.laser_offset = 145 * self._scale_factor_y
             self.laser_speed = 27 * self._scale_factor_y
-            self.laser_max_distance = 580 * self._scale_factor_y
+            self.laser_max_distance = -220 * self._scale_factor_y
 
             self.damage = 2
             self.laser_count = 3
@@ -240,7 +240,7 @@ class MachineModeSetup:
             self.laser_texture = STAR_KILLER_LASER_TEXTURE
             self.laser_offset = 145 * self._scale_factor_y
             self.laser_speed = 30 * self._scale_factor_y
-            self.laser_max_distance = 580 * self._scale_factor_y
+            self.laser_max_distance = -220 * self._scale_factor_y
 
             self.damage = 2
             self.laser_count = 3
