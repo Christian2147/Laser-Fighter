@@ -769,15 +769,14 @@ def main():
                             pu.spawn(settings.power_up_spawn_sound)
 
             # 75 for the heart power up if the heart gadget is enabled
-            # if shop_config.hearts_enabled:
-            #     if power_up.power_up_update == 75 or (
-            #             machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 76):
-            #         if power_up.power_up_index[4] == 0:
-            #             power_up.spawn_power_up(5, screen.mode, settings.power_up_spawn_sound)
-            #         else:
-            #             for pu in power_up.current_power_ups:
-            #                 if pu.get_type() == 5:
-            #                     pu.spawn(settings.power_up_spawn_sound)
+            if shop_config.hearts_enabled:
+                if power_up.power_up_update == 75 or (machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 76):
+                    if power_up.power_up_index[4] == 0:
+                        power_up.spawn_power_up(5, screen.mode, settings.power_up_spawn_sound)
+                    else:
+                        for pu in power_up.current_power_ups:
+                            if pu.get_type() == 5:
+                                pu.spawn(settings.power_up_spawn_sound)
 
             # Check if the player has picked up a power up or not
             for p in machine_player.current_player:
@@ -814,15 +813,15 @@ def main():
                             extra_power_up_indicator.extra_power_up_indicator_sprite[0].set_power_up_active(1)
 
                         # Allow for the heart power up if the heart gadget is enabled
-                        # if shop_config.hearts_enabled:
-                        #     if pu.type == 5 and pu.get_power_up().distance(
-                        #             p.get_player()) < 50 * scale_factor and p.get_death_animation() == 0:
-                        #         pu.pick_up(settings.power_up_pickup_sound)
-                        #         if settings.god_mode == 0:
-                        #             statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
-                        #             statistics.save()
-                        #         # Grant the player health
-                        #         p.grant_player_health()
+                        if shop_config.hearts_enabled:
+                            if pu.type == 5 and pu.get_power_up().distance(
+                                    p.get_player()) < 50 * window.scale_factor and p.get_death_animation() == 0:
+                                pu.pick_up(settings.power_up_pickup_sound)
+                                if settings.god_mode == 0:
+                                    statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
+                                    statistics.save()
+                                # Grant the player health
+                                p.grant_player_health()
 
             # If the power ups are active, run their timers through these functions
             for yi in yellow_power_up_indicator.yellow_power_up_indicator_sprite:
