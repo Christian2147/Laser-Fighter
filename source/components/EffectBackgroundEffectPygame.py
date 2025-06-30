@@ -1,0 +1,312 @@
+# Copyright (C) [2024] [Christian Marinkovich]
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+"""
+    File: EffectBackgroundEffect.py
+    Author: Christian Marinkovich
+    Date: 2024-07-07
+    Description:
+    This file contains the logic related to all of the background effects and sprites in Alien Mode.
+    This includes the ground, player ship, the Sun, and the Earth.
+"""
+
+import pygame
+import math
+import time
+from setup.TextureSetup import EARTH_TEXTURE
+from setup.TextureSetup import SUN_TEXTURE
+from setup.TextureSetup import SPACE_SHIP_TEXTURE
+from setup.TextureSetup import GROUND_TEXTURE
+
+
+class Earth(pygame.sprite.Sprite):
+    """
+        Represents the Earth sprite in Alien Mode's background. This is a stationary sprite and never moves.
+
+        Attributes:
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates an Earth sprite and spawns it on the screen
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        super().__init__()
+        self.image = pygame.image.load(EARTH_TEXTURE)
+        self.rect = self.image.get_rect()
+        self.rect.center = (640 * scale_factor_x, 210 * scale_factor_y)
+        self.earth_visible = 1
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Cleans up the sprite from memory once the program has terminated
+
+            :return: None
+        """
+
+        self.kill()
+        del self
+
+    def get_earth(self):
+        """
+            Returns the Earth sprite so that its class attributes can be accessed.
+
+            :return: earth: The Earth sprite
+            :type: Turtle.turtle()
+        """
+
+        return self
+
+    def remove(self):
+        """
+            Removes the Earth sprite form the screen and resets its attributes.
+
+            :return: None
+        """
+
+        self.earth_visible = 0
+
+
+class Sun(pygame.sprite.Sprite):
+    """
+        Represents the Sun sprite in Alien Mode's background. This sprite moves slowly in an ellipse to represent
+            the day/night cycle.
+
+        Attributes:
+            angle (int): The angle that the sun is currently moving at in the ellipse
+            x-coordinate (float): Represents the current x-coordinate of the sun
+            y-coordinate (float): Represents the current y-coordinate of the sun
+            movement_activated (int): Determines if the suns orbit has started or not
+
+            start_time (float): Used as a timestamp for the suns movement (So that the movement is consistent
+                regardless of frame rate)
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates a Sun sprite and spawns it on the screen
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        super().__init__()
+        self.image = pygame.image.load(SUN_TEXTURE)
+        self.rect = self.image.get_rect()
+        self.sun_visible = 1
+
+        # The angle starts at 90
+        self.angle = 90
+        self.x_coordinate = 0
+        self.y_coordinate = 0
+        self.start_time = 0
+        self.movement_activated = 0
+
+        # Find the new x and y coordinate of the sun given the new angle
+        self.x_coordinate = 1155 * math.cos(math.radians(self.angle))
+        self.y_coordinate = 10 * math.sin(math.radians(self.angle)) + 150
+        # Might have to recalculate this
+
+        # Move the sun to the new location
+        self.rect.center = (self.x_coordinate * scale_factor_x, self.y_coordinate * scale_factor_y)
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Cleans up the sprite from memory once the program has terminated
+
+            :return: None
+        """
+
+        self.kill()
+        del self
+
+    def get_sun(self):
+        """
+            Returns the Sun sprite so that its class attributes can be accessed.
+
+            :return: sun: The Sun sprite
+            :type: Turtle.turtle()
+        """
+
+        return self
+
+    def remove(self):
+        """
+            Removes the Sun sprite from the screen and resets its attributes.
+
+            :return: None
+        """
+
+        self.sun_visible = 0
+        self.movement_activated = 0
+
+    def update_position(self):
+        """
+            Updates the suns position over a given interval of time on its elliptical path across the screen.
+
+            :return: None
+        """
+
+        # If the movement has just started, a start time is created for it
+        if self.movement_activated == 0:
+            self.start_time = time.time()
+            self.movement_activated = 1
+
+        # Update the suns position every 0.2 seconds
+        current_time = time.time()
+        elapsed_time = current_time - self.start_time
+        if elapsed_time >= 0.2:
+            # Create a delta angle so that movement stays consistent regardless of lag
+            delta_angle = 0.1 * ((elapsed_time - 0.2) / 0.2)
+            # Move the angle 0.1 every iteration (Very slow movement)
+            if self.angle > 0:
+                self.angle = self.angle - 0.1 - delta_angle
+            else:
+                self.angle = 180
+            # Find the new x and y coordinate of the sun given the new angle
+            self.x_coordinate = 1155 * math.cos(math.radians(self.angle))
+            self.y_coordinate = 10 * math.sin(math.radians(self.angle)) + 150
+
+            # Move the sun to this new location
+            self.rect.center = (self.x_coordinate * self.scale_factor_x, self.y_coordinate * self.scale_factor_y)
+            self.start_time = time.time()
+
+
+class Ground(pygame.sprite.Sprite):
+    """
+        Represents the ground level background sprites in Alien Mode's background. These are stationary and
+            never move.
+
+        Attributes:
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the ground level background sprites and spawns them on the screen
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        super().__init__()
+        self.image = pygame.image.load(GROUND_TEXTURE)
+        self.rect = self.image.get_rect()
+        self.rect.center = (640 * scale_factor_x, 1091 * scale_factor_y)
+        self.ground_visible = 1
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        self.kill()
+        del self
+
+    def get_ground(self):
+        """
+            Returns the ground sprite so that its class attributes can be accessed.
+
+            :return: ground: The ground sprite
+            :type: Turtle.turtle()
+        """
+
+        return self
+
+    def remove(self):
+        """
+            Removes the ground from the screen and resets its attributes.
+
+            :return: None
+        """
+
+        self.ground_visible = 0
+
+
+class Ship(pygame.sprite.Sprite):
+    """
+        Represents the ground level background sprites in Alien Mode's background. These are stationary and
+            never move.
+
+        Attributes:
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the ground level background sprites and spawns them on the screen
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        super().__init__()
+        self.image = pygame.image.load(SPACE_SHIP_TEXTURE)
+        self.rect = self.image.get_rect()
+        self.rect.center = (640 * scale_factor_x, 476 * scale_factor_y)
+        self.ship_visible = 1
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        self.kill()
+        del self
+
+    def get_ship(self):
+        """
+            Returns the ground sprite so that its class attributes can be accessed.
+
+            :return: ground: The ground sprite
+            :type: Turtle.turtle()
+        """
+
+        return self
+
+    def remove(self):
+        """
+            Removes the ground from the screen and resets its attributes.
+
+            :return: None
+        """
+
+        self.ship_visible = 0
