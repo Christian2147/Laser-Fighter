@@ -968,7 +968,11 @@ def main():
 
             # Spawn all of the Alien Mode background objects
             if sun.sun_index == 0:
-                sun.spawn_sun()
+                if len(sun.sun_sprite) > 0:
+                    for s in sun.sun_sprite:
+                        s.sun_visible = 1
+                else:
+                    sun.spawn_sun()
             if earth.earth_index == 0:
                 earth.spawn_earth()
             if ground.ground_index == 0:
@@ -1018,7 +1022,6 @@ def main():
         else:
             for s in sun.sun_sprite:
                 s.remove()
-            sun.sun_sprite.clear()
             sun.sun_index = 0
             for e in earth.earth_sprite:
                 e.remove()
