@@ -152,47 +152,16 @@ class TextRefresh:
         """
 
         # Update based on the current mode
-        # if self._screen.mode == "Title_Mode":
-        #     # Refreshes button text
-        #     if self._refresh.refresh_button == 1 or self._refresh.refresh_button == 2:
-        #         for bu in self._button.buttons_on_screen_list:
-        #             # Check if the title button is a type to be locked
-        #             if bu.type != "Title_Locked":
-        #                 bu.write_lines()
-        #             else:
-        #                 # If it is, display either a lock over the button or the button text
-        #                 #   depending on the conditional variable
-        #                 bu.toggle_title_lock(self._shop_config.alien_slot_selected)
-        #     if self._refresh.refresh_button == 1:
-        #         self._refresh.refresh_button = 2
-        #     elif self._refresh.refresh_button == 2:
-        #         self._refresh.refresh_button = 0
-        #     # Refreshes text boxes
-        #     for t in self._textbox.text_on_screen_list:
-        #         if t.id == 1:
-        #             t.write("Laser Fighter", 72, "bold")
-        #         elif t.id == 2:
-        #             t.write("Beta 1.2.1b", 24, "normal")
-        #         elif t.id == 3:
-        #             t.write("God Mode Is On!", 24, "normal")
-        # if self._screen.mode == "Machine_Mode":
-            # if self._refresh.refresh_button == 1:
-            #     for bu in self._button.buttons_on_screen_list:
-            #         bu.write_lines()
-            # if self._refresh.refresh_button == 1:
-            #     self._refresh.refresh_button = 0
-            # Refreshes panel text
-            # if self._refresh.refresh_panel == 1:
-            #     for pa in self._panel.panel_turtle:
-            #         pa.write_text()
-            #     self._refresh.refresh_panel = 0
         if self._screen.mode == "Title_Mode":
             # Refreshes button text
             if self._refresh.refresh_button == 1 or self._refresh.refresh_button == 2:
                 for bu in self._button.buttons_on_screen_list:
+                    # Check if the title button is a type to be locked
                     if bu.type != "Title_Locked":
                         bu.write_lines()
                     else:
+                        # If it is, display either a lock over the button or the button text
+                        #   depending on the conditional variable
                         bu.toggle_title_lock(self._shop_config.alien_slot_selected)
             if self._refresh.refresh_button == 1:
                 self._refresh.refresh_button = 2
@@ -212,9 +181,50 @@ class TextRefresh:
                     bu.write_lines()
             if self._refresh.refresh_button == 1:
                 self._refresh.refresh_button = 0
+            # Refreshes panel text
+            if self._refresh.refresh_panel == 1:
+                for pa in self._panel.panel_turtle:
+                    pa.write_text()
+                self._refresh.refresh_panel = 0
             for t in self._textbox.text_on_screen_list:
                 if t.id == 1:
                     t.write("Score: {}  High Score: {}".format(self._statistics.score, self._statistics.high_score_machine_war), 24, "normal")
+                elif t.id == 2:
+                    for yi in self._yellow_power_up_indicator.yellow_power_up_indicator_sprite:
+                        if yi.get_power_up_active() == 1:
+                            t.write("{}".format(yi.get_power_up_timer()), "normal", "normal")
+                        else:
+                            t.write("0", "normal", "normal")
+                elif t.id == 3:
+                    for bi in self._blue_power_up_indicator.blue_power_up_indicator_sprite:
+                        if bi.get_power_up_active() == 1:
+                            t.write("{}".format(bi.get_power_up_timer()), "normal", "normal")
+                        else:
+                            t.write("0", "normal", "normal")
+                elif t.id == 4:
+                    for ei in self._extra_power_up_indicator.extra_power_up_indicator_sprite:
+                        if ei.get_power_up_active() == 1:
+                            t.write("{}".format(ei.get_power_up_timer()), "normal", "normal")
+                        else:
+                            t.write("0", "normal", "normal")
+                elif t.id == 5:
+                    t.write_left("{}".format(self._shop_config.total_coins), "normal", "normal")
+                elif t.id == 6:
+                    t.write("God Mode Is On!", "normal", "normal")
+        elif self._screen.mode == "Alien_Mode":
+            if self._refresh.refresh_button == 1:
+                for bu in self._button.buttons_on_screen_list:
+                    bu.write_lines()
+            if self._refresh.refresh_button == 1:
+                self._refresh.refresh_button = 0
+            # Refreshes panel text
+            if self._refresh.refresh_panel == 1:
+                for pa in self._panel.panel_sprite:
+                    pa.write_text()
+                self._refresh.refresh_panel = 0
+            for t in self._textbox.text_on_screen_list:
+                if t.id == 1:
+                    t.write("Score: {}  High Score: {}".format(self._statistics.score, self._statistics.high_score_alien_mode), 24, "normal")
                 elif t.id == 2:
                     for yi in self._yellow_power_up_indicator.yellow_power_up_indicator_sprite:
                         if yi.get_power_up_active() == 1:
@@ -459,42 +469,6 @@ class TextRefresh:
                     t.write("Settings", "title", "bold")
                 elif t.id == 2:
                     t.write("God Mode Is On!", "normal", "normal")
-        # elif self._screen.mode == "Alien_Mode":
-        #     if self._refresh.refresh_button == 1:
-        #         for bu in self._button.buttons_on_screen_list:
-        #             bu.write_lines()
-        #     if self._refresh.refresh_button == 1:
-        #         self._refresh.refresh_button = 0
-        #     # Refreshes panel text
-        #     if self._refresh.refresh_panel == 1:
-        #         for pa in self._panel.panel_turtle:
-        #             pa.write_text()
-        #         self._refresh.refresh_panel = 0
-        #     for t in self._textbox.text_on_screen_list:
-        #         if t.id == 1:
-        #             t.write("Score: {}  High Score: {}".format(self._statistics.score, self._statistics.high_score_alien_mode), 24, "normal")
-        #         elif t.id == 2:
-        #             for yi in self._yellow_power_up_indicator.yellow_power_up_indicator_turtle:
-        #                 if yi.get_power_up_active() == 1:
-        #                     t.write("{}".format(yi.get_power_up_timer()), 24, "normal")
-        #                 else:
-        #                     t.write("0", 24, "normal")
-        #         elif t.id == 3:
-        #             for bi in self._blue_power_up_indicator.blue_power_up_indicator_turtle:
-        #                 if bi.get_power_up_active() == 1:
-        #                     t.write("{}".format(bi.get_power_up_timer()), 24, "normal")
-        #                 else:
-        #                     t.write("0", 24, "normal")
-        #         elif t.id == 4:
-        #             for ei in self._extra_power_up_indicator.extra_power_up_indicator_turtle:
-        #                 if ei.get_power_up_active() == 1:
-        #                     t.write("{}".format(ei.get_power_up_timer()), 24, "normal")
-        #                 else:
-        #                     t.write("0", 24, "normal")
-        #         elif t.id == 5:
-        #             t.write_left("{}".format(self._shop_config.total_coins), 24, "normal")
-        #         elif t.id == 6:
-        #             t.write("God Mode Is On!", 24, "normal")
         elif self._screen.mode == "Controls":
             if self._refresh.refresh_button == 1 or self._refresh.refresh_button == 2 or self._refresh.refresh_button == 3:
                 for bu in self._button.buttons_on_screen_list:

@@ -228,22 +228,31 @@ class ScreenUpdate:
             if self._settings.button_sound == 1:
                 sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
+            # Set the mode to "Title_Mode" to change the screen
             self._mode = "Title_Mode"
             self._screen_update = 1
+            # Setup the power ups and both Machine Mode and Alien Mode
             self._power_up_setup.setup_power_ups()
             self._machine_mode_setup.setup_machine_mode()
+            # self._alien_mode_setup.setup_alien_mode()
+        # If coming from settings or controls, there may be a special procedure needed
         if self._mode == "Settings" or self._mode == "Controls":
             if self._settings.button_sound == 1:
                 sound = pygame.mixer.Sound("sound/Button_Sound.wav")
                 sound.play()
+            # If certain settings were updated, a restart may be required.
+            #  "updated_controls" checks if this is the case.
             if self._updated_controls == 1:
+                # Warn the user that a restart is required
                 root = tk.Tk()
                 root.withdraw()
                 root.attributes("-topmost", True)
                 message_output = messagebox.askyesno("Restart Required!","A restart is required for these changes to take effect!\nDo you want to restart now?", icon='warning')
                 root.destroy()
+                # If the user selects "yes"
                 if message_output:
                     self._quit_loop = 1
+                # If the user selects "no"
                 else:
                     # Set the mode to "Title_Mode" to change the screen
                     self._mode = "Title_Mode"
@@ -251,6 +260,7 @@ class ScreenUpdate:
                     # Setup the power ups and both Machine Mode and Alien Mode
                     self._power_up_setup.setup_power_ups()
                     self._machine_mode_setup.setup_machine_mode()
+                    # self._alien_mode_setup.setup_alien_mode()
                     self._updated_controls = 0
             else:
                 self._mode = "Title_Mode"
@@ -258,56 +268,7 @@ class ScreenUpdate:
                 # Setup the power ups and both Machine Mode and Alien Mode
                 self._power_up_setup.setup_power_ups()
                 self._machine_mode_setup.setup_machine_mode()
-
-        # self._screen.onscreenclick(None)
-        # if self._mode == "Machine_Mode" or self._mode == "Alien_Mode" or self._mode == "Stats" or self._mode == "Shop":
-        #     # Check to see if the cursor is in the bound of the button to be clicked
-        #     if (x > -634 * self._scale_factor_x) and (x < -442 * self._scale_factor_x) and (y > 323 * self._scale_factor_y) and (y < 355 * self._scale_factor_y):
-        #         if self._settings.button_sound == 1:
-        #             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
-        #             sound.play()
-        #         # Set the mode to "Title_Mode" to change the screen
-        #         self._mode = "Title_Mode"
-        #         self._screen_update = 1
-        #         # Setup the power ups and both Machine Mode and Alien Mode
-        #         self._power_up_setup.setup_power_ups()
-        #         self._machine_mode_setup.setup_machine_mode()
-        #         self._alien_mode_setup.setup_alien_mode()
-        #         self._screen.onscreenclick(None)
-        # If coming from settings or controls, there may be a special procedure needed
-        # if self._mode == "Settings" or self._mode == "Controls":
-        #     # Check to see if the cursor is in the bound of the button to be clicked
-        #     if (x > 26 * self._scale_factor_x) and (x < 600 * self._scale_factor_x) and (y > -315 * self._scale_factor_y) and (y < -254 * self._scale_factor_y):
-        #         if self._settings.button_sound == 1:
-        #             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
-        #             sound.play()
-        #         # If certain settings were updated, a restart may be required.
-        #         # "updated_controls" checks if this is the case.
-        #         if self._updated_controls == 1:
-        #             # Warn the user that a restart is required
-        #             message_output = messagebox.askyesno("Restart Required!", "A restart is required for these changes to take effect!\nDo you want to restart now?", icon='warning')
-        #             # If the user selects "yes"
-        #             if message_output:
-        #                 self.on_quit()
-        #             # If the user selects "no"
-        #             else:
-        #                 # Set the mode to "Title_Mode" to change the screen
-        #                 self._mode = "Title_Mode"
-        #                 self._screen_update = 1
-        #                 # Setup the power ups and both Machine Mode and Alien Mode
-        #                 self._power_up_setup.setup_power_ups()
-        #                 self._machine_mode_setup.setup_machine_mode()
-        #                 self._alien_mode_setup.setup_alien_mode()
-        #                 self._screen.onscreenclick(None)
-        #                 self._updated_controls = 0
-        #         else:
-        #             self._mode = "Title_Mode"
-        #             self._screen_update = 1
-        #             # Setup the power ups and both Machine Mode and Alien Mode
-        #             self._power_up_setup.setup_power_ups()
-        #             self._machine_mode_setup.setup_machine_mode()
-        #             self._alien_mode_setup.setup_alien_mode()
-        #             self._screen.onscreenclick(None)
+                # self._alien_mode_setup.setup_alien_mode()
 
     def launch_machine_mode(self):
         """
@@ -322,30 +283,21 @@ class ScreenUpdate:
         self._mode = "Machine_Mode"
         self._screen_update = 1
 
-    # def launch_alien_mode(self, x, y):
-    #     """
-    #         Function used to enter Alien Mode.
-    #
-    #         :param x: The current x-coordinate of the cursor
-    #         :type x: float
-    #
-    #         :param y: The current y-coordinate of the cursor
-    #         :type y: float
-    #
-    #         :return: None
-    #     """
-    #
-    #     self._screen.onscreenclick(None)
-    #     # Check to see if the cursor is in the bound of the button to be clicked
-    #     if (x > -252 * self._scale_factor_x) and (x < 250 * self._scale_factor_x) and (y > -42 * self._scale_factor_y) and (y < 30 * self._scale_factor_y):
-    #         if self._settings.button_sound == 1:
-    #             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
-    #             sound.play()
-    #         # If Alien Mode has been unlocked
-    #         if self._shop_config.alien_slot_selected != 0:
-    #             # Enter Alien Mode
-    #             self._mode = "Alien_Mode"
-    #             self._screen_update = 1
+    def launch_alien_mode(self):
+        """
+            Function used to enter Alien Mode.
+
+            :return: None
+        """
+
+        if self._settings.button_sound == 1:
+            sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+            sound.play()
+        # If Alien Mode has been unlocked
+        if self._shop_config.alien_slot_selected != 0:
+            # Enter Alien Mode
+            self._mode = "Alien_Mode"
+            self._screen_update = 1
 
     def launch_shop_mode(self):
         """

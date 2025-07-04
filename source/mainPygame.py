@@ -174,6 +174,9 @@ def main():
                                     screen.launch_shop_mode()
                                 elif bu.id == 3:
                                     running = False
+                            elif bu.type == "Title_Locked":
+                                if bu.id == 1:
+                                    screen.launch_alien_mode()
                             elif bu.type == "Title_Small":
                                 if bu.id == 1:
                                     screen.launch_settings_mode()
@@ -275,6 +278,22 @@ def main():
         window.screen.fill((0, 0, 0))
 
         window.screen.blit(window.bg_surface, (0, 0))
+
+        for s in sun.sun_sprite:
+            if s.sun_visible == 1:
+                window.screen.blit(s.image, s.rect)
+
+        for e in earth.earth_sprite:
+            if e.earth_visible == 1:
+                window.screen.blit(e.image, e.rect)
+
+        for s in ship.ship_sprite:
+            if s.ship_visible == 1:
+                window.screen.blit(s.image, s.rect)
+
+        for g in ground.ground_sprite:
+            if g.ground_visible == 1:
+                window.screen.blit(g.image, g.rect)
 
         for ci in coin.coins_on_screen_list:
             if ci.coin_visible == 1:
@@ -909,6 +928,111 @@ def main():
             blue_machine.blue_machines.clear()
             blue_machine.blue_machine_index = 0
             blue_machine.blue_machines_update_values.clear()
+
+        """
+            When Alien Mode is on
+        """
+
+        if screen.mode == "Alien_Mode":
+            if button.current_button_index == 0:
+                button.spawn_button("Game", 1)
+
+            # Spawn the rest of the game interface
+            # This includes the power up timers
+            # The power up timers are created as just ordinary text boxes with the correct colors
+            # This is done to ensure turtle are being reused
+            if textbox.current_text_index == 0:
+                textbox.spawn_text_box(1, 640 * window.scale_factor_X, 20 * window.scale_factor_Y, "white")
+                textbox.spawn_text_box(2, 575 * window.scale_factor_X, 62 * window.scale_factor_Y, "#737000")
+                textbox.spawn_text_box(3, 650 * window.scale_factor_X, 62 * window.scale_factor_Y, "#00004A")
+                textbox.spawn_text_box(4, 720 * window.scale_factor_X, 62 * window.scale_factor_Y, "#300000")
+                textbox.spawn_text_box(5, 52 * window.scale_factor_X, 44 * window.scale_factor_Y, "yellow")
+                if settings.god_mode == 1:
+                    textbox.spawn_text_box(6, 1121 * window.scale_factor_X, 20 * window.scale_factor_Y, "white")
+
+            # Spawn the coin indicator
+            if coin_indicator.coin_indicator_index == 0:
+                coin_indicator.spawn_coin_indicator()
+
+            # Spawn the yellow power up indicator
+            if yellow_power_up_indicator.yellow_power_up_indicator_index == 0:
+                yellow_power_up_indicator.spawn_yellow_power_up_indicator()
+
+            # Spawn the blue power up indicator
+            if blue_power_up_indicator.blue_power_up_indicator_index == 0:
+                blue_power_up_indicator.spawn_blue_power_up_indicator()
+
+            # Spawn the red power up indicator
+            if extra_power_up_indicator.extra_power_up_indicator_index == 0:
+                extra_power_up_indicator.spawn_extra_power_up_indicator(screen.mode)
+
+            # Spawn all of the Alien Mode background objects
+            if sun.sun_index == 0:
+                sun.spawn_sun()
+            if earth.earth_index == 0:
+                earth.spawn_earth()
+            if ground.ground_index == 0:
+                ground.spawn_ground()
+            if ship.ship_index == 0:
+                ship.spawn_ship()
+
+            # Move the sun along the ellipse
+            for s in sun.sun_sprite:
+                s.update_position()
+
+            # Check if the players score is greater than the current high score
+            if settings.god_mode == 0:
+                if statistics.score > statistics.high_score_alien_mode:
+                    # Update the high score in the game and the ini file if it is
+                    statistics.high_score_alien_mode = statistics.score
+                    statistics.save()
+
+            # Check if the power ups are active or not
+            for t in textbox.text_on_screen_list:
+                # If they are, activate the power up timers
+                if t.id == 2:
+                    if yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                        t.set_color("yellow")
+                    else:
+                        t.set_color("#737000")
+                elif t.id == 3:
+                    if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                        t.set_color("#02CCFE")
+                    else:
+                        t.set_color("#00004A")
+                elif t.id == 4:
+                    if extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                        t.set_color("#FF0000")
+                    else:
+                        t.set_color("#300000")
+
+            # Activate the power up indicators if the power ups become active
+            for yi in yellow_power_up_indicator.yellow_power_up_indicator_sprite:
+                yi.set_texture()
+
+            for bi in blue_power_up_indicator.blue_power_up_indicator_sprite:
+                bi.set_texture()
+
+            for ei in extra_power_up_indicator.extra_power_up_indicator_sprite:
+                ei.set_texture()
+        else:
+            for s in sun.sun_sprite:
+                s.remove()
+            sun.sun_sprite.clear()
+            sun.sun_index = 0
+            for e in earth.earth_sprite:
+                e.remove()
+            earth.earth_sprite.clear()
+            earth.earth_index = 0
+            for s in ship.ship_sprite:
+                s.remove()
+            ship.ship_sprite.clear()
+            ship.ship_index = 0
+            for g in ground.ground_sprite:
+                g.remove()
+            ground.ground_sprite.clear()
+            ground.ground_index = 0
+
 
         """
             Code below is for when the Shop is entered
