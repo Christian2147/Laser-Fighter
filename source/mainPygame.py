@@ -39,6 +39,10 @@ from setup.ConfigurationSetupPygame import statistics
 from setup.ConfigurationSetupPygame import shop_config
 from setup.ConfigurationSetupPygame import controls_toggle
 from utils.UpdateTextPygame import TextRefresh
+from components.spawn.SpawnBackgroundObjectsPygame import SpawnSun
+from components.spawn.SpawnBackgroundObjectsPygame import SpawnEarth
+from components.spawn.SpawnBackgroundObjectsPygame import SpawnGround
+from components.spawn.SpawnBackgroundObjectsPygame import SpawnShip
 from components.spawn.SpawnCoinPygame import SpawnCoin
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
 from components.spawn.SpawnPlayerPygame import SpawnMachinePlayer
@@ -66,6 +70,12 @@ MOVE_REPEAT_DELAY = 0.05
 
 def main():
     window = GameWindow()
+
+    sun = SpawnSun(window.scale_factor_X, window.scale_factor_Y)
+    earth = SpawnEarth(window.scale_factor_X, window.scale_factor_Y)
+    ground = SpawnGround(window.scale_factor_X, window.scale_factor_Y)
+    ship = SpawnShip(window.scale_factor_X, window.scale_factor_Y)
+
     coin = SpawnCoin()
     blue_machine = SpawnBlueMachine(window.scale_factor_X, window.scale_factor_Y)
     power_up = SpawnPowerUp(window.scale_factor_X, window.scale_factor_Y)
