@@ -132,8 +132,8 @@ class Sun(pygame.sprite.Sprite):
         self.movement_activated = 0
 
         # Find the new x and y coordinate of the sun given the new angle
-        self.x_coordinate = 1155 * math.cos(math.radians(self.angle))
-        self.y_coordinate = 10 * math.sin(math.radians(self.angle)) + 150
+        self.x_coordinate = 715 * math.cos(math.radians(self.angle)) + 640
+        self.y_coordinate = 360 - (350 * math.sin(math.radians(self.angle)) - 150)
         # Might have to recalculate this
 
         # Move the sun to the new location
@@ -196,8 +196,8 @@ class Sun(pygame.sprite.Sprite):
             else:
                 self.angle = 180
             # Find the new x and y coordinate of the sun given the new angle
-            self.x_coordinate = 1155 * math.cos(math.radians(self.angle))
-            self.y_coordinate = 10 * math.sin(math.radians(self.angle)) + 150
+            self.x_coordinate = 715 * math.cos(math.radians(self.angle)) + 640
+            self.y_coordinate = 360 - (350 * math.sin(math.radians(self.angle)) - 150)
 
             # Move the sun to this new location
             self.rect.center = (self.x_coordinate * self.scale_factor_x, self.y_coordinate * self.scale_factor_y)
