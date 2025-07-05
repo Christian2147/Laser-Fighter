@@ -46,6 +46,7 @@ from components.spawn.SpawnBackgroundObjectsPygame import SpawnGround
 from components.spawn.SpawnBackgroundObjectsPygame import SpawnShip
 from components.spawn.SpawnCoinPygame import SpawnCoin
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
+from components.spawn.SpawnPlayerPygame import SpawnHumanPlayer
 from components.spawn.SpawnPlayerPygame import SpawnMachinePlayer
 from components.spawn.SpawnPowerUpPygame import SpawnPowerUp
 from components.spawn.SpawnPowerUpPygame import SpawnYellowPowerUpIndicator
@@ -59,7 +60,7 @@ from components.spawn.SpawnGUIPygame import SpawnPriceLabel
 from components.spawn.SpawnGUIPygame import SpawnSelector
 from components.ItemGadgetPygame import Gadget
 from physics.MachineCollisionPygame import MachineCollision
-from physics.AlienCollisionPygame import AlienCollision
+# from physics.AlienCollisionPygame import AlienCollision
 from utils.MovementManagerPygame import Movement
 from utils.ScreenManagerPygame import ScreenUpdate
 from utils.SettingsManagerPygame import SettingsToggle
@@ -83,6 +84,8 @@ def main():
     power_up = SpawnPowerUp(window.scale_factor_X, window.scale_factor_Y)
     machine_player = SpawnMachinePlayer(window.scale_factor_X, window.scale_factor_Y)
 
+    human_player = SpawnHumanPlayer(window.scale_factor_X, window.scale_factor)
+
     panel = SpawnPanel(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
 
     yellow_power_up_indicator = SpawnYellowPowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
@@ -103,7 +106,7 @@ def main():
                           window.scale_factor_X, window.scale_factor_Y)
 
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
-    movement = Movement(screen, machine_player, yellow_power_up_indicator, settings, statistics, window.scale_factor_Y)
+    movement = Movement(screen, machine_player, human_player, yellow_power_up_indicator, settings, statistics, window.scale_factor_Y)
 
     shop = Shop(window, screen, button,
                 panel, textbox, price_label,
@@ -158,13 +161,20 @@ def main():
             if event.type == pygame.QUIT or screen.quit == 1:
                 running = False
             elif event.type == pygame.KEYDOWN:
-                key_str = controls_toggle.shoot_key.lower()
-                if key_str in special_keys:
-                    key_shoot = special_keys[key_str]
+                key_shoot_str = controls_toggle.shoot_key.lower()
+                key_jump_str = controls_toggle.jump_key.lower()
+                if key_shoot_str in special_keys:
+                    key_shoot = special_keys[key_shoot_str]
                 else:
-                    key_shoot = ord(key_str)
+                    key_shoot = ord(key_shoot_str)
+                if key_jump_str in special_keys:
+                    key_jump = special_keys[key_jump_str]
+                else:
+                    key_jump = ord(key_jump_str)
                 if event.key == key_shoot:
                     movement.shoot(machine_collision)
+                elif screen.mode == "Alien Mode" and event.key == key_jump:
+                    movement.jump()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     for bu in button.buttons_on_screen_list:
@@ -325,6 +335,26 @@ def main():
 
                 if hasattr(mp, 'armor_bar') and mp.armor_bar.armor_bar_visible == 1:
                     window.screen.blit(mp.armor_bar.image, mp.armor_bar.rect)
+
+        for h in human_player.current_human:
+            if h.human_visible == 1:
+                window.screen.blit(h.image, h.rect)
+
+                if h.oxygen_tank.oxygen_tank_visible == 1:
+                    window.screen.blit(h.oxygen_tank.image, h.oxygen_tank.rect)
+
+                if h.gun.gun_visible == 1:
+                    window.screen.blit(h.gun.image, h.gun.rect)
+
+                for hl in h.laser_list:
+                    if hl.laser_visible == 1:
+                        window.screen.blit(hl.image, hl.rect)
+
+                if h.health_bar.health_bar_visible == 1:
+                    window.screen.blit(h.health_bar.image, h.health_bar.rect)
+
+                if hasattr(h, 'armor_bar') and h.armor_bar.armor_bar_visible == 1:
+                    window.screen.blit(h.armor_bar.image, h.armor_bar.rect)
 
         for pa in panel.panel_sprite:
             if pa.panel_visible == 1:
@@ -1021,6 +1051,138 @@ def main():
 
             for ei in extra_power_up_indicator.extra_power_up_indicator_sprite:
                 ei.set_texture()
+
+            # If the RNG hits the 1/200, then spawn the power ups
+            # 1 for yellow power up
+            if (power_up.power_up_update == 1 or (
+                    alien_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 2)) and \
+                    yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active() == 0:
+                if power_up.power_up_index[0] == 0:
+                    power_up.spawn_power_up(1, screen.mode, settings.power_up_spawn_sound)
+                else:
+                    for pu in power_up.current_power_ups:
+                        if pu.get_type() == 1:
+                            pu.spawn(settings.power_up_spawn_sound)
+
+            # 50 for blue power up
+            if (power_up.power_up_update == 50 or (
+                    alien_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 51)) and \
+                    blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 0:
+                if power_up.power_up_index[1] == 0:
+                    power_up.spawn_power_up(2, screen.mode, settings.power_up_spawn_sound)
+                else:
+                    for pu in power_up.current_power_ups:
+                        if pu.get_type() == 2:
+                            pu.spawn(settings.power_up_spawn_sound)
+
+            # 100 for the extra power up
+            if (power_up.power_up_update == 100 or (
+                    alien_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 101)) and \
+                    extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active() == 0:
+                if power_up.power_up_index[3] == 0:
+                    power_up.spawn_power_up(4, screen.mode, settings.power_up_spawn_sound)
+                else:
+                    for pu in power_up.current_power_ups:
+                        if pu.get_type() == 4:
+                            pu.spawn(settings.power_up_spawn_sound)
+
+            # 75 for the heart power up if the heart gadget is enabled
+            if shop_config.hearts_enabled:
+                if power_up.power_up_update == 75 or (
+                        machine_mode_setup.power_up_spawn_rate == 2 and power_up.power_up_update == 76):
+                    if power_up.power_up_index[4] == 0:
+                        power_up.spawn_power_up(5, screen.mode, settings.power_up_spawn_sound)
+                    else:
+                        for pu in power_up.current_power_ups:
+                            if pu.get_type() == 5:
+                                pu.spawn(settings.power_up_spawn_sound)
+
+            # Check if the player has picked up a power up or not
+            for h in human_player.current_human:
+                for pu in power_up.current_power_ups:
+                    # If a power up is visible
+                    if pu.get_power_up().isvisible():
+                        # Check its type (1 = yellow, 2 = blue, 4 = red, and 5 = heart)
+                        # If the player runs to the power up
+                        if pu.type == 1 and pu.get_power_up().distance(
+                                h.get_player()) < 50 * window.scale_factor and h.get_death_animation() == 0 and \
+                                yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active() == 0:
+                            # Pick it up
+                            pu.pick_up(settings.power_up_pickup_sound)
+                            # Update the stats
+                            if settings.god_mode == 0:
+                                statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1
+                                statistics.save()
+                            # Activate the specified power up (In this case yellow)
+                            yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].set_power_up_active(1)
+
+                        if pu.type == 2 and pu.get_power_up().distance(
+                                h.get_player()) < 50 * window.scale_factor and h.get_death_animation() == 0 and \
+                                blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 0:
+                            pu.pick_up(settings.power_up_pickup_sound)
+                            if settings.god_mode == 0:
+                                statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1
+                                statistics.save()
+                            blue_power_up_indicator.blue_power_up_indicator_sprite[0].set_power_up_active(1)
+
+                        if pu.type == 4 and pu.get_power_up().distance(
+                                h.get_player()) < 50 * window.scale_factor and h.get_death_animation() == 0 and \
+                                extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active() == 0:
+                            pu.pick_up(settings.power_up_pickup_sound)
+                            if settings.god_mode == 0:
+                                statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1
+                                statistics.save()
+                            extra_power_up_indicator.extra_power_up_indicator_sprite[0].set_power_up_active(1)
+
+                        # If the hearts power up is enabled, allow the player to pick it up
+                        if shop_config.hearts_enabled:
+                            if pu.type == 5 and pu.get_power_up().distance(
+                                    h.get_player()) < 50 * window.scale_factor and h.get_death_animation() == 0:
+                                pu.pick_up(settings.power_up_pickup_sound)
+                                if settings.god_mode == 0:
+                                    statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1
+                                    statistics.save()
+                                # Grant the player 3 health
+                                h.grant_player_health()
+
+            # If the power ups are active, run their timers through these functions
+            for yi in yellow_power_up_indicator.yellow_power_up_indicator_sprite:
+                yi.set_timer()
+
+            for bi in blue_power_up_indicator.blue_power_up_indicator_sprite:
+                bi.set_timer()
+
+            for ei in extra_power_up_indicator.extra_power_up_indicator_sprite:
+                ei.set_timer()
+
+            # Check if a right movement of the player needs to be executed
+            for h in human_player.current_human:
+                h.execute_right_movement(yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active())
+
+            # Update the time variable used to create the walking right animation
+            human_player.right_update = time.perf_counter()
+            human_player.right_update = round(human_player.right_update, 1)
+
+            # Check if a left movement of the player needs to be executed
+            for h in human_player.current_human:
+                h.execute_left_movement(yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active())
+
+            # Update the time variable used to create the walking left animation
+            human_player.left_update = time.perf_counter()
+            human_player.left_update = round(human_player.left_update, 1)
+
+            # Check if a player jump needs to be executed
+            for h in human_player.current_human:
+                h.execute_jump(yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active())
+
+            # Check if the players laser needs to be shot
+            for h in human_player.current_human:
+                h.execute_shoot(settings.player_shooting_sound,yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active())
+
+            # Execute the walking animation for the player
+            for h in human_player.current_human:
+                h.set_player_texture(human_player.right_update, human_player.left_update)
+                h.set_gun_texture()
         else:
             for s in sun.sun_sprite:
                 s.remove()

@@ -24,7 +24,6 @@
 
 from setup.ModeSetupMasterPygame import machine_mode_setup
 # from physics.CollisionMaster import machine_collision
-# from physics.CollisionMaster import alien_collision
 
 
 class Movement:
@@ -43,7 +42,7 @@ class Movement:
             _scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode.
     """
 
-    def __init__(self, screen, machine_player, yellow_power_up_indicator, settings, statistics, scale_factor_y):
+    def __init__(self, screen, machine_player, human_player, yellow_power_up_indicator, settings, statistics, scale_factor_y):
         """
             Initializes all the necessary pointers for the Movement Manager.
 
@@ -72,6 +71,7 @@ class Movement:
         # Initialize all the pointers
         self._screen = screen
         self._machine_player = machine_player
+        self._human_player = human_player
         self._yellow_power_up_indicator = yellow_power_up_indicator
         self._settings = settings
         self._statistics = statistics
@@ -87,6 +87,7 @@ class Movement:
 
         del self._screen
         del self._machine_player
+        del self._human_player
         del self._yellow_power_up_indicator
         del self._settings
         del self._statistics
@@ -104,6 +105,10 @@ class Movement:
                 # The machine player is prepared to move right and faces right
                 p.set_direction_right()
             self.move()
+        elif self._screen.mode == "Alien_Mode":
+            for h in self._human_player.current_human:
+                # Prepares the human player to move right
+                h.go_right()
 
     def go_left(self):
         """
@@ -117,6 +122,10 @@ class Movement:
                 # The machine player is prepared to move left and faces left
                 p.set_direction_left()
             self.move()
+        elif self._screen.mode == "Alien_Mode":
+            for h in self._human_player.current_human:
+                # Prepares the human player to move left
+                h.go_left()
 
     def move(self):
         """
@@ -130,6 +139,23 @@ class Movement:
             for p in self._machine_player.current_player:
                 for yi in self._yellow_power_up_indicator.yellow_power_up_indicator_sprite:
                     p.move_player(yi.yellow_power_up_active)
+
+    def jump(self):
+        """
+            Function used to activate the players jump in Alien Mode.
+
+            :return: None
+        """
+
+        if self._screen.mode == "Alien_Mode":
+            for h in self._human_player.current_human:
+                # Prepare the player for a jump
+                h.jump()
+                # If the jump can successfully be preformed given the circumstances required to preform it
+                if self._settings.god_mode == 0 and h.do_jump == 1:
+                    # Update the game statistics to show that the player has jumped
+                    self._statistics.jumps = self._statistics.jumps + 1
+                    self._statistics.save()
 
     def shoot(self, machine_collision):
         """
@@ -150,4 +176,17 @@ class Movement:
                     # Update the game statistics
                     if self._settings.god_mode == 0:
                         self._statistics.classic_lasers_fired = self._statistics.classic_lasers_fired + 1
+                        self._statistics.save()
+        elif self._screen.mode == "Alien_Mode":
+            for h in self._human_player.current_human:
+                # If the laser is not currently flying across the screen and if the player is not in the
+                #   process of dying
+                if h.shoot_update == 0 and h.death_animation == 0 and h.direction != "stop":
+                    # Fire the laser
+                    h.shoot(self._settings.player_shooting_sound)
+                    # Recalculate collision parameters based on the new laser fired
+                    # alien_collision.calculate_collision() # Worry about this later
+                    # Update the game statistics
+                    if self._settings.god_mode == 0:
+                        self._statistics.alien_lasers_fired = self._statistics.alien_lasers_fired + 1
                         self._statistics.save()
