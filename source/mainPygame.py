@@ -32,6 +32,7 @@ import random
 import gc
 from setup.WindowSetupPygame import GameWindow
 from setup.ModeSetupMasterPygame import machine_mode_setup
+from setup.ModeSetupMasterPygame import alien_mode_setup
 from setup.ModeSetupMasterPygame import power_up_setup
 from setup.ConfigurationSetupPygame import refresh_variables
 from setup.ConfigurationSetupPygame import settings
@@ -58,6 +59,7 @@ from components.spawn.SpawnGUIPygame import SpawnPriceLabel
 from components.spawn.SpawnGUIPygame import SpawnSelector
 from components.ItemGadgetPygame import Gadget
 from physics.MachineCollisionPygame import MachineCollision
+from physics.AlienCollisionPygame import AlienCollision
 from utils.MovementManagerPygame import Movement
 from utils.ScreenManagerPygame import ScreenUpdate
 from utils.SettingsManagerPygame import SettingsToggle

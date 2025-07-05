@@ -25,7 +25,7 @@
 from setup.WindowSetupPygame import GameWindow
 from setup.ConfigurationSetupPygame import shop_config
 from setup.PowerUpSetupPygame import PowerUpSetup
-#from setup.AlienModeSetup import AlienModeSetup
+from setup.AlienModeSetupPygame import AlienModeSetup
 from setup.MachineModeSetupPygame import MachineModeSetup
 
 window = GameWindow()
@@ -34,7 +34,7 @@ window = GameWindow()
 power_up_setup = PowerUpSetup(shop_config)
 
 # Setup Alien Mode
-#alien_mode_setup = AlienModeSetup(shop_config, power_up_setup, scale_factor_X, scale_factor_Y)
+alien_mode_setup = AlienModeSetup(shop_config, power_up_setup, window.scale_factor_X, window.scale_factor_Y)
 
 # Setup Machine Mode
 machine_mode_setup = MachineModeSetup(shop_config, power_up_setup, window.scale_factor_X, window.scale_factor_Y)
