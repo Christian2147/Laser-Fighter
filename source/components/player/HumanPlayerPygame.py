@@ -571,9 +571,10 @@ class Human(pygame.sprite.Sprite):
                         # If the highest point has not been reached yet
                         if self.current_velocity > 0:
                             # Find the new velocity using the real world physics formula vf^2 = vi^2 + 2adx where
-                            #   a is the force of gravity on the moon in real life and dx is the distance between the
-                            #   starting point and the current player position
+                            # a is the force of gravity on the moon in real life and dx is the distance between the
+                            # starting point and the current player position
                             velocity_squared = self.initial_velocity ** 2 + 2 * (-1.625 * self.scale_factor_y) * abs(self.rect.centery - self.Start_Y)
+
                             # Make sure there is no divide by zero error
                             if velocity_squared > 0:
                                 self.current_velocity = math.sqrt(velocity_squared)
@@ -583,8 +584,11 @@ class Human(pygame.sprite.Sprite):
                         elif self.rect.centery < self.Start_Y and self.current_velocity <= 0:
                             # Use the same formula as before, but acceleration is increasing this time (because the
                             #   player is moving down)
-                            self.current_velocity = math.sqrt(2 * (1.625 * self.scale_factor_y) * (self.Start_Y - 175 * self.scale_factor_y) + self.rect.centery)
-                            self.current_velocity = 0 - self.current_velocity
+                            velocity_squared = 2 * (1.625 * self.scale_factor_y) * abs(self.rect.centery - self.Start_Y)
+                            if velocity_squared > 0:
+                                self.current_velocity = -math.sqrt(velocity_squared)
+                            else:
+                                self.current_velocity = 0
                         # The jump is finished
                         else:
                             # Reset the variables
@@ -623,20 +627,19 @@ class Human(pygame.sprite.Sprite):
                         # Finding the new velocity:
                         # If the highest point has not been reached yet
                         if self.current_velocity > 0:
-                            # Find the new velocity using the real world physics formula vf^2 = vi^2 + 2adx where
-                            #   a is the force of gravity on the moon in real life and dx is the distance between the
-                            #   starting point and the current player position
+                            # Going up, gravity slows the player down
                             velocity_squared = self.initial_velocity ** 2 + 2 * (-1.625 * self.scale_factor_y) * abs(self.rect.centery - self.Start_Y)
                             if velocity_squared > 0:
                                 self.current_velocity = math.sqrt(velocity_squared)
                             else:
                                 self.current_velocity = 0
-                        # if the highest point has already been reached
                         elif self.rect.centery < self.Start_Y and self.current_velocity <= 0:
-                            # Use the same formula as before, but acceleration is increasing this time (because the
-                            #   player is moving down)
-                            self.current_velocity = math.sqrt(2 * (1.625 * self.scale_factor_y) * (self.Start_Y - 175 * self.scale_factor_y) + self.rect.centery)
-                            self.current_velocity = 0 - self.current_velocity
+                            # Falling down, gravity speeds the player up
+                            velocity_squared = 2 * (1.625 * self.scale_factor_y) * abs(self.rect.centery - self.Start_Y)
+                            if velocity_squared > 0:
+                                self.current_velocity = -math.sqrt(velocity_squared)
+                            else:
+                                self.current_velocity = 0
                         # The jump is finished
                         else:
                             # Reset the variables

@@ -162,19 +162,12 @@ def main():
                 running = False
             elif event.type == pygame.KEYDOWN:
                 key_shoot_str = controls_toggle.shoot_key.lower()
-                key_jump_str = controls_toggle.jump_key.lower()
                 if key_shoot_str in special_keys:
                     key_shoot = special_keys[key_shoot_str]
                 else:
                     key_shoot = ord(key_shoot_str)
-                if key_jump_str in special_keys:
-                    key_jump = special_keys[key_jump_str]
-                else:
-                    key_jump = ord(key_jump_str)
                 if event.key == key_shoot:
                     movement.shoot(machine_collision)
-                elif screen.mode == "Alien_Mode" and event.key == key_jump:
-                    movement.jump()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     for bu in button.buttons_on_screen_list:
@@ -269,6 +262,7 @@ def main():
         if current_time - last_move_time >= MOVE_REPEAT_DELAY:
             key_right_str = controls_toggle.go_right_key.lower()
             key_left_str = controls_toggle.go_left_key.lower()
+            key_jump_str = controls_toggle.jump_key.lower()
             if key_right_str in special_keys:
                 key_right = special_keys[key_right_str]
             else:
@@ -277,13 +271,19 @@ def main():
                 key_left = special_keys[key_left_str]
             else:
                 key_left = ord(key_left_str)
+            if key_jump_str in special_keys:
+                key_jump = special_keys[key_jump_str]
+            else:
+                key_jump = ord(key_jump_str)
             if keys[key_left]:
                 movement.go_left()
                 last_move_time = current_time
             elif keys[key_right]:
                 movement.go_right()
                 last_move_time = current_time
-
+            if screen.mode == "Alien_Mode" and keys[key_jump]:
+                movement.jump()
+                last_move_time = current_time
 
 
         # Drawer!!!! (View)

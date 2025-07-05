@@ -190,8 +190,8 @@ class AlienModeSetup:
         # Initializes some variables to their default state (In case they do not need to change)
         self.player_movement = 4
         self.yellow_player_movement = 4
-        self.jump_frequency = 0.006
-        self.yellow_jump_frequency = 0.006
+        self.jump_frequency = 0.007
+        self.yellow_jump_frequency = 0.007
         self.power_up_spawn_rate = 1
 
         # Sets the variables based on which items in the shop are selected
