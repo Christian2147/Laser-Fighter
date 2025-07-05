@@ -173,7 +173,7 @@ def main():
                     key_jump = ord(key_jump_str)
                 if event.key == key_shoot:
                     movement.shoot(machine_collision)
-                elif screen.mode == "Alien Mode" and event.key == key_jump:
+                elif screen.mode == "Alien_Mode" and event.key == key_jump:
                     movement.jump()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -1012,6 +1012,10 @@ def main():
             if ship.ship_index == 0:
                 ship.spawn_ship()
 
+            # Spawn the human player
+            if human_player.current_human_index == 0:
+                human_player.spawn_human_player(settings.god_mode)
+
             # Move the sun along the ellipse
             for s in sun.sun_sprite:
                 s.update_position()
@@ -1199,6 +1203,13 @@ def main():
                 g.remove()
             ground.ground_sprite.clear()
             ground.ground_index = 0
+            for h in human_player.current_human:
+                h.remove()
+            human_player.current_human.clear()
+            human_player.current_human_index = 0
+            human_player.human_update_value = 0
+            human_player.human_hit_value = 0
+            human_player.laser_update = 0
 
 
         """

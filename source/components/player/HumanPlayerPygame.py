@@ -142,9 +142,9 @@ class Human(pygame.sprite.Sprite):
         self.human_visible = 1
         self.direction = "stop"
 
-        self.oxygen_tank = OxygenTank(self.rect.centerx, self.rect.centery, self.scale_factor_x, self.scale_factor_y)
+        self.oxygen_tank = OxygenTank(self.rect.centerx, self.rect.centery, scale_factor_x, scale_factor_y)
 
-        self.gun = Gun(self.rect.centerx, self.rect.centery, self.scale_factor_x, self.scale_factor_y)
+        self.gun = Gun(self.rect.centerx, self.rect.centery, scale_factor_x, scale_factor_y)
 
         # Set the laser list (For multiple lasers)
         self.laser_list = []
@@ -428,10 +428,10 @@ class Human(pygame.sprite.Sprite):
             self.laser_direction = 1
             # Prepare all of the lasers in the current list to be fired
             for l in self.laser_list:
-                l.laser.setx(self.gun.rect.centerx + alien_mode_setup.laser_offset)
-                l.laser.sety(self.gun.rect.centery - 5 * self.scale_factor_y)
+                l.rect.centerx = self.gun.rect.centerx + alien_mode_setup.laser_offset
+                l.rect.centery = self.gun.rect.centery - 5 * self.scale_factor_y
                 # Set the texture to the laser facing right
-                l.laser.shape(alien_mode_setup.laser_right_texture)
+                l.image = pygame.image.load(alien_mode_setup.laser_right_texture)
                 l.laser_update = 0
             # If there is more than 1 laser (Can only be 2, not 3), then halt the second laser.
             if len(self.laser_list) > 1:
@@ -449,10 +449,10 @@ class Human(pygame.sprite.Sprite):
             self.laser_direction = 2
             # Prepare all of the lasers in the current list to be fired
             for l in self.laser_list:
-                l.laser.setx(self.gun.rect.centerx - alien_mode_setup.laser_offset)
-                l.laser.sety(self.gun.rect.centery - 5 * self.scale_factor_y)
+                l.rect.centerx = self.gun.rect.centerx - alien_mode_setup.laser_offset
+                l.rect.centery = self.gun.rect.centery - 5 * self.scale_factor_y
                 # Set the texture to the laser facing left
-                l.laser.shape(alien_mode_setup.laser_left_texture)
+                l.image = pygame.image.load(alien_mode_setup.laser_left_texture)
                 l.laser_update = 0
             # If there is more than 1 laser (Can only be 2, not 3), then halt the second laser.
             if len(self.laser_list) > 1:
@@ -487,8 +487,8 @@ class Human(pygame.sprite.Sprite):
                     # Calculate the delta movement and add it as additional movement required
                     delta_movement = player_movement * ((elapsed_time - 0.012) / 0.012)
                     self.rect.centerx = self.rect.centerx + player_movement + delta_movement
-                    self.oxygen_tank.center = (self.rect.centerx - 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
-                    self.gun.center = (self.rect.centerx + alien_mode_setup.gun_offset, self.rect.centery - 12 * self.scale_factor_y)
+                    self.oxygen_tank.rect.center = (self.rect.centerx - 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
+                    self.gun.rect.center = (self.rect.centerx + alien_mode_setup.gun_offset, self.rect.centery - 12 * self.scale_factor_y)
                     self.moving_right = 1
                 else:
                     # Once finished, reset the movement variables
@@ -519,8 +519,8 @@ class Human(pygame.sprite.Sprite):
                     # Calculate the delta movement and add it as additional movement required
                     delta_movement = player_movement * ((elapsed_time - 0.012) / 0.012)
                     self.rect.centerx = self.rect.centerx - player_movement - delta_movement
-                    self.oxygen_tank.center = (self.rect.centerx + 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
-                    self.gun.center = (self.rect.centerx - alien_mode_setup.gun_offset, self.rect.centery - 12 * self.scale_factor_y)
+                    self.oxygen_tank.rect.center = (self.rect.centerx + 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
+                    self.gun.rect.center = (self.rect.centerx - alien_mode_setup.gun_offset, self.rect.centery - 12 * self.scale_factor_y)
                     self.moving_left = 1
                 else:
                     # Once finished, reset the movement variables
@@ -562,10 +562,10 @@ class Human(pygame.sprite.Sprite):
                         self.gun.direction = "right"
                         self.gun_direction = 1
                         # Move the player
-                        self.rect.centery = self.rect.centery - self.current_velocity # Changed this to a negative
+                        self.rect.centery = self.rect.centery - self.current_velocity
                         self.rect.centerx = self.rect.centerx + 7 * self.scale_factor_x
-                        self.oxygen_tank.center = (self.rect.centerx - 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
-                        self.gun.center = (self.rect.centerx + alien_mode_setup.gun_offset, self.rect.centery - 12 * self.scale_factor_y)
+                        self.oxygen_tank.rect.center = (self.rect.centerx - 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
+                        self.gun.rect.center = (self.rect.centerx + alien_mode_setup.gun_offset, self.rect.centery - 12 * self.scale_factor_y)
                         self.jump_start_time = time.time()
                         # Finding the new velocity:
                         # If the highest point has not been reached yet
@@ -580,10 +580,10 @@ class Human(pygame.sprite.Sprite):
                             else:
                                 self.current_velocity = 0
                         # if the highest point has already been reached
-                        elif self.rect.centery < self.Start_Y and self.current_velocity <= 0: # Changed the inequality sign
+                        elif self.rect.centery < self.Start_Y and self.current_velocity <= 0:
                             # Use the same formula as before, but acceleration is increasing this time (because the
                             #   player is moving down)
-                            self.current_velocity = math.sqrt(2 * (1.625 * self.scale_factor_y) * (self.Start_Y - 175 * self.scale_factor_y) + self.rect.centery) # Changed to -175 and + self.rect.centery
+                            self.current_velocity = math.sqrt(2 * (1.625 * self.scale_factor_y) * (self.Start_Y - 175 * self.scale_factor_y) + self.rect.centery)
                             self.current_velocity = 0 - self.current_velocity
                         # The jump is finished
                         else:
@@ -593,8 +593,8 @@ class Human(pygame.sprite.Sprite):
                             self.do_jump = 0
                             self.current_velocity = 23.84848 * self.scale_factor_y
                             self.rect.centery = 501 * self.scale_factor_y
-                            self.oxygen_tank.center = (self.rect.centerx - 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
-                            self.gun.center = (self.rect.centerx + alien_mode_setup.gun_offset, self.rect.centery - 12 * self.scale_factor_y)
+                            self.oxygen_tank.rect.center = (self.rect.centerx - 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
+                            self.gun.rect.center = (self.rect.centerx + alien_mode_setup.gun_offset, self.rect.centery - 12 * self.scale_factor_y)
                             break
             # If the direction is left
             elif (self.direction == "left" and self.jump_direction == 0) or (self.jump_direction == 2):
@@ -615,10 +615,10 @@ class Human(pygame.sprite.Sprite):
                         self.gun.direction = "left"
                         self.gun_direction = 2
                         # Move the player
-                        self.rect.centery = self.rect.centery - self.current_velocity # Changed this to a negative
+                        self.rect.centery = self.rect.centery - self.current_velocity
                         self.rect.centerx = self.rect.centerx - 7 * self.scale_factor_x
-                        self.oxygen_tank.center = (self.rect.centerx + 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
-                        self.gun.center = (self.rect.centerx - alien_mode_setup.gun_offset, self.rect.centery - 12 * self.scale_factor_y)
+                        self.oxygen_tank.rect.center = (self.rect.centerx + 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
+                        self.gun.rect.center = (self.rect.centerx - alien_mode_setup.gun_offset, self.rect.centery - 12 * self.scale_factor_y)
                         self.jump_start_time = time.time()
                         # Finding the new velocity:
                         # If the highest point has not been reached yet
@@ -645,8 +645,8 @@ class Human(pygame.sprite.Sprite):
                             self.do_jump = 0
                             self.current_velocity = 23.84848 * self.scale_factor_y
                             self.rect.centery = 501 * self.scale_factor_y
-                            self.oxygen_tank.center = (self.rect.centerx + 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
-                            self.gun.center = (self.rect.centerx - alien_mode_setup.gun_offset, self.rect.centery - 12 * self.scale_factor_y)
+                            self.oxygen_tank.rect.center = (self.rect.centerx + 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
+                            self.gun.rect.center = (self.rect.centerx - alien_mode_setup.gun_offset, self.rect.centery - 12 * self.scale_factor_y)
                             break
 
     def execute_shoot(self, shooting_sound, yellow_power_up):
@@ -766,6 +766,9 @@ class Human(pygame.sprite.Sprite):
                     self.image = pygame.image.load(HUMAN_WALKING_RIGHT_TEXTURE)
                 else:
                     self.image = pygame.image.load(HUMAN_STILL_RIGHT_TEXTURE)
+                center = self.rect.center
+                self.rect = self.image.get_rect()
+                self.rect.center = center
             # If the players direction is left
             elif self.direction == "left" and self.death_animation == 0:
                 # Make the player face and walk left
@@ -773,6 +776,9 @@ class Human(pygame.sprite.Sprite):
                     self.image = pygame.image.load(HUMAN_WALKING_LEFT_TEXTURE)
                 else:
                     self.image = pygame.image.load(HUMAN_STILL_LEFT_TEXTURE)
+                center = self.rect.center
+                self.rect = self.image.get_rect()
+                self.rect.center = center
             self.walk_start_time = time.time()
 
     def set_gun_texture(self):
