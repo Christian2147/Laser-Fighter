@@ -42,8 +42,12 @@ class Gadget:
                 player
     """
 
-    def __init__(self, machine_player, #human_player,
-                 coins, scale_factor):
+    def __init__(self,
+                 machine_player,
+                 human_player,
+                 coins,
+                 scale_factor
+    ):
         """
             Initializes the gadget functions.
 
@@ -62,7 +66,7 @@ class Gadget:
 
         # Initialize pointers
         self._machine_player = machine_player
-        # self._human_player = human_player
+        self._human_player = human_player
         self._coins = coins
 
         self._scale_factor = scale_factor
@@ -78,7 +82,7 @@ class Gadget:
         """
 
         del self._machine_player
-        # del self._human_player
+        del self._human_player
         del self._coins
         del self._scale_factor
         del self.start_time
@@ -149,7 +153,30 @@ class Gadget:
                             c.rect.centery += movement.y
 
                 self.start_time = time.time()
+        elif mode == "Alien_Mode":
+            # Same procedure here as in Machine Mode, but with the human player being the object to move towards
+            for h in self._human_player.current_human:
+                player_position = pygame.math.Vector2(h.position())
+                current_time = time.time()
+                elapsed_time = current_time - self.start_time
 
+                if elapsed_time >= 0.002:
+                    for c in self._coins.coins_on_screen_list:
+                        if c.coin_visible:
+                            coin_position = pygame.math.Vector2(c.position())
+
+                            direction = player_position - coin_position
+                            if direction.length() != 0:
+                                direction = direction.normalize()
+
+                            delta_movement = 1.75 * self._scale_factor * ((elapsed_time - 0.002) / 0.002)
+                            movement = direction * (1.75 * self._scale_factor + delta_movement)
+
+                            # Update coin position
+                            c.rect.centerx += movement.x
+                            c.rect.centery += movement.y
+
+                self.start_time = time.time()
         # elif mode == "Alien_Mode":
         #     # Same procedure here as in Machine Mode, but with the human player being the object to move towards
         #     for h in self._human_player.current_human:

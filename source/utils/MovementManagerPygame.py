@@ -42,7 +42,7 @@ class Movement:
             _scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode.
     """
 
-    def __init__(self, screen, machine_player, human_player, yellow_power_up_indicator, settings, statistics, scale_factor_y):
+    def __init__(self, screen, machine_player, human_player, yellow_power_up_indicator, settings, statistics, alien_collision, scale_factor_y):
         """
             Initializes all the necessary pointers for the Movement Manager.
 
@@ -75,6 +75,7 @@ class Movement:
         self._yellow_power_up_indicator = yellow_power_up_indicator
         self._settings = settings
         self._statistics = statistics
+        self._alien_collision = alien_collision
 
         self._scale_factor_y = scale_factor_y
 
@@ -91,6 +92,7 @@ class Movement:
         del self._yellow_power_up_indicator
         del self._settings
         del self._statistics
+        del self._alien_collision
         del self._scale_factor_y
 
     def go_right(self):
@@ -185,7 +187,7 @@ class Movement:
                     # Fire the laser
                     h.shoot(self._settings.player_shooting_sound)
                     # Recalculate collision parameters based on the new laser fired
-                    # alien_collision.calculate_collision() # Worry about this later
+                    self._alien_collision.calculate_collision()
                     # Update the game statistics
                     if self._settings.god_mode == 0:
                         self._statistics.alien_lasers_fired = self._statistics.alien_lasers_fired + 1

@@ -61,7 +61,7 @@ from components.spawn.SpawnGUIPygame import SpawnPriceLabel
 from components.spawn.SpawnGUIPygame import SpawnSelector
 from components.ItemGadgetPygame import Gadget
 from physics.MachineCollisionPygame import MachineCollision
-# from physics.AlienCollisionPygame import AlienCollision
+from physics.AlienCollisionPygame import AlienCollision
 from utils.MovementManagerPygame import Movement
 from utils.ScreenManagerPygame import ScreenUpdate
 from utils.SettingsManagerPygame import SettingsToggle
@@ -102,14 +102,15 @@ def main():
     selector = SpawnSelector(window.scale_factor_X, window.scale_factor_Y)
     price_label = SpawnPriceLabel()
 
-    gadget = Gadget(machine_player, coin, window.scale_factor)
+    gadget = Gadget(machine_player, human_player, coin, window.scale_factor)
 
     screen = ScreenUpdate(window, button, settings, shop_config, refresh_variables,
                           power_up_setup, machine_mode_setup, alien_mode_setup,
                           window.scale_factor_X, window.scale_factor_Y)
 
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
-    movement = Movement(screen, machine_player, human_player, yellow_power_up_indicator, settings, statistics, window.scale_factor_Y)
+    alien_collision = AlienCollision(human_player, small_alien, coin, window.scale_factor_X, window.scale_factor_Y)
+    movement = Movement(screen, machine_player, human_player, yellow_power_up_indicator, settings, statistics, alien_collision, window.scale_factor_Y)
 
     shop = Shop(window, screen, button,
                 panel, textbox, price_label,
@@ -1215,6 +1216,180 @@ def main():
             for sa in small_alien.small_aliens:
                 if sa.get_small_alien().isvisible():
                     sa.set_alien_texture(human_player.right_update, human_player.left_update)
+
+            # Detects if the players has picked up a coin
+            # If the coin magnet is not enabled
+            if not shop_config.coin_magnet_enabled:
+                # Player must pick up the coin in their own
+                hit_coin = 0
+                for c in coin.coins_on_screen_list:
+                    for h in human_player.current_human:
+                        # If the player picks up a coin
+                        # This can be done with any one of the players lasers
+                        if (any(l.laser_visible == 1 and c.range[0] < l.rect.centery < c.range[1] and (
+                                h.direction == "right" and c.relative_laser_position == -1 and l.rect.centerx > c.collision_coordinate or
+                                h.direction == "left" and c.relative_laser_position == 1 and l.rect.centerx < c.collision_coordinate
+                        ) for l in h.get_laser()) and c.just_fired == 1) or h.get_player().distance(c.get_coin()) < 55 * window.scale_factor:
+                            # Remove the coin
+                            c.remove()
+                            # Increase the amount of coins based on the type of coin picked up
+                            if c.get_type() == "copper":
+                                # Check if the blue power up has a multiplier activated for the coins value and use it
+                                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_value
+                            elif c.get_type() == "silver":
+                                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.silver_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.silver_coin_value
+                            elif c.get_type() == "gold":
+                                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.gold_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.gold_coin_value
+                            elif c.get_type() == "platinum":
+                                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.platinum_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.platinum_coin_value
+                            shop_config.save()
+                            statistics.save()
+                            coin.coins_on_screen_list.pop(hit_coin)
+                            # play the coin pickup sound
+                            if settings.coin_pickup_sound == 1:
+                                sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
+                                sound.play()
+                        hit_coin = hit_coin + 1
+            # If the coin magnet is enabled
+            else:
+                # Move the ocins towards the player
+                gadget.attract_coins("Alien_Mode")
+
+                hit_coin = 0
+                for c in coin.coins_on_screen_list:
+                    for h in human_player.current_human:
+                        # When the player gets close enough to the coin, pick it up
+                        if h.isvisible() and h.death_animation == 0 and h.distance(c) < c.COIN_DISTANCE:
+                            # Remove the coin from the screen
+                            c.remove()
+                            # Increase the amount of coins the users has based on the type of coin picked up
+                            if c.get_type() == "copper":
+                                # For each coin, check if the blue power up has a multiplier on it
+                                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.copper_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.copper_coin_value
+                            elif c.get_type() == "silver":
+                                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.silver_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.silver_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.silver_coin_value
+                            elif c.get_type() == "gold":
+                                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.gold_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.gold_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.gold_coin_value
+                            elif c.get_type() == "platinum":
+                                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_blue_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.platinum_coin_blue_value
+                                else:
+                                    shop_config.total_coins = shop_config.total_coins + power_up_setup.platinum_coin_value
+                                    statistics.alien_coins_collected = statistics.alien_coins_collected + power_up_setup.platinum_coin_value
+                            shop_config.save()
+                            statistics.save()
+                            coin.coins_on_screen_list.pop(hit_coin)
+                            # play the coin pickup sound
+                            if settings.coin_pickup_sound == 1:
+                                sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
+                                sound.play()
+                        hit_coin = hit_coin + 1
+
+            # Alien Killer
+            for h in human_player.current_human:
+                current_small_alien_update_value_index = 0
+                for sa in small_alien.small_aliens:
+                    # If the player laser hits a small alien that is visible and not dying
+                    if small_alien.small_aliens_kill_values[current_small_alien_update_value_index] == 0:
+                        if sa.get_small_alien().isvisible():
+                            # Check for all player lasers first
+                            laser_killed = 0
+                            if sa.got_hit == 0:
+                                for l in h.get_laser():
+                                    if l.laser_update < alien_mode_setup.piercing and \
+                                        alien_collision.SMALL_ALIEN_Y_RANGE[0] < l.rect.centery < alien_collision.SMALL_ALIEN_Y_RANGE[1] and (
+                                        (l.rect.centerx > sa.rect.centerx + alien_collision.SMALL_ALIEN_X_DISTANCE * sa.collision_point and h.laser_direction == 1 and sa.already_ahead == 0) or
+                                        (l.rect.centerx < sa.rect.centerx + alien_collision.SMALL_ALIEN_X_DISTANCE * sa.collision_point and h.laser_direction == 2 and sa.already_behind == 0)
+                                    ):
+                                        small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = small_alien.small_aliens_kill_values[current_small_alien_update_value_index] + 1
+
+                                        # Increase the players score
+                                        # When the blue power up is active, the score increases are doubled
+                                        #   (This is universal)
+                                        # The player gun type may also have a score multiplier applied
+                                        if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                            statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
+                                        else:
+                                            statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
+
+                                        # Update the stats if god mode is off
+                                        if settings.god_mode == 0:
+                                            statistics.small_aliens_killed = statistics.small_aliens_killed + 1
+                                            statistics.save()
+
+                                        # Increase the lasers pierce by 1 and try hiding the laser
+                                        l.laser_visible = 0
+                                        if extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active() == 0:
+                                            l.laser_update = l.laser_update + 1
+                                        # Set that the laser has already killed the enemy
+                                        laser_killed = 1
+                                        break
+
+                            # If the laser did not kill the enemy this iteration
+                            # Kill the enemy if the thorns gadget is enabled and the player got hit by the enemy
+                            if sa.thorns_initiated_damage == 1 and laser_killed == 0:
+                                small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = \
+                                small_alien.small_aliens_kill_values[current_small_alien_update_value_index] + 1
+
+                                # Increase the players score
+                                # When the blue power up is active, the score increases are doubled
+                                #   (This is universal)
+                                # The player gun type may also have a score multiplier applied
+                                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                    statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
+                                else:
+                                    statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
+
+                                # Update the stats if god mode is off
+                                if settings.god_mode == 0:
+                                    statistics.small_aliens_killed = statistics.small_aliens_killed + 1
+                                    statistics.save()
+                    elif small_alien.small_aliens_kill_values[current_small_alien_update_value_index] != 0:
+                        # Kill the alien
+                        sa.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list)
+                        small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = small_alien.small_aliens_kill_values[current_small_alien_update_value_index] + 1
+
+                        # If the death animation has finished, reset the update value back to 0 to signal it
+                        #   being finished
+                        if sa.get_death_animation() == 0:
+                            small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = 0
+                    current_small_alien_update_value_index = current_small_alien_update_value_index + 1
         else:
             for s in sun.sun_sprite:
                 s.remove()

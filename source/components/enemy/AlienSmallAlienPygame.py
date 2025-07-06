@@ -90,7 +90,7 @@ class SmallAlien(pygame.sprite.Sprite):
         self.image = pygame.image.load(ALIEN_STILL_RIGHT_1_5_TEXTURE)
         self.rect = self.image.get_rect()
         if id == 1:
-            self.rect.center = (int(160 * scale_factor_x), int(501 * scale_factor_y))
+            self.rect.center = (int(-160 * scale_factor_x), int(501 * scale_factor_y))
         elif id == 2:
             self.rect.center = (int(-60 * scale_factor_x), int(501 * scale_factor_y))
         elif id == 3:
@@ -262,6 +262,7 @@ class SmallAlien(pygame.sprite.Sprite):
                 self.rect.center = (random.randint(int(-260 * self.scale_factor_x), int(-50 * self.scale_factor_x)), int(501 * self.scale_factor_y))
             if alien_random == 2:
                 self.rect.center = (random.randint(int(1330 * self.scale_factor_x), int(1540 * self.scale_factor_x)), int(501 * self.scale_factor_y))
+            self.precise_x = float(self.rect.centerx)
             self.small_alien_visible = 1
             self.movement_activated = 0
             self.death_animation = 0
