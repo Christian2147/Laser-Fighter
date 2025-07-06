@@ -570,8 +570,8 @@ class Human(pygame.sprite.Sprite):
                         # If the highest point has not been reached yet
                         if self.current_velocity > 0:
                             # Find the new velocity using the real world physics formula vf^2 = vi^2 + 2adx where
-                            # a is the force of gravity on the moon in real life and dx is the distance between the
-                            # starting point and the current player position
+                            #   a is the force of gravity on the moon in real life and dx is the distance between the
+                            #   starting point and the current player position
                             velocity_squared = self.initial_velocity ** 2 + 2 * (-1.625 * self.scale_factor_y) * abs(self.rect.centery - self.Start_Y)
 
                             # Make sure there is no divide by zero error
@@ -582,7 +582,7 @@ class Human(pygame.sprite.Sprite):
                         # if the highest point has already been reached
                         elif self.rect.centery < self.Start_Y and self.current_velocity <= 0:
                             # Use the same formula as before, but acceleration is increasing this time (because the
-                            #   player is moving down)
+                            #   player is moving down) and initial velocity is 0
                             velocity_squared = 2 * (1.625 * self.scale_factor_y) * abs(self.rect.centery - self.Start_Y)
                             if velocity_squared > 0:
                                 self.current_velocity = -math.sqrt(velocity_squared)
@@ -626,7 +626,7 @@ class Human(pygame.sprite.Sprite):
                         # Finding the new velocity:
                         # If the highest point has not been reached yet
                         if self.current_velocity > 0:
-                            # Going up, gravity slows the player down
+                            # Going up, gravity slows the player down (negative acceleration based on the moons gravity)
                             velocity_squared = self.initial_velocity ** 2 + 2 * (-1.625 * self.scale_factor_y) * abs(self.rect.centery - self.Start_Y)
                             if velocity_squared > 0:
                                 self.current_velocity = math.sqrt(velocity_squared)
@@ -634,6 +634,7 @@ class Human(pygame.sprite.Sprite):
                                 self.current_velocity = 0
                         elif self.rect.centery < self.Start_Y and self.current_velocity <= 0:
                             # Falling down, gravity speeds the player up
+                            #   (positive acceleration based on the moons gravity)
                             velocity_squared = 2 * (1.625 * self.scale_factor_y) * abs(self.rect.centery - self.Start_Y)
                             if velocity_squared > 0:
                                 self.current_velocity = -math.sqrt(velocity_squared)
