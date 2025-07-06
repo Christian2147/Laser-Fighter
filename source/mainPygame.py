@@ -441,6 +441,7 @@ def main():
             if screen.page_update != 1:
                 for pa in panel.panel_sprite:
                     pa.remove()
+                panel.panel_sprite.clear()
                 panel.panel_index = 0
             for t in textbox.text_on_screen_list:
                 t.get_text_box().clear()
