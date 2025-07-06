@@ -28,6 +28,7 @@
 import pygame
 import random
 import time
+import math
 from components.ItemCoinPygame import Coin
 from setup.TextureSetup import ALIEN_STILL_RIGHT_1_5_TEXTURE
 from setup.TextureSetup import ALIEN_STILL_LEFT_1_5_TEXTURE
@@ -154,6 +155,19 @@ class SmallAlien(pygame.sprite.Sprite):
 
     def isvisible(self):
         return self.small_alien_visible
+
+    def distance(self, other_sprite):
+        """
+            Calculates the Euclidean distance to another sprite.
+
+            :param other_sprite: Another sprite with a rect attribute
+
+            :return: float
+        """
+
+        dx = self.rect.centerx - other_sprite.rect.centerx
+        dy = self.rect.centery - other_sprite.rect.centery
+        return math.hypot(dx, dy)
 
     def remove(self):
         """

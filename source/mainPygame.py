@@ -1390,6 +1390,127 @@ def main():
                         if sa.get_death_animation() == 0:
                             small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = 0
                     current_small_alien_update_value_index = current_small_alien_update_value_index + 1
+
+            # Player Killer
+            for h in human_player.current_human:
+                # If the death animation has already started
+                if human_player.human_update_value != 0:
+                    # Keep going with the players death animation
+                    h.kill_player(settings.player_death_sound)
+                    human_player.human_update_value = human_player.human_update_value + 1
+                    if h.get_death_iterator() == 2:
+                        # Update the stats if god mode is off
+                        if settings.god_mode == 0:
+                            statistics.alien_deaths = statistics.alien_deaths + 1
+                            statistics.damage_taken = statistics.damage_taken + 1
+                            statistics.save()
+                        # Set the store to 0 and reset the game
+                        statistics.score = 0
+                    # Check if the death animation has finished
+                    if h.get_death_iterator() == 0:
+                        human_player.human_update_value = 0
+                # If the death animation is not ongoing
+                else:
+                    # For every alien, check if the alien got close enough to hit the player
+                    for sa in small_alien.small_aliens:
+                        if sa.distance(h.get_player()) < 70 * window.scale_factor:
+                            # The players health also has to be 1
+                            if h.health == 1 and h.hit_delay == 0 and sa.rect.centerx - 12.5 * window.scale_factor_X < h.rect.centerx < sa.rect.centerx + 12.5 * window.scale_factor_X and human_player.human_update_value == 0 and sa.get_death_animation() == 0 and settings.god_mode == 0:
+                                # Then, kill the player
+                                h.kill_player(settings.player_death_sound)
+                                human_player.human_update_value = human_player.human_update_value + 1
+                                # If the thorns gadget is enabled, hit the alien
+                                if shop_config.thorns_enabled:
+                                    sa.thorns_initiated_damage = 1
+
+                    # for ma in medium_alien.medium_aliens:
+                    #     if ma.get_medium_alien().distance(h.get_player()) < 100 * scale_factor:
+                    #         if h.health == 1 and h.hit_delay == 0 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and human_player.human_update_value == 0 and ma.get_death_animation() == 0 and settings.god_mode == 0:
+                    #             h.kill_player(settings.player_death_sound)
+                    #             human_player.human_update_value = human_player.human_update_value + 1
+                    #             if shop_config.thorns_enabled:
+                    #                 ma.thorns_initiated_damage = 1
+                    #
+                    # for la in large_alien.large_aliens:
+                    #     if la.get_large_alien().distance(h.get_player()) < 160 * scale_factor:
+                    #         if h.health == 1 and h.hit_delay == 0 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and la.get_death_animation() == 0 and settings.god_mode == 0:
+                    #             h.kill_player(settings.player_death_sound)
+                    #             human_player.human_update_value = human_player.human_update_value + 1
+                    #             if shop_config.thorns_enabled:
+                    #                 la.thorns_initiated_damage = 1
+                    #
+                    # for u in ufo.ufos:
+                    #     if u.get_ufo().distance(h.get_player()) < 53 * scale_factor:
+                    #         if h.health == 1 and h.hit_delay == 0 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and u.get_ufo().isvisible() and u.get_death_animation() == 0 and settings.god_mode == 0:
+                    #             h.kill_player(settings.player_death_sound)
+                    #             human_player.human_update_value = human_player.human_update_value + 1
+                    #             if shop_config.thorns_enabled:
+                    #                 u.thorns_initiated_damage = 1
+                    #
+                    #     if u.get_ufo_laser().distance(h.get_player()) < 25 * scale_factor:
+                    #         if h.health == 1 and h.hit_delay == 0 and u.get_ufo_laser().isvisible() and settings.god_mode == 0 and human_player.human_update_value == 0:
+                    #             h.kill_player(settings.player_death_sound)
+                    #             human_player.human_update_value = human_player.human_update_value + 1
+
+                # If the player has more than 1 health, only deal 1 health owrth of damage
+                # If the hit delay is ongoing
+                if human_player.human_hit_value != 0:
+                    # keep it going
+                    h.hit_player(settings.player_hit_sound)
+                    human_player.human_hit_value = human_player.human_hit_value + 1
+                    # Update the stats
+                    if h.get_hit_delay() == 2:
+                        statistics.damage_taken = statistics.damage_taken + 1
+                        statistics.save()
+                    if h.get_hit_delay() == 0:
+                        human_player.human_hit_value = 0
+                # If there is no hit delay
+                else:
+                    # For every alien, check if the alien got close enough to hit the player
+                    for sa in small_alien.small_aliens:
+                        if sa.distance(h.get_player()) < 70 * window.scale_factor:
+                            # If the players health is greater than 1
+                            if h.get_health() > 1 and sa.rect.centerx - 12.5 * window.scale_factor_X < h.rect.centerx < sa.rect.centerx + 12.5 * window.scale_factor_X and sa.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
+                                # Hit the player
+                                h.hit_player(settings.player_hit_sound)
+                                human_player.human_hit_value = human_player.human_hit_value + 1
+                                # If the thorns gadget is enabled, hit the alien
+                                if shop_config.thorns_enabled:
+                                    sa.thorns_initiated_damage = 1
+
+                    # for ma in medium_alien.medium_aliens:
+                    #     if ma.get_medium_alien().distance(h.get_player()) < 100 * scale_factor:
+                    #         if h.get_health() > 1 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and ma.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
+                    #             h.hit_player(settings.player_hit_sound)
+                    #             human_player.human_hit_value = human_player.human_hit_value + 1
+                    #             if shop_config.thorns_enabled:
+                    #                 ma.thorns_initiated_damage = 1
+                    #
+                    # for la in large_alien.large_aliens:
+                    #     if la.get_large_alien().distance(h.get_player()) < 160 * scale_factor:
+                    #         if h.get_health() > 1 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and la.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
+                    #             h.hit_player(settings.player_hit_sound)
+                    #             human_player.human_hit_value = human_player.human_hit_value + 1
+                    #             if shop_config.thorns_enabled:
+                    #                 la.thorns_initiated_damage = 1
+                    #
+                    # for u in ufo.ufos:
+                    #     # For the UFO, the player can get hurt by both touching the UFO and getting hit
+                    #     #   by the UFOs laser
+                    #     if u.get_ufo().distance(h.get_player()) < 53 * scale_factor:
+                    #         if h.get_health() > 1 and u.get_ufo().xcor() - 18 * scale_factor_X < h.get_player().xcor() < u.get_ufo().xcor() + 18 * scale_factor_X and u.get_ufo().isvisible() and u.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
+                    #             h.hit_player(settings.player_hit_sound)
+                    #             human_player.human_hit_value = human_player.human_hit_value + 1
+                    #             # Only if the player touches the UFO will thorns initiate damage on it
+                    #             if shop_config.thorns_enabled:
+                    #                 u.thorns_initiated_damage = 1
+                    #
+                    #     if u.get_ufo_laser().distance(h.get_player()) < 25 * scale_factor:
+                    #         if h.get_health() > 1 and u.get_ufo_laser().isvisible() and settings.god_mode == 0:
+                    #             h.hit_player(settings.player_hit_sound)
+                    #             human_player.human_hit_value = human_player.human_hit_value + 1
+
+        # If Alien Mode is toggled off
         else:
             for s in sun.sun_sprite:
                 s.remove()

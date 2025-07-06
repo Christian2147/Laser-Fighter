@@ -937,7 +937,7 @@ class Human(pygame.sprite.Sprite):
                     self.armor_bar.armor_bar_visible = 1
                 # Move the player back to the center of the screen
                 self.rect.center = (640 * self.scale_factor_x, 501 * self.scale_factor_y)
-                self.oxygen_tank.center = (self.rect.centerx - 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
+                self.oxygen_tank.rect.center = (self.rect.centerx - 30.5 * self.scale_factor_x, self.rect.centery - 11 * self.scale_factor_y)
                 self.gun.center = (self.rect.centerx, self.rect.centery - 12 * self.scale_factor_y)
                 self.oxygen_tank.oxygen_tank_visible = 1
                 # Reset the players texture and all related variables
