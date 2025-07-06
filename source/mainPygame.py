@@ -102,7 +102,7 @@ def main():
     gadget = Gadget(machine_player, coin, window.scale_factor)
 
     screen = ScreenUpdate(window, button, settings, shop_config, refresh_variables,
-                          power_up_setup, machine_mode_setup,
+                          power_up_setup, machine_mode_setup, alien_mode_setup,
                           window.scale_factor_X, window.scale_factor_Y)
 
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)

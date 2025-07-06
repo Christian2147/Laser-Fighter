@@ -57,7 +57,18 @@ class ScreenUpdate:
             _quit_loop (int): Determines if the program has been terminated
     """
 
-    def __init__(self, screen, button, settings, shop_config, refresh, power_up_setup, machine_mode_setup, scale_factor_x, scale_factor_y):
+    def __init__(self,
+                 screen,
+                 button,
+                 settings,
+                 shop_config,
+                 refresh,
+                 power_up_setup,
+                 machine_mode_setup,
+                 alien_mode_setup,
+                 scale_factor_x,
+                 scale_factor_y
+    ):
         """
             Initializes all the necessary pointers for the Screen Manager.
 
@@ -99,7 +110,7 @@ class ScreenUpdate:
         self._refresh = refresh
         self._power_up_setup = power_up_setup
         self._machine_mode_setup = machine_mode_setup
-        # self._alien_mode_setup = alien_mode_setup
+        self._alien_mode_setup = alien_mode_setup
 
         self._scale_factor_x = scale_factor_x
         self._scale_factor_y = scale_factor_y
@@ -126,6 +137,7 @@ class ScreenUpdate:
         del self._refresh
         del self._power_up_setup
         del self._machine_mode_setup
+        del self._alien_mode_setup
         del self._scale_factor_x
         del self._scale_factor_y
         del self._mode
@@ -234,7 +246,7 @@ class ScreenUpdate:
             # Setup the power ups and both Machine Mode and Alien Mode
             self._power_up_setup.setup_power_ups()
             self._machine_mode_setup.setup_machine_mode()
-            # self._alien_mode_setup.setup_alien_mode()
+            self._alien_mode_setup.setup_alien_mode()
         # If coming from settings or controls, there may be a special procedure needed
         if self._mode == "Settings" or self._mode == "Controls":
             if self._settings.button_sound == 1:
@@ -260,7 +272,7 @@ class ScreenUpdate:
                     # Setup the power ups and both Machine Mode and Alien Mode
                     self._power_up_setup.setup_power_ups()
                     self._machine_mode_setup.setup_machine_mode()
-                    # self._alien_mode_setup.setup_alien_mode()
+                    self._alien_mode_setup.setup_alien_mode()
                     self._updated_controls = 0
             else:
                 self._mode = "Title_Mode"
@@ -268,7 +280,7 @@ class ScreenUpdate:
                 # Setup the power ups and both Machine Mode and Alien Mode
                 self._power_up_setup.setup_power_ups()
                 self._machine_mode_setup.setup_machine_mode()
-                # self._alien_mode_setup.setup_alien_mode()
+                self._alien_mode_setup.setup_alien_mode()
 
     def launch_machine_mode(self):
         """
