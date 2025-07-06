@@ -90,7 +90,7 @@ class SmallAlien(pygame.sprite.Sprite):
         self.image = pygame.image.load(ALIEN_STILL_RIGHT_1_5_TEXTURE)
         self.rect = self.image.get_rect()
         if id == 1:
-            self.rect.center = (int(-160 * scale_factor_x), int(501 * scale_factor_y))
+            self.rect.center = (int(160 * scale_factor_x), int(501 * scale_factor_y))
         elif id == 2:
             self.rect.center = (int(-60 * scale_factor_x), int(501 * scale_factor_y))
         elif id == 3:
@@ -108,6 +108,7 @@ class SmallAlien(pygame.sprite.Sprite):
         self.walk_start_time = 0
         self.move_start_time = time.time()
         self.movement_activated = 0
+        self.precise_x = float(self.rect.centerx)
 
         # For collision
         self.got_hit = 1
@@ -150,6 +151,9 @@ class SmallAlien(pygame.sprite.Sprite):
         """
 
         return self.death_animation
+
+    def isvisible(self):
+        return self.small_alien_visible
 
     def remove(self):
         """
@@ -326,49 +330,52 @@ class SmallAlien(pygame.sprite.Sprite):
             current_time = time.time()
             elapsed_time = current_time - self.move_start_time
             if elapsed_time >= 0.012:
-                # If the aliens direction is right
-                if self.direction == 1:
+                if self.direction == "right":
                     # Move the alien right
                     if 0 <= self.death_count < 6:
-                        # Calculate the delta movement as extra movement needed
                         delta_movement = 0.3 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.rect.centerx = self.rect.centerx + 0.3 * self.scale_factor_x + delta_movement
+                        self.precise_x = self.precise_x + 0.3 * self.scale_factor_x + delta_movement
                     if 6 <= self.death_count < 12:
                         delta_movement = 0.6 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.rect.centerx = self.rect.centerx + 0.6 * self.scale_factor_x + delta_movement
+                        self.precise_x = self.precise_x + 0.6 * self.scale_factor_x + delta_movement
                     if 12 <= self.death_count < 18:
                         delta_movement = 0.9 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.rect.centerx = self.rect.centerx + 0.9 * self.scale_factor_x + delta_movement
+                        self.precise_x = self.precise_x + 0.9 * self.scale_factor_x + delta_movement
                     if 18 <= self.death_count < 24:
                         delta_movement = 1.2 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.rect.centerx = self.rect.centerx + 1.2 * self.scale_factor_x + delta_movement
+                        self.precise_x = self.precise_x + 1.2 * self.scale_factor_x + delta_movement
                     if 24 <= self.death_count < 30:
                         delta_movement = 1.5 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.rect.centerx = self.rect.centerx + 1.5 * self.scale_factor_x + delta_movement
+                        self.precise_x = self.precise_x + 1.5 * self.scale_factor_x + delta_movement
                     if 30 <= self.death_count:
                         delta_movement = 1.8 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.rect.centerx = self.rect.centerx + 1.8 * self.scale_factor_x + delta_movement
-                # If the aliens direction is left
+                        self.precise_x = self.precise_x + 1.8 * self.scale_factor_x + delta_movement
                 else:
                     # Move the alien left
                     if 0 <= self.death_count < 6:
                         delta_movement = 0.3 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.rect.centerx = self.rect.centerx - 0.3 * self.scale_factor_x + delta_movement
+                        self.precise_x = self.precise_x - 0.3 * self.scale_factor_x - delta_movement
                     if 6 <= self.death_count < 12:
                         delta_movement = 0.6 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.rect.centerx = self.rect.centerx - 0.6 * self.scale_factor_x + delta_movement
+                        self.precise_x = self.precise_x - 0.6 * self.scale_factor_x - delta_movement
                     if 12 <= self.death_count < 18:
                         delta_movement = 0.9 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.rect.centerx = self.rect.centerx - 0.9 * self.scale_factor_x + delta_movement
+                        self.precise_x = self.precise_x - 0.9 * self.scale_factor_x - delta_movement
                     if 18 <= self.death_count < 24:
                         delta_movement = 1.2 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.rect.centerx = self.rect.centerx - 1.2 * self.scale_factor_x + delta_movement
+                        self.precise_x = self.precise_x - 1.2 * self.scale_factor_x - delta_movement
                     if 24 <= self.death_count < 30:
                         delta_movement = 1.5 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.rect.centerx = self.rect.centerx - 1.5 * self.scale_factor_x + delta_movement
+                        self.precise_x = self.precise_x - 1.5 * self.scale_factor_x - delta_movement
                     if 30 <= self.death_count:
                         delta_movement = 1.8 * self.scale_factor_x * ((elapsed_time - 0.012) / 0.012)
-                        self.rect.centerx = self.rect.centerx - 1.8 * self.scale_factor_x + delta_movement
+                        self.precise_x = self.precise_x - 1.8 * self.scale_factor_x - delta_movement
+
+                # Sync the float position to the rect
+                self.rect.centerx = int(round(self.precise_x))
+
+                # Reset movement timer
                 self.move_start_time = time.time()
         else:
             self.move_start_time = 0
+

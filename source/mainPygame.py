@@ -45,6 +45,7 @@ from components.spawn.SpawnBackgroundObjectsPygame import SpawnEarth
 from components.spawn.SpawnBackgroundObjectsPygame import SpawnGround
 from components.spawn.SpawnBackgroundObjectsPygame import SpawnShip
 from components.spawn.SpawnCoinPygame import SpawnCoin
+from components.spawn.SpawnAlienPygame import SpawnSmallAlien
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
 from components.spawn.SpawnPlayerPygame import SpawnHumanPlayer
 from components.spawn.SpawnPlayerPygame import SpawnMachinePlayer
@@ -80,10 +81,12 @@ def main():
     ship = SpawnShip(window.scale_factor_X, window.scale_factor_Y)
 
     coin = SpawnCoin()
+
     blue_machine = SpawnBlueMachine(window.scale_factor_X, window.scale_factor_Y)
     power_up = SpawnPowerUp(window.scale_factor_X, window.scale_factor_Y)
     machine_player = SpawnMachinePlayer(window.scale_factor_X, window.scale_factor_Y)
 
+    small_alien = SpawnSmallAlien(window.scale_factor_X, window.scale_factor_Y)
     human_player = SpawnHumanPlayer(window.scale_factor_X, window.scale_factor)
 
     panel = SpawnPanel(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
@@ -317,6 +320,10 @@ def main():
 
                 if bu.blue_machine_laser.laser_visible == 1:
                     window.screen.blit(bu.blue_machine_laser.image, bu.blue_machine_laser.rect)
+
+        for sa in small_alien.small_aliens:
+            if sa.small_alien_visible == 1:
+                window.screen.blit(sa.image, sa.rect)
 
         for pu in power_up.current_power_ups:
             if pu.power_up_visible == 1:
@@ -1017,6 +1024,11 @@ def main():
             if human_player.current_human_index == 0:
                 human_player.spawn_human_player(settings.god_mode)
 
+            # Spawn three small aliens to start out
+            if small_alien.small_alien_index == 0:
+                for i in range(3):
+                    small_alien.spawn_small_alien(i + 1)
+
             # Move the sun along the ellipse
             for s in sun.sun_sprite:
                 s.update_position()
@@ -1188,6 +1200,21 @@ def main():
             for h in human_player.current_human:
                 h.set_player_texture(human_player.right_update, human_player.left_update)
                 h.set_gun_texture()
+
+
+            # Update the directions that each of the aliens are facing
+            for h in human_player.current_human:
+                for sa in small_alien.small_aliens:
+                    sa.set_alien_direction(h.rect.centerx)
+
+            # Update the aliens position, the aliens move faster the more times they are killed until the player dies
+            for sa in small_alien.small_aliens:
+                sa.set_movement_speed()
+
+            # Update the aliens texture based on their direction and the walking animation
+            for sa in small_alien.small_aliens:
+                if sa.get_small_alien().isvisible():
+                    sa.set_alien_texture(human_player.right_update, human_player.left_update)
         else:
             for s in sun.sun_sprite:
                 s.remove()
@@ -1211,6 +1238,11 @@ def main():
             human_player.human_update_value = 0
             human_player.human_hit_value = 0
             human_player.laser_update = 0
+            for sa in small_alien.small_aliens:
+                sa.remove()
+            small_alien.small_aliens.clear()
+            small_alien.small_alien_index = 0
+            small_alien.small_aliens_kill_values.clear()
 
 
         """
