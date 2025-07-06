@@ -173,7 +173,6 @@ class Human(pygame.sprite.Sprite):
         self.death_iterator = 0
         self.health = alien_mode_setup.health
         self.hit_delay = 0
-        # self.direction = 0
         self.gun_direction = 0
         self.jump_direction = 0
         self.move_update = 0
