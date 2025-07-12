@@ -351,7 +351,7 @@ class RedMachine(pygame.sprite.Sprite):
 
         # When the death animation and respawning is finished, the red machine appears on the screen again
         if self.update == 6:
-            self.machine_visible = 0
+            self.machine_visible = 1
             self.red_machine_health_bar.health_bar_visible = 1
             self.movement_activated = 0
             self.update = 0

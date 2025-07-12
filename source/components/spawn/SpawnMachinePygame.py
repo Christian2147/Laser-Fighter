@@ -24,6 +24,7 @@
 
 from components.enemy.MachineBlueMachinePygame import BlueMachine
 from components.enemy.MachineYellowMachinePygame import YellowMachine
+from components.enemy.MachineRedMachinePygame import RedMachine
 
 
 class SpawnBlueMachine:
@@ -142,3 +143,68 @@ class SpawnYellowMachine:
         self.yellow_machines.append(yellow_machine)
         self.yellow_machine_index = self.yellow_machine_index + 1
         self.yellow_machines_update_values.append(0)
+
+
+class SpawnRedMachine:
+    """
+        Represents the Red Machine container in Laser Fighter.
+
+        Attributes:
+            all_red_machines (list): Contains all of the red machine sprites created since the game has
+                launched, even ones removed from the screen
+            red_machines (list): Contains all of the red machine sprites currently visible/active on the screen.
+            red_machines_update_values (list): Contains all of the death animation values for each red machine
+                on the screen.
+            red_machines_hit_values (list): Contains all of the hit delay values for each red machine on the screen.
+            red_machine_index (int): Stores the number of red machines currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Red Machine.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        self.red_machines = []
+        self.red_machines_update_values = []
+        self.red_machines_hit_values = []
+        self.red_machine_index = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
+        del self.red_machines
+        del self.red_machines_update_values
+        del self.red_machines_hit_values
+        del self.red_machine_index
+
+    def spawn_red_machine(self, id):
+        """
+            Spawn a red machine with the given id on the screen.
+
+            :param id: The id that the enemy should have (Determines initial location of the enemy)
+            :type id: int
+
+            :return: None
+        """
+
+        red_machine = RedMachine(id, self.scale_factor_x, self.scale_factor_y)
+        self.red_machines.append(red_machine)
+        self.red_machine_index = self.red_machine_index + 1
+        self.red_machines_update_values.append(0)
+        self.red_machines_hit_values.append(0)
