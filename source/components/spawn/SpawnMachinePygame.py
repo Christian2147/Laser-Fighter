@@ -23,6 +23,7 @@
 """
 
 from components.enemy.MachineBlueMachinePygame import BlueMachine
+from components.enemy.MachineYellowMachinePygame import YellowMachine
 
 
 class SpawnBlueMachine:
@@ -82,3 +83,62 @@ class SpawnBlueMachine:
         self.blue_machines.append(blue_machine)
         self.blue_machine_index = self.blue_machine_index + 1
         self.blue_machines_update_values.append(0)
+
+
+class SpawnYellowMachine:
+    """
+        Represents the Yellow Machine container in Laser Fighter.
+
+        Attributes:
+            yellow_machines (list): Contains all of the yellow machine sprites currently visible/active on the screen.
+            yellow_machines_update_values (list): Contains all of the death animation values for each yellow machine
+                on the screen.
+            yellow_machine_index (int): Stores the number of yellow machines currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Yellow Machine.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        self.yellow_machines = []
+        self.yellow_machines_update_values = []
+        self.yellow_machine_index = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
+        del self.yellow_machines
+        del self.yellow_machines_update_values
+        del self.yellow_machine_index
+
+    def spawn_yellow_machine(self, id):
+        """
+            Spawn a yellow machine with the given id on the screen.
+
+            :param id: The id that the enemy should have (Determines initial location of the enemy)
+            :type id: int
+
+            :return: None
+        """
+
+        yellow_machine = YellowMachine(id, self.scale_factor_x, self.scale_factor_y)
+        self.yellow_machines.append(yellow_machine)
+        self.yellow_machine_index = self.yellow_machine_index + 1
+        self.yellow_machines_update_values.append(0)

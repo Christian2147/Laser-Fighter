@@ -31,8 +31,8 @@ import random
 import pygame
 import time
 import math
-from components.ItemCoin import Coin
-from setup.ModeSetupMaster import machine_mode_setup
+from components.ItemCoinPygame import Coin
+from setup.ModeSetupMasterPygame import machine_mode_setup
 from setup.TextureSetup import YELLOW_MACHINE_TEXTURE
 from setup.TextureSetup import YELLOW_MACHINE_LASER_TEXTURE
 from setup.TextureSetup import EXPLOSION_1_TEXTURE
@@ -130,7 +130,7 @@ class YellowMachine(pygame.sprite.Sprite):
         self.start_y_float = 0
         self.float_activated = 0
         self.start_time = 0
-        self.laser_start_time = 0 # Maybe change this to time.time()
+        self.laser_start_time = time.time()
         self.move_start_time = time.time()
         self.float_start_time = time.time()
         self.laser_has_attacked = 0
@@ -189,6 +189,9 @@ class YellowMachine(pygame.sprite.Sprite):
         """
 
         return self.update
+
+    def isvisible(self):
+        return self.machine_visible
 
     def set_laser_has_attacked(self, new_value):
         """
@@ -263,7 +266,7 @@ class YellowMachine(pygame.sprite.Sprite):
             if self.laser_has_attacked == 1:
                 self.yellow_machine_laser.laser_visible = 0
             else:
-                self.yellow_machine_laser.laser_visible = 0
+                self.yellow_machine_laser.laser_visible = 1
             # If the laser is still visible in the frame of the screen
             if self.yellow_machine_laser.rect.centery < 720 * self.scale_factor_y:
                 # Keep moving the laser down the screen 8.7 units every 0.015 seconds
@@ -326,10 +329,10 @@ class YellowMachine(pygame.sprite.Sprite):
             # Hide the yellow machine and spawn a silver coin where the yellow machine died
             self.machine_visible = 0
             # Spawn a silver coin in the death location
-            silver_coin = Coin(type="silver", pos_x=self.rect.centerx, pos_y=self.rect.centery)
+            silver_coin = Coin(type="silver", pos_x=self.rect.centerx, pos_y=self.rect.centery, scale_factor_x=self.scale_factor_x)
             # Set the hitbox for the coin
-            silver_coin.range = (silver_coin.coin.xcor() - silver_coin.COIN_DISTANCE, silver_coin.coin.xcor() + silver_coin.COIN_DISTANCE)
-            silver_coin.collision_coordinate = silver_coin.coin.ycor() - silver_coin.COIN_DISTANCE
+            silver_coin.range = (silver_coin.rect.centerx - silver_coin.COIN_DISTANCE, silver_coin.rect.centery + silver_coin.COIN_DISTANCE)
+            silver_coin.collision_coordinate = silver_coin.rect.centery - silver_coin.COIN_DISTANCE
             coins_on_screen.append(silver_coin)
             # Respawn the yellow machine in a different random location
             old_center = self.rect.center
@@ -409,25 +412,15 @@ class YellowMachine(pygame.sprite.Sprite):
             self.float_activated = 1
             self.start_y_float = self.rect.centery
 
-        if self.start_y_float + 50 * self.scale_factor_y >= self.rect.centery:
+        if self.start_y_float - 50 * self.scale_factor_y >= self.rect.centery:
             # Move down
             self.float = -1
-        elif self.start_y_float - 50 * self.scale_factor_y <= self.rect.centery:
+        elif self.start_y_float + 50 * self.scale_factor_y <= self.rect.centery:
             # Move up
             self.float = 1
         current_time = time.time()
         elapsed_time = current_time - self.float_start_time
         # Make a movement every 0.0075 seconds to reduce the effects of lag
-        # if elapsed_time >= 0.0075:
-        #     if self.float == 1:
-        #         # Calculate the delta movement and add it as additional movement required
-        #         delta_movement = machine_mode_setup.MACHINE_FLOAT * ((elapsed_time - 0.0075) / 0.0075)
-        #         self.yellow_machine.goto(self.yellow_machine.xcor(), self.yellow_machine.ycor() + machine_mode_setup.MACHINE_FLOAT + delta_movement)
-        #     elif self.float == -1:
-        #         # Calculate the delta movement and add it as additional movement required
-        #         delta_movement = machine_mode_setup.MACHINE_FLOAT * ((elapsed_time - 0.0075) / 0.0075)
-        #         self.yellow_machine.goto(self.yellow_machine.xcor(), self.yellow_machine.ycor() - machine_mode_setup.MACHINE_FLOAT - delta_movement)
-        #     self.float_start_time = time.time()
         if elapsed_time >= 0.0075:
             if self.float == 1:
                 # Calculate the delta movement and add it as additional movement required

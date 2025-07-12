@@ -47,6 +47,7 @@ from components.spawn.SpawnBackgroundObjectsPygame import SpawnShip
 from components.spawn.SpawnCoinPygame import SpawnCoin
 from components.spawn.SpawnAlienPygame import SpawnSmallAlien
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
+from components.spawn.SpawnMachinePygame import SpawnYellowMachine
 from components.spawn.SpawnPlayerPygame import SpawnHumanPlayer
 from components.spawn.SpawnPlayerPygame import SpawnMachinePlayer
 from components.spawn.SpawnPowerUpPygame import SpawnPowerUp
@@ -81,9 +82,10 @@ def main():
     ship = SpawnShip(window.scale_factor_X, window.scale_factor_Y)
 
     coin = SpawnCoin()
+    power_up = SpawnPowerUp(window.scale_factor_X, window.scale_factor_Y)
 
     blue_machine = SpawnBlueMachine(window.scale_factor_X, window.scale_factor_Y)
-    power_up = SpawnPowerUp(window.scale_factor_X, window.scale_factor_Y)
+    yellow_machine = SpawnYellowMachine(window.scale_factor_Y, window.scale_factor_Y)
     machine_player = SpawnMachinePlayer(window.scale_factor_X, window.scale_factor_Y)
 
     small_alien = SpawnSmallAlien(window.scale_factor_X, window.scale_factor_Y)
@@ -315,12 +317,19 @@ def main():
             if ci.coin_visible == 1:
                 window.screen.blit(ci.image, ci.rect)
 
-        for bu in blue_machine.blue_machines:
-            if bu.machine_visible == 1:
-                window.screen.blit(bu.image, bu.rect)
+        for bm in blue_machine.blue_machines:
+            if bm.machine_visible == 1:
+                window.screen.blit(bm.image, bm.rect)
 
-                if bu.blue_machine_laser.laser_visible == 1:
-                    window.screen.blit(bu.blue_machine_laser.image, bu.blue_machine_laser.rect)
+                if bm.blue_machine_laser.laser_visible == 1:
+                    window.screen.blit(bm.blue_machine_laser.image, bm.blue_machine_laser.rect)
+
+        for ym in yellow_machine.yellow_machines:
+            if ym.machine_visible == 1:
+                window.screen.blit(ym.image, ym.rect)
+
+                if ym.yellow_machine_laser.laser_visible == 1:
+                    window.screen.blit(ym.yellow_machine_laser.image, ym.yellow_machine_laser.rect)
 
         for sa in small_alien.small_aliens:
             if sa.small_alien_visible == 1:
@@ -577,14 +586,57 @@ def main():
                 machine_player.spawn_machine_player(settings.god_mode)
 
             if blue_machine.blue_machine_index == 0:
-                for i in range(100):
+                for i in range(3):
                     blue_machine.spawn_blue_machine(i + 1)
 
             for p in machine_player.current_player:
                 p.shoot(settings.player_shooting_sound, yellow_power_up_indicator.yellow_power_up_indicator_sprite[0].get_power_up_active())
 
+            # Spawn Machine enemies based on the players score
+            # At its peak, there will be 5 blue machines, 5 yellow machines, 5 red machines,
+            #   and 1 machine boss attacking
+            #   the player
+            if statistics.score >= 10 and blue_machine.blue_machine_index == 3:
+                blue_machine.spawn_blue_machine(4)
+            elif statistics.score >= 20 and blue_machine.blue_machine_index == 4:
+                blue_machine.spawn_blue_machine(5)
+            elif statistics.score >= 30 and yellow_machine.yellow_machine_index == 0:
+                yellow_machine.spawn_yellow_machine(1)
+            elif statistics.score >= 40 and yellow_machine.yellow_machine_index == 1:
+                yellow_machine.spawn_yellow_machine(2)
+            elif statistics.score >= 50 and yellow_machine.yellow_machine_index == 2:
+                yellow_machine.spawn_yellow_machine(3)
+            elif statistics.score >= 60 and yellow_machine.yellow_machine_index == 3:
+                yellow_machine.spawn_yellow_machine(4)
+            elif statistics.score >= 70 and yellow_machine.yellow_machine_index == 4:
+                yellow_machine.spawn_yellow_machine(5)
+            # If score is 0, reset the number of enemies back down to 3
+            elif statistics.score == 0:
+                for bm in blue_machine.blue_machines:
+                    if bm.get_id() == 4 or bm.get_id() == 5:
+                        bm.remove()
+                        blue_machine.blue_machine_index = blue_machine.blue_machine_index - 1
+                if len(blue_machine.blue_machines_update_values) == 4:
+                    blue_machine.blue_machines_update_values.pop(3)
+                    blue_machine.blue_machines.pop(3)
+                elif len(blue_machine.blue_machines_update_values) == 5:
+                    blue_machine.blue_machines_update_values.pop(4)
+                    blue_machine.blue_machines_update_values.pop(3)
+                    blue_machine.blue_machines.pop(4)
+                    blue_machine.blue_machines.pop(3)
+
+                for ym in yellow_machine.yellow_machines:
+                    ym.remove()
+                yellow_machine.yellow_machines.clear()
+                yellow_machine.yellow_machine_index = 0
+                yellow_machine.yellow_machines_update_values.clear()
+
+            # Run the functions to shoot the lasers for each of the enemies
             for bm in blue_machine.blue_machines:
                 bm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active(), settings.enemy_shooting_sound)
+
+            for ym in yellow_machine.yellow_machines:
+                ym.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active(), settings.enemy_shooting_sound)
 
             # If the coin magnet gadget is not enabled
             if not shop_config.coin_magnet_enabled:
@@ -714,8 +766,8 @@ def main():
                         # Check to see if the laser will attack it
                         for i in range(len(p.get_laser())):
                             if p.get_laser()[i].isvisible() and \
-                             (bm.rect.centerx - 50 * window.scale_factor_X < p.get_laser()[i].rect.centerx < bm.rect.centerx + 50 * window.scale_factor_X) and \
-                             (bm.rect.centery - 50 * window.scale_factor_Y < p.get_laser()[i].rect.centery < bm.rect.centery + 50 * window.scale_factor_Y):
+                             (bm.rect.centerx - 52 * window.scale_factor_X < p.get_laser()[i].rect.centerx < bm.rect.centerx + 52 * window.scale_factor_X) and \
+                             (bm.rect.centery - 52 * window.scale_factor_Y < p.get_laser()[i].rect.centery < bm.rect.centery + 52 * window.scale_factor_Y):
                                 # If it has, initiate the killing of the enemy
                                 attacked = 1
 
@@ -762,6 +814,53 @@ def main():
                             coin.coin_pickup_delay = 1
                     current_blue_update_value_index = current_blue_update_value_index + 1
 
+                current_yellow_update_value_index = 0
+                for ym in yellow_machine.yellow_machines:
+                    # If the player laser hits a yellow machine that is visible and not dying
+                    if ym.get_yellow_machine().isvisible() and yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] == 0:
+                        # Same procedure as before
+                        laser_killer = 0
+                        attacked = 0
+                        for i in range(len(p.get_laser())):
+                            if p.get_laser()[i].isvisible() and \
+                             (ym.rect.centerx - 59 * window.scale_factor_X < p.get_laser()[i].rect.centerx < ym.rect.centerx + 59 * window.scale_factor_X) and \
+                             (ym.rect.centery - 59 * window.scale_factor_Y < p.get_laser()[i].rect.centery < ym.rect.centery + 59 * window.scale_factor_Y):
+                                attacked = 1
+
+                                p.set_laser_has_attacked(1, i)
+                                laser_killer = 1
+
+                        if ym.thorns_initiated_damage == 1 and laser_killer == 0:
+                            attacked = 1
+
+                        if attacked == 1:
+                            # Same procedure as before
+                            ym.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list)
+                            yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] = \
+                            yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] + 1
+
+                            if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                statistics.score = statistics.score + 2 * machine_mode_setup.blue_power_up_score_multiplier
+                            else:
+                                statistics.score = statistics.score + 2 * machine_mode_setup.regular_score_multiplier
+
+                            if settings.god_mode == 0:
+                                statistics.yellow_bots_killed = statistics.yellow_bots_killed + 1
+                                statistics.save()
+                    elif yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] != 0:
+                        # Same procedure as before
+                        ym.kill_enemy(settings.enemy_death_sound, coin.coins_on_screen_list)
+                        yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] = \
+                        yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] + 1
+
+                        if ym.get_update_value() == 0:
+                            yellow_machine.yellow_machines_update_values[current_yellow_update_value_index] = 0
+                            coin.coin_pickup_delay = 0
+
+                        if ym.get_update_value() == 3:
+                            coin.coin_pickup_delay = 1
+                    current_yellow_update_value_index = current_yellow_update_value_index + 1
+
             # Player Killer
             for p in machine_player.current_player:
                 # If the death animation has already started
@@ -789,7 +888,7 @@ def main():
                             if bm.get_blue_machine_laser().isvisible() and -30 * window.scale_factor_X < (
                                     bm.get_blue_machine_laser().rect.centerx - p.rect.centerx) < 30 * window.scale_factor_X:
                                 bm.set_laser_has_attacked(1)
-                                if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0: #and settings.god_mode == 0:
+                                if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and settings.god_mode == 0:
                                     # If so kill the player and set the score down to 0 to reset the game
                                     p.kill_player(settings.player_death_sound)
                                     statistics.score = 0
@@ -797,6 +896,18 @@ def main():
                                     # If the player has thorns enabled, initiate the thorns damage on the enemy
                                     if shop_config.thorns_enabled:
                                         bm.thorns_initiated_damage = 1
+
+                    for ym in yellow_machine.yellow_machines:
+                        if ym.get_yellow_machine_laser().distance(p.get_player()) < 125 * window.scale_factor:
+                            if ym.get_yellow_machine_laser().isvisible() and -30 * window.scale_factor_X < (
+                                    ym.get_yellow_machine_laser().rect.centerx - p.rect.centerx) < 30 * window.scale_factor_X:
+                                ym.set_laser_has_attacked(1)
+                                if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and settings.god_mode == 0:
+                                    p.kill_player(settings.player_death_sound)
+                                    statistics.score = 0
+                                    machine_player.player_update_value = machine_player.player_update_value + 1
+                                    if shop_config.thorns_enabled:
+                                        ym.thorns_initiated_damage = 1
 
                 # If the player has more than 1 health, only deal 1 health of damage
                 # If the hit delay is ongoing
@@ -814,10 +925,9 @@ def main():
                     # Check if the lasers of any enemies have hit the player
                     for bm in blue_machine.blue_machines:
                         if bm.get_blue_machine_laser().distance(p.get_player()) < 125 * window.scale_factor:
-                            if bm.get_blue_machine_laser().isvisible() and -30 * window.scale_factor_X < (
-                                    bm.get_blue_machine_laser().rect.centerx - p.rect.centerx) < 30 * window.scale_factor_X:
+                            if bm.get_blue_machine_laser().isvisible() and -30 * window.scale_factor_X < (bm.get_blue_machine_laser().rect.centerx - p.rect.centerx) < 30 * window.scale_factor_X:
                                 bm.set_laser_has_attacked(1)
-                                if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0:# and settings.god_mode == 0:
+                                if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and settings.god_mode == 0:
                                     # Hit the player
                                     p.hit_player(settings.player_hit_sound)
                                     machine_player.player_hit_value = machine_player.player_hit_value + 1
@@ -825,12 +935,28 @@ def main():
                                     if shop_config.thorns_enabled:
                                         bm.thorns_initiated_damage = 1
 
+                    for ym in yellow_machine.yellow_machines:
+                        if ym.get_yellow_machine_laser().distance(p.get_player()) < 125 * window.scale_factor:
+                            if ym.get_yellow_machine_laser().isvisible() and -30 * window.scale_factor_X < (ym.get_yellow_machine_laser().rect.centerx - p.rect.centerx) < 30 * window.scale_factor_X:
+                                ym.set_laser_has_attacked(1)
+                                if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and settings.god_mode == 0:
+                                    p.hit_player(settings.player_hit_sound)
+                                    machine_player.player_hit_value = machine_player.player_hit_value + 1
+                                    if shop_config.thorns_enabled:
+                                        ym.thorns_initiated_damage = 1
+
             for bm in blue_machine.blue_machines:
                 bm.float_effect()
+
+            for ym in yellow_machine.yellow_machines:
+                ym.float_effect()
 
             for p in machine_player.current_player:
                 for bm in blue_machine.blue_machines:
                     bm.move_enemy(p.get_death_animation())
+
+                for ym in yellow_machine.yellow_machines:
+                    ym.move_enemy(p.get_death_animation())
 
             # Check if the power ups are active or not
             for t in textbox.text_on_screen_list:
@@ -969,6 +1095,11 @@ def main():
             blue_machine.blue_machines.clear()
             blue_machine.blue_machine_index = 0
             blue_machine.blue_machines_update_values.clear()
+            for ym in yellow_machine.yellow_machines:
+                ym.remove()
+            yellow_machine.yellow_machines.clear()
+            yellow_machine.yellow_machine_index = 0
+            yellow_machine.yellow_machines_update_values.clear()
 
         """
             When Alien Mode is on
