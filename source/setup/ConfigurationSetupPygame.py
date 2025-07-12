@@ -27,6 +27,7 @@ import os
 from utils.RefreshPygame import Refresh
 from utils.UpdateSettingsDataPygame import Settings
 from utils.UpdateControlsPygame import ControlsConfig
+from utils.UpdateMilestonesPygame import MilestoneConfig
 from utils.UpdateStatsDataPygame import Stats
 from utils.UpdateShopDataPygame import ShopConfig
 
@@ -38,6 +39,9 @@ settings = Settings()
 
 # Create Controls Toggle Object to store the control keybinds
 controls_toggle = ControlsConfig()
+
+# Create a Milestones Object to store the milestones that the player has achieved
+milestones = MilestoneConfig()
 
 # Create a Stats Object to store the current statistics
 statistics = Stats(settings.god_mode)
