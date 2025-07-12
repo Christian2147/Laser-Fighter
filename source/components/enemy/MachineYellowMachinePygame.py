@@ -14,16 +14,16 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: MachineBlueMachine.py
+    File: MachineYellowMachine.py
     Author: Christian Marinkovich
     Date: 2024-07-05
     Description:
-    This file contains the logic related to the blue machine, which is the first enemy you will encounter
-    in Machine Mode.
-    The blue machine fires small blue lasers at the player. It dies in one hit and has a 1.5 second long
+    This file contains the logic related to the yellow machine, which is the second enemy you will
+    encounter in Machine Mode.
+    The yellow machine fires medium sized yellow lasers at the player. It dies in one hit and has a 1.5 second long
     death animation.
-    When killed, the blue machine grants the player 1 point.
-    The blue machine also moves up and down to simulate floating in outer space. It also moves left to right after
+    When killed, the yellow machine grants the player 2 points.
+    The yellow machine also moves up and down to simulate floating in outer space. It also moves left to right after
     it has been killed enough times.
 """
 
@@ -31,36 +31,96 @@ import random
 import pygame
 import time
 import math
-
-from setup.ModeSetupMasterPygame import machine_mode_setup
-from components.ItemCoinPygame import Coin
-from setup.TextureSetup import BLUE_MACHINE_TEXTURE
-from setup.TextureSetup import BLUE_MACHINE_LASER_TEXTURE
+from components.ItemCoin import Coin
+from setup.ModeSetupMaster import machine_mode_setup
+from setup.TextureSetup import YELLOW_MACHINE_TEXTURE
+from setup.TextureSetup import YELLOW_MACHINE_LASER_TEXTURE
 from setup.TextureSetup import EXPLOSION_1_TEXTURE
 from setup.TextureSetup import EXPLOSION_2_TEXTURE
 
 
-class BlueMachine(pygame.sprite.Sprite):
+class YellowMachine(pygame.sprite.Sprite):
+    """
+        Represents a yellow machine in Laser Fighter. The second enemy in Machine Mode that is yellow
+            and fires yellow lasers.
+
+        Attributes:
+            yellow_machine_laser (turtle.Turtle()): The laser sprite for each yellow machine enemy.
+
+            death_count (int): Stores the death count for the enemy since the player has last died.
+            update (float): Value that is incremented during the death animation of the enemy.
+
+            movement (int): Stores the direction that the enemy is supposed to move on
+                the x-axis (1 = right and -1 = left)
+            float (int): Stores the direction that the enemy is supposed to move on the y-axis (1 = up and -1 == down)
+            start_y_float (float): Stores the y-coordinate of the enemy when the float effect is starting or when
+                it is changing direction
+            float_activated (int): Determines if the float effect is currently active or not (For timing purposes)
+
+            start_time (float): Used as a timestamp for the death animation of the enemy (To make the animation run in
+                a consistent amount of time)
+            laser_start_time (float): Used as a timestamp for the laser movement of the enemy (To make the movement
+                happen in a consistent amount of time)
+            move_start_time (float): Used as a timestamp for the enemies movement (To make the enemies movement
+                happen in a consistent amount of time and not based on code execution speed)
+            float_start_time (float): Used as a timestamp for the enemies floating effect movement (To make the
+                movement happen in a consistent amount of time)
+
+            laser_has_attacked (int): Determines if the enemy has been hit by the players laser since it was last fired
+                (So that it does not get hit two times in a row)
+            movement_activated (int): Check if the enemies side to side movement is currently happening or not. (So
+                that it can create a start time for it)
+
+            id (int): The id of the current yellow machine (Used for counting how many are on the screen)
+
+            enemy_center (float): The y-axis center of the sine wave created by the machines float effect
+                (when t=0, where is it?)
+            float_time_offset (float): The timestamp when the float effect for the machine begins
+
+            x_range_list (tuple): The x-axis of the hitboxes for the machine. (The range of x-coordinates the laser
+                has to be in in order to hit the enemy)
+            collision_y_coordinate_list: The y-axis point that the players lasers have to pass in order to
+                hit the machine.
+            thorns_initiated_damage (int): Checks if the enemy has damaged the player while the player has thorns on
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, id, scale_factor_x, scale_factor_y):
+        """
+            Creates a yellow machine object and spawns it on the screen
+
+            :param id: Ths id of the yellow machine (Determines where it spawns and it keeps track of how many are on
+                the screen)
+            :type id: int
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         super().__init__()
-        self.image = pygame.image.load(BLUE_MACHINE_TEXTURE).convert_alpha()
+        self.image = pygame.image.load(YELLOW_MACHINE_TEXTURE).convert_alpha()
         self.rect = self.image.get_rect()
 
         if id == 1:
-            self.rect.center = (440 * scale_factor_x, 140 * scale_factor_y)
+            self.rect.center = (340 * scale_factor_x, 140 * scale_factor_y)
         elif id == 2:
-            self.rect.center = (840 * scale_factor_x, 140 * scale_factor_y)
+            self.rect.center = (390 * scale_factor_x, 140 * scale_factor_y)
         elif id == 3:
-            self.rect.center = (1140 * scale_factor_x, 140 * scale_factor_y)
+            self.rect.center = (890 * scale_factor_x, 140 * scale_factor_y)
         elif id == 4:
-            self.rect.center = (140 * scale_factor_x, 140 * scale_factor_y)
+            self.rect.center = (290 * scale_factor_x, 140 * scale_factor_y)
         elif id == 5:
-            self.rect.center = (240 * scale_factor_x, 140 * scale_factor_y)
+            self.rect.center = (990 * scale_factor_x, 140 * scale_factor_y)
         else:
             self.rect.center = (0, 0)
         self.machine_visible = 1
 
-        self.blue_machine_laser = BlueMachineLaser(id, scale_factor_x, scale_factor_y)
+        self.yellow_machine_laser = YellowMachineLaser(id, scale_factor_x, scale_factor_y)
 
         self.death_count = 0
         self.update = 0
@@ -70,7 +130,7 @@ class BlueMachine(pygame.sprite.Sprite):
         self.start_y_float = 0
         self.float_activated = 0
         self.start_time = 0
-        self.laser_start_time = time.time()
+        self.laser_start_time = 0 # Maybe change this to time.time()
         self.move_start_time = time.time()
         self.float_start_time = time.time()
         self.laser_has_attacked = 0
@@ -89,81 +149,53 @@ class BlueMachine(pygame.sprite.Sprite):
 
     def __del__(self):
         """
-        Cleans up the sprite from memory once the program has terminated.
+            Cleans up the sprite from memory once the program has terminated
 
-        :return: None
+            :return: None
         """
 
         self.kill()
+        if hasattr(self, 'yellow_machine_laser'):
+            self.yellow_machine_laser.kill()
+            del self.yellow_machine_laser
+        del self
 
-        if hasattr(self, 'blue_machine_laser'):
-            self.blue_machine_laser.kill()
-            del self.blue_machine_laser
-
-    def get_blue_machine(self):
+    def get_yellow_machine(self):
         """
-            Returns the blue_machine sprite so its class attributes can be accessed
+            Returns the yellow_machine sprite so its class attributes can be accessed
 
-            :return: blue_machine: the blue machine sprite
+            :return: yellow_machine: the yellow machine sprite
             :type: turtle.Turtle()
         """
 
         return self
 
-    def get_blue_machine_laser(self):
+    def get_yellow_machine_laser(self):
         """
-            Returns the blue_machine_laser sprite so its class attributes can be accessed
+            Returns the yellow_machine_laser sprite so its class attributes can be accessed
 
-            :return: blue_machine_laser: the blue machine laser sprite
+            :return: yellow_machine_laser: the yellow machine laser sprite
             :type: turtle.Turtle()
         """
 
-        return self.blue_machine_laser
-
-    def get_id(self):
-        """
-            Returns the id of the blue machine
-
-            :return: id: the id of the blue machine
-            :type: int
-        """
-
-        return self.id
+        return self.yellow_machine_laser
 
     def get_update_value(self):
         """
-            Returns the death animation update value of the blue machine
+            Returns the death animation update value of the yellow machine
 
-            :return: update: the death animation update value of the blue machine
+            :return: update: the death animation update value of the yellow machine
             :type: float
         """
 
         return self.update
 
-    def isvisible(self):
-        return self.machine_visible
-
-    def set_death_count(self, new_death_count):
-        """
-            Sets the death count for the blue machine. (Used for when the player dies and the death count has to
-                be set to 0). The movement activated is also set to 0 because the enemies side to side movement stops
-                happening.
-
-            :param new_death_count: The new death count of the blue machine.
-            :type new_death_count: int
-
-            :return: None
-        """
-
-        self.death_count = new_death_count
-        self.movement_activated = 0
-
     def set_laser_has_attacked(self, new_value):
         """
-            Sets the laser_has_attacked of the blue machine (Used for when the player fires a new laser and this value
+            Sets the laser_has_attacked of the yellow machine (Used for when the player fires a new laser and this value
                 has to be reset to 0)
 
-            :param new_value: The new laser_has_attacked of the blue machine.
+            :param new_value: The new laser_has_attacked of the yellow machine.
             :type new_value: int
 
             :return: None
@@ -173,25 +205,17 @@ class BlueMachine(pygame.sprite.Sprite):
 
     def remove(self):
         """
-            Removes the blue machine sprite from the screen and resets its attributes.
+            Removes the yellow machine sprite form the screen and resets its attributes.
 
             :return: None
         """
-        # Remove sprites from all groups and delete
-        if hasattr(self, 'blue_machine'):
-            self.blue_machine.kill()
-            del self.blue_machine
 
-        if hasattr(self, 'blue_machine_laser'):
-            self.blue_machine_laser.kill()
-            del self.blue_machine_laser
-
-        # Reset game-related state
+        self.machine_visible = 0
+        self.yellow_machine_laser.laser_visible = 0
         self.death_count = 0
         self.update = 0
         self.movement = 1
         self.float = 1
-        self.float_y = float(self.rect.centery)
         self.start_y_float = 0
         self.float_activated = 0
         self.start_time = 0
@@ -200,8 +224,6 @@ class BlueMachine(pygame.sprite.Sprite):
         self.float_start_time = 0
         self.laser_has_attacked = 0
         self.movement_activated = 0
-
-        # Clear collision and positional lists
         self.x_range_list.clear()
         self.collision_y_coordinate_list.clear()
         self.thorns_initiated_damage = 0
@@ -223,7 +245,7 @@ class BlueMachine(pygame.sprite.Sprite):
 
     def shoot_laser(self, green_power_up, shooting_sound):
         """
-            Shoots the blue machine laser (Spawning it right below the sprite) and move it down across the screen)
+            Shoots the yellow machine laser (Spawning it right below the sprite) and move it down across the screen)
 
             :param green_power_up: Variable used to determine if the green power up is active or not. If it is active,
                 the enemy laser will not fire.
@@ -239,25 +261,25 @@ class BlueMachine(pygame.sprite.Sprite):
         if green_power_up == 0:
             # Remove the laser from the screen once it has hit the player
             if self.laser_has_attacked == 1:
-                self.blue_machine_laser.laser_visible = 0
+                self.yellow_machine_laser.laser_visible = 0
             else:
-                self.blue_machine_laser.laser_visible = 1
+                self.yellow_machine_laser.laser_visible = 0
             # If the laser is still visible in the frame of the screen
-            if self.blue_machine_laser.rect.centery < 720 * self.scale_factor_y:
-                # Keep moving the laser down the screen 4.8 units every 0.015 seconds
+            if self.yellow_machine_laser.rect.centery < 720 * self.scale_factor_y:
+                # Keep moving the laser down the screen 8.7 units every 0.015 seconds
                 current_time = time.time()
                 elapsed_time = current_time - self.laser_start_time
                 if elapsed_time >= 0.015:
                     # Calculate the delta movement
                     # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                     # Done to ensure the game speed stays the same regardless of frame rate
-                    delta_movement = 4.8 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                    self.blue_machine_laser.rect.centery = int(self.blue_machine_laser.rect.centery + 4.8 * self.scale_factor_y + delta_movement)
+                    delta_movement = 8.7 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                    self.yellow_machine_laser.rect.centery = int(self.yellow_machine_laser.rect.centery + 8.7 * self.scale_factor_y + delta_movement)
                     self.laser_start_time = time.time()
             else:
                 # Otherwise, set the laser to its original state and shoot it again
-                self.blue_machine_laser.rect.centerx = self.rect.centerx
-                self.blue_machine_laser.rect.centery = self.rect.centery + 50 * self.scale_factor_y
+                self.yellow_machine_laser.rect.centerx = self.rect.centerx
+                self.yellow_machine_laser.rect.centery = self.rect.centery + 62 * self.scale_factor_y
                 self.laser_has_attacked = 0
                 if shooting_sound == 1:
                     sound = pygame.mixer.Sound("sound/Laser_Gun_Enemy.wav")
@@ -265,13 +287,13 @@ class BlueMachine(pygame.sprite.Sprite):
                 self.laser_start_time = time.time()
         # If the green power up is active, hide the laser and do not fire
         else:
-            self.blue_machine_laser.laser_visible = 0
-            self.blue_machine_laser.rect.centerx = self.rect.centerx
-            self.blue_machine_laser.rect.centery = self.rect.centery + 50 * self.scale_factor_y
+            self.yellow_machine_laser.laser_visible = 0
+            self.yellow_machine_laser.rect.centerx = self.rect.centerx
+            self.yellow_machine_laser.rect.centery = self.rect.centery + 62 * self.scale_factor_y
             self.laser_has_attacked = 0
             self.laser_start_time = time.time()
 
-    def kill_enemy(self, death_sound, coins_on_screen, scale_factor_x):
+    def kill_enemy(self, death_sound, coins_on_screen):
         """
             Kills the enemy and plays the enemies death animation. After that, it spawns the enemy in a new location.
 
@@ -284,7 +306,7 @@ class BlueMachine(pygame.sprite.Sprite):
             :return: None
         """
 
-        # When the death animation and respawning is finished, the blue machine appears on the screen again
+        # When the death animation and respawning is finished, the yellow machine appears on the screen again
         if self.update == 6:
             self.machine_visible = 1
             self.movement_activated = 0
@@ -301,16 +323,17 @@ class BlueMachine(pygame.sprite.Sprite):
             return
 
         if self.update == 3:
-            # Hide the blue machine and spawn a copper coin where the blue machine died
+            # Hide the yellow machine and spawn a silver coin where the yellow machine died
             self.machine_visible = 0
-            copper_coin = Coin(type="copper", pos_x=self.rect.centerx, pos_y=self.rect.centery, scale_factor_x=scale_factor_x)
+            # Spawn a silver coin in the death location
+            silver_coin = Coin(type="silver", pos_x=self.rect.centerx, pos_y=self.rect.centery)
             # Set the hitbox for the coin
-            copper_coin.range = (copper_coin.rect.centerx - copper_coin.COIN_DISTANCE, copper_coin.rect.centerx + copper_coin.COIN_DISTANCE)
-            copper_coin.collision_coordinate = copper_coin.rect.centery - copper_coin.COIN_DISTANCE
-            coins_on_screen.append(copper_coin)
-            # Respawn the blue machine in a different random location
+            silver_coin.range = (silver_coin.coin.xcor() - silver_coin.COIN_DISTANCE, silver_coin.coin.xcor() + silver_coin.COIN_DISTANCE)
+            silver_coin.collision_coordinate = silver_coin.coin.ycor() - silver_coin.COIN_DISTANCE
+            coins_on_screen.append(silver_coin)
+            # Respawn the yellow machine in a different random location
             old_center = self.rect.center
-            self.image = pygame.image.load(BLUE_MACHINE_TEXTURE).convert_alpha()
+            self.image = pygame.image.load(YELLOW_MACHINE_TEXTURE)
             self.rect = self.image.get_rect(center=old_center)
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
             self.rect.center = (random.randint(int(0 * self.scale_factor_x), int(1280 * self.scale_factor_x)), random.randint(int(140 * self.scale_factor_y), int(240 * self.scale_factor_y)))
@@ -337,14 +360,14 @@ class BlueMachine(pygame.sprite.Sprite):
                 self.start_time = 0
             return
 
-        # Change the texture of the blue machine to the second frame of the explosion
+        # Change the texture of the yellow machine to the second frame of the explosion
         if 1.0 <= self.update <= 1.1:
             old_center = self.rect.center
             self.image = pygame.image.load(EXPLOSION_2_TEXTURE).convert_alpha()
             self.rect = self.image.get_rect(center=old_center)
             self.update = 1.5
             self.start_time = time.time()
-            self.kill_enemy(death_sound, coins_on_screen, scale_factor_x)
+            self.kill_enemy(death_sound, coins_on_screen)
             return
 
         # Wait 0.1 seconds
@@ -363,7 +386,7 @@ class BlueMachine(pygame.sprite.Sprite):
             if death_sound == 1:
                 sound = pygame.mixer.Sound("sound/Explosion.wav")
                 sound.play()
-            # Change the texture of the blue machine to the first frame of the death explosion
+            # Change the texture of the yellow machine to the first frame of the death explosion
             old_center = self.rect.center
             self.image = pygame.image.load(EXPLOSION_1_TEXTURE).convert_alpha()
             self.rect = self.image.get_rect(center=old_center)
@@ -375,8 +398,8 @@ class BlueMachine(pygame.sprite.Sprite):
 
     def float_effect(self):
         """
-            Moves the blue machine up and down to create a float effect and make it seem as if the enemy is moving fast
-                through outer space.
+            Moves the yellow machine up and down to create a float effect and make it seem as if the enemy is moving
+                fast through outer space.
 
             :return: None
         """
@@ -386,13 +409,25 @@ class BlueMachine(pygame.sprite.Sprite):
             self.float_activated = 1
             self.start_y_float = self.rect.centery
 
-        if self.start_y_float - 50 * self.scale_factor_y >= self.rect.centery:
+        if self.start_y_float + 50 * self.scale_factor_y >= self.rect.centery:
+            # Move down
             self.float = -1
-        elif self.start_y_float + 50 * self.scale_factor_y <= self.rect.centery:
+        elif self.start_y_float - 50 * self.scale_factor_y <= self.rect.centery:
+            # Move up
             self.float = 1
         current_time = time.time()
         elapsed_time = current_time - self.float_start_time
         # Make a movement every 0.0075 seconds to reduce the effects of lag
+        # if elapsed_time >= 0.0075:
+        #     if self.float == 1:
+        #         # Calculate the delta movement and add it as additional movement required
+        #         delta_movement = machine_mode_setup.MACHINE_FLOAT * ((elapsed_time - 0.0075) / 0.0075)
+        #         self.yellow_machine.goto(self.yellow_machine.xcor(), self.yellow_machine.ycor() + machine_mode_setup.MACHINE_FLOAT + delta_movement)
+        #     elif self.float == -1:
+        #         # Calculate the delta movement and add it as additional movement required
+        #         delta_movement = machine_mode_setup.MACHINE_FLOAT * ((elapsed_time - 0.0075) / 0.0075)
+        #         self.yellow_machine.goto(self.yellow_machine.xcor(), self.yellow_machine.ycor() - machine_mode_setup.MACHINE_FLOAT - delta_movement)
+        #     self.float_start_time = time.time()
         if elapsed_time >= 0.0075:
             if self.float == 1:
                 # Calculate the delta movement and add it as additional movement required
@@ -408,8 +443,8 @@ class BlueMachine(pygame.sprite.Sprite):
 
     def move_enemy(self, death):
         """
-            When the blue machine has died enough times, this function will cause it to start moving left and
-                right, which will speed up the more times that the blue machine dies.
+            When the yellow machine has died enough times, this function will cause it to start moving left and
+                right, which will speed up the more times that the yellow machine dies.
 
             :param death: Determines whether the death animation for the player is active or not.
             :type death: int
@@ -473,21 +508,21 @@ class BlueMachine(pygame.sprite.Sprite):
             self.move_start_time = 0
 
 
-class BlueMachineLaser(pygame.sprite.Sprite):
+class YellowMachineLaser(pygame.sprite.Sprite):
     def __init__(self, id, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(BLUE_MACHINE_LASER_TEXTURE).convert_alpha()
+        self.image = pygame.image.load(YELLOW_MACHINE_LASER_TEXTURE).convert_alpha()
         self.rect = self.image.get_rect()
         if id == 1:
-            self.rect.center = (440 * scale_factor_x, 190 * scale_factor_y)
+            self.rect.center = (340 * scale_factor_x, 202 * scale_factor_y)
         elif id == 2:
-            self.rect.center = (840 * scale_factor_x, 190 * scale_factor_y)
+            self.rect.center = (390 * scale_factor_x, 202 * scale_factor_y)
         elif id == 3:
-            self.rect.center = (1140 * scale_factor_x, 190 * scale_factor_y)
+            self.rect.center = (890 * scale_factor_x, 202 * scale_factor_y)
         elif id == 4:
-            self.rect.center = (140 * scale_factor_x, 190 * scale_factor_y)
+            self.rect.center = (290 * scale_factor_x, 202 * scale_factor_y)
         elif id == 5:
-            self.rect.center = (240 * scale_factor_x, 190 * scale_factor_y)
+            self.rect.center = (990 * scale_factor_x, 202 * scale_factor_y)
         else:
             self.rect.center = (0, 0)
         self.laser_visible = 1
