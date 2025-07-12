@@ -25,6 +25,7 @@
 from components.enemy.MachineBlueMachinePygame import BlueMachine
 from components.enemy.MachineYellowMachinePygame import YellowMachine
 from components.enemy.MachineRedMachinePygame import RedMachine
+from components.enemy.MachineBossPygame import Boss
 
 
 class SpawnBlueMachine:
@@ -208,3 +209,61 @@ class SpawnRedMachine:
         self.red_machine_index = self.red_machine_index + 1
         self.red_machines_update_values.append(0)
         self.red_machines_hit_values.append(0)
+
+
+class SpawnMachineBoss:
+    """
+        Represents the Machine Boss container in Laser Fighter.
+
+        Attributes:
+            all_boss (list): Contains the one boss sprite that should be spawn throughout the entire game.
+            boss (list): Contains the boss sprite if it is visible on the screen
+            boss_update_value (list): Contains the death animation value for the boss
+            boss_hit_value (list): Contains the hit delay value for the boss
+            boss_index (int): Stores whether the boss sprite has been created or not
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Machine Boss.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        self.boss = []
+        self.boss_update_value = 0
+        self.boss_hit_value = 0
+        self.boss_index = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
+        del self.boss
+        del self.boss_update_value
+        del self.boss_hit_value
+        del self.boss_index
+
+    def spawn_boss(self):
+        """
+            Spawn a Machine Mode boss on the screen.
+
+            :return: None
+        """
+
+        spawn_boss = Boss(self.scale_factor_x, self.scale_factor_y)
+        self.boss.append(spawn_boss)
+        self.boss_index = self.boss_index + 1

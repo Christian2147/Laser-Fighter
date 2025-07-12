@@ -49,6 +49,7 @@ from components.spawn.SpawnAlienPygame import SpawnSmallAlien
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
 from components.spawn.SpawnMachinePygame import SpawnYellowMachine
 from components.spawn.SpawnMachinePygame import SpawnRedMachine
+from components.spawn.SpawnMachinePygame import SpawnMachineBoss
 from components.spawn.SpawnPlayerPygame import SpawnHumanPlayer
 from components.spawn.SpawnPlayerPygame import SpawnMachinePlayer
 from components.spawn.SpawnPowerUpPygame import SpawnPowerUp
@@ -88,6 +89,7 @@ def main():
     blue_machine = SpawnBlueMachine(window.scale_factor_X, window.scale_factor_Y)
     yellow_machine = SpawnYellowMachine(window.scale_factor_X, window.scale_factor_Y)
     red_machine = SpawnRedMachine(window.scale_factor_X, window.scale_factor_Y)
+    machine_boss = SpawnMachineBoss(window.scale_factor_X, window.scale_factor_Y)
     machine_player = SpawnMachinePlayer(window.scale_factor_X, window.scale_factor_Y)
 
     small_alien = SpawnSmallAlien(window.scale_factor_X, window.scale_factor_Y)
@@ -342,6 +344,16 @@ def main():
 
                 if rm.red_machine_health_bar.health_bar_visible == 1:
                     window.screen.blit(rm.red_machine_health_bar.image, rm.red_machine_health_bar.rect)
+
+        for b in machine_boss.boss:
+            if b.boss_visible == 1:
+                window.screen.blit(b.image, b.rect)
+
+                if b.boss_laser.laser_visible == 1:
+                    window.screen.blit(b.boss_laser.image, b.boss_laser.rect)
+
+                if b.boss_health_bar.health_bar_visible == 1:
+                    window.screen.blit(b.boss_health_bar.image, b.boss_health_bar.rect)
 
         for sa in small_alien.small_aliens:
             if sa.small_alien_visible == 1:
@@ -632,6 +644,8 @@ def main():
                 red_machine.spawn_red_machine(4)
             elif statistics.score >= 160 and red_machine.red_machine_index == 4:
                 red_machine.spawn_red_machine(5)
+            elif statistics.score >= 200 and machine_boss.boss_index == 0:
+                machine_boss.spawn_boss()
             # If score is 0, reset the number of enemies back down to 3
             elif statistics.score == 0:
                 for bm in blue_machine.blue_machines:
@@ -658,6 +672,13 @@ def main():
                 red_machine.red_machine_index = 0
                 red_machine.red_machines_update_values.clear()
                 red_machine.red_machines_hit_values.clear()
+                for b in machine_boss.boss:
+                    b.remove()
+                machine_boss.boss.clear()
+                machine_boss.boss_index = 0
+                machine_boss.boss_update_value = 0
+                machine_boss.boss_hit_value = 0
+                coin.coin_pickup_delay = 0
 
             # Run the functions to shoot the lasers for each of the enemies
             for bm in blue_machine.blue_machines:
@@ -668,6 +689,9 @@ def main():
 
             for rm in red_machine.red_machines:
                 rm.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active(), settings.enemy_shooting_sound)
+
+            for b in machine_boss.boss:
+                b.shoot_laser(extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active(), settings.enemy_shooting_sound)
 
             # If the coin magnet gadget is not enabled
             if not shop_config.coin_magnet_enabled:
@@ -984,6 +1008,110 @@ def main():
                             red_machine.red_machines_hit_values[current_red_hit_value_index] = 0
                     current_red_hit_value_index = current_red_hit_value_index + 1
 
+                for b in machine_boss.boss:
+                    # If the player laser hits the boss that is visible and not dying with health <= damage
+                    if b.get_boss().isvisible() and machine_boss.boss_update_value == 0:
+                        if b.health_bar <= machine_mode_setup.damage and b.hit_delay == 0:
+                            attacked = 0
+                            laser_killed = 0
+                            for i in range(len(p.get_laser())):
+                                if p.get_laser()[i].isvisible() and \
+                                 (b.rect.centerx - 75 * window.scale_factor_X < p.get_laser()[i].rect.centerx < b.rect.centerx + 75 * window.scale_factor_X) and \
+                                 (b.rect.centery - 75 * window.scale_factor_Y < p.get_laser()[i].rect.centery < b.rect.centery + 75 * window.scale_factor_Y):
+                                    attacked = 1
+
+                                    p.set_laser_has_attacked(1, i)
+                                    laser_killed = 1
+
+                            if b.thorns_initiated_damage == 1 and laser_killed == 0:
+                                attacked = 1
+
+                            if attacked == 1:
+                                b.kill_boss(settings.enemy_death_sound, coin.coins_on_screen_list)
+                                machine_boss.boss_update_value = machine_boss.boss_update_value + 1
+
+                                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                    statistics.score = statistics.score + 50 * machine_mode_setup.blue_power_up_score_multiplier
+                                else:
+                                    statistics.score = statistics.score + 50 * machine_mode_setup.regular_score_multiplier
+
+                                if settings.god_mode == 0:
+                                    statistics.bosses_killed = statistics.bosses_killed + 1
+                                    statistics.save()
+
+                                # Check to see if the second milestone has been reached yet or not
+                                # If it has not been reached, initiate it
+                                # if not milestones.machine_mode_beaten and milestones.milestone_2_displayed == 0:
+                                #     for pa in panel.panel_turtle:
+                                #         pa.remove()
+                                #     panel.panel_index = 0
+                                #     panel.spawn_panel(screen.mode, 2)
+                                #     refresh_variables.refresh_panel = 1
+                                #     milestones.machine_mode_beaten = True
+                                #     milestones.save()
+                                #     # Unlock Alien Mode
+                                #     shop_config.alien_slot_selected = 1
+                                #     shop_config.alien_slots_unlocked[0] = 1
+                                #     shop_config.alien_slots_unlocked[1] = 0
+                                #     shop_config.alien_slots_unlocked[2] = 0
+                                #     shop_config.alien_slots_unlocked[3] = 0
+                                #     shop_config.alien_slots_unlocked[4] = 0
+                                #     shop_config.red_power_up_level = 1
+                                #     shop_config.save()
+                                #     milestones.milestone_2_displayed = 1
+                                #     milestones.milestone_start_time = time.time()
+                    elif machine_boss.boss_update_value != 0:
+                        b.kill_boss(settings.enemy_death_sound, coin.coins_on_screen_list)
+                        machine_boss.boss_update_value = machine_boss.boss_update_value + 1
+
+                        if b.get_update_value() == 0:
+                            machine_boss.boss_update_value = 0
+                            coin.coin_pickup_delay = 0
+
+                        if b.get_update_value() == 3:
+                            coin.coin_pickup_delay = 1
+
+                    # If the player laser hits the boss that is visible and not dying with health > damage
+                    if b.get_boss().isvisible() and machine_boss.boss_hit_value == 0:
+                        # Same procedure as before
+                        if b.health_bar > machine_mode_setup.damage:
+                            attacked = 0
+                            laser_hit = 0
+                            for i in range(len(p.get_laser())):
+                                if p.get_laser()[i].isvisible() and \
+                                 (b.rect.centerx - 75 * window.scale_factor_X < p.get_laser()[i].rect.centerx < b.rect.centerx + 75 * window.scale_factor_X) and \
+                                 (b.rect.centery - 75 * window.scale_factor_Y < p.get_laser()[i].rect.centery < b.rect.centery + 75 * window.scale_factor_Y):
+                                    attacked = 1
+
+                                    p.set_laser_has_attacked(1, i)
+                                    laser_hit = 0
+
+                            if b.thorns_initiated_damage == 1 and laser_hit == 0:
+                                attacked = 1
+
+                            if attacked == 1:
+                                b.hit_boss(settings.enemy_hit_sound)
+                                machine_boss.boss_hit_value = machine_boss.boss_hit_value + 1
+
+                                # Only increase the score by 2 if it is the first hit to the boss and the players
+                                #   weapon only does 1 damage
+                                if b.health_bar == 9:
+                                    if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                        statistics.score = statistics.score + 2 * machine_mode_setup.blue_power_up_score_multiplier
+                                    else:
+                                        statistics.score = statistics.score + 2 * machine_mode_setup.regular_score_multiplier
+                                else:
+                                    if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                        statistics.score = statistics.score + 1 * machine_mode_setup.blue_power_up_score_multiplier
+                                    else:
+                                        statistics.score = statistics.score + 1 * machine_mode_setup.regular_score_multiplier
+                    elif machine_boss.boss_hit_value != 0:
+                        b.hit_boss(settings.enemy_hit_sound)
+                        machine_boss.boss_hit_value = machine_boss.boss_hit_value + 1
+
+                        if b.get_hit_value() == 0:
+                            machine_boss.boss_hit_value = 0
+
             # Player Killer
             for p in machine_player.current_player:
                 # If the death animation has already started
@@ -1044,6 +1172,18 @@ def main():
                                     if shop_config.thorns_enabled:
                                         rm.thorns_initiated_damage = 1
 
+                    for b in machine_boss.boss:
+                        if b.get_boss_laser().distance(p.get_player()) < 125 * window.scale_factor:
+                            if b.get_boss_laser().isvisible() and -30 * window.scale_factor_X < (
+                                    b.get_boss_laser().rect.centerx - p.rect.centerx) < 30 * window.scale_factor_X:
+                                b.set_laser_has_attacked(1)
+                                if p.get_death_animation() == 0 and p.get_health_bar_indicator() == 1 and p.get_hit_delay() == 0 and settings.god_mode == 0:
+                                    p.kill_player(settings.player_death_sound)
+                                    statistics.score = 0
+                                    machine_player.player_update_value = machine_player.player_update_value + 1
+                                    if shop_config.thorns_enabled:
+                                        b.thorns_initiated_damage = 1
+
                 # If the player has more than 1 health, only deal 1 health of damage
                 # If the hit delay is ongoing
                 if machine_player.player_hit_value != 0:
@@ -1090,6 +1230,16 @@ def main():
                                     if shop_config.thorns_enabled:
                                         rm.thorns_initiated_damage = 1
 
+                    for b in machine_boss.boss:
+                        if b.get_boss_laser().distance(p.get_player()) < 125 * window.scale_factor:
+                            if b.get_boss_laser().isvisible() and -30 * window.scale_factor_X < (b.get_boss_laser().rect.centerx - p.rect.centerx) < 30 * window.scale_factor_X:
+                                b.set_laser_has_attacked(1)
+                                if p.get_death_animation() == 0 and p.get_health_bar_indicator() != 1 and p.get_health_bar_indicator() != 0 and p.get_hit_delay() == 0 and settings.god_mode == 0:
+                                    p.hit_player(settings.player_hit_sound)
+                                    machine_player.player_hit_value = machine_player.player_hit_value + 1
+                                    if shop_config.thorns_enabled:
+                                        b.thorns_initiated_damage = 1
+
             # Function for the float effect of the machine enemies
             # This float effect was added to create the illusion that the enemies are flying through outer space at
             #   fast speeds
@@ -1102,6 +1252,9 @@ def main():
             for rm in red_machine.red_machines:
                 rm.float_effect()
 
+            for b in machine_boss.boss:
+                b.float_effect()
+
             # For the enemy movement
             # If the machine enemy has been killed enough times, it will start moving along the x-axis
             for p in machine_player.current_player:
@@ -1113,6 +1266,9 @@ def main():
 
                 for rm in red_machine.red_machines:
                     rm.move_enemy(p.get_death_animation())
+
+                for b in machine_boss.boss:
+                    b.move_boss(p.get_death_animation())
 
             # Check if the power ups are active or not
             for t in textbox.text_on_screen_list:
@@ -1262,6 +1418,12 @@ def main():
             red_machine.red_machine_index = 0
             red_machine.red_machines_update_values.clear()
             red_machine.red_machines_hit_values.clear()
+            for b in machine_boss.boss:
+                b.remove()
+            machine_boss.boss.clear()
+            machine_boss.boss_index = 0
+            machine_boss.boss_update_value = 0
+            machine_boss.boss_hit_value = 0
 
         """
             When Alien Mode is on

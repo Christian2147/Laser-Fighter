@@ -310,19 +310,19 @@ class Boss(pygame.sprite.Sprite):
                         # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
                         # Done to ensure the game speed stays the same regardless of frame rate
                         delta_movement = 9.5 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                        self.boss_laser.centery = self.boss_laser.centery + 9.5 * self.scale_factor_y + delta_movement
+                        self.boss_laser.rect.centery = self.boss_laser.rect.centery + 9.5 * self.scale_factor_y + delta_movement
                     if 8 >= self.health_bar > 6:
                         delta_movement = 11 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                        self.boss_laser.centery = self.boss_laser.centery + 11 * self.scale_factor_y + delta_movement
+                        self.boss_laser.rect.centery = self.boss_laser.rect.centery + 11 * self.scale_factor_y + delta_movement
                     if 6 >= self.health_bar > 4:
                         delta_movement = 12.5 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                        self.boss_laser.centery = self.boss_laser.centery + 12.5 * self.scale_factor_y + delta_movement
+                        self.boss_laser.rect.centery = self.boss_laser.rect.centery + 12.5 * self.scale_factor_y + delta_movement
                     if 4 >= self.health_bar > 2:
                         delta_movement = 14 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                        self.boss_laser.centery = self.boss_laser.centery + 14 * self.scale_factor_y + delta_movement
+                        self.boss_laser.rect.centery = self.boss_laser.rect.centery + 14 * self.scale_factor_y + delta_movement
                     if 2 >= self.health_bar > -1:
                         delta_movement = 15.5 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
-                        self.boss_laser.centery = self.boss_laser.centery + 15.5 * self.scale_factor_y + delta_movement
+                        self.boss_laser.rect.centery = self.boss_laser.rect.centery + 15.5 * self.scale_factor_y + delta_movement
                     self.laser_start_time = time.time()
             else:
                 # Otherwise, set the laser to its original state and shoot it again
