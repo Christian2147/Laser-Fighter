@@ -1,0 +1,670 @@
+# Copyright (C) [2024] [Christian Marinkovich]
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+"""
+    File: MachineRedMachine.py
+    Author: Christian Marinkovich
+    Date: 2024-07-05
+    Description:
+    This file contains the logic related to the red machine, which is the third enemy you will
+    encounter in Machine Mode.
+    The red machine fires large red lasers at the player. It dies in two hits and has a 1.5 second long
+    death animation.
+    When killed, the red machine grants the player 5 points.
+    When hit, the red machine grants the player 1 point.
+    The red machine also moves up and down to simulate floating in outer space. It also moves left to right after
+    it has been killed enough times.
+"""
+
+import random
+import pygame
+import time
+import math
+from components.ItemCoinPygame import Coin
+from setup.ModeSetupMasterPygame import machine_mode_setup
+from setup.TextureSetup import RED_MACHINE_TEXTURE
+from setup.TextureSetup import RED_MACHINE_LASER_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_12_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_22_TEXTURE
+from setup.TextureSetup import EXPLOSION_1_TEXTURE
+from setup.TextureSetup import EXPLOSION_2_TEXTURE
+
+
+class RedMachine(pygame.sprite.Sprite):
+    """
+        Represents a red machine in Laser Fighter. The third enemy in Machine Mode that is red
+            and fires red lasers.
+
+        Attributes:
+            red_machine_laser (turtle.Turtle()): The laser sprite for each red machine enemy.
+            red_machine_health_bar (turtle.Turtle()): The health bar sprite for each red machine enemy.
+
+            death_count (int): Stores the death count for the enemy since the player has last died.
+            health_bar (int): Stores the current health of the enemy
+            hit_delay (int): Delays how often the enemy can be hit
+            update (float): Value that is incremented during the death animation of the enemy.
+
+            movement (int): Stores the direction that the enemy is supposed to move on
+                the x-axis (1 = right and -1 = left)
+            float (int): Stores the direction that the enemy is supposed to move on the y-axis (1 = up and -1 == down)
+            start_y_float (float): Stores the y-coordinate of the enemy when the float effect is starting or when
+                it is changing direction
+            float_activated (int): Determines if the float effect is currently active or not (For timing purposes)
+
+            start_time (float): Used as a timestamp for the death animation of the enemy (To make the animation run in
+                a consistent amount of time)
+            hit_start_time (float): Used as a timestamp for the hit delay of the enemy (To make the delay tun in
+                a consistent amount of time)
+            laser_start_time (float): Used as a timestamp for the laser movement of the enemy (To make the movement
+                happen in a consistent amount of time)
+            move_start_time (float): Used as a timestamp for the enemies movement (To make the enemies movement
+                happen in a consistent amount of time and not based on code execution speed)
+            float_start_time (float): Used as a timestamp for the enemies floating effect movement (To make the
+                movement happen in a consistent amount of time)
+
+            laser_has_attacked (int): Determines if the enemy has been hit by the players laser since it was last fired
+                (So that it does not get hit two times in a row)
+            movement_activated (int): Check if the enemies side to side movement is currently happening or not. (So
+                that it can create a start time for it)
+
+            id (int): The id of the current red machine (Used for counting how many are on the screen)
+
+            enemy_center (float): The y-axis center of the sine wave created by the machines float effect
+                (when t=0, where is it?)
+            float_time_offset (float): The timestamp when the float effect for the machine begins
+
+            x_range_list (tuple): The x-axis of the hitboxes for the machine. (The range of x-coordinates the laser
+                has to be in in order to hit the enemy)
+            collision_y_coordinate_list: The y-axis point that the players lasers have to pass in order to
+                hit the machine.
+            thorns_initiated_damage (int): Checks if the enemy has damaged the player while the player has thorns on
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, id, scale_factor_x, scale_factor_y):
+        """
+            Creates a red machine object and spawns it on the screen
+
+            :param id: Ths id of the red machine (Determines where it spawns and it keeps track of how many are on
+                the screen)
+            :type id: int
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        super().__init__()
+        self.image = pygame.image.load(RED_MACHINE_TEXTURE).convert_alpha()
+        self.rect = self.image.get_rect()
+
+        if id == 1:
+            self.rect.center = (1015 * scale_factor_x, 140 * scale_factor_y)
+        elif id == 2:
+            self.rect.center = (265 * scale_factor_x, 140 * scale_factor_y)
+        elif id == 3:
+            self.rect.center = (965 * scale_factor_x, 140 * scale_factor_y)
+        elif id == 4:
+            self.rect.center = (315 * scale_factor_x, 140 * scale_factor_y)
+        elif id == 5:
+            self.rect.center = (915 * scale_factor_x, 140 * scale_factor_y)
+        else:
+            self.rect.center = (0, 0)
+        self.machine_visible = 1
+
+        self.red_machine_laser = RedMachineLaser(id, scale_factor_x, scale_factor_y)
+
+        self.red_machine_health_bar = RedMachineHealthBar(id, scale_factor_x, scale_factor_y)
+
+        self.death_count = 0
+        self.health_bar = 2
+        self.hit_delay = 0
+        self.update = 0
+        self.movement = 1
+        self.float = 1
+        self.float_y = float(self.rect.centery)
+        self.start_y_float = 0
+        self.float_activated = 0
+        self.start_time = 0
+        self.hit_start_time = 0
+        self.laser_start_time = time.time()
+        self.move_start_time = time.time()
+        self.float_start_time = time.time()
+        self.laser_has_attacked = 0
+        self.movement_activated = 0
+        self.id = id
+
+        # For collision
+        self.enemy_center = self.rect.centery
+        self.float_time_offset = time.time()
+        self.x_range_list = [(0, 0)] * machine_mode_setup.laser_count
+        self.collision_y_coordinate_list = [0] * machine_mode_setup.laser_count
+        self.thorns_initiated_damage = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Cleans up the sprite from memory once the program has terminated
+
+            :return: None
+        """
+
+        self.kill()
+        if hasattr(self, 'red_machine_laser'):
+            self.red_machine_laser.kill()
+            del self.red_machine_laser
+        if hasattr(self, 'red_machine_health_bar'):
+            self.red_machine_health_bar.kill()
+            del self.red_machine_health_bar
+        del self
+
+    def get_red_machine(self):
+        """
+            Returns the red_machine sprite so its class attributes can be accessed
+
+            :return: red_machine: the red machine sprite
+            :type: turtle.Turtle()
+        """
+
+        return self
+
+    def get_red_machine_laser(self):
+        """
+            Returns the red_machine_laser sprite so its class attributes can be accessed
+
+            :return: red_machine_laser: the red machine laser sprite
+            :type: turtle.Turtle()
+        """
+
+        return self.red_machine_laser
+
+    def get_red_machine_health_bar(self):
+        """
+            Returns the red_machine_health_bar sprite so its class attributes can be accessed
+
+            :return: red_machine_health_bar: the red machine health bar sprite
+            :type: turtle.Turtle()
+        """
+
+        return self.red_machine_health_bar
+
+    def get_update_value(self):
+        """
+            Returns the death animation update value of the red machine
+
+            :return: update: the death animation update value of the red machine
+            :type: float
+        """
+
+        return self.update
+
+    def get_hit_value(self):
+        """
+            Returns the hit delay value of the red machine
+
+            :return: hit_delay: the hit delay value of the red machine
+            :type: int
+        """
+
+        return self.hit_delay
+
+    def isvisible(self):
+        return self.machine_visible
+
+    def set_laser_has_attacked(self, new_value):
+        """
+            Sets the laser_has_attacked of the red machine (Used for when the player fires a new laser and this value
+                has to be reset to 0)
+
+            :param new_value: The new laser_has_attacked of the red machine.
+            :type new_value: int
+
+            :return: None
+        """
+
+        self.laser_has_attacked = new_value
+
+    def remove(self):
+        """
+            Removes the red machine sprite form the screen and resets its attributes.
+
+            :return: None
+        """
+
+        self.machine_visible = 0
+        self.red_machine_laser.laser_visible = 0
+        self.red_machine_health_bar.health_bar_visible = 0
+        self.death_count = 0
+        self.hit_delay = 0
+        self.health_bar = 2
+        self.update = 0
+        self.movement = 1
+        self.float = 1
+        self.start_y_float = 0
+        self.float_activated = 0
+        self.start_time = 0
+        self.hit_start_time = 0
+        self.laser_start_time = 0
+        self.move_start_time = 0
+        self.float_start_time = 0
+        self.laser_has_attacked = 0
+        self.movement_activated = 0
+        self.x_range_list.clear()
+        self.collision_y_coordinate_list.clear()
+        self.thorns_initiated_damage = 0
+
+    def remove_collisions(self):
+        """
+            Clears and resets the machines hitboxes so they can be recreated.
+
+            :return: None
+        """
+
+        # Clear the lists
+        self.x_range_list.clear()
+        self.collision_y_coordinate_list.clear()
+
+        # Initialize lists with the required number of elements
+        self.x_range_list = [(0, 0)] * machine_mode_setup.laser_count
+        self.collision_y_coordinate_list = [0] * machine_mode_setup.laser_count
+
+    def shoot_laser(self, green_power_up, shooting_sound):
+        """
+            Shoots the red machine laser (Spawning it right below the sprite) and move it down across the screen
+
+            :param green_power_up: Variable used to determine if the green power up is active or not. If it is active,
+                the enemy laser will not fire.
+            :type green_power_up: int
+
+            :param shooting_sound: Determines whether the toggle for the enemy lasers shooting sound is on. If it is,
+                the shooting sound will play when the enemy laser is fired.
+            :type shooting_sound: int
+
+            :return: None
+        """
+
+        if green_power_up == 0:
+            # Remove the laser from the screen once it has hit the player
+            if self.laser_has_attacked == 1:
+                self.red_machine_laser.laser_visible = 0
+            else:
+                self.red_machine_laser.laser_visible = 1
+            # If the laser is still visible in the frame of the screen
+            if self.red_machine_laser.rect.centery < 720 * self.scale_factor_y:
+                # Keep moving the laser down the screen 11 units every 0.015 seconds
+                current_time = time.time()
+                elapsed_time = current_time - self.laser_start_time
+                if elapsed_time >= 0.015:
+                    # Calculate the delta movement
+                    # This the extra movement required to make up for the amount of time passed beyond 0.015 seconds
+                    # Done to ensure the game speed stays the same regardless of frame rate
+                    delta_movement = 11 * self.scale_factor_y * ((elapsed_time - 0.015) / 0.015)
+                    self.red_machine_laser.rect.centery = int(self.red_machine_laser.rect.centery + 11 * self.scale_factor_y + delta_movement)
+                    self.laser_start_time = time.time()
+            else:
+                # Otherwise, set the laser to its original state and shoot it again
+                self.red_machine_laser.rect.centerx = self.rect.centerx
+                self.red_machine_laser.rect.centery = self.rect.centery + 70 * self.scale_factor_y
+                self.laser_has_attacked = 0
+                if shooting_sound == 1:
+                    sound = pygame.mixer.Sound("sound/Laser_Gun_Enemy.wav")
+                    sound.play()
+                self.laser_start_time = time.time()
+        # If the green power up is active, hide the laser and do not fire
+        else:
+            self.red_machine_laser.laser_visible = 0
+            self.red_machine_laser.rect.centerx = self.rect.centerx
+            self.red_machine_laser.rect.centery = self.rect.centery + 70 * self.scale_factor_y
+            self.laser_has_attacked = 0
+            self.laser_start_time = time.time()
+
+    def kill_enemy(self, death_sound, coins_on_screen):
+        """
+            Kills the enemy and plays the enemies death animation. After that, it spawns the enemy in a new location.
+
+            :param death_sound: Determines if the death sound for the enemy is toggled on or off
+            :type death_sound: int
+
+            :param coins_on_screen: Array that lists all of the coins currently on the screen
+            :type coins_on_screen: list
+
+            :return: None
+        """
+
+        # When the death animation and respawning is finished, the red machine appears on the screen again
+        if self.update == 6:
+            self.machine_visible = 0
+            self.red_machine_health_bar.health_bar_visible = 1
+            self.movement_activated = 0
+            self.update = 0
+            return
+
+        # Wait 0.05 seconds
+        if 4 <= self.update < 6:
+            current_time = time.time()
+            elapsed_time = current_time - self.start_time
+            if elapsed_time >= 0.05:
+                self.update = 6
+                self.start_time = 0
+            return
+
+        if self.update == 3.5:
+            # Reset the health bar and the enemies health
+            self.red_machine_health_bar.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+            old_center = self.red_machine_health_bar.rect.center
+            self.red_machine_health_bar.image = pygame.image.load(HEALTH_BAR_22_TEXTURE)
+            self.red_machine_health_bar.rect = self.red_machine_health_bar.image.get_rect(center=old_center)
+            self.health_bar = 2
+            self.update = 4
+            self.start_time = time.time()
+            return
+
+        if self.update == 3:
+            # Hide the red machine and spawn a gold coin where the red machine died
+            self.machine_visible = 0
+            # Spawn a gold coin in the death location
+            gold_coin = Coin(type="gold", pos_x=self.rect.centerx, pos_y=self.rect.centery, scale_factor_x=self.scale_factor_x)
+            # Set the hitbox for the coin
+            gold_coin.range = (gold_coin.rect.centerx - gold_coin.COIN_DISTANCE, gold_coin.rect.centerx + gold_coin.COIN_DISTANCE)
+            gold_coin.collision_coordinate = gold_coin.rect.centery - gold_coin.COIN_DISTANCE
+            coins_on_screen.append(gold_coin)
+            # Respawn the red machine in a different random location
+            old_center = self.rect.center
+            self.image = pygame.image.load(RED_MACHINE_TEXTURE)
+            self.rect = self.image.get_rect(center=old_center)
+            # Want to cast these ranges to integers to avoid a crash at certain resolutions
+            self.rect.center = (random.randint(int(0 * self.scale_factor_x), int(1280 * self.scale_factor_x)), random.randint(int(140 * self.scale_factor_y), int(240 * self.scale_factor_y)))
+            # Restart the float effect
+            self.float_activated = 0
+            self.float = 1
+            self.float_time_offset = time.time()
+            self.enemy_center = self.rect.centery
+            # Reset the hitboxes
+            self.x_range_list.clear()
+            self.collision_y_coordinate_list.clear()
+            self.x_range_list = [(0, 0)] * machine_mode_setup.laser_count
+            self.collision_y_coordinate_list = [0] * machine_mode_setup.laser_count
+            self.update = 3.5
+            return
+
+        # Wait 0.15 seconds
+        if 1.5 <= self.update < 3:
+            current_time = time.time()
+            elapsed_time = current_time - self.start_time
+            if elapsed_time >= 0.15:
+                self.update = 3
+                self.start_time = 0
+            return
+
+        # Change the texture of the red machine to the second frame of the explosion
+        if 1.0 <= self.update <= 1.1:
+            old_center = self.rect.center
+            self.image = pygame.image.load(EXPLOSION_2_TEXTURE).convert_alpha()
+            self.rect = self.image.get_rect(center=old_center)
+            self.update = 1.5
+            self.start_time = time.time()
+            self.kill_enemy(death_sound, coins_on_screen)
+            return
+
+        # Wait 0.1 seconds
+        if 0.5 <= self.update < 1:
+            current_time = time.time()
+            elapsed_time = current_time - self.start_time
+            if elapsed_time >= 0.1:
+                self.update = 1
+                self.start_time = 0
+            return
+
+        if self.update == 0:
+            # Increase the death count
+            self.death_count = self.death_count + 1
+            # Set health to 0 and hide the health bar
+            self.health_bar = 0
+            self.red_machine_health_bar.health_bar_visible = 0
+            # Play the death sound
+            if death_sound == 1:
+                sound = pygame.mixer.Sound("sound/Explosion.wav")
+                sound.play()
+            # Change the texture of the red machine to the first frame of the death explosion
+            old_center = self.rect.center
+            self.image = pygame.image.load(EXPLOSION_1_TEXTURE).convert_alpha()
+            self.rect = self.image.get_rect(center=old_center)
+            self.update = 0.5
+            # Set the thorns initiated damage back to 0 if needed
+            self.thorns_initiated_damage = 0
+            self.start_time = time.time()
+            return
+
+    def hit_enemy(self, hit_sound):
+        """
+            Makes the enemy take "one hit" of damage and creates a hit delay before the enemy can be hit again
+
+            :param hit_sound: Determines if the enemy hit sound is toggled on or off
+            :type hit_sound: int
+
+            :return: None
+        """
+
+        # Reset the hit delay back to 0
+        if self.hit_delay == 9:
+            self.hit_delay = 0
+
+        # Wait 0.1 seconds
+        if 1 <= self.hit_delay < 9:
+            current_time = time.time()
+            elapsed_time = current_time - self.hit_start_time
+            if elapsed_time >= 0.1:
+                self.hit_delay = 9
+                self.hit_start_time = 0
+
+        if self.update == 0 and self.health_bar == 2:
+            # Decrease the enemies health by 1
+            old_center = self.red_machine_health_bar.rect.center
+            self.red_machine_health_bar.image = pygame.image.load(HEALTH_BAR_12_TEXTURE)
+            self.red_machine_health_bar.rect = self.red_machine_health_bar.image.get_rect(center=old_center)
+            if hit_sound == 1:
+                sound = pygame.mixer.Sound("sound/Explosion2.wav")
+                sound.play()
+            self.health_bar = 1
+            self.hit_delay = 1
+            # Set the thorns initiated damage back to 0 if needed
+            self.thorns_initiated_damage = 0
+            self.hit_start_time = time.time()
+
+    def float_effect(self):
+        """
+            Moves the red machine up and down to create a float effect and make it seem as if the enemy is moving
+                fast through outer space.
+
+            :return: None
+        """
+
+        # Activate the float effect
+        if self.float_activated == 0:
+            self.float_activated = 1
+            self.start_y_float = self.rect.centery
+
+        if self.start_y_float - 50 * self.scale_factor_y >= self.rect.centery:
+            # Move down
+            self.float = -1
+        elif self.start_y_float + 50 * self.scale_factor_y <= self.rect.centery:
+            # Move up
+            self.float = 1
+        current_time = time.time()
+        elapsed_time = current_time - self.float_start_time
+        # Make a movement every 0.0075 seconds to reduce the effects of lag
+        if elapsed_time >= 0.0075:
+            if self.float == 1:
+                # Calculate the delta movement and add it as additional movement required
+                delta_movement = machine_mode_setup.MACHINE_FLOAT * ((elapsed_time - 0.0075) / 0.0075)
+                self.float_y -= machine_mode_setup.MACHINE_FLOAT + delta_movement
+                self.rect.centery = int(self.float_y)
+                self.red_machine_health_bar.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+            elif self.float == -1:
+                # Calculate the delta movement and add it as additional movement required
+                delta_movement = machine_mode_setup.MACHINE_FLOAT * ((elapsed_time - 0.0075) / 0.0075)
+                self.float_y += machine_mode_setup.MACHINE_FLOAT + delta_movement
+                self.rect.centery = int(self.float_y)
+                self.red_machine_health_bar.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+            self.float_start_time = time.time()
+
+    def move_enemy(self, death):
+        """
+            When the red machine has died enough times, this function will cause it to start moving left and
+                right, which will speed up the more times that the red machine dies.
+
+            :param death: Determines whether the death animation for the player is active or not.
+            :type death: int
+
+            :return: None
+        """
+
+        if self.death_count >= 4 and death == 0 and self.update == 0:
+            # If the movement has just started, a start time is created for it
+            if self.movement_activated == 0:
+                self.move_start_time = time.time()
+                self.movement_activated = 1
+            # Move the blue machine every 0.02 seconds
+            current_time = time.time()
+            elapsed_time = current_time - self.move_start_time
+            if elapsed_time >= 0.02:
+                # Blue machine reaches the right end of the screen
+                if 1280 * self.scale_factor_x < self.rect.centerx:
+                    # Move left
+                    self.movement = -1
+                # Blue machine reaches the left end of the screen
+                if self.rect.centerx < 0:
+                    # Move right
+                    self.movement = 1
+                if self.movement == 1:
+                    # Speeds up based on the death_count variable
+                    if 4 <= self.death_count < 7:
+                        # Calculate the delta movement as extra movement needed
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_2 * ((elapsed_time - 0.02) / 0.02)
+                        self.rect.centerx = self.rect.centerx + machine_mode_setup.MACHINE_MOVE_2 + delta_movement
+                        self.red_machine_health_bar.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+                    elif 7 <= self.death_count < 10:
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_4 * ((elapsed_time - 0.02) / 0.02)
+                        self.rect.centerx = self.rect.centerx + machine_mode_setup.MACHINE_MOVE_4 + delta_movement
+                        self.red_machine_health_bar.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+                    elif 10 <= self.death_count < 13:
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_6 * ((elapsed_time - 0.02) / 0.02)
+                        self.rect.centerx = self.rect.centerx + machine_mode_setup.MACHINE_MOVE_6 + delta_movement
+                        self.red_machine_health_bar.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+                    elif 13 <= self.death_count < 16:
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_8 * ((elapsed_time - 0.02) / 0.02)
+                        self.rect.centerx = self.rect.centerx + machine_mode_setup.MACHINE_MOVE_8 + delta_movement
+                        self.red_machine_health_bar.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+                    elif 16 <= self.death_count:
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_10 * ((elapsed_time - 0.02) / 0.02)
+                        self.rect.centerx = self.rect.centerx + machine_mode_setup.MACHINE_MOVE_10 + delta_movement
+                        self.red_machine_health_bar.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+                elif self.movement == -1:
+                    if 4 <= self.death_count < 7:
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_2 * ((elapsed_time - 0.02) / 0.02)
+                        self.rect.centerx = self.rect.centerx - machine_mode_setup.MACHINE_MOVE_2 - delta_movement
+                        self.red_machine_health_bar.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+                    elif 7 <= self.death_count < 10:
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_4 * ((elapsed_time - 0.02) / 0.02)
+                        self.rect.centerx = self.rect.centerx - machine_mode_setup.MACHINE_MOVE_4 - delta_movement
+                        self.red_machine_health_bar.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+                    elif 10 <= self.death_count < 13:
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_6 * ((elapsed_time - 0.02) / 0.02)
+                        self.rect.centerx = self.rect.centerx - machine_mode_setup.MACHINE_MOVE_6 - delta_movement
+                        self.red_machine_health_bar.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+                    elif 13 <= self.death_count < 16:
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_8 * ((elapsed_time - 0.02) / 0.02)
+                        self.rect.centerx = self.rect.centerx - machine_mode_setup.MACHINE_MOVE_8 - delta_movement
+                        self.red_machine_health_bar.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+                    elif 16 <= self.death_count:
+                        delta_movement = machine_mode_setup.MACHINE_MOVE_10 * ((elapsed_time - 0.02) / 0.02)
+                        self.rect.centerx = self.rect.centerx - machine_mode_setup.MACHINE_MOVE_10 - delta_movement
+                        self.red_machine_health_bar.rect.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
+                self.move_start_time = time.time()
+        else:
+            self.move_start_time = 0
+
+
+class RedMachineLaser(pygame.sprite.Sprite):
+    def __init__(self, id, scale_factor_x, scale_factor_y):
+        super().__init__()
+        self.image = pygame.image.load(RED_MACHINE_LASER_TEXTURE).convert_alpha()
+        self.rect = self.image.get_rect()
+        if id == 1:
+            self.rect.center = (1015 * scale_factor_x, 210 * scale_factor_y)
+        elif id == 2:
+            self.rect.center = (265 * scale_factor_x, 210 * scale_factor_y)
+        elif id == 3:
+            self.rect.center = (965 * scale_factor_x, 210 * scale_factor_y)
+        elif id == 4:
+            self.rect.center = (315 * scale_factor_x, 210 * scale_factor_y)
+        elif id == 5:
+            self.rect.center = (915 * scale_factor_x, 210 * scale_factor_y)
+        else:
+            self.rect.center = (0, 0)
+        self.laser_visible = 1
+
+    def __del__(self):
+        self.kill()
+
+    def isvisible(self):
+        return self.laser_visible
+
+    def distance(self, other_sprite):
+        """Return the Euclidean distance to another sprite based on center positions."""
+        dx = self.rect.centerx - other_sprite.rect.centerx
+        dy = self.rect.centery - other_sprite.rect.centery
+        return math.hypot(dx, dy)
+
+
+class RedMachineHealthBar(pygame.sprite.Sprite):
+    def __init__(self, id, scale_factor_x, scale_factor_y):
+        super().__init__()
+        self.image = pygame.image.load(HEALTH_BAR_22_TEXTURE).convert_alpha()
+        self.rect = self.image.get_rect()
+        if id == 1:
+            self.rect.center = (1015 * scale_factor_x, 65 * scale_factor_y)
+        elif id == 2:
+            self.rect.center = (265 * scale_factor_x, 65 * scale_factor_y)
+        elif id == 3:
+            self.rect.center = (965 * scale_factor_x, 65 * scale_factor_y)
+        elif id == 4:
+            self.rect.center = (315 * scale_factor_x, 65 * scale_factor_y)
+        elif id == 5:
+            self.rect.center = (915 * scale_factor_x, 65 * scale_factor_y)
+        else:
+            self.rect.center = (0, 0)
+        self.health_bar_visible = 1
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        self.kill()
+
+    def isvisible(self):
+        return self.health_bar_visible
+
+    def distance(self, other_sprite):
+        """Return the Euclidean distance to another sprite based on center positions."""
+        dx = self.rect.centerx - other_sprite.rect.centerx
+        dy = self.rect.centery - other_sprite.rect.centery
+        return math.hypot(dx, dy)
