@@ -46,6 +46,7 @@ from components.spawn.SpawnBackgroundObjectsPygame import SpawnGround
 from components.spawn.SpawnBackgroundObjectsPygame import SpawnShip
 from components.spawn.SpawnCoinPygame import SpawnCoin
 from components.spawn.SpawnAlienPygame import SpawnSmallAlien
+from components.spawn.SpawnAlienPygame import SpawnMediumAlien
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
 from components.spawn.SpawnMachinePygame import SpawnYellowMachine
 from components.spawn.SpawnMachinePygame import SpawnRedMachine
@@ -93,6 +94,7 @@ def main():
     machine_player = SpawnMachinePlayer(window.scale_factor_X, window.scale_factor_Y)
 
     small_alien = SpawnSmallAlien(window.scale_factor_X, window.scale_factor_Y)
+    medium_alien = SpawnMediumAlien(window.scale_factor_X, window.scale_factor_Y)
     human_player = SpawnHumanPlayer(window.scale_factor_X, window.scale_factor)
 
     panel = SpawnPanel(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
@@ -115,7 +117,7 @@ def main():
                           window.scale_factor_X, window.scale_factor_Y)
 
     machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
-    alien_collision = AlienCollision(human_player, small_alien, coin, window.scale_factor_X, window.scale_factor_Y)
+    alien_collision = AlienCollision(human_player, small_alien, medium_alien, coin, window.scale_factor_X, window.scale_factor_Y)
     movement = Movement(screen, machine_player, human_player, yellow_power_up_indicator, settings, statistics, alien_collision, window.scale_factor_Y)
 
     shop = Shop(window, screen, button,
@@ -358,6 +360,13 @@ def main():
         for sa in small_alien.small_aliens:
             if sa.small_alien_visible == 1:
                 window.screen.blit(sa.image, sa.rect)
+
+        for ma in medium_alien.medium_aliens:
+            if ma.medium_alien_visible == 1:
+                window.screen.blit(ma.image, ma.rect)
+
+                if ma.medium_alien_health_bar.health_bar_visible == 1:
+                    window.screen.blit(ma.image, ma.rect)
 
         for pu in power_up.current_power_ups:
             if pu.power_up_visible == 1:
@@ -1663,6 +1672,16 @@ def main():
                 small_alien.spawn_small_alien(4)
             elif statistics.score > 40 and small_alien.small_alien_index == 4:
                 small_alien.spawn_small_alien(5)
+            elif statistics.score > 60 and medium_alien.medium_alien_index == 0:
+                medium_alien.spawn_medium_alien(1)
+            elif statistics.score > 80 and medium_alien.medium_alien_index == 1:
+                medium_alien.spawn_medium_alien(2)
+            elif statistics.score > 100 and medium_alien.medium_alien_index == 2:
+                medium_alien.spawn_medium_alien(3)
+            elif statistics.score > 120 and medium_alien.medium_alien_index == 3:
+                medium_alien.spawn_medium_alien(4)
+            elif statistics.score > 140 and medium_alien.medium_alien_index == 4:
+                medium_alien.spawn_medium_alien(5)
             # If score is less than 7, reset the number of aliens back down to 3
             elif statistics.score < 7:
                 if small_alien.small_alien_index == 4 or small_alien.small_alien_index == 5:
@@ -1671,20 +1690,36 @@ def main():
                     small_alien.small_aliens.clear()
                     small_alien.small_alien_index = 0
                     small_alien.small_aliens_kill_values.clear()
+                for ma in medium_alien.medium_aliens:
+                    ma.remove()
+                medium_alien.medium_aliens.clear()
+                medium_alien.medium_alien_index = 0
+                medium_alien.medium_aliens_kill_values.clear()
+                medium_alien.medium_aliens_hit_values.clear()
 
             # Update the directions that each of the aliens are facing
             for h in human_player.current_human:
                 for sa in small_alien.small_aliens:
                     sa.set_alien_direction(h.rect.centerx)
 
+                for ma in medium_alien.medium_aliens:
+                    ma.set_alien_direction(h.rect.centerx)
+
             # Update the aliens position, the aliens move faster the more times they are killed until the player dies
             for sa in small_alien.small_aliens:
                 sa.set_movement_speed()
+
+            for ma in medium_alien.medium_aliens:
+                ma.set_movement_speed()
 
             # Update the aliens texture based on their direction and the walking animation
             for sa in small_alien.small_aliens:
                 if sa.get_small_alien().isvisible():
                     sa.set_alien_texture(human_player.right_update, human_player.left_update)
+
+            for ma in medium_alien.medium_aliens:
+                if ma.get_medium_alien().isvisible():
+                    ma.set_alien_texture(human_player.right_update, human_player.left_update)
 
             # Detects if the players has picked up a coin
             # If the coin magnet is not enabled
@@ -1741,7 +1776,7 @@ def main():
                         hit_coin = hit_coin + 1
             # If the coin magnet is enabled
             else:
-                # Move the ocins towards the player
+                # Move the coins towards the player
                 gadget.attract_coins("Alien_Mode")
 
                 hit_coin = 0
@@ -1860,6 +1895,119 @@ def main():
                             small_alien.small_aliens_kill_values[current_small_alien_update_value_index] = 0
                     current_small_alien_update_value_index = current_small_alien_update_value_index + 1
 
+                current_medium_alien_update_value_index = 0
+                current_medium_alien_hit_value_index = 0
+                for ma in medium_alien.medium_aliens:
+                    # If the player laser hits a medium alien that is visible and not dying and has health less
+                    #   than or equal to damage
+                    # Same procedure as before
+                    if medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] == 0:
+                        if ma.health <= alien_mode_setup.damage and ma.get_medium_alien().isvisible() and ma.hit_delay == 0:
+                            laser_killed = 0
+                            if ma.got_hit == 0:
+                                for l in h.get_laser():
+                                    if l.laser_update < alien_mode_setup.piercing and \
+                                        alien_collision.MEDIUM_ALIEN_Y_RANGE[0] < l.rect.centery < alien_collision.MEDIUM_ALIEN_Y_RANGE[1] and (
+                                        (l.rect.centerx > ma.rect.centerx + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 1 and ma.already_ahead == 0) or
+                                        (l.rect.centerx < ma.rect.centerx + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 2 and ma.already_behind == 0)
+                                    ):
+                                        medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
+
+                                        if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                            statistics.score = statistics.score + 2 * alien_mode_setup.blue_power_up_score_multiplier
+                                        else:
+                                            statistics.score = statistics.score + 2 * alien_mode_setup.regular_score_multiplier
+
+                                        if settings.god_mode == 0:
+                                            statistics.medium_aliens_killed = statistics.medium_aliens_killed + 1
+                                            statistics.save()
+
+                                        l.laser_visible = 0
+                                        if extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active() == 0:
+                                            l.laser_update = l.laser_update + 1
+                                        laser_killed = 1
+                                        break
+
+                            if ma.thorns_initiated_damage == 1 and laser_killed == 0:
+                                medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = \
+                                medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
+
+                                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                    statistics.score = statistics.score + 2 * alien_mode_setup.blue_power_up_score_multiplier
+                                else:
+                                    statistics.score = statistics.score + 2 * alien_mode_setup.regular_score_multiplier
+
+                                if settings.god_mode == 0:
+                                    statistics.medium_aliens_killed = statistics.medium_aliens_killed + 1
+                                    statistics.save()
+                    elif medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] != 0:
+                        ma.kill_alien(settings.enemy_death_sound, coin.coins_on_screen_list)
+                        medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = \
+                        medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] + 1
+
+                        if ma.get_death_animation() == 0:
+                            medium_alien.medium_aliens_kill_values[current_medium_alien_update_value_index] = 0
+                    current_medium_alien_update_value_index = current_medium_alien_update_value_index + 1
+
+                    # If the player laser hits a medium alien that is visible and not dying and has health
+                    #   greater than damage
+                    if medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] == 0:
+                        if ma.get_medium_alien_health() > alien_mode_setup.damage and ma.get_medium_alien().isvisible():
+                            # Check if the laser hit the enemy first
+                            laser_hit = 0
+                            if ma.got_hit == 0:
+                                for l in h.get_laser():
+                                    if l.laser_update < alien_mode_setup.piercing and \
+                                        alien_collision.MEDIUM_ALIEN_Y_RANGE[0] < l.rect.centery < alien_collision.MEDIUM_ALIEN_Y_RANGE[1] and (
+                                        (l.rect.centerx > ma.rect.centerx + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 1 and ma.already_ahead == 0) or
+                                        (l.rect.centerx < ma.rect.centerx + alien_collision.MEDIUM_ALIEN_X_DISTANCE * ma.collision_point and h.laser_direction == 2 and ma.already_behind == 0)
+                                    ):
+                                        medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = \
+                                        medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
+
+                                        # Increase the players score by the hit amount
+                                        # When the blue power up is active, the score increases are doubled
+                                        #   (This is universal)
+                                        # The player gun type may also have a score multiplier applied
+                                        if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                            statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
+                                        else:
+                                            statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
+
+                                        # Increase the lasers pierce by 1 and try hiding the laser
+                                        l.laser_visible = 0
+                                        if extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active() == 0:
+                                            l.laser_update = l.laser_update + 1
+                                        # Set that the laser as already hit the enemy this iteration
+                                        laser_hit = 1
+                                        break
+
+                            # If the laser did not already hit the enemy this iteration
+                            # Check if the player got hi by the alien while the thorns gadget is enabled
+                            # If the player has been hit with the thorns gadget, hit the alien
+                            if ma.thorns_initiated_damage == 1 and laser_hit == 0:
+                                medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = \
+                                medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
+
+                                # Increase the players score by the hit amount
+                                # When the blue power up is active, the score increases are doubled
+                                #   (This is universal)
+                                # The player gun type may also have a score multiplier applied
+                                if blue_power_up_indicator.blue_power_up_indicator_sprite[0].get_power_up_active() == 1:
+                                    statistics.score = statistics.score + 1 * alien_mode_setup.blue_power_up_score_multiplier
+                                else:
+                                    statistics.score = statistics.score + 1 * alien_mode_setup.regular_score_multiplier
+                    elif medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] != 0:
+                        # Hit the alien
+                        ma.hit_alien(settings.enemy_hit_sound)
+                        medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = \
+                        medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] + 1
+
+                        # If the hit delay is finished, reset the hit value back to 0 to signal the hit delay ending
+                        if ma.get_hit_delay() == 0:
+                            medium_alien.medium_aliens_hit_values[current_medium_alien_hit_value_index] = 0
+                    current_medium_alien_hit_value_index = current_medium_alien_hit_value_index + 1
+
             # Player Killer
             for h in human_player.current_human:
                 # If the death animation has already started
@@ -1892,14 +2040,14 @@ def main():
                                 if shop_config.thorns_enabled:
                                     sa.thorns_initiated_damage = 1
 
-                    # for ma in medium_alien.medium_aliens:
-                    #     if ma.get_medium_alien().distance(h.get_player()) < 100 * scale_factor:
-                    #         if h.health == 1 and h.hit_delay == 0 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and human_player.human_update_value == 0 and ma.get_death_animation() == 0 and settings.god_mode == 0:
-                    #             h.kill_player(settings.player_death_sound)
-                    #             human_player.human_update_value = human_player.human_update_value + 1
-                    #             if shop_config.thorns_enabled:
-                    #                 ma.thorns_initiated_damage = 1
-                    #
+                    for ma in medium_alien.medium_aliens:
+                        if ma.get_medium_alien().distance(h.get_player()) < 100 * window.scale_factor:
+                            if h.health == 1 and h.hit_delay == 0 and ma.rect.centerx - 15 * window.scale_factor_X < h.rect.centerx < ma.rect.centerx + 15 * window.scale_factor_X and human_player.human_update_value == 0 and ma.get_death_animation() == 0 and settings.god_mode == 0:
+                                h.kill_player(settings.player_death_sound)
+                                human_player.human_update_value = human_player.human_update_value + 1
+                                if shop_config.thorns_enabled:
+                                    ma.thorns_initiated_damage = 1
+
                     # for la in large_alien.large_aliens:
                     #     if la.get_large_alien().distance(h.get_player()) < 160 * scale_factor:
                     #         if h.health == 1 and h.hit_delay == 0 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and human_player.human_update_value == 0 and la.get_death_animation() == 0 and settings.god_mode == 0:
@@ -1947,14 +2095,14 @@ def main():
                                 if shop_config.thorns_enabled:
                                     sa.thorns_initiated_damage = 1
 
-                    # for ma in medium_alien.medium_aliens:
-                    #     if ma.get_medium_alien().distance(h.get_player()) < 100 * scale_factor:
-                    #         if h.get_health() > 1 and ma.get_medium_alien().xcor() - 15 * scale_factor_X < h.get_player().xcor() < ma.get_medium_alien().xcor() + 15 * scale_factor_X and ma.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
-                    #             h.hit_player(settings.player_hit_sound)
-                    #             human_player.human_hit_value = human_player.human_hit_value + 1
-                    #             if shop_config.thorns_enabled:
-                    #                 ma.thorns_initiated_damage = 1
-                    #
+                    for ma in medium_alien.medium_aliens:
+                        if ma.get_medium_alien().distance(h.get_player()) < 100 * window.scale_factor:
+                            if h.get_health() > 1 and ma.rect.centerx - 15 * window.scale_factor_X < h.rect.centerx < ma.rect.centerx + 15 * window.scale_factor_X and ma.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
+                                h.hit_player(settings.player_hit_sound)
+                                human_player.human_hit_value = human_player.human_hit_value + 1
+                                if shop_config.thorns_enabled:
+                                    ma.thorns_initiated_damage = 1
+
                     # for la in large_alien.large_aliens:
                     #     if la.get_large_alien().distance(h.get_player()) < 160 * scale_factor:
                     #         if h.get_health() > 1 and la.get_large_alien().xcor() - 18 * scale_factor_X < h.get_player().xcor() < la.get_large_alien().xcor() + 18 * scale_factor_X and la.get_death_animation() == 0 and h.get_hit_delay() == 0 and settings.god_mode == 0:
@@ -2008,6 +2156,12 @@ def main():
             small_alien.small_aliens.clear()
             small_alien.small_alien_index = 0
             small_alien.small_aliens_kill_values.clear()
+            for ma in medium_alien.medium_aliens:
+                ma.remove()
+            medium_alien.medium_aliens.clear()
+            medium_alien.medium_alien_index = 0
+            medium_alien.medium_aliens_kill_values.clear()
+            medium_alien.medium_aliens_hit_values.clear()
 
 
         """

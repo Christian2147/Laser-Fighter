@@ -23,6 +23,7 @@
 """
 
 from components.enemy.AlienSmallAlienPygame import SmallAlien
+from components.enemy.AlienMediumAlienPygame import MediumAlien
 
 
 class SpawnSmallAlien:
@@ -30,8 +31,6 @@ class SpawnSmallAlien:
         Represents the Small Alien container in Laser Fighter.
 
         Attributes:
-            all_small_aliens (list): Contains all of the small alien sprites created since the game has launched, even
-                ones removed from the screen
             small_aliens (list): Contains all of the small alien sprites currently visible/active on the screen.
             small_aliens_kill_values (list): Contains all of the death animation values for each small alien
                 on the screen.
@@ -84,3 +83,66 @@ class SpawnSmallAlien:
         self.small_aliens.append(small_alien)
         self.small_alien_index = self.small_alien_index + 1
         self.small_aliens_kill_values.append(0)
+
+
+class SpawnMediumAlien:
+    """
+        Represents the Medium Alien container in Laser Fighter.
+
+        Attributes:
+            medium_aliens (list): Contains all of the medium alien sprites currently visible/active on the screen.
+            medium_aliens_kill_values (list): Contains all of the death animation values for each medium alien
+                on the screen.
+            medium_aliens_hit_values (list): Contains all of the hit delay values for each medium alien on the screen.
+            medium_alien_index (int): Stores the number of medium aliens currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Medium Alien.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        self.medium_aliens = []
+        self.medium_aliens_kill_values = []
+        self.medium_aliens_hit_values = []
+        self.medium_alien_index = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
+        del self.medium_aliens
+        del self.medium_aliens_kill_values
+        del self.medium_aliens_hit_values
+        del self.medium_alien_index
+
+    def spawn_medium_alien(self, id):
+        """
+            Spawn a medium alien with the given id on the screen.
+
+            :param id: The id that the alien should have (Determines initial location of the alien)
+            :type id: int
+
+            :return: None
+        """
+
+        medium_alien = MediumAlien(id, self.scale_factor_x, self.scale_factor_y)
+        self.medium_aliens.append(medium_alien)
+        self.medium_alien_index = self.medium_alien_index + 1
+        self.medium_aliens_kill_values.append(0)
+        self.medium_aliens_hit_values.append(0)

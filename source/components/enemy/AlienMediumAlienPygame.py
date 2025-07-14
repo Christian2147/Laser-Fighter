@@ -197,6 +197,22 @@ class MediumAlien(pygame.sprite.Sprite):
 
         return self.hit_delay
 
+    def isvisible(self):
+        return self.medium_alien_visible
+
+    def distance(self, other_sprite):
+        """
+            Calculates the Euclidean distance to another sprite.
+
+            :param other_sprite: Another sprite with a rect attribute
+
+            :return: float
+        """
+
+        dx = self.rect.centerx - other_sprite.rect.centerx
+        dy = self.rect.centery - other_sprite.rect.centery
+        return math.hypot(dx, dy)
+
     def remove(self):
         """
             Removes the medium alien sprite form the screen and resets its attributes.
@@ -316,6 +332,7 @@ class MediumAlien(pygame.sprite.Sprite):
             self.medium_alien_health_bar.image = pygame.image.load(HEALTH_BAR_22_TEXTURE)
             self.medium_alien_health_bar.rect = self.medium_alien_health_bar.image.get_rect(center=old_center)
             self.health = 2
+            self.precise_x = float(self.rect.centerx)
             self.medium_alien_visible = 1
             self.medium_alien_health_bar.health_bar_visible = 1
             self.movement_activated = 0
