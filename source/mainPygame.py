@@ -1657,6 +1657,20 @@ def main():
                 h.set_player_texture(human_player.right_update, human_player.left_update)
                 h.set_gun_texture()
 
+            # Spawn aliens based on the players score
+            # At its peak, there will be 5 small aliens, 5 medium aliens, 5 large aliens, and 1 UFO attacking the player
+            if statistics.score > 20 and small_alien.small_alien_index == 3:
+                small_alien.spawn_small_alien(4)
+            elif statistics.score > 40 and small_alien.small_alien_index == 4:
+                small_alien.spawn_small_alien(5)
+            # If score is less than 7, reset the number of aliens back down to 3
+            elif statistics.score < 7:
+                if small_alien.small_alien_index == 4 or small_alien.small_alien_index == 5:
+                    for sa in small_alien.small_aliens:
+                        sa.remove()
+                    small_alien.small_aliens.clear()
+                    small_alien.small_alien_index = 0
+                    small_alien.small_aliens_kill_values.clear()
 
             # Update the directions that each of the aliens are facing
             for h in human_player.current_human:
