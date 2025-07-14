@@ -24,6 +24,7 @@
 
 from components.enemy.AlienSmallAlienPygame import SmallAlien
 from components.enemy.AlienMediumAlienPygame import MediumAlien
+from components.enemy.AlienLargeAlienPygame import LargeAlien
 
 
 class SpawnSmallAlien:
@@ -146,3 +147,66 @@ class SpawnMediumAlien:
         self.medium_alien_index = self.medium_alien_index + 1
         self.medium_aliens_kill_values.append(0)
         self.medium_aliens_hit_values.append(0)
+
+
+class SpawnLargeAlien:
+    """
+        Represents the Large Alien container in Laser Fighter.
+
+        Attributes:
+            large_aliens (list): Contains all of the large alien sprites currently visible/active on the screen.
+            large_aliens_kill_values (list): Contains all of the death animation values for each large alien
+                on the screen.
+            large_aliens_hit_values (list): Contains all of the hit delay values for each large alien on the screen.
+            large_alien_index (int): Stores the number of large aliens currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Large Alien.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        self.large_aliens = []
+        self.large_aliens_kill_values = []
+        self.large_aliens_hit_values = []
+        self.large_alien_index = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
+        del self.large_aliens
+        del self.large_aliens_kill_values
+        del self.large_aliens_hit_values
+        del self.large_alien_index
+
+    def spawn_large_alien(self, id):
+        """
+            Spawn a large alien with the given id on the screen.
+
+            :param id: The id that the alien should have (Determines initial location of the alien)
+            :type id: int
+
+            :return: None
+        """
+
+        large_alien = LargeAlien(id, self.scale_factor_x, self.scale_factor_y)
+        self.large_aliens.append(large_alien)
+        self.large_alien_index = self.large_alien_index + 1
+        self.large_aliens_kill_values.append(0)
+        self.large_aliens_hit_values.append(0)

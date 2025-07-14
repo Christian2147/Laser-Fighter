@@ -59,7 +59,7 @@ class AlienCollision:
                  human_player,
                  small_alien,
                  medium_alien,
-                 # large_alien,
+                 large_alien,
                  # ufo,
                  coin,
                  scale_factor_x,
@@ -102,7 +102,7 @@ class AlienCollision:
         self._human_player = human_player
         self._small_alien = small_alien
         self._medium_alien = medium_alien
-        # self._large_alien = large_alien
+        self._large_alien = large_alien
         # self._ufo = ufo
         self._coin = coin
 
@@ -119,7 +119,7 @@ class AlienCollision:
         del self._human_player
         del self._small_alien
         del self._medium_alien
-        # del self._large_alien
+        del self._large_alien
         # del self._ufo
         del self._coin
         del self.scale_factor_x
@@ -174,24 +174,24 @@ class AlienCollision:
                 else:
                     ma.already_behind = 0
 
-            # # Each Large Aliens Hitbox is calculated
-            # for la in self._large_alien.large_aliens:
-            #     if la.death_animation == 0:
-            #         la.got_hit = 0
-            #     if la.rect.centerx - self.LARGE_ALIEN_X_DISTANCE >= (h.rect.centerx + self.PLAYER_LASER_GAP) or \
-            #             (la.rect.centerx - self.LARGE_ALIEN_X_DISTANCE < (h.rect.centerx - self.PLAYER_LASER_GAP) < la.rect.centerx + self.LARGE_ALIEN_X_DISTANCE and h.direction == 2):
-            #         la.collision_point = -1
-            #     else:
-            #         la.collision_point = 1
-            #     if h.rect.centerx > la.rect.centerx + (self.LARGE_ALIEN_X_DISTANCE * la.collision_point):
-            #         la.already_ahead = 1
-            #     else:
-            #         la.already_ahead = 0
-            #     if h.rect.centerx < la.rect.centerx + (self.LARGE_ALIEN_X_DISTANCE * la.collision_point):
-            #         la.already_behind = 1
-            #     else:
-            #         la.already_behind = 0
-            #
+            # Each Large Aliens Hitbox is calculated
+            for la in self._large_alien.large_aliens:
+                if la.death_animation == 0:
+                    la.got_hit = 0
+                if la.rect.centerx - self.LARGE_ALIEN_X_DISTANCE >= (h.rect.centerx + self.PLAYER_LASER_GAP) or \
+                        (la.rect.centerx - self.LARGE_ALIEN_X_DISTANCE < (h.rect.centerx - self.PLAYER_LASER_GAP) < la.rect.centerx + self.LARGE_ALIEN_X_DISTANCE and h.direction == 2):
+                    la.collision_point = -1
+                else:
+                    la.collision_point = 1
+                if h.rect.centerx > la.rect.centerx + (self.LARGE_ALIEN_X_DISTANCE * la.collision_point):
+                    la.already_ahead = 1
+                else:
+                    la.already_ahead = 0
+                if h.rect.centerx < la.rect.centerx + (self.LARGE_ALIEN_X_DISTANCE * la.collision_point):
+                    la.already_behind = 1
+                else:
+                    la.already_behind = 0
+
             # # Each UFOs Hitbox is calculated
             # for u in self._ufo.ufos:
             #     if u.death_animation == 0:
