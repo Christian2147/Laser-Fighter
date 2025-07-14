@@ -101,15 +101,15 @@ class LargeAlien(pygame.sprite.Sprite):
         self.image = pygame.image.load(ALIEN_STILL_RIGHT_11_15_TEXTURE)
         self.rect = self.image.get_rect()
         if id == 1:
-            self.rect.center = (int(-85 * scale_factor_x), int(445 * scale_factor_y))
+            self.rect.center = (int(-85 * scale_factor_x), round(445 * scale_factor_y))
         elif id == 2:
-            self.rect.center = (int(1415 * scale_factor_x), int(445 * scale_factor_y))
+            self.rect.center = (int(1415 * scale_factor_x), round(445 * scale_factor_y))
         elif id == 3:
-            self.rect.center = (int(-135 * scale_factor_x), int(445 * scale_factor_y))
+            self.rect.center = (int(-135 * scale_factor_x), round(445 * scale_factor_y))
         elif id == 4:
-            self.rect.center = (int(1465 * scale_factor_x), int(445 * scale_factor_y))
+            self.rect.center = (int(1465 * scale_factor_x), round(445 * scale_factor_y))
         elif id == 5:
-            self.rect.center = (int(-185 * scale_factor_x), int(445 * scale_factor_y))
+            self.rect.center = (int(-185 * scale_factor_x), round(445 * scale_factor_y))
         self.large_alien_visible = 1
         self.direction = "stop"
 
@@ -323,10 +323,10 @@ class LargeAlien(pygame.sprite.Sprite):
             # Respawn the large alien in a random location (side of the screen)
             alien_random = random.randint(1, 2)
             if alien_random == 1:
-                self.rect.center = (random.randint(int(-260 * self.scale_factor_x), int(-50 * self.scale_factor_x)), int(445 * self.scale_factor_y))
+                self.rect.center = (random.randint(int(-260 * self.scale_factor_x), int(-50 * self.scale_factor_x)), round(445 * self.scale_factor_y))
                 self.large_alien_health_bar.rect.center = (self.rect.centerx, 322 * self.scale_factor_y)
             if alien_random == 2:
-                self.rect.center = (random.randint(int(1330 * self.scale_factor_x), int(1540 * self.scale_factor_x)), int(445 * self.scale_factor_y))
+                self.rect.center = (random.randint(int(1330 * self.scale_factor_x), int(1540 * self.scale_factor_x)), round(445 * self.scale_factor_y))
                 self.large_alien_health_bar.rect.center = (self.rect.centerx, 322 * self.scale_factor_y)
             # Reset the large aliens health
             old_center = self.large_alien_health_bar.rect.center

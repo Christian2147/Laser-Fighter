@@ -99,15 +99,15 @@ class MediumAlien(pygame.sprite.Sprite):
         self.image = pygame.image.load(ALIEN_STILL_RIGHT_6_10_TEXTURE)
         self.rect = self.image.get_rect()
         if id == 1:
-            self.rect.center = (int(1490 * scale_factor_x), int(484 * scale_factor_y))
+            self.rect.center = (int(1490 * scale_factor_x), round(484 * scale_factor_y))
         elif id == 2:
-            self.rect.center = (int(-210 * scale_factor_x), int(484 * scale_factor_y))
+            self.rect.center = (int(-210 * scale_factor_x), round(484 * scale_factor_y))
         elif id == 3:
-            self.rect.center = (int(1540 * scale_factor_x), int(484 * scale_factor_y))
+            self.rect.center = (int(1540 * scale_factor_x), round(484 * scale_factor_y))
         elif id == 4:
-            self.rect.center = (int(-260 * scale_factor_x), int(484 * scale_factor_y))
+            self.rect.center = (int(-260 * scale_factor_x), round(484 * scale_factor_y))
         elif id == 5:
-            self.rect.center = (int(1365 * scale_factor_x), int(484 * scale_factor_y))
+            self.rect.center = (int(1365 * scale_factor_x), round(484 * scale_factor_y))
         self.medium_alien_visible = 1
         self.direction = "stop"
 
@@ -322,10 +322,10 @@ class MediumAlien(pygame.sprite.Sprite):
             # Respawn the medium alien in a random location (side of the screen)
             alien_random = random.randint(1, 2)
             if alien_random == 1:
-                self.rect.center = (random.randint(int(-260 * self.scale_factor_x), int(-50 * self.scale_factor_x)), int(484 * self.scale_factor_y))
+                self.rect.center = (random.randint(int(-260 * self.scale_factor_x), int(-50 * self.scale_factor_x)), round(484 * self.scale_factor_y))
                 self.medium_alien_health_bar.rect.center = (self.rect.centerx, 399 * self.scale_factor_y)
             if alien_random == 2:
-                self.rect.center = (random.randint(int(1330 * self.scale_factor_x), int(1540 * self.scale_factor_x)), int(484 * self.scale_factor_y))
+                self.rect.center = (random.randint(int(1330 * self.scale_factor_x), int(1540 * self.scale_factor_x)), round(484 * self.scale_factor_y))
                 self.medium_alien_health_bar.rect.center = (self.rect.centerx, 399 * self.scale_factor_y)
             # Reset the medium aliens health
             old_center = self.medium_alien_health_bar.rect.center
