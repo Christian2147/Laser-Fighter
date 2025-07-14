@@ -14,16 +14,16 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 """
-    File: AlienMediumAlien.py
+    File: AlienLargeAlien.py
     Author: Christian Marinkovich
     Date: 2024-07-08
     Description:
-    This file contains the logic related to the Medium Aliens in Alien Mode.
-    The medium alien is the second enemy the player encounters in Alien Mode.
-    The medium aliens will always move towards the player and moves faster the more times they are killed.
+    This file contains the logic related to the Large Aliens in Alien Mode.
+    The large alien is the third enemy the player encounters in Alien Mode.
+    The large alien will always move towards the player and moves faster the more times they are killed.
     When they come into contact with the player, they reduce the players health.
-    The medium alien dies in two hits from the players laser and grants the player two points.
-    The medium alien also grants the player 1 point when it is hit for the first time.
+    The large alien dies in three hits from the players laser and grants the player 5 points.
+    The large alien also grants the player 1 point each time it is hit.
 """
 
 import pygame
@@ -31,37 +31,39 @@ import random
 import time
 import math
 from components.ItemCoinPygame import Coin
-from setup.TextureSetup import ALIEN_STILL_RIGHT_6_10_TEXTURE
-from setup.TextureSetup import ALIEN_STILL_LEFT_6_10_TEXTURE
-from setup.TextureSetup import ALIEN_WALKING_RIGHT_6_10_TEXTURE
-from setup.TextureSetup import ALIEN_WALKING_LEFT_6_10_TEXTURE
+from setup.ModeSetupMasterPygame import alien_mode_setup
+from setup.TextureSetup import ALIEN_STILL_RIGHT_11_15_TEXTURE
+from setup.TextureSetup import ALIEN_STILL_LEFT_11_15_TEXTURE
+from setup.TextureSetup import ALIEN_WALKING_RIGHT_11_15_TEXTURE
+from setup.TextureSetup import ALIEN_WALKING_LEFT_11_15_TEXTURE
 from setup.TextureSetup import ALIEN_DEATH_1_TEXTURE
 from setup.TextureSetup import ALIEN_DEATH_2_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_12_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_22_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_13_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_23_TEXTURE
+from setup.TextureSetup import HEALTH_BAR_33_TEXTURE
 
 
-class MediumAlien(pygame.sprite.Sprite):
+class LargeAlien(pygame.sprite.Sprite):
     """
-        Represents a medium alien in Alien Mode. The medium alien is slightly taller than the player and moves towards
-            the player at all times.
+        Represents a large alien in Alien Mode. The large alien is significantly taller than the player and moves
+            towards the player at all times.
 
         Attributes:
-            medium_alien_health_bar (pygame.sprite.Sprite): The medium alien health bar sprite
+            large_alien_health_bar (pygame.sprite.Sprite): The large alien health bar sprite
 
-            death_animation (float): Iterated during the medium aliens death animation
-            death_count (int): Stores the amount of times the medium alien has died since the player has last died
-            direction (int): Stores the direction that the medium alien is facing (1 = right and 2 = left)
-            hit_delay (float):  Delays how often the medium alien can be hit
-            health (int): Stores the medium aliens current health
+            death_animation (float): Iterated during the large aliens death animation
+            death_count (int): Stores the amount of times the large alien has died since the player has last died
+            direction (int): Stores the direction that the large alien is facing (1 = right and 2 = left)
+            hit_delay (float):  Delays how often the large alien can be hit
+            health (int): Stores the large aliens current health
 
-            kill_start_time (float): Used as a timestamp for the death animation of the medium alien (To make the
+            kill_start_time (float): Used as a timestamp for the death animation of the large alien (To make the
                 animation run in a consistent amount of time)
-            hit_start_time (float): Used as a timestamp for the hit delay of the medium alien (To make sure that the
+            hit_start_time (float): Used as a timestamp for the hit delay of the large alien (To make sure that the
                 hit delay lasts a consistent amount of time)
-            walk_start_time (float): Used as a timestamp for the medium aliens walking texture update (To make sure the
+            walk_start_time (float): Used as a timestamp for the large aliens walking texture update (To make sure the
                 walking animation happens in a consistent amount of time)
-            move_start_time (float): Used as a timestamp for the medium aliens movement (To make the medium aliens
+            move_start_time (float): Used as a timestamp for the large aliens movement (To make the large aliens
                 movement happen in a consistent amount of time and not based on code execution speed)
 
             movement_activated (int): Check if the aliens movement is currently happening or not. (So that
@@ -83,9 +85,9 @@ class MediumAlien(pygame.sprite.Sprite):
 
     def __init__(self, id, scale_factor_x, scale_factor_y):
         """
-            Creates a medium alien object with the given id and spawns it in the game.
+            Creates a large alien object with the given id and spawns it in the game.
 
-            :param id: A unique identifier for the medium alien
+            :param id: A unique identifier for the large alien
             :type id: int
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
@@ -96,31 +98,31 @@ class MediumAlien(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(ALIEN_STILL_RIGHT_6_10_TEXTURE)
+        self.image = pygame.image.load(ALIEN_STILL_RIGHT_11_15_TEXTURE)
         self.rect = self.image.get_rect()
         if id == 1:
-            self.rect.center = (int(1490 * scale_factor_x), int(484 * scale_factor_y))
+            self.rect.center = (int(-85 * scale_factor_x), int(445 * scale_factor_y))
         elif id == 2:
-            self.rect.center = (int(-210 * scale_factor_x), int(484 * scale_factor_y))
+            self.rect.center = (int(1415 * scale_factor_x), int(445 * scale_factor_y))
         elif id == 3:
-            self.rect.center = (int(1540 * scale_factor_x), int(484 * scale_factor_y))
+            self.rect.center = (int(-135 * scale_factor_x), int(445 * scale_factor_y))
         elif id == 4:
-            self.rect.center = (int(-260 * scale_factor_x), int(484 * scale_factor_y))
+            self.rect.center = (int(1465 * scale_factor_x), int(445 * scale_factor_y))
         elif id == 5:
-            self.rect.center = (int(1365 * scale_factor_x), int(484 * scale_factor_y))
-        self.medium_alien_visible = 1
+            self.rect.center = (int(-185 * scale_factor_x), int(445 * scale_factor_y))
+        self.large_alien_visible = 1
         self.direction = "stop"
 
-        self.medium_alien_health_bar = MediumAlienHealthBar(self.rect.centerx, scale_factor_x, scale_factor_y)
+        self.large_alien_health_bar = LargeAlienHealthBar(self.rect.centerx, scale_factor_x, scale_factor_y)
 
         self.death_animation = 0
         self.death_count = 0
         self.hit_delay = 0
-        self.health = 2
+        self.health = 3
         self.kill_start_time = 0
         self.hit_start_time = 0
         self.walk_start_time = 0
-        self.move_start_time = time.time()
+        self.move_start_time = 0
         self.movement_activated = 0
         self.precise_x = float(self.rect.centerx)
 
@@ -142,36 +144,36 @@ class MediumAlien(pygame.sprite.Sprite):
         """
 
         self.kill()
-        if hasattr(self, 'medium_alien_health_bar'):
-            self.medium_alien_health_bar.kill()
-            del self.medium_alien_health_bar
+        if hasattr(self, 'large_alien_health_bar'):
+            self.large_alien_health_bar.kill()
+            del self.large_alien_health_bar
         del self
 
-    def get_medium_alien(self):
+    def get_large_alien(self):
         """
-            Returns the medium alien sprite so that its class attributes can be accessed.
+            Returns the large alien sprite so that its class attributes can be accessed.
 
-            :return: medium_alien: The medium alien sprite
+            :return: large_alien: The large alien sprite
             :type: Turtle.turtle()
         """
 
         return self
 
-    def get_medium_alien_health_bar(self):
+    def get_large_alien_health_bar(self):
         """
-            Returns the medium aliens health bar sprite so that its class attributes can be accessed.
+            Returns the large alien health bar sprite so that its class attributes can be accessed.
 
-            :return: medium_alien_health_bar: The medium aliens health bar sprite
+            :return: large_alien_health_bar: The large alien health bar sprite
             :type: Turtle.turtle()
         """
 
-        return self.medium_alien_health_bar
+        return self.large_alien_health_bar
 
-    def get_medium_alien_health(self):
+    def get_large_alien_health(self):
         """
-            Returns the medium aliens current health.
+            Returns the current health of the large alien.
 
-            :return: health: The medium aliens current health
+            :return: health: The current health of the large alien
             :type: int
         """
 
@@ -179,9 +181,9 @@ class MediumAlien(pygame.sprite.Sprite):
 
     def get_death_animation(self):
         """
-            Returns the current state of the medium aliens death animation (0 if it is not happening)
+            Returns the current state of the large aliens death animation (0 if it is not happening)
 
-            :return: death_animation: The current state of the medium aliens death animation
+            :return: death_animation: The current state of the large aliens death animation
             :type: float
         """
 
@@ -189,16 +191,16 @@ class MediumAlien(pygame.sprite.Sprite):
 
     def get_hit_delay(self):
         """
-            Returns the current state of the medium aliens hit delay (0 if it is not happening)
+            Returns the current state of the large aliens hit delay (0 if it is not happening)
 
-            :return: hit_delay: The current state of the medium aliens hit delay
+            :return: hit_delay: The current state of the large aliens hit delay
             :type: float
         """
 
         return self.hit_delay
 
     def isvisible(self):
-        return self.medium_alien_visible
+        return self.large_alien_visible
 
     def distance(self, other_sprite):
         """
@@ -215,23 +217,22 @@ class MediumAlien(pygame.sprite.Sprite):
 
     def remove(self):
         """
-            Removes the medium alien sprite form the screen and resets its attributes.
+            Removes the large alien sprite form the screen and resets its attributes.
 
             :return: None
         """
 
-        self.medium_alien_visible = 0
-        self.medium_alien_health_bar.health_bar_visible = 0
+        self.large_alien_visible = 0
+        self.large_alien_health_bar.health_bar_visible = 0
         self.death_animation = 0
         self.death_count = 0
         self.direction = 0
         self.hit_delay = 0
-        self.health = 2
+        self.health = 3
         self.kill_start_time = 0
         self.hit_start_time = 0
         self.walk_start_time = 0
         self.move_start_time = 0
-        self.movement_activated = 0
         self.got_hit = 1
         self.collision_point = 0
         self.already_ahead = 1
@@ -240,7 +241,7 @@ class MediumAlien(pygame.sprite.Sprite):
 
     def set_alien_direction(self, player_x):
         """
-            Sets the direction of the medium alien so that it is facing the player
+            Sets the direction of the large alien so that it is facing the player
 
             :param player_x: The x-coordinate of the player
             :type player_x: float
@@ -248,18 +249,18 @@ class MediumAlien(pygame.sprite.Sprite):
             :return: None
         """
 
-        if self.medium_alien_visible == 1:
-            # If the players x-coordinate is smaller than the medium aliens, then make the medium alien face left
+        if self.large_alien_visible == 1:
+            # If the players x-coordinate is smaller than the large aliens, then make the large alien face left
             if self.rect.centerx > player_x:
                 self.direction = "left"
-            # If the players x-coordinate is larger than the medium aliens, then make the medium alien face right
+            # If the players x-coordinate is smaller than the large aliens, then make the large alien face right
             else:
                 self.direction = "right"
 
     def set_alien_texture(self, right_update, left_update):
         """
-            Sets the medium aliens texture based on the medium aliens direction and creates a walking animation when the
-                medium alien is walking.
+            Sets the large aliens texture based on the large aliens direction and creates a walking animation when the
+                large alien is walking.
 
             :param right_update: Used to update the walking right animation correctly
             :type right_update: float
@@ -274,23 +275,23 @@ class MediumAlien(pygame.sprite.Sprite):
         current_time = time.time()
         elapsed_time = current_time - self.walk_start_time
         if elapsed_time >= 0.005:
-            # If the medium aliens direction is right
+            # If the large aliens direction is right
             if self.direction == "right" and self.death_animation == 0:
-                # Make the medium alien face and walk right
+                # Make the large alien face and walk right
                 if right_update % 0.5 != 0:
-                    self.image = pygame.image.load(ALIEN_WALKING_RIGHT_6_10_TEXTURE)
+                    self.image = pygame.image.load(ALIEN_WALKING_RIGHT_11_15_TEXTURE)
                 else:
-                    self.image = pygame.image.load(ALIEN_STILL_RIGHT_6_10_TEXTURE)
+                    self.image = pygame.image.load(ALIEN_STILL_RIGHT_11_15_TEXTURE)
                 center = self.rect.center
                 self.rect = self.image.get_rect()
                 self.rect.center = center
-            # If the medium aliens direction is left
+            # If the large aliens direction is left
             elif self.direction == "left" and self.death_animation == 0:
-                # Make the medium alien face and walk left
+                # Make the large alien face and walk left
                 if left_update % 0.5 != 0:
-                    self.image = pygame.image.load(ALIEN_WALKING_LEFT_6_10_TEXTURE)
+                    self.image = pygame.image.load(ALIEN_WALKING_LEFT_11_15_TEXTURE)
                 else:
-                    self.image = pygame.image.load(ALIEN_STILL_LEFT_6_10_TEXTURE)
+                    self.image = pygame.image.load(ALIEN_STILL_LEFT_11_15_TEXTURE)
                 center = self.rect.center
                 self.rect = self.image.get_rect()
                 self.rect.center = center
@@ -312,29 +313,29 @@ class MediumAlien(pygame.sprite.Sprite):
 
         if 4 <= self.death_animation < 5:
             # Spawn a coin where the alien has died
-            self.medium_alien_visible = 0
-            silver_coin = Coin(type="silver", pos_x=self.rect.centerx, pos_y=self.rect.centery, scale_factor_x=self.scale_factor_x)
+            self.large_alien_visible = 0
+            gold_coin = Coin(type="gold", pos_x=self.rect.centerx, pos_y=self.rect.centery, scale_factor_x=self.scale_factor_x)
             # Set the hitbox for the coin
-            silver_coin.range = (silver_coin.rect.centery - silver_coin.COIN_DISTANCE, silver_coin.rect.centery + silver_coin.COIN_DISTANCE)
-            silver_coin.collision_coordinate = silver_coin.rect.centerx
-            silver_coin.just_fired = 0
-            coins_on_screen.append(silver_coin)
-            # Respawn the medium alien in a random location (side of the screen)
+            gold_coin.range = (gold_coin.rect.centery - gold_coin.COIN_DISTANCE, gold_coin.rect.centery + gold_coin.COIN_DISTANCE)
+            gold_coin.collision_coordinate = gold_coin.rect.centerx
+            gold_coin.just_fired = 0
+            coins_on_screen.append(gold_coin)
+            # Respawn the large alien in a random location (side of the screen)
             alien_random = random.randint(1, 2)
             if alien_random == 1:
-                self.rect.center = (random.randint(int(-260 * self.scale_factor_x), int(-50 * self.scale_factor_x)), int(484 * self.scale_factor_y))
-                self.medium_alien_health_bar.rect.center = (self.rect.centerx, 399 * self.scale_factor_y)
+                self.rect.center = (random.randint(int(-260 * self.scale_factor_x), int(-50 * self.scale_factor_x)), int(445 * self.scale_factor_y))
+                self.large_alien_health_bar.rect.center = (self.rect.centerx, 322 * self.scale_factor_y)
             if alien_random == 2:
-                self.rect.center = (random.randint(int(1330 * self.scale_factor_x), int(1540 * self.scale_factor_x)), int(484 * self.scale_factor_y))
-                self.medium_alien_health_bar.rect.center = (self.rect.centerx, 399 * self.scale_factor_y)
-            # Reset the medium aliens health
-            old_center = self.medium_alien_health_bar.rect.center
-            self.medium_alien_health_bar.image = pygame.image.load(HEALTH_BAR_22_TEXTURE)
-            self.medium_alien_health_bar.rect = self.medium_alien_health_bar.image.get_rect(center=old_center)
-            self.health = 2
+                self.rect.center = (random.randint(int(1330 * self.scale_factor_x), int(1540 * self.scale_factor_x)), int(445 * self.scale_factor_y))
+                self.large_alien_health_bar.rect.center = (self.rect.centerx, 322 * self.scale_factor_y)
+            # Reset the large aliens health
+            old_center = self.large_alien_health_bar.rect.center
+            self.large_alien_health_bar.image = pygame.image.load(HEALTH_BAR_33_TEXTURE)
+            self.large_alien_health_bar.rect = self.large_alien_health_bar.image.get_rect(center=old_center)
+            self.health = 3
             self.precise_x = float(self.rect.centerx)
-            self.medium_alien_visible = 1
-            self.medium_alien_health_bar.health_bar_visible = 1
+            self.large_alien_visible = 1
+            self.large_alien_health_bar.health_bar_visible = 1
             self.movement_activated = 0
             self.death_animation = 0
             return
@@ -349,7 +350,7 @@ class MediumAlien(pygame.sprite.Sprite):
             return
 
         if 2 <= self.death_animation < 3:
-            # Change the medium aliens texture to the second frame in the death scene
+            # Change the large aliens texture to the second frame in the death scene
             old_center = self.rect.center
             self.image = pygame.image.load(ALIEN_DEATH_2_TEXTURE).convert_alpha()
             self.rect = self.image.get_rect(center=old_center)
@@ -372,12 +373,12 @@ class MediumAlien(pygame.sprite.Sprite):
             # Increase the death count
             self.death_count = self.death_count + 1
             self.health = 0
-            self.medium_alien_health_bar.health_bar_visible = 0
+            self.large_alien_health_bar.health_bar_visible = 0
             # Play the death sound
             if death_sound == 1:
                 sound = pygame.mixer.Sound("sound/Alien_Death_Sound.wav")
                 sound.play()
-            # Set the texture of the medium alien to the first frame in the death scene
+            # Set the texture of the large alien to the first frame in the death scene
             old_center = self.rect.center
             self.image = pygame.image.load(ALIEN_DEATH_1_TEXTURE).convert_alpha()
             self.rect = self.image.get_rect(center=old_center)
@@ -393,7 +394,7 @@ class MediumAlien(pygame.sprite.Sprite):
 
     def hit_alien(self, hit_sound):
         """
-            Makes the medium alien take "one hit" of damage and creates a hit delay before the medium alien can be hit again
+            Makes the large alien take "one hit" of damage and creates a hit delay before the large alien can be hit again
 
             :param hit_sound: Determines if the enemy hit sound is toggled on or off
             :type hit_sound: int
@@ -417,11 +418,15 @@ class MediumAlien(pygame.sprite.Sprite):
                 self.hit_start_time = 0
             return
 
-        if self.death_animation == 0 and self.health == 2:
+        if self.death_animation == 0:
             # Decrease the aliens health by 1
-            old_center = self.medium_alien_health_bar.rect.center
-            self.medium_alien_health_bar.image = pygame.image.load(HEALTH_BAR_12_TEXTURE)
-            self.medium_alien_health_bar.rect = self.medium_alien_health_bar.image.get_rect(center=old_center)
+            self.health = self.health - alien_mode_setup.damage
+            old_center = self.large_alien_health_bar.rect.center
+            if self.health == 2:
+                self.large_alien_health_bar.image = pygame.image.load(HEALTH_BAR_23_TEXTURE)
+            elif self.health == 1:
+                self.large_alien_health_bar.image = pygame.image.load(HEALTH_BAR_13_TEXTURE)
+            self.large_alien_health_bar.rect = self.large_alien_health_bar.image.get_rect(center=old_center)
             # Play the hit sound
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("sound/Alien_Hit_Sound.wav")
@@ -432,25 +437,24 @@ class MediumAlien(pygame.sprite.Sprite):
             self.already_behind = 0
             # Set the thorns initiated damage back to 0 if needed
             self.thorns_initiated_damage = 0
-            self.health = 1
             self.hit_delay = 1
             self.hit_start_time = time.time()
             return
 
     def set_movement_speed(self):
         """
-            Function for the medium aliens movement.
-            When the medium alien has died enough times, this function will cause it to start moving faster and faster.
+            Function for the large aliens movement.
+            When the large alien has died enough times, this function will cause it to start moving faster and faster.
 
             :return: None
         """
 
-        if self.medium_alien_visible == 1 and self.death_animation == 0:
+        if self.large_alien_visible == 1 and self.death_animation == 0:
             # If the movement has just started, a start time is created for it
             if self.movement_activated == 0:
                 self.move_start_time = time.time()
                 self.movement_activated = 1
-            # Move the medium alien every 0.012 seconds
+            # Move the large alien every 0.012 seconds
             current_time = time.time()
             elapsed_time = current_time - self.move_start_time
             if elapsed_time >= 0.012:
@@ -504,12 +508,12 @@ class MediumAlien(pygame.sprite.Sprite):
             self.move_start_time = 0
 
 
-class MediumAlienHealthBar(pygame.sprite.Sprite):
+class LargeAlienHealthBar(pygame.sprite.Sprite):
     def __init__(self, x, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(HEALTH_BAR_22_TEXTURE).convert_alpha()
+        self.image = pygame.image.load(HEALTH_BAR_33_TEXTURE).convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.center = (x, 399 * scale_factor_y)
+        self.rect.center = (x, 322 * scale_factor_y)
         self.health_bar_visible = 1
 
         self.scale_factor_x = scale_factor_x
