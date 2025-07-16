@@ -25,6 +25,7 @@
 from components.enemy.AlienSmallAlienPygame import SmallAlien
 from components.enemy.AlienMediumAlienPygame import MediumAlien
 from components.enemy.AlienLargeAlienPygame import LargeAlien
+from components.enemy.AlienUFOPygame import UFO
 
 
 class SpawnSmallAlien:
@@ -210,3 +211,60 @@ class SpawnLargeAlien:
         self.large_alien_index = self.large_alien_index + 1
         self.large_aliens_kill_values.append(0)
         self.large_aliens_hit_values.append(0)
+
+
+class SpawnUFO:
+    """
+        Represents the UFO container in Laser Fighter.
+
+        Attributes:
+            ufos (list): Contains the ufo sprite if it is visible on the screen
+            ufo_kill_value (list): Contains the death animation value for the ufo
+            ufo_hit_value (list): Contains the hit delay value for the ufo
+            ufo_index (int): Stores whether the ufo sprite has been created or not
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the UFO.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        self.ufos = []
+        self.ufo_kill_value = 0
+        self.ufo_hit_value = 0
+        self.ufo_index = 0
+
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
+        del self.ufos
+        del self.ufo_kill_value
+        del self.ufo_hit_value
+        del self.ufo_index
+
+    def spawn_alien_boss(self):
+        """
+            Spawn an alien UFO on the screen.
+
+            :return: None
+        """
+
+        spawn_ufo = UFO(self.scale_factor_x, self.scale_factor_y)
+        self.ufos.append(spawn_ufo)
+        self.ufo_index = self.ufo_index + 1

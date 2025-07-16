@@ -48,6 +48,7 @@ from components.spawn.SpawnCoinPygame import SpawnCoin
 from components.spawn.SpawnAlienPygame import SpawnSmallAlien
 from components.spawn.SpawnAlienPygame import SpawnMediumAlien
 from components.spawn.SpawnAlienPygame import SpawnLargeAlien
+from components.spawn.SpawnAlienPygame import SpawnUFO
 from components.spawn.SpawnMachinePygame import SpawnBlueMachine
 from components.spawn.SpawnMachinePygame import SpawnYellowMachine
 from components.spawn.SpawnMachinePygame import SpawnRedMachine
@@ -97,6 +98,7 @@ def main():
     small_alien = SpawnSmallAlien(window.scale_factor_X, window.scale_factor_Y)
     medium_alien = SpawnMediumAlien(window.scale_factor_X, window.scale_factor_Y)
     large_alien = SpawnLargeAlien(window.scale_factor_X, window.scale_factor_Y)
+    ufo = SpawnUFO(window.scale_factor_X, window.scale_factor_Y)
     human_player = SpawnHumanPlayer(window.scale_factor_X, window.scale_factor)
 
     panel = SpawnPanel(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
