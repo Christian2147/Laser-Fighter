@@ -115,7 +115,7 @@ class UFO(pygame.sprite.Sprite):
         self.health = 10
         self.kill_start_time = 0
         self.hit_start_time = 0
-        self.laser_start_time = 0
+        self.laser_start_time = time.time()
         self.move_start_time = time.time()
         self.movement_activated = 0
         self.precise_x = float(self.rect.centerx)
@@ -543,6 +543,7 @@ class UFO(pygame.sprite.Sprite):
 
                 # Sync the float position to the rect
                 self.rect.centerx = int(round(self.precise_x))
+                self.ufo_health_bar.rect.centerx = int(round(self.precise_x))
 
                 # Reset movement timer
                 self.move_start_time = time.time()

@@ -501,6 +501,7 @@ class LargeAlien(pygame.sprite.Sprite):
 
                 # Sync the float position to the rect
                 self.rect.centerx = int(round(self.precise_x))
+                self.large_alien_health_bar.rect.centerx = int(round(self.precise_x))
 
                 # Reset movement timer
                 self.move_start_time = time.time()
