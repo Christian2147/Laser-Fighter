@@ -1413,8 +1413,8 @@ def main():
                                 if settings.god_mode == 0:
                                     statistics.classic_power_ups_picked_up = statistics.classic_power_ups_picked_up + 1
                                     statistics.save()
-                                # Grant the player health
-                                p.grant_player_health()
+                                    # Grant the player health
+                                    p.grant_player_health()
 
             # If the power ups are active, run their timers through these functions
             for yi in yellow_power_up_indicator.yellow_power_up_indicator_sprite:
@@ -1645,8 +1645,8 @@ def main():
                                 if settings.god_mode == 0:
                                     statistics.alien_power_ups_picked_up = statistics.alien_power_ups_picked_up + 1
                                     statistics.save()
-                                # Grant the player 3 health
-                                h.grant_player_health()
+                                    # Grant the player 3 health
+                                    h.grant_player_health()
 
             # If the power ups are active, run their timers through these functions
             for yi in yellow_power_up_indicator.yellow_power_up_indicator_sprite:
