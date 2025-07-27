@@ -36,6 +36,7 @@ from setup.ModeSetupMasterPygame import alien_mode_setup
 from setup.ModeSetupMasterPygame import power_up_setup
 from setup.ConfigurationSetupPygame import refresh_variables
 from setup.ConfigurationSetupPygame import settings
+from setup.ConfigurationSetupPygame import milestones
 from setup.ConfigurationSetupPygame import statistics
 from setup.ConfigurationSetupPygame import shop_config
 from setup.ConfigurationSetupPygame import controls_toggle
@@ -605,6 +606,39 @@ def main():
             if button.current_button_index == 0:
                 button.spawn_button("Game", 1)
 
+            # Check to see if the first milestone has been met
+            # If it has not been met, initiate the first milestone
+            if not milestones.game_played and milestones.milestone_1_displayed == 0:
+                for pa in panel.panel_sprite:
+                    pa.remove()
+                panel.panel_index = 0
+                panel.spawn_panel(screen.mode, 1)
+                refresh_variables.refresh_panel = 1
+                milestones.game_played = True
+                milestones.save()
+                milestones.milestone_1_displayed = 1
+                milestones.milestone_start_time = time.time()
+
+            # Display the first milestone for 30 seconds to allow the player to read the information
+            if milestones.milestone_1_displayed == 1:
+                current_time = time.time()
+                elapsed_time = current_time - milestones.milestone_start_time
+                if elapsed_time > 30:
+                    for pa in panel.panel_sprite:
+                        pa.remove()
+                    panel.panel_index = 0
+                    milestones.milestone_1_displayed = 0
+
+            # Display the second milestone for 30 seconds to allow the player to read the information
+            if milestones.milestone_2_displayed == 1:
+                current_time = time.time()
+                elapsed_time = current_time - milestones.milestone_start_time
+                if elapsed_time > 30:
+                    for pa in panel.panel_sprite:
+                        pa.remove()
+                    panel.panel_index = 0
+                    milestones.milestone_2_displayed = 0
+
             if textbox.current_text_index == 0:
                 textbox.spawn_text_box(1, 640 * window.scale_factor_X, 20 * window.scale_factor_Y, "white")
                 textbox.spawn_text_box(2, 575 * window.scale_factor_X, 62 * window.scale_factor_Y, "#737000")
@@ -1071,25 +1105,25 @@ def main():
 
                                 # Check to see if the second milestone has been reached yet or not
                                 # If it has not been reached, initiate it
-                                # if not milestones.machine_mode_beaten and milestones.milestone_2_displayed == 0:
-                                #     for pa in panel.panel_turtle:
-                                #         pa.remove()
-                                #     panel.panel_index = 0
-                                #     panel.spawn_panel(screen.mode, 2)
-                                #     refresh_variables.refresh_panel = 1
-                                #     milestones.machine_mode_beaten = True
-                                #     milestones.save()
-                                #     # Unlock Alien Mode
-                                #     shop_config.alien_slot_selected = 1
-                                #     shop_config.alien_slots_unlocked[0] = 1
-                                #     shop_config.alien_slots_unlocked[1] = 0
-                                #     shop_config.alien_slots_unlocked[2] = 0
-                                #     shop_config.alien_slots_unlocked[3] = 0
-                                #     shop_config.alien_slots_unlocked[4] = 0
-                                #     shop_config.red_power_up_level = 1
-                                #     shop_config.save()
-                                #     milestones.milestone_2_displayed = 1
-                                #     milestones.milestone_start_time = time.time()
+                                if not milestones.machine_mode_beaten and milestones.milestone_2_displayed == 0:
+                                    for pa in panel.panel_sprite:
+                                        pa.remove()
+                                    panel.panel_index = 0
+                                    panel.spawn_panel(screen.mode, 2)
+                                    refresh_variables.refresh_panel = 1
+                                    milestones.machine_mode_beaten = True
+                                    milestones.save()
+                                    # Unlock Alien Mode
+                                    shop_config.alien_slot_selected = 1
+                                    shop_config.alien_slots_unlocked[0] = 1
+                                    shop_config.alien_slots_unlocked[1] = 0
+                                    shop_config.alien_slots_unlocked[2] = 0
+                                    shop_config.alien_slots_unlocked[3] = 0
+                                    shop_config.alien_slots_unlocked[4] = 0
+                                    shop_config.red_power_up_level = 1
+                                    shop_config.save()
+                                    milestones.milestone_2_displayed = 1
+                                    milestones.milestone_start_time = time.time()
                     elif machine_boss.boss_update_value != 0:
                         b.kill_boss(settings.enemy_death_sound, coin.coins_on_screen_list)
                         machine_boss.boss_update_value = machine_boss.boss_update_value + 1
@@ -1462,6 +1496,39 @@ def main():
         if screen.mode == "Alien_Mode":
             if button.current_button_index == 0:
                 button.spawn_button("Game", 1)
+
+            # Check to see if the third milestone has been met yet or not
+            # If it has not been met, initiate the third milestone
+            if not milestones.alien_mode_played and milestones.milestone_3_displayed == 0:
+                for pa in panel.panel_sprite:
+                    pa.remove()
+                panel.panel_index = 0
+                panel.spawn_panel(screen.mode, 1)
+                refresh_variables.refresh_panel = 1
+                milestones.alien_mode_played = True
+                milestones.save()
+                milestones.milestone_3_displayed = 1
+                milestones.milestone_start_time = time.time()
+
+            # Display the third milestone for 30 seconds so that the player has time to read the information
+            if milestones.milestone_3_displayed == 1:
+                current_time = time.time()
+                elapsed_time = current_time - milestones.milestone_start_time
+                if elapsed_time > 30:
+                    for pa in panel.panel_sprite:
+                        pa.remove()
+                    panel.panel_index = 0
+                    milestones.milestone_3_displayed = 0
+
+            # Display the fourth milestone for 30 seconds so that the player has time to read the information
+            if milestones.milestone_4_displayed == 1:
+                current_time = time.time()
+                elapsed_time = current_time - milestones.milestone_start_time
+                if elapsed_time > 30:
+                    for pa in panel.panel_sprite:
+                        pa.remove()
+                    panel.panel_index = 0
+                    milestones.milestone_4_displayed = 0
 
             # Spawn the rest of the game interface
             # This includes the power up timers
@@ -2195,16 +2262,16 @@ def main():
                                             statistics.ufos_killed = statistics.ufos_killed + 1
                                             statistics.save()
 
-                                        # if not milestones.alien_mode_beaten and milestones.milestone_4_displayed == 0:
-                                        #     for pa in panel.panel_turtle:
-                                        #         pa.remove()
-                                        #     panel.panel_index = 0
-                                        #     panel.spawn_panel(screen.mode, 2)
-                                        #     refresh_variables.refresh_panel = 1
-                                        #     milestones.alien_mode_beaten = True
-                                        #     milestones.save()
-                                        #     milestones.milestone_4_displayed = 1
-                                        #     milestones.milestone_start_time = time.time()
+                                        if not milestones.alien_mode_beaten and milestones.milestone_4_displayed == 0:
+                                            for pa in panel.panel_sprite:
+                                                pa.remove()
+                                            panel.panel_index = 0
+                                            panel.spawn_panel(screen.mode, 2)
+                                            refresh_variables.refresh_panel = 1
+                                            milestones.alien_mode_beaten = True
+                                            milestones.save()
+                                            milestones.milestone_4_displayed = 1
+                                            milestones.milestone_start_time = time.time()
 
                                         l.laser_visible = 0
                                         if extra_power_up_indicator.extra_power_up_indicator_sprite[0].get_power_up_active() == 0:
@@ -2226,16 +2293,16 @@ def main():
 
                                 # Check to see if the 4th milestone has been reached yet
                                 # If it has not been reached, initiate the 4th milestone
-                                # if not milestones.alien_mode_beaten and milestones.milestone_4_displayed == 0:
-                                #     for pa in panel.panel_turtle:
-                                #         pa.remove()
-                                #     panel.panel_index = 0
-                                #     panel.spawn_panel(screen.mode, 2)
-                                #     refresh_variables.refresh_panel = 1
-                                #     milestones.alien_mode_beaten = True
-                                #     milestones.save()
-                                #     milestones.milestone_4_displayed = 1
-                                #     milestones.milestone_start_time = time.time()
+                                if not milestones.alien_mode_beaten and milestones.milestone_4_displayed == 0:
+                                    for pa in panel.panel_sprite:
+                                        pa.remove()
+                                    panel.panel_index = 0
+                                    panel.spawn_panel(screen.mode, 2)
+                                    refresh_variables.refresh_panel = 1
+                                    milestones.alien_mode_beaten = True
+                                    milestones.save()
+                                    milestones.milestone_4_displayed = 1
+                                    milestones.milestone_start_time = time.time()
                     elif ufo.ufo_kill_value != 0:
                         u.kill_ufo(settings.enemy_death_sound, coin.coins_on_screen_list)
                         ufo.ufo_kill_value = ufo.ufo_kill_value + 1

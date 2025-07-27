@@ -453,8 +453,8 @@ class Panel(pygame.sprite.Sprite):
                 font_size_key = size_map.get(raw_size, "normal")
                 font_type = "regular"
                 line_spacing = 24
-                start_x = self.rect.centerx
-                start_y = self.rect.centery + 105 * self.scale_factor_y
+                start_x = self.rect.centerx - 195 * self.scale_factor_x
+                start_y = self.rect.centery - 130 * self.scale_factor_y
 
                 self.rendered_text = self.render_multiline_text(
                     lines=lines,
@@ -472,8 +472,8 @@ class Panel(pygame.sprite.Sprite):
                 font_size_key = size_map.get(raw_size, "normal")
                 font_type = "regular"
                 line_spacing = 24
-                start_x = self.rect.centerx
-                start_y = self.rect.centery + 105 * self.scale_factor_y
+                start_x = self.rect.centerx - 195 * self.scale_factor_x
+                start_y = self.rect.centery - 130 * self.scale_factor_y
 
                 self.rendered_text = self.render_multiline_text(
                     lines=lines,
@@ -492,8 +492,8 @@ class Panel(pygame.sprite.Sprite):
                 font_size_key = size_map.get(raw_size, "normal")
                 font_type = "regular"
                 line_spacing = 24
-                start_x = self.rect.centerx
-                start_y = self.rect.centery + 105 * self.scale_factor_y
+                start_x = self.rect.centerx - 195 * self.scale_factor_x
+                start_y = self.rect.centery - 130 * self.scale_factor_y
 
                 self.rendered_text = self.render_multiline_text(
                     lines=lines,
@@ -511,8 +511,8 @@ class Panel(pygame.sprite.Sprite):
                 font_size_key = size_map.get(raw_size, "normal")
                 font_type = "regular"
                 line_spacing = 24
-                start_x = self.rect.centerx
-                start_y = self.rect.centery + 105 * self.scale_factor_y
+                start_x = self.rect.centerx - 195 * self.scale_factor_x
+                start_y = self.rect.centery - 130 * self.scale_factor_y
 
                 self.rendered_text = self.render_multiline_text(
                     lines=lines,

@@ -22,7 +22,7 @@
     This includes keeping track of which milestone is displayed on the screen and which milestones have been completed.
 """
 
-from utils.PlayerDataManager import PlayerDataManager
+from utils.PlayerDataManagerPygame import PlayerDataManager
 
 
 class MilestoneConfig:

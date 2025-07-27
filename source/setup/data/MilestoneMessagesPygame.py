@@ -70,9 +70,9 @@ MILESTONE_4_MESSAGE = [
     Description("center", [
         "Congratulations!",
         "",
-        "You have successfully killed an",
-        "alien saucer and therefore found",
-        "a map and a key",
+        "You have successfully killed",
+        "an alien saucer and therefore",
+        "found a map and a key",
         "to the base. Your next",
         "goal is to get inside",
         "and destroy their operation!"

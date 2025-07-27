@@ -71,7 +71,7 @@ class SpawnPanel:
         del self.panel_sprite
         del self.panel_index
 
-    def spawn_panel(self, mode):
+    def spawn_panel(self, mode, id=1):
         """
             Spawn a panel on the screen with the correct type based on what screen the player is on.
 
@@ -81,7 +81,7 @@ class SpawnPanel:
             :return: None
         """
 
-        panel = Panel(mode, self.scale_factor, self.scale_factor_x, self.scale_factor_y)
+        panel = Panel(mode, self.scale_factor, self.scale_factor_x, self.scale_factor_y, id)
         self.panel_sprite.append(panel)
         self.panel_index = self.panel_index + 1
 
