@@ -218,7 +218,14 @@ YELLOW_POWER_UP_DESCRIPTIONS = [
         "Player movement 2x"
     ], 18, "Courier"),
     Description("left", [
-        "Max Level Reached!"
+        "Level 5",
+        "",
+        "Speed Increase: 3x",
+        "Duration: 60",
+        "Special:",
+        "Player movement 2x",
+        "",
+        "MAX LEVEL REACHED!"
     ], 20, "Courier")
 ]
 
@@ -253,7 +260,13 @@ BLUE_POWER_UP_DESCRIPTIONS = [
         "Duration: 90"
     ], 20, "Courier"),
     Description("left", [
-        "Max Level Reached!"
+        "Level 5",
+        "",
+        "Multiplier: 5",
+        "Coin Multiplier: 3",
+        "Duration: 90",
+        "",
+        "MAX LEVEL REACHED!"
     ], 20, "Courier")
 ]
 
@@ -280,7 +293,11 @@ GREEN_POWER_UP_DESCRIPTIONS = [
         "Duration: 40"
     ], 20, "Courier"),
     Description("left", [
-        "Max Level Reached!"
+        "Level 5",
+        "",
+        "Duration: 40",
+        "",
+        "MAX LEVEL REACHED!"
     ], 20, "Courier")
 ]
 
@@ -313,7 +330,11 @@ RED_POWER_UP_DESCRIPTIONS = [
         "Duration: 40"
     ], 20, "Courier"),
     Description("left", [
-        "Max Level Reached!"
+        "Level 5",
+        "",
+        "Duration: 40",
+        "",
+        "MAX LEVEL REACHED!"
     ], 20, "Courier")
 ]
 

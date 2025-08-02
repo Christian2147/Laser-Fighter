@@ -407,7 +407,7 @@ class Panel(pygame.sprite.Sprite):
             elif self.category == "Red_Power_Up":
                 check_setting = shop_config.red_power_up_level
 
-                description_obj = RED_POWER_UP_DESCRIPTIONS[check_setting - 1]
+                description_obj = RED_POWER_UP_DESCRIPTIONS[check_setting]
                 lines = description_obj.get_text()
                 raw_size = int(description_obj.get_size())
                 font_size_key = size_map.get(raw_size, "normal")
