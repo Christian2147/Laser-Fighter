@@ -31,15 +31,13 @@ class SpawnCoin:
         Represents the Coin container in Laser Fighter.
 
         Attributes:
-            all_coins_list (list): Contains all of the coin sprites created since the game has launched, even
-                ones removed from the screen
             coins_on_screen_list (list): Contains all of the coin sprites currently visible/active on the screen.
             current_coin_index (int): Stores the number of coins currently active and visible on the screen.
             coin_pickup_delay (int): Creates a delay to pick up coins (So that they are not picked up immediately when
                 the enemy is killed)
     """
 
-    def __init__(self):
+    def __init__(self, textures):
         """
             Creates the lists necessary to store the Coin sprite.
         """
@@ -47,6 +45,8 @@ class SpawnCoin:
         self.coins_on_screen_list = []
         self.current_coin_index = 0
         self.coin_pickup_delay = 0
+
+        self._textures = textures
 
     def __del__(self):
         """
@@ -58,6 +58,7 @@ class SpawnCoin:
         del self.coins_on_screen_list
         del self.current_coin_index
         del self.coin_pickup_delay
+        del self._textures
 
 
 class SpawnCoinIndicator:
@@ -72,7 +73,7 @@ class SpawnCoinIndicator:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Coin Indicator sprite.
 
@@ -86,6 +87,7 @@ class SpawnCoinIndicator:
         self.coin_indicator_sprite = []
         self.coin_indicator_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -106,6 +108,6 @@ class SpawnCoinIndicator:
             :return: None
         """
 
-        coin_ind = CoinIndicator(self.scale_factor_x, self.scale_factor_y)
+        coin_ind = CoinIndicator(self._textures, self.scale_factor_x, self.scale_factor_y)
         self.coin_indicator_sprite.append(coin_ind)
         self.coin_indicator_index = self.coin_indicator_index + 1

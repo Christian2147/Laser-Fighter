@@ -34,12 +34,6 @@ import time
 import math
 from components.ItemCoinPygame import Coin
 from setup.ModeSetupMasterPygame import machine_mode_setup
-from setup.TextureSetup import RED_MACHINE_TEXTURE
-from setup.TextureSetup import RED_MACHINE_LASER_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_12_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_22_TEXTURE
-from setup.TextureSetup import EXPLOSION_1_TEXTURE
-from setup.TextureSetup import EXPLOSION_2_TEXTURE
 
 
 class RedMachine(pygame.sprite.Sprite):
@@ -95,7 +89,7 @@ class RedMachine(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, id, scale_factor_x, scale_factor_y):
+    def __init__(self, id, textures, scale_factor_x, scale_factor_y):
         """
             Creates a red machine object and spawns it on the screen
 
@@ -111,7 +105,7 @@ class RedMachine(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(RED_MACHINE_TEXTURE).convert_alpha()
+        self.image = textures.RED_MACHINE
         self.rect = self.image.get_rect()
 
         if id == 1:
@@ -128,9 +122,9 @@ class RedMachine(pygame.sprite.Sprite):
             self.rect.center = (0, 0)
         self.machine_visible = 1
 
-        self.red_machine_laser = RedMachineLaser(id, scale_factor_x, scale_factor_y)
+        self.red_machine_laser = RedMachineLaser(id, textures, scale_factor_x, scale_factor_y)
 
-        self.red_machine_health_bar = RedMachineHealthBar(id, scale_factor_x, scale_factor_y)
+        self.red_machine_health_bar = RedMachineHealthBar(id, textures, scale_factor_x, scale_factor_y)
 
         self.death_count = 0
         self.health_bar = 2
@@ -157,6 +151,7 @@ class RedMachine(pygame.sprite.Sprite):
         self.collision_y_coordinate_list = [0] * machine_mode_setup.laser_count
         self.thorns_initiated_damage = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -370,7 +365,7 @@ class RedMachine(pygame.sprite.Sprite):
             # Reset the health bar and the enemies health
             self.red_machine_health_bar.center = (self.rect.centerx, self.rect.centery - 75 * self.scale_factor_y)
             old_center = self.red_machine_health_bar.rect.center
-            self.red_machine_health_bar.image = pygame.image.load(HEALTH_BAR_22_TEXTURE)
+            self.red_machine_health_bar.image = self._textures.HEALTH_BAR_22
             self.red_machine_health_bar.rect = self.red_machine_health_bar.image.get_rect(center=old_center)
             self.health_bar = 2
             self.update = 4
@@ -381,14 +376,14 @@ class RedMachine(pygame.sprite.Sprite):
             # Hide the red machine and spawn a gold coin where the red machine died
             self.machine_visible = 0
             # Spawn a gold coin in the death location
-            gold_coin = Coin(type="gold", pos_x=self.rect.centerx, pos_y=self.rect.centery, scale_factor_x=self.scale_factor_x)
+            gold_coin = Coin(type="gold", pos_x=self.rect.centerx, pos_y=self.rect.centery, textures=self._textures, scale_factor_x=self.scale_factor_x)
             # Set the hitbox for the coin
             gold_coin.range = (gold_coin.rect.centerx - gold_coin.COIN_DISTANCE, gold_coin.rect.centerx + gold_coin.COIN_DISTANCE)
             gold_coin.collision_coordinate = gold_coin.rect.centery - gold_coin.COIN_DISTANCE
             coins_on_screen.append(gold_coin)
             # Respawn the red machine in a different random location
             old_center = self.rect.center
-            self.image = pygame.image.load(RED_MACHINE_TEXTURE)
+            self.image = self._textures.RED_MACHINE
             self.rect = self.image.get_rect(center=old_center)
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
             self.rect.center = (random.randint(int(0 * self.scale_factor_x), int(1280 * self.scale_factor_x)), random.randint(int(140 * self.scale_factor_y), int(240 * self.scale_factor_y)))
@@ -417,7 +412,7 @@ class RedMachine(pygame.sprite.Sprite):
         # Change the texture of the red machine to the second frame of the explosion
         if 1.0 <= self.update <= 1.1:
             old_center = self.rect.center
-            self.image = pygame.image.load(EXPLOSION_2_TEXTURE).convert_alpha()
+            self.image = self._textures.EXPLOSION_2
             self.rect = self.image.get_rect(center=old_center)
             self.update = 1.5
             self.start_time = time.time()
@@ -445,7 +440,7 @@ class RedMachine(pygame.sprite.Sprite):
                 sound.play()
             # Change the texture of the red machine to the first frame of the death explosion
             old_center = self.rect.center
-            self.image = pygame.image.load(EXPLOSION_1_TEXTURE).convert_alpha()
+            self.image = self._textures.EXPLOSION_1
             self.rect = self.image.get_rect(center=old_center)
             self.update = 0.5
             # Set the thorns initiated damage back to 0 if needed
@@ -478,7 +473,7 @@ class RedMachine(pygame.sprite.Sprite):
         if self.update == 0 and self.health_bar == 2:
             # Decrease the enemies health by 1
             old_center = self.red_machine_health_bar.rect.center
-            self.red_machine_health_bar.image = pygame.image.load(HEALTH_BAR_12_TEXTURE)
+            self.red_machine_health_bar.image = self._textures.HEALTH_BAR_12
             self.red_machine_health_bar.rect = self.red_machine_health_bar.image.get_rect(center=old_center)
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("sound/Explosion2.wav")
@@ -604,9 +599,9 @@ class RedMachine(pygame.sprite.Sprite):
 
 
 class RedMachineLaser(pygame.sprite.Sprite):
-    def __init__(self, id, scale_factor_x, scale_factor_y):
+    def __init__(self, id, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(RED_MACHINE_LASER_TEXTURE).convert_alpha()
+        self.image = textures.RED_MACHINE_LASER
         self.rect = self.image.get_rect()
         if id == 1:
             self.rect.center = (1015 * scale_factor_x, 210 * scale_factor_y)
@@ -636,9 +631,9 @@ class RedMachineLaser(pygame.sprite.Sprite):
 
 
 class RedMachineHealthBar(pygame.sprite.Sprite):
-    def __init__(self, id, scale_factor_x, scale_factor_y):
+    def __init__(self, id, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(HEALTH_BAR_22_TEXTURE).convert_alpha()
+        self.image = textures.HEALTH_BAR_22
         self.rect = self.image.get_rect()
         if id == 1:
             self.rect.center = (1015 * scale_factor_x, 65 * scale_factor_y)
@@ -654,6 +649,7 @@ class RedMachineHealthBar(pygame.sprite.Sprite):
             self.rect.center = (0, 0)
         self.health_bar_visible = 1
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 

@@ -23,11 +23,6 @@
 """
 
 import pygame
-from setup.TextureSetup import COPPER_COIN_TEXTURE
-from setup.TextureSetup import SILVER_COIN_TEXTURE
-from setup.TextureSetup import GOLD_COIN_TEXTURE
-from setup.TextureSetup import PLATINUM_COIN_TEXTURE
-from setup.TextureSetup import COIN_INDICATOR_TEXTURE
 
 
 class Coin(pygame.sprite.Sprite):
@@ -46,7 +41,7 @@ class Coin(pygame.sprite.Sprite):
             relative_laser_position (int): Determines if the laser is in front of or behind the coin when it is fired
     """
 
-    def __init__(self, type, pos_x, pos_y, scale_factor_x):
+    def __init__(self, type, pos_x, pos_y, textures, scale_factor_x):
         """
             Creates and places a coin on the screen
 
@@ -62,13 +57,13 @@ class Coin(pygame.sprite.Sprite):
 
         super().__init__()
         if type == "copper":
-            self.image = pygame.image.load(COPPER_COIN_TEXTURE).convert_alpha()
+            self.image = textures.COPPER_COIN
         if type == "silver":
-            self.image = pygame.image.load(SILVER_COIN_TEXTURE).convert_alpha()
+            self.image = textures.SILVER_COIN
         if type == "gold":
-            self.image = pygame.image.load(GOLD_COIN_TEXTURE).convert_alpha()
+            self.image = textures.GOLD_COIN
         if type == "platinum":
-            self.image = pygame.image.load(PLATINUM_COIN_TEXTURE).convert_alpha()
+            self.image = textures.PLATINUM_COIN
         self.rect = self.image.get_rect()
         self.rect.center = (pos_x, pos_y)
         self.coin_visible = 1
@@ -82,6 +77,8 @@ class Coin(pygame.sprite.Sprite):
         self.COIN_DISTANCE = 48 * scale_factor_x
 
         self.type = type
+
+        self._textures = textures
 
     def __del__(self):
         """
@@ -138,7 +135,7 @@ class CoinIndicator(pygame.sprite.Sprite):
         Represents the coin counter in Laser Fighter.
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates and places the coin counter sprite on the screen
 
@@ -150,7 +147,7 @@ class CoinIndicator(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(COIN_INDICATOR_TEXTURE).convert_alpha()
+        self.image = textures.COIN_INDICATOR
         self.rect = self.image.get_rect()
         self.rect.center = (23 * scale_factor_x, 60 * scale_factor_y)
         self.coin_indicator_visible = 1

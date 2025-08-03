@@ -90,19 +90,19 @@ def main():
     ground = SpawnGround(window.scale_factor_X, window.scale_factor_Y)
     ship = SpawnShip(window.scale_factor_X, window.scale_factor_Y)
 
-    coin = SpawnCoin()
+    coin = SpawnCoin(textures)
     power_up = SpawnPowerUp(window.scale_factor_X, window.scale_factor_Y)
 
     blue_machine = SpawnBlueMachine(textures, window.scale_factor_X, window.scale_factor_Y)
-    yellow_machine = SpawnYellowMachine(window.scale_factor_X, window.scale_factor_Y)
-    red_machine = SpawnRedMachine(window.scale_factor_X, window.scale_factor_Y)
-    machine_boss = SpawnMachineBoss(window.scale_factor_X, window.scale_factor_Y)
-    machine_player = SpawnMachinePlayer(window.scale_factor_X, window.scale_factor_Y)
+    yellow_machine = SpawnYellowMachine(textures, window.scale_factor_X, window.scale_factor_Y)
+    red_machine = SpawnRedMachine(textures, window.scale_factor_X, window.scale_factor_Y)
+    machine_boss = SpawnMachineBoss(textures, window.scale_factor_X, window.scale_factor_Y)
+    machine_player = SpawnMachinePlayer(textures, window.scale_factor_X, window.scale_factor_Y)
 
-    small_alien = SpawnSmallAlien(window.scale_factor_X, window.scale_factor_Y)
-    medium_alien = SpawnMediumAlien(window.scale_factor_X, window.scale_factor_Y)
-    large_alien = SpawnLargeAlien(window.scale_factor_X, window.scale_factor_Y)
-    ufo = SpawnUFO(window.scale_factor_X, window.scale_factor_Y)
+    small_alien = SpawnSmallAlien(textures, window.scale_factor_X, window.scale_factor_Y)
+    medium_alien = SpawnMediumAlien(textures, window.scale_factor_X, window.scale_factor_Y)
+    large_alien = SpawnLargeAlien(textures, window.scale_factor_X, window.scale_factor_Y)
+    ufo = SpawnUFO(textures, window.scale_factor_X, window.scale_factor_Y)
     human_player = SpawnHumanPlayer(window.scale_factor_X, window.scale_factor)
 
     panel = SpawnPanel(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
@@ -110,7 +110,7 @@ def main():
     yellow_power_up_indicator = SpawnYellowPowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
     blue_power_up_indicator = SpawnBluePowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
     extra_power_up_indicator = SpawnExtraPowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
-    coin_indicator = SpawnCoinIndicator(window.scale_factor_X, window.scale_factor_Y)
+    coin_indicator = SpawnCoinIndicator(textures, window.scale_factor_X, window.scale_factor_Y)
 
     button = SpawnButton(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
     textbox = SpawnTextbox(window.scale_factor, window.scale_factor_X)

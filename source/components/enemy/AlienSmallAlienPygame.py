@@ -73,7 +73,7 @@ class SmallAlien(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, id, scale_factor_x, scale_factor_y):
+    def __init__(self, id, textures, scale_factor_x, scale_factor_y):
         """
             Creates a small alien object with the given id and spawns it in the game.
 
@@ -120,6 +120,7 @@ class SmallAlien(pygame.sprite.Sprite):
 
         self.id = id
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -264,7 +265,7 @@ class SmallAlien(pygame.sprite.Sprite):
         if 4 <= self.death_animation < 5:
             # Spawn a coin where the alien has died
             self.small_alien_visible = 0
-            copper_coin = Coin(type="copper", pos_x=self.rect.centerx, pos_y=self.rect.centery, scale_factor_x=self.scale_factor_x)
+            copper_coin = Coin(type="copper", pos_x=self.rect.centerx, pos_y=self.rect.centery, textures=self._textures, scale_factor_x=self.scale_factor_x)
             # Set the hitbox for the coin
             copper_coin.range = (copper_coin.rect.centery - copper_coin.COIN_DISTANCE, copper_coin.rect.centery + copper_coin.COIN_DISTANCE)
             copper_coin.collision_coordinate = copper_coin.rect.centerx

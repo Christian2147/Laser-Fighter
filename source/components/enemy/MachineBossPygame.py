@@ -35,20 +35,6 @@ import time
 import math
 from components.ItemCoinPygame import Coin
 from setup.ModeSetupMasterPygame import machine_mode_setup
-from setup.TextureSetup import MACHINE_BOSS_TEXTURE
-from setup.TextureSetup import MACHINE_BOSS_LASER_TEXTURE
-from setup.TextureSetup import EXPLOSION_1_TEXTURE
-from setup.TextureSetup import EXPLOSION_2_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_1010_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_910_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_810_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_710_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_610_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_510_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_410_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_310_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_210_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_110_TEXTURE
 
 
 class Boss(pygame.sprite.Sprite):
@@ -102,7 +88,7 @@ class Boss(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates a boss object and spawns it on the screen
 
@@ -114,14 +100,14 @@ class Boss(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(MACHINE_BOSS_TEXTURE).convert_alpha()
+        self.image = textures.MACHINE_BOSS
         self.rect = self.image.get_rect()
         self.rect.center = (815 * scale_factor_x, 140 * scale_factor_y)
         self.boss_visible = 1
 
-        self.boss_laser = BossLaser(scale_factor_x, scale_factor_y)
+        self.boss_laser = BossLaser(textures, scale_factor_x, scale_factor_y)
 
-        self.boss_health_bar = BossHealthBar(scale_factor_x, scale_factor_y)
+        self.boss_health_bar = BossHealthBar(textures, scale_factor_x, scale_factor_y)
 
         self.death_count = 0
         self.health_bar = 10
@@ -147,6 +133,7 @@ class Boss(pygame.sprite.Sprite):
         self.collision_y_coordinate_list = [0] * machine_mode_setup.laser_count
         self.thorns_initiated_damage = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -375,7 +362,7 @@ class Boss(pygame.sprite.Sprite):
             # Reset the health bar and the enemies health
             self.boss_health_bar.center = (self.rect.centerx, self.rect.centery - 82 * self.scale_factor_y)
             old_center = self.boss_health_bar.rect.center
-            self.boss_health_bar.image = pygame.image.load(HEALTH_BAR_1010_TEXTURE)
+            self.boss_health_bar.image = self._textures.HEALTH_BAR_1010
             self.boss_health_bar.rect = self.boss_health_bar.image.get_rect(center=old_center)
             self.health_bar = 10
             self.update = 4
@@ -385,14 +372,14 @@ class Boss(pygame.sprite.Sprite):
         if self.update == 3:
             # Hide the boss and spawn a gold coin where the boss died
             self.boss_visible = 0
-            platinum_coin = Coin(type="platinum", pos_x=self.rect.centerx, pos_y=self.rect.centery, scale_factor_x=self.scale_factor_x)
+            platinum_coin = Coin(type="platinum", pos_x=self.rect.centerx, pos_y=self.rect.centery, textures=self._textures, scale_factor_x=self.scale_factor_x)
             # Set the hitbox for the coin
             platinum_coin.range = (platinum_coin.rect.centerx - platinum_coin.COIN_DISTANCE, platinum_coin.rect.centerx + platinum_coin.COIN_DISTANCE)
             platinum_coin.collision_coordinate = platinum_coin.rect.centery - platinum_coin.COIN_DISTANCE
             coins_on_screen.append(platinum_coin)
             # Respawn the boss in a different random location
             old_center = self.rect.center
-            self.image = pygame.image.load(MACHINE_BOSS_TEXTURE)
+            self.image = self._textures.MACHINE_BOSS
             self.rect = self.image.get_rect(center=old_center)
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
             self.rect.center = (random.randint(int(0 * self.scale_factor_x), int(1280 * self.scale_factor_x)), random.randint(int(140 * self.scale_factor_y), int(240 * self.scale_factor_y)))
@@ -421,7 +408,7 @@ class Boss(pygame.sprite.Sprite):
         # Change the texture of the boss to the second frame of the explosion
         if 1.0 <= self.update <= 1.1:
             old_center = self.rect.center
-            self.image = pygame.image.load(EXPLOSION_2_TEXTURE).convert_alpha()
+            self.image = self._textures.EXPLOSION_2
             self.rect = self.image.get_rect(center=old_center)
             self.update = 1.5
             self.start_time = time.time()
@@ -449,7 +436,7 @@ class Boss(pygame.sprite.Sprite):
                 sound.play()
             # Change the texture of the boss to the first frame of the death explosion
             old_center = self.rect.center
-            self.image = pygame.image.load(EXPLOSION_1_TEXTURE).convert_alpha()
+            self.image = self._textures.EXPLOSION_1
             self.rect = self.image.get_rect(center=old_center)
             self.update = 0.5
             # Set the thorns initiated damage back to 0 if needed
@@ -486,23 +473,23 @@ class Boss(pygame.sprite.Sprite):
             self.health_bar = self.health_bar - machine_mode_setup.damage
             old_center = self.boss_health_bar.rect.center
             if self.health_bar == 9:
-                self.boss_health_bar.image = pygame.image.load(HEALTH_BAR_910_TEXTURE)
+                self.boss_health_bar.image = self._textures.HEALTH_BAR_910
             elif self.health_bar == 8:
-                self.boss_health_bar.image = pygame.image.load(HEALTH_BAR_810_TEXTURE)
+                self.boss_health_bar.image = self._textures.HEALTH_BAR_810
             elif self.health_bar == 7:
-                self.boss_health_bar.image = pygame.image.load(HEALTH_BAR_710_TEXTURE)
+                self.boss_health_bar.image = self._textures.HEALTH_BAR_710
             elif self.health_bar == 6:
-                self.boss_health_bar.image = pygame.image.load(HEALTH_BAR_610_TEXTURE)
+                self.boss_health_bar.image = self._textures.HEALTH_BAR_610
             elif self.health_bar == 5:
-                self.boss_health_bar.image = pygame.image.load(HEALTH_BAR_510_TEXTURE)
+                self.boss_health_bar.image = self._textures.HEALTH_BAR_510
             elif self.health_bar == 4:
-                self.boss_health_bar.image = pygame.image.load(HEALTH_BAR_410_TEXTURE)
+                self.boss_health_bar.image = self._textures.HEALTH_BAR_410
             elif self.health_bar == 3:
-                self.boss_health_bar.image = pygame.image.load(HEALTH_BAR_310_TEXTURE)
+                self.boss_health_bar.image = self._textures.HEALTH_BAR_310
             elif self.health_bar == 2:
-                self.boss_health_bar.image = pygame.image.load(HEALTH_BAR_210_TEXTURE)
+                self.boss_health_bar.image = self._textures.HEALTH_BAR_210
             elif self.health_bar == 1:
-                self.boss_health_bar.image = pygame.image.load(HEALTH_BAR_110_TEXTURE)
+                self.boss_health_bar.image = self._textures.HEALTH_BAR_110
             self.boss_health_bar.rect = self.boss_health_bar.image.get_rect(center=old_center)
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("sound/Explosion2.wav")
@@ -627,9 +614,9 @@ class Boss(pygame.sprite.Sprite):
 
 
 class BossLaser(pygame.sprite.Sprite):
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(MACHINE_BOSS_LASER_TEXTURE).convert_alpha()
+        self.image = textures.MACHINE_BOSS_LASER
         self.rect = self.image.get_rect()
         self.rect.center = (815 * scale_factor_x, 220 * scale_factor_y)
         self.laser_visible = 1
@@ -648,13 +635,14 @@ class BossLaser(pygame.sprite.Sprite):
 
 
 class BossHealthBar(pygame.sprite.Sprite):
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(HEALTH_BAR_1010_TEXTURE).convert_alpha()
+        self.image = textures.HEALTH_BAR_1010
         self.rect = self.image.get_rect()
         self.rect.center = (815 * scale_factor_x, 58 * scale_factor_y)
         self.health_bar_visible = 1
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 

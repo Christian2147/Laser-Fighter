@@ -102,7 +102,7 @@ class SpawnYellowMachine:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Yellow Machine.
 
@@ -117,6 +117,7 @@ class SpawnYellowMachine:
         self.yellow_machines_update_values = []
         self.yellow_machine_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -141,7 +142,7 @@ class SpawnYellowMachine:
             :return: None
         """
 
-        yellow_machine = YellowMachine(id, self.scale_factor_x, self.scale_factor_y)
+        yellow_machine = YellowMachine(id, self._textures, self.scale_factor_x, self.scale_factor_y)
         self.yellow_machines.append(yellow_machine)
         self.yellow_machine_index = self.yellow_machine_index + 1
         self.yellow_machines_update_values.append(0)
@@ -152,8 +153,6 @@ class SpawnRedMachine:
         Represents the Red Machine container in Laser Fighter.
 
         Attributes:
-            all_red_machines (list): Contains all of the red machine sprites created since the game has
-                launched, even ones removed from the screen
             red_machines (list): Contains all of the red machine sprites currently visible/active on the screen.
             red_machines_update_values (list): Contains all of the death animation values for each red machine
                 on the screen.
@@ -164,7 +163,7 @@ class SpawnRedMachine:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Red Machine.
 
@@ -180,6 +179,7 @@ class SpawnRedMachine:
         self.red_machines_hit_values = []
         self.red_machine_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -205,7 +205,7 @@ class SpawnRedMachine:
             :return: None
         """
 
-        red_machine = RedMachine(id, self.scale_factor_x, self.scale_factor_y)
+        red_machine = RedMachine(id, self._textures, self.scale_factor_x, self.scale_factor_y)
         self.red_machines.append(red_machine)
         self.red_machine_index = self.red_machine_index + 1
         self.red_machines_update_values.append(0)
@@ -226,7 +226,7 @@ class SpawnMachineBoss:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Machine Boss.
 
@@ -242,6 +242,7 @@ class SpawnMachineBoss:
         self.boss_hit_value = 0
         self.boss_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -264,6 +265,6 @@ class SpawnMachineBoss:
             :return: None
         """
 
-        spawn_boss = Boss(self.scale_factor_x, self.scale_factor_y)
+        spawn_boss = Boss(self._textures, self.scale_factor_x, self.scale_factor_y)
         self.boss.append(spawn_boss)
         self.boss_index = self.boss_index + 1

@@ -87,7 +87,7 @@ class UFO(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates a UFO object and spawns it in the game.
 
@@ -127,6 +127,7 @@ class UFO(pygame.sprite.Sprite):
         self.already_behind = 1
         self.thorns_initiated_damage = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -338,7 +339,7 @@ class UFO(pygame.sprite.Sprite):
         if 4 <= self.death_animation < 5:
             # Spawn a coin where the UFO has died
             self.ufo_visible = 0
-            platinum_coin = Coin(type="platinum", pos_x=self.rect.centerx, pos_y=self.rect.centery, scale_factor_x=self.scale_factor_x)
+            platinum_coin = Coin(type="platinum", pos_x=self.rect.centerx, pos_y=self.rect.centery, textures=self._textures, scale_factor_x=self.scale_factor_x)
             # Set the hitbox for the coin
             platinum_coin.range = (platinum_coin.rect.centery - platinum_coin.COIN_DISTANCE, platinum_coin.rect.centery + platinum_coin.COIN_DISTANCE)
             platinum_coin.collision_coordinate = platinum_coin.rect.centerx

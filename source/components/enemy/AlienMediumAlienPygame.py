@@ -81,7 +81,7 @@ class MediumAlien(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, id, scale_factor_x, scale_factor_y):
+    def __init__(self, id, textures, scale_factor_x, scale_factor_y):
         """
             Creates a medium alien object with the given id and spawns it in the game.
 
@@ -131,6 +131,7 @@ class MediumAlien(pygame.sprite.Sprite):
         self.already_behind = 1
         self.thorns_initiated_damage = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -313,7 +314,7 @@ class MediumAlien(pygame.sprite.Sprite):
         if 4 <= self.death_animation < 5:
             # Spawn a coin where the alien has died
             self.medium_alien_visible = 0
-            silver_coin = Coin(type="silver", pos_x=self.rect.centerx, pos_y=self.rect.centery, scale_factor_x=self.scale_factor_x)
+            silver_coin = Coin(type="silver", pos_x=self.rect.centerx, pos_y=self.rect.centery, textures=self._textures, scale_factor_x=self.scale_factor_x)
             # Set the hitbox for the coin
             silver_coin.range = (silver_coin.rect.centery - silver_coin.COIN_DISTANCE, silver_coin.rect.centery + silver_coin.COIN_DISTANCE)
             silver_coin.collision_coordinate = silver_coin.rect.centerx

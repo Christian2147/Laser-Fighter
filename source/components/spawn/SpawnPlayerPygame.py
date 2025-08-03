@@ -31,7 +31,6 @@ class SpawnMachinePlayer:
         Represents the Machine Player container in Laser Fighter.
 
         Attributes:
-            all_player (list): Contains the one machine player sprite that should be spawned throughout the entire game.
             current_player (list): Contains the machine player sprite if it is visible on the screen
             current_player_index (int): Stores whether the machine player sprite has been created or not
             player_hit_value (list): Contains the hit delay value for the machine player
@@ -41,7 +40,7 @@ class SpawnMachinePlayer:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Machine Player.
 
@@ -57,6 +56,7 @@ class SpawnMachinePlayer:
         self.player_hit_value = 0
         self.player_update_value = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 

@@ -42,7 +42,7 @@ class SpawnSmallAlien:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Small Alien.
 
@@ -57,6 +57,7 @@ class SpawnSmallAlien:
         self.small_aliens_kill_values = []
         self.small_alien_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -81,7 +82,7 @@ class SpawnSmallAlien:
             :return: None
         """
 
-        small_alien = SmallAlien(id, self.scale_factor_x, self.scale_factor_y)
+        small_alien = SmallAlien(id, self._textures, self.scale_factor_x, self.scale_factor_y)
         self.small_aliens.append(small_alien)
         self.small_alien_index = self.small_alien_index + 1
         self.small_aliens_kill_values.append(0)
@@ -102,7 +103,7 @@ class SpawnMediumAlien:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Medium Alien.
 
@@ -118,6 +119,7 @@ class SpawnMediumAlien:
         self.medium_aliens_hit_values = []
         self.medium_alien_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -143,7 +145,7 @@ class SpawnMediumAlien:
             :return: None
         """
 
-        medium_alien = MediumAlien(id, self.scale_factor_x, self.scale_factor_y)
+        medium_alien = MediumAlien(id, self._textures, self.scale_factor_x, self.scale_factor_y)
         self.medium_aliens.append(medium_alien)
         self.medium_alien_index = self.medium_alien_index + 1
         self.medium_aliens_kill_values.append(0)
@@ -165,7 +167,7 @@ class SpawnLargeAlien:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Large Alien.
 
@@ -181,6 +183,7 @@ class SpawnLargeAlien:
         self.large_aliens_hit_values = []
         self.large_alien_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -206,7 +209,7 @@ class SpawnLargeAlien:
             :return: None
         """
 
-        large_alien = LargeAlien(id, self.scale_factor_x, self.scale_factor_y)
+        large_alien = LargeAlien(id, self._textures, self.scale_factor_x, self.scale_factor_y)
         self.large_aliens.append(large_alien)
         self.large_alien_index = self.large_alien_index + 1
         self.large_aliens_kill_values.append(0)
@@ -227,7 +230,7 @@ class SpawnUFO:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the UFO.
 
@@ -243,6 +246,7 @@ class SpawnUFO:
         self.ufo_hit_value = 0
         self.ufo_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -265,6 +269,6 @@ class SpawnUFO:
             :return: None
         """
 
-        spawn_ufo = UFO(self.scale_factor_x, self.scale_factor_y)
+        spawn_ufo = UFO(self._textures, self.scale_factor_x, self.scale_factor_y)
         self.ufos.append(spawn_ufo)
         self.ufo_index = self.ufo_index + 1

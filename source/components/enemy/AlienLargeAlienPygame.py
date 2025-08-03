@@ -83,7 +83,7 @@ class LargeAlien(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, id, scale_factor_x, scale_factor_y):
+    def __init__(self, id, textures, scale_factor_x, scale_factor_y):
         """
             Creates a large alien object with the given id and spawns it in the game.
 
@@ -133,6 +133,7 @@ class LargeAlien(pygame.sprite.Sprite):
         self.already_behind = 1
         self.thorns_initiated_damage = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -314,7 +315,7 @@ class LargeAlien(pygame.sprite.Sprite):
         if 4 <= self.death_animation < 5:
             # Spawn a coin where the alien has died
             self.large_alien_visible = 0
-            gold_coin = Coin(type="gold", pos_x=self.rect.centerx, pos_y=self.rect.centery, scale_factor_x=self.scale_factor_x)
+            gold_coin = Coin(type="gold", pos_x=self.rect.centerx, pos_y=self.rect.centery, textures=self._textures, scale_factor_x=self.scale_factor_x)
             # Set the hitbox for the coin
             gold_coin.range = (gold_coin.rect.centery - gold_coin.COIN_DISTANCE, gold_coin.rect.centery + gold_coin.COIN_DISTANCE)
             gold_coin.collision_coordinate = gold_coin.rect.centerx
