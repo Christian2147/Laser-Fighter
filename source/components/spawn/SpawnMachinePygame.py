@@ -42,7 +42,7 @@ class SpawnBlueMachine:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Blue Machine.
 
@@ -57,6 +57,7 @@ class SpawnBlueMachine:
         self.blue_machines_update_values = []
         self.blue_machine_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -81,7 +82,7 @@ class SpawnBlueMachine:
             :return: None
         """
 
-        blue_machine = BlueMachine(id, self.scale_factor_x, self.scale_factor_y)
+        blue_machine = BlueMachine(id, self._textures, self.scale_factor_x, self.scale_factor_y)
         self.blue_machines.append(blue_machine)
         self.blue_machine_index = self.blue_machine_index + 1
         self.blue_machines_update_values.append(0)
@@ -216,7 +217,6 @@ class SpawnMachineBoss:
         Represents the Machine Boss container in Laser Fighter.
 
         Attributes:
-            all_boss (list): Contains the one boss sprite that should be spawn throughout the entire game.
             boss (list): Contains the boss sprite if it is visible on the screen
             boss_update_value (list): Contains the death animation value for the boss
             boss_hit_value (list): Contains the hit delay value for the boss

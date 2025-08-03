@@ -34,16 +34,12 @@ import math
 
 from setup.ModeSetupMasterPygame import machine_mode_setup
 from components.ItemCoinPygame import Coin
-from setup.TextureSetup import BLUE_MACHINE_TEXTURE
-from setup.TextureSetup import BLUE_MACHINE_LASER_TEXTURE
-from setup.TextureSetup import EXPLOSION_1_TEXTURE
-from setup.TextureSetup import EXPLOSION_2_TEXTURE
 
 
 class BlueMachine(pygame.sprite.Sprite):
-    def __init__(self, id, scale_factor_x, scale_factor_y):
+    def __init__(self, id, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(BLUE_MACHINE_TEXTURE).convert_alpha()
+        self.image = textures.BLUE_MACHINE
         self.rect = self.image.get_rect()
 
         if id == 1:
@@ -60,7 +56,7 @@ class BlueMachine(pygame.sprite.Sprite):
             self.rect.center = (0, 0)
         self.machine_visible = 1
 
-        self.blue_machine_laser = BlueMachineLaser(id, scale_factor_x, scale_factor_y)
+        self.blue_machine_laser = BlueMachineLaser(id, textures, scale_factor_x, scale_factor_y)
 
         self.death_count = 0
         self.update = 0
@@ -84,6 +80,7 @@ class BlueMachine(pygame.sprite.Sprite):
         self.collision_y_coordinate_list = [0] * machine_mode_setup.laser_count
         self.thorns_initiated_damage = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -310,7 +307,7 @@ class BlueMachine(pygame.sprite.Sprite):
             coins_on_screen.append(copper_coin)
             # Respawn the blue machine in a different random location
             old_center = self.rect.center
-            self.image = pygame.image.load(BLUE_MACHINE_TEXTURE).convert_alpha()
+            self.image = self._textures.BLUE_MACHINE
             self.rect = self.image.get_rect(center=old_center)
             # Want to cast these ranges to integers to avoid a crash at certain resolutions
             self.rect.center = (random.randint(int(0 * self.scale_factor_x), int(1280 * self.scale_factor_x)), random.randint(int(140 * self.scale_factor_y), int(240 * self.scale_factor_y)))
@@ -340,7 +337,7 @@ class BlueMachine(pygame.sprite.Sprite):
         # Change the texture of the blue machine to the second frame of the explosion
         if 1.0 <= self.update <= 1.1:
             old_center = self.rect.center
-            self.image = pygame.image.load(EXPLOSION_2_TEXTURE).convert_alpha()
+            self.image = self._textures.EXPLOSION_2
             self.rect = self.image.get_rect(center=old_center)
             self.update = 1.5
             self.start_time = time.time()
@@ -365,7 +362,7 @@ class BlueMachine(pygame.sprite.Sprite):
                 sound.play()
             # Change the texture of the blue machine to the first frame of the death explosion
             old_center = self.rect.center
-            self.image = pygame.image.load(EXPLOSION_1_TEXTURE).convert_alpha()
+            self.image = self._textures.EXPLOSION_1
             self.rect = self.image.get_rect(center=old_center)
             self.update = 0.5
             # Set the thorns initiated damage back to 0 if needed
@@ -474,9 +471,9 @@ class BlueMachine(pygame.sprite.Sprite):
 
 
 class BlueMachineLaser(pygame.sprite.Sprite):
-    def __init__(self, id, scale_factor_x, scale_factor_y):
+    def __init__(self, id, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(BLUE_MACHINE_LASER_TEXTURE).convert_alpha()
+        self.image = textures.BLUE_MACHINE_LASER
         self.rect = self.image.get_rect()
         if id == 1:
             self.rect.center = (440 * scale_factor_x, 190 * scale_factor_y)

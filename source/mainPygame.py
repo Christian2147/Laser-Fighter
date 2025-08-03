@@ -31,6 +31,7 @@ import time
 import random
 import gc
 from setup.WindowSetupPygame import GameWindow
+from setup.TextureSetupPygame import TextureSetup
 from setup.ModeSetupMasterPygame import machine_mode_setup
 from setup.ModeSetupMasterPygame import alien_mode_setup
 from setup.ModeSetupMasterPygame import power_up_setup
@@ -81,6 +82,8 @@ MOVE_REPEAT_DELAY = 0.05
 
 def main():
     window = GameWindow()
+    textures = TextureSetup(window.scale_factor_X, window.scale_factor_Y)
+    textures.load_all_textures()
 
     sun = SpawnSun(window.scale_factor_X, window.scale_factor_Y)
     earth = SpawnEarth(window.scale_factor_X, window.scale_factor_Y)
@@ -90,7 +93,7 @@ def main():
     coin = SpawnCoin()
     power_up = SpawnPowerUp(window.scale_factor_X, window.scale_factor_Y)
 
-    blue_machine = SpawnBlueMachine(window.scale_factor_X, window.scale_factor_Y)
+    blue_machine = SpawnBlueMachine(textures, window.scale_factor_X, window.scale_factor_Y)
     yellow_machine = SpawnYellowMachine(window.scale_factor_X, window.scale_factor_Y)
     red_machine = SpawnRedMachine(window.scale_factor_X, window.scale_factor_Y)
     machine_boss = SpawnMachineBoss(window.scale_factor_X, window.scale_factor_Y)
