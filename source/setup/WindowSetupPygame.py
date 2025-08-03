@@ -107,7 +107,7 @@ class GameWindow:
         background_image = Image.open(background_path)
         new_width = int(background_image.width * self.scale_factor_X)
         new_height = int(background_image.height * self.scale_factor_Y)
-        resized_image = background_image.resize((new_width, new_height))
+        resized_image = background_image.resize((new_width, new_height), resample=Image.NEAREST)
         scaled_background_path = "textures/background/Shooting_Game_Background_Scaled.png"
         resized_image.save(scaled_background_path)
 
