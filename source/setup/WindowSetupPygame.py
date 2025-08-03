@@ -104,15 +104,18 @@ class GameWindow:
 
     def _load_and_blit_background(self):
         background_path = "textures/background/Shooting_Game_Background.png"
-        background_image = Image.open(background_path)
-        new_width = int(background_image.width * self.scale_factor_X)
-        new_height = int(background_image.height * self.scale_factor_Y)
-        resized_image = background_image.resize((new_width, new_height), resample=Image.NEAREST)
-        scaled_background_path = "textures/background/Shooting_Game_Background_Scaled.png"
-        resized_image.save(scaled_background_path)
 
-        self.bg_surface = pygame.image.load(scaled_background_path).convert()
+        # Load image into memory
+        background_image = pygame.image.load(background_path).convert()
 
+        # Compute scaled dimensions
+        new_width = int(background_image.get_width() * self.scale_factor_X)
+        new_height = int(background_image.get_height() * self.scale_factor_Y)
+
+        # Scale in memory (no saving to disk)
+        self.bg_surface = pygame.transform.scale(background_image, (new_width, new_height))
+
+        # Optionally flip the screen, though this doesn't do anything here unless you've drawn to the screen
         pygame.display.flip()
 
     def _get_refresh_rate(self):
