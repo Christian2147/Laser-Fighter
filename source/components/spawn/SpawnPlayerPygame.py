@@ -82,7 +82,7 @@ class SpawnMachinePlayer:
             :return: None
         """
 
-        player = Player(god_mode, self.scale_factor_x, self.scale_factor_y)
+        player = Player(god_mode, self._textures, self.scale_factor_x, self.scale_factor_y)
         self.current_player.append(player)
         self.current_player_index = self.current_player_index + 1
 

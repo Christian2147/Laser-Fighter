@@ -29,28 +29,6 @@ import time
 import math
 from components.player.MachinePlayerLaserPygame import MachineLaser
 from setup.ModeSetupMasterPygame import machine_mode_setup
-from setup.TextureSetup import EXPLOSION_1_TEXTURE
-from setup.TextureSetup import EXPLOSION_2_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_1010_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_910_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_810_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_710_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_610_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_510_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_410_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_310_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_210_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_110_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_10_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_9_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_8_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_7_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_6_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_5_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_4_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_3_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_2_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_1_TEXTURE
 
 
 class Player(pygame.sprite.Sprite):
@@ -88,7 +66,7 @@ class Player(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, god_mode, scale_factor_x, scale_factor_y):
+    def __init__(self, god_mode, textures, scale_factor_x, scale_factor_y):
         """
             Creates a player object and spawns it on the screen
 
@@ -123,10 +101,10 @@ class Player(pygame.sprite.Sprite):
 
         self.do_collision = 0
 
-        self.health_bar = PlayerHealthBar(god_mode, scale_factor_x, scale_factor_y)
+        self.health_bar = PlayerHealthBar(god_mode, textures, scale_factor_x, scale_factor_y)
 
         if machine_mode_setup.health == 20:
-            self.armor_bar = PlayerArmorBar(god_mode, scale_factor_x, scale_factor_y)
+            self.armor_bar = PlayerArmorBar(god_mode, textures, scale_factor_x, scale_factor_y)
             self.armor_created = 1
         else:
             self.armor_created = 0
@@ -140,6 +118,7 @@ class Player(pygame.sprite.Sprite):
         self.kill_start_time = 0
         self.hit_start_time = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -508,55 +487,55 @@ class Player(pygame.sprite.Sprite):
             self.health_bar_indicator = self.health_bar_indicator + 3
 
         if self.health_bar_indicator >= 10:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_1010_TEXTURE).convert_alpha()
+            self.health_bar.image = self._textures.HEALTH_BAR_1010
             if self.health_bar_indicator == 20:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_10_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_10
             elif self.health_bar_indicator == 19:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_9_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_9
             elif self.health_bar_indicator == 18:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_8_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_8
             elif self.health_bar_indicator == 17:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_7_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_7
             elif self.health_bar_indicator == 16:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_6_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_6
             elif self.health_bar_indicator == 15:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_5_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_5
             elif self.health_bar_indicator == 14:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_4_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_4
             elif self.health_bar_indicator == 13:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_3_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_3
             elif self.health_bar_indicator == 12:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_2_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_2
             elif self.health_bar_indicator == 11:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_1_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_1
         elif self.health_bar_indicator == 9:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_910_TEXTURE).convert_alpha()
+            self.health_bar.image = self._textures.HEALTH_BAR_910
         elif self.health_bar_indicator == 8:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_810_TEXTURE).convert_alpha()
+            self.health_bar.image = self._textures.HEALTH_BAR_810
         elif self.health_bar_indicator == 7:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_710_TEXTURE).convert_alpha()
+            self.health_bar.image = self._textures.HEALTH_BAR_710
         elif self.health_bar_indicator == 6:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_610_TEXTURE).convert_alpha()
+            self.health_bar.image = self._textures.HEALTH_BAR_610
         elif self.health_bar_indicator == 5:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_510_TEXTURE).convert_alpha()
+            self.health_bar.image = self._textures.HEALTH_BAR_510
         elif self.health_bar_indicator == 4:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_410_TEXTURE).convert_alpha()
+            self.health_bar.image = self._textures.HEALTH_BAR_410
         elif self.health_bar_indicator == 3:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_310_TEXTURE).convert_alpha()
+            self.health_bar.image = self._textures.HEALTH_BAR_310
         elif self.health_bar_indicator == 2:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_210_TEXTURE).convert_alpha()
+            self.health_bar.image = self._textures.HEALTH_BAR_210
         elif self.health_bar_indicator == 1:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_110_TEXTURE).convert_alpha()
+            self.health_bar.image = self._textures.HEALTH_BAR_110
 
     def kill_player(self, death_sound):
         """
@@ -587,10 +566,10 @@ class Player(pygame.sprite.Sprite):
 
         # Resets the players health back to 10 or 20 is the shield is enabled
         if self.update == 3.5:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_1010_TEXTURE).convert_alpha()
+            self.health_bar.image = self._textures.HEALTH_BAR_1010
             self.health_bar_indicator = machine_mode_setup.health
             if self.health_bar_indicator == 20:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_10_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_10
                 self.armor_bar.armor_bar_visible = 1
             self.update = 4
             self.kill_start_time = time.time()
@@ -613,7 +592,7 @@ class Player(pygame.sprite.Sprite):
 
         # Changes the players texture to the second frame of the explosion
         if 1.0 <= self.update <= 1.1:
-            self.image = pygame.image.load(EXPLOSION_2_TEXTURE).convert_alpha()
+            self.image = self._textures.EXPLOSION_2
             self.update = 1.5
             self.kill_start_time = time.time()
 
@@ -638,7 +617,7 @@ class Player(pygame.sprite.Sprite):
                 sound = pygame.mixer.Sound("sound/Explosion3.wav")
                 sound.play()
             # Sets the players texture to the first frame of the explosion
-            self.image = pygame.image.load(EXPLOSION_1_TEXTURE).convert_alpha()
+            self.image = self._textures.EXPLOSION_1
             self.update = 0.5
             self.kill_start_time = time.time()
 
@@ -676,44 +655,44 @@ class Player(pygame.sprite.Sprite):
             # Update the players health bar
             # If the players health is above 10, an armor bar should be visible
             if self.health_bar_indicator == 20:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_9_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_9
             elif self.health_bar_indicator == 19:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_8_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_8
             elif self.health_bar_indicator == 18:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_7_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_7
             elif self.health_bar_indicator == 17:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_6_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_6
             elif self.health_bar_indicator == 16:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_5_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_5
             elif self.health_bar_indicator == 15:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_4_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_4
             elif self.health_bar_indicator == 14:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_3_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_3
             elif self.health_bar_indicator == 13:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_2_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_2
             elif self.health_bar_indicator == 12:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_1_TEXTURE).convert_alpha()
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_1
             # Armor bar disappears when the players health drops below 11
             elif self.health_bar_indicator == 11:
                 self.armor_bar.armor_bar_visible = 0
             elif self.health_bar_indicator == 10:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_910_TEXTURE).convert_alpha()
+                self.health_bar.image = self._textures.HEALTH_BAR_910
             elif self.health_bar_indicator == 9:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_810_TEXTURE).convert_alpha()
+                self.health_bar.image = self._textures.HEALTH_BAR_810
             elif self.health_bar_indicator == 8:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_710_TEXTURE).convert_alpha()
+                self.health_bar.image = self._textures.HEALTH_BAR_710
             elif self.health_bar_indicator == 7:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_610_TEXTURE).convert_alpha()
+                self.health_bar.image = self._textures.HEALTH_BAR_610
             elif self.health_bar_indicator == 6:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_510_TEXTURE).convert_alpha()
+                self.health_bar.image = self._textures.HEALTH_BAR_510
             elif self.health_bar_indicator == 5:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_410_TEXTURE).convert_alpha()
+                self.health_bar.image = self._textures.HEALTH_BAR_410
             elif self.health_bar_indicator == 4:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_310_TEXTURE).convert_alpha()
+                self.health_bar.image = self._textures.HEALTH_BAR_310
             elif self.health_bar_indicator == 3:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_210_TEXTURE).convert_alpha()
+                self.health_bar.image = self._textures.HEALTH_BAR_210
             elif self.health_bar_indicator == 2:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_110_TEXTURE).convert_alpha()
+                self.health_bar.image = self._textures.HEALTH_BAR_110
             if hit_sound == 1:
                 sound = pygame.mixer.Sound("sound/Explosion4.wav")
                 sound.play()
@@ -724,9 +703,9 @@ class Player(pygame.sprite.Sprite):
 
 
 class PlayerHealthBar(pygame.sprite.Sprite):
-    def __init__(self, god_mode, scale_factor_x, scale_factor_y):
+    def __init__(self, god_mode, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(HEALTH_BAR_1010_TEXTURE).convert_alpha()
+        self.image = textures.HEALTH_BAR_1010
         self.rect = self.image.get_rect()
         self.rect.center = (1171 * scale_factor_x, 21 * scale_factor_y)
         self.health_bar_visible = 1
@@ -738,9 +717,9 @@ class PlayerHealthBar(pygame.sprite.Sprite):
 
 
 class PlayerArmorBar(pygame.sprite.Sprite):
-    def __init__(self, god_mode, scale_factor_x, scale_factor_y):
+    def __init__(self, god_mode, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(ARMOR_BAR_10_10_TEXTURE).convert_alpha()
+        self.image = textures.ARMOR_BAR_10_10
         self.rect = self.image.get_rect()
         self.rect.center = (1171 * scale_factor_x, 61 * scale_factor_y)
         self.armor_bar_visible = 1
