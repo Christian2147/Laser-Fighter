@@ -33,20 +33,6 @@ import time
 import math
 from components.ItemCoinPygame import Coin
 from setup.ModeSetupMasterPygame import alien_mode_setup
-from setup.TextureSetup import ALIEN_BOSS_TEXTURE
-from setup.TextureSetup import YELLOW_MACHINE_LASER_TEXTURE
-from setup.TextureSetup import EXPLOSION_1_TEXTURE
-from setup.TextureSetup import EXPLOSION_2_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_1010_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_910_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_810_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_710_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_610_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_510_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_410_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_310_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_210_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_110_TEXTURE
 
 
 class UFO(pygame.sprite.Sprite):
@@ -99,15 +85,15 @@ class UFO(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(ALIEN_BOSS_TEXTURE)
+        self.image = textures.ALIEN_BOSS
         self.rect = self.image.get_rect()
         self.rect.center = (int(1515 * scale_factor_x), round(380 * scale_factor_y))
         self.ufo_visible = 1
         self.direction = "stop"
 
-        self.ufo_laser = UFOLaser(scale_factor_x, scale_factor_y)
+        self.ufo_laser = UFOLaser(textures, scale_factor_x, scale_factor_y)
 
-        self.ufo_health_bar = UFOHealthBar(scale_factor_x, scale_factor_y)
+        self.ufo_health_bar = UFOHealthBar(textures, scale_factor_x, scale_factor_y)
 
         self.death_animation = 0
         self.death_count = 0
@@ -355,10 +341,10 @@ class UFO(pygame.sprite.Sprite):
                 self.ufo_health_bar.rect.center = (self.rect.centerx, 310 * self.scale_factor_y)
             # Reset the UFOs health
             old_center = self.ufo_health_bar.rect.center
-            self.ufo_health_bar.image = pygame.image.load(HEALTH_BAR_1010_TEXTURE)
+            self.ufo_health_bar.image = self._textures.HEALTH_BAR_1010
             self.ufo_health_bar.rect = self.ufo_health_bar.image.get_rect(center=old_center)
             old_center = self.rect.center
-            self.image = pygame.image.load(ALIEN_BOSS_TEXTURE).convert_alpha()
+            self.image = self._textures.ALIEN_BOSS
             self.rect = self.image.get_rect(center=old_center)
             self.health = 10
             self.precise_x = float(self.rect.centerx)
@@ -380,7 +366,7 @@ class UFO(pygame.sprite.Sprite):
         if 2 <= self.death_animation < 3:
             # Change the UFOs texture to the second frame in the death scene
             old_center = self.rect.center
-            self.image = pygame.image.load(EXPLOSION_2_TEXTURE).convert_alpha()
+            self.image = self._textures.EXPLOSION_2
             self.rect = self.image.get_rect(center=old_center)
             self.death_animation = 3
             self.kill_start_time = time.time()
@@ -409,7 +395,7 @@ class UFO(pygame.sprite.Sprite):
                 sound.play()
             # Set the texture of the large alien to the first frame in the death scene
             old_center = self.rect.center
-            self.image = pygame.image.load(EXPLOSION_1_TEXTURE).convert_alpha()
+            self.image = self._textures.EXPLOSION_1
             self.rect = self.image.get_rect(center=old_center)
             # Reset collision variables
             self.got_hit = 1
@@ -452,23 +438,23 @@ class UFO(pygame.sprite.Sprite):
             self.health = self.health - alien_mode_setup.damage
             old_center = self.ufo_health_bar.rect.center
             if self.health == 9:
-                self.ufo_health_bar.image = pygame.image.load(HEALTH_BAR_910_TEXTURE)
+                self.ufo_health_bar.image = self._textures.HEALTH_BAR_910
             elif self.health == 8:
-                self.ufo_health_bar.image = pygame.image.load(HEALTH_BAR_810_TEXTURE)
+                self.ufo_health_bar.image = self._textures.HEALTH_BAR_810
             elif self.health == 7:
-                self.ufo_health_bar.image = pygame.image.load(HEALTH_BAR_710_TEXTURE)
+                self.ufo_health_bar.image = self._textures.HEALTH_BAR_710
             elif self.health == 6:
-                self.ufo_health_bar.image = pygame.image.load(HEALTH_BAR_610_TEXTURE)
+                self.ufo_health_bar.image = self._textures.HEALTH_BAR_610
             elif self.health == 5:
-                self.ufo_health_bar.image = pygame.image.load(HEALTH_BAR_510_TEXTURE)
+                self.ufo_health_bar.image = self._textures.HEALTH_BAR_510
             elif self.health == 4:
-                self.ufo_health_bar.image = pygame.image.load(HEALTH_BAR_410_TEXTURE)
+                self.ufo_health_bar.image = self._textures.HEALTH_BAR_410
             elif self.health == 3:
-                self.ufo_health_bar.image = pygame.image.load(HEALTH_BAR_310_TEXTURE)
+                self.ufo_health_bar.image = self._textures.HEALTH_BAR_310
             elif self.health == 2:
-                self.ufo_health_bar.image = pygame.image.load(HEALTH_BAR_210_TEXTURE)
+                self.ufo_health_bar.image = self._textures.HEALTH_BAR_210
             elif self.health == 1:
-                self.ufo_health_bar.image = pygame.image.load(HEALTH_BAR_110_TEXTURE)
+                self.ufo_health_bar.image = self._textures.HEALTH_BAR_110
             self.ufo_health_bar.rect = self.ufo_health_bar.image.get_rect(center=old_center)
             # Play the hit sound
             if hit_sound == 1:
@@ -553,9 +539,9 @@ class UFO(pygame.sprite.Sprite):
 
 
 class UFOLaser(pygame.sprite.Sprite):
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(YELLOW_MACHINE_LASER_TEXTURE).convert_alpha()
+        self.image = textures.YELLOW_MACHINE_LASER
         self.rect = self.image.get_rect()
         self.rect.center = (int(1517 * scale_factor_x), round(450 * scale_factor_y))
         self.laser_visible = 1
@@ -577,9 +563,9 @@ class UFOLaser(pygame.sprite.Sprite):
 
 
 class UFOHealthBar(pygame.sprite.Sprite):
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(HEALTH_BAR_1010_TEXTURE).convert_alpha()
+        self.image = textures.HEALTH_BAR_1010
         self.rect = self.image.get_rect()
         self.rect.center = (int(1515 * scale_factor_x), round(310 * scale_factor_y))
         self.health_bar_visible = 1

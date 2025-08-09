@@ -30,12 +30,6 @@ import random
 import time
 import math
 from components.ItemCoinPygame import Coin
-from setup.TextureSetup import ALIEN_STILL_RIGHT_1_5_TEXTURE
-from setup.TextureSetup import ALIEN_STILL_LEFT_1_5_TEXTURE
-from setup.TextureSetup import ALIEN_WALKING_RIGHT_1_5_TEXTURE
-from setup.TextureSetup import ALIEN_WALKING_LEFT_1_5_TEXTURE
-from setup.TextureSetup import ALIEN_DEATH_1_TEXTURE
-from setup.TextureSetup import ALIEN_DEATH_2_TEXTURE
 
 
 class SmallAlien(pygame.sprite.Sprite):
@@ -88,7 +82,7 @@ class SmallAlien(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(ALIEN_STILL_RIGHT_1_5_TEXTURE)
+        self.image = textures.ALIEN_STILL_RIGHT_1_5
         self.rect = self.image.get_rect()
         if id == 1:
             self.rect.center = (int(-160 * scale_factor_x), round(501 * scale_factor_y))
@@ -230,9 +224,9 @@ class SmallAlien(pygame.sprite.Sprite):
             if self.direction == "right" and self.death_animation == 0:
                 # Make the small alien face and walk right
                 if right_update % 0.5 != 0:
-                    self.image = pygame.image.load(ALIEN_WALKING_RIGHT_1_5_TEXTURE)
+                    self.image = self._textures.ALIEN_WALKING_RIGHT_1_5
                 else:
-                    self.image = pygame.image.load(ALIEN_STILL_RIGHT_1_5_TEXTURE)
+                    self.image = self._textures.ALIEN_STILL_RIGHT_1_5
                 center = self.rect.center
                 self.rect = self.image.get_rect()
                 self.rect.center = center
@@ -240,9 +234,9 @@ class SmallAlien(pygame.sprite.Sprite):
             elif self.direction == "left" and self.death_animation == 0:
                 # Make the small alien face and walk left
                 if left_update % 0.5 != 0:
-                    self.image = pygame.image.load(ALIEN_WALKING_LEFT_1_5_TEXTURE)
+                    self.image = self._textures.ALIEN_WALKING_LEFT_1_5
                 else:
-                    self.image = pygame.image.load(ALIEN_STILL_LEFT_1_5_TEXTURE)
+                    self.image = self._textures.ALIEN_STILL_LEFT_1_5
                 center = self.rect.center
                 self.rect = self.image.get_rect()
                 self.rect.center = center
@@ -294,7 +288,7 @@ class SmallAlien(pygame.sprite.Sprite):
 
         if 2 <= self.death_animation < 3:
             # Change the small aliens texture to the second frame in the death scene
-            self.image = pygame.image.load(ALIEN_DEATH_2_TEXTURE)
+            self.image = self._textures.ALIEN_DEATH_2
             self.death_animation = 3
             self.kill_start_time = time.time()
             return
@@ -318,7 +312,7 @@ class SmallAlien(pygame.sprite.Sprite):
                 sound = pygame.mixer.Sound("sound/Alien_Death_Sound.wav")
                 sound.play()
             # Set the texture of the small alien to the first frame in the death scene
-            self.image = pygame.image.load(ALIEN_DEATH_1_TEXTURE)
+            self.image = self._textures.ALIEN_DEATH_1
             # Reset collision variables
             self.got_hit = 1
             self.already_ahead = 0

@@ -32,15 +32,6 @@ import time
 import math
 from components.ItemCoinPygame import Coin
 from setup.ModeSetupMasterPygame import alien_mode_setup
-from setup.TextureSetup import ALIEN_STILL_RIGHT_11_15_TEXTURE
-from setup.TextureSetup import ALIEN_STILL_LEFT_11_15_TEXTURE
-from setup.TextureSetup import ALIEN_WALKING_RIGHT_11_15_TEXTURE
-from setup.TextureSetup import ALIEN_WALKING_LEFT_11_15_TEXTURE
-from setup.TextureSetup import ALIEN_DEATH_1_TEXTURE
-from setup.TextureSetup import ALIEN_DEATH_2_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_13_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_23_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_33_TEXTURE
 
 
 class LargeAlien(pygame.sprite.Sprite):
@@ -98,7 +89,7 @@ class LargeAlien(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(ALIEN_STILL_RIGHT_11_15_TEXTURE)
+        self.image = textures.ALIEN_STILL_RIGHT_11_15
         self.rect = self.image.get_rect()
         if id == 1:
             self.rect.center = (int(-85 * scale_factor_x), round(445 * scale_factor_y))
@@ -113,7 +104,7 @@ class LargeAlien(pygame.sprite.Sprite):
         self.large_alien_visible = 1
         self.direction = "stop"
 
-        self.large_alien_health_bar = LargeAlienHealthBar(self.rect.centerx, scale_factor_x, scale_factor_y)
+        self.large_alien_health_bar = LargeAlienHealthBar(self.rect.centerx, textures, scale_factor_x, scale_factor_y)
 
         self.death_animation = 0
         self.death_count = 0
@@ -280,9 +271,9 @@ class LargeAlien(pygame.sprite.Sprite):
             if self.direction == "right" and self.death_animation == 0:
                 # Make the large alien face and walk right
                 if right_update % 0.5 != 0:
-                    self.image = pygame.image.load(ALIEN_WALKING_RIGHT_11_15_TEXTURE)
+                    self.image = self._textures.ALIEN_WALKING_RIGHT_11_15
                 else:
-                    self.image = pygame.image.load(ALIEN_STILL_RIGHT_11_15_TEXTURE)
+                    self.image = self._textures.ALIEN_STILL_RIGHT_11_15
                 center = self.rect.center
                 self.rect = self.image.get_rect()
                 self.rect.center = center
@@ -290,9 +281,9 @@ class LargeAlien(pygame.sprite.Sprite):
             elif self.direction == "left" and self.death_animation == 0:
                 # Make the large alien face and walk left
                 if left_update % 0.5 != 0:
-                    self.image = pygame.image.load(ALIEN_WALKING_LEFT_11_15_TEXTURE)
+                    self.image = self._textures.ALIEN_WALKING_LEFT_11_15
                 else:
-                    self.image = pygame.image.load(ALIEN_STILL_LEFT_11_15_TEXTURE)
+                    self.image = self._textures.ALIEN_STILL_LEFT_11_15
                 center = self.rect.center
                 self.rect = self.image.get_rect()
                 self.rect.center = center
@@ -331,7 +322,7 @@ class LargeAlien(pygame.sprite.Sprite):
                 self.large_alien_health_bar.rect.center = (self.rect.centerx, 322 * self.scale_factor_y)
             # Reset the large aliens health
             old_center = self.large_alien_health_bar.rect.center
-            self.large_alien_health_bar.image = pygame.image.load(HEALTH_BAR_33_TEXTURE)
+            self.large_alien_health_bar.image = self._textures.HEALTH_BAR_33
             self.large_alien_health_bar.rect = self.large_alien_health_bar.image.get_rect(center=old_center)
             self.health = 3
             self.precise_x = float(self.rect.centerx)
@@ -353,7 +344,7 @@ class LargeAlien(pygame.sprite.Sprite):
         if 2 <= self.death_animation < 3:
             # Change the large aliens texture to the second frame in the death scene
             old_center = self.rect.center
-            self.image = pygame.image.load(ALIEN_DEATH_2_TEXTURE).convert_alpha()
+            self.image = self._textures.ALIEN_DEATH_2
             self.rect = self.image.get_rect(center=old_center)
             self.death_animation = 3
             self.kill_start_time = time.time()
@@ -381,7 +372,7 @@ class LargeAlien(pygame.sprite.Sprite):
                 sound.play()
             # Set the texture of the large alien to the first frame in the death scene
             old_center = self.rect.center
-            self.image = pygame.image.load(ALIEN_DEATH_1_TEXTURE).convert_alpha()
+            self.image = self._textures.ALIEN_DEATH_1
             self.rect = self.image.get_rect(center=old_center)
             # Reset collision variables
             self.got_hit = 1
@@ -424,9 +415,9 @@ class LargeAlien(pygame.sprite.Sprite):
             self.health = self.health - alien_mode_setup.damage
             old_center = self.large_alien_health_bar.rect.center
             if self.health == 2:
-                self.large_alien_health_bar.image = pygame.image.load(HEALTH_BAR_23_TEXTURE)
+                self.large_alien_health_bar.image = self._textures.HEALTH_BAR_23
             elif self.health == 1:
-                self.large_alien_health_bar.image = pygame.image.load(HEALTH_BAR_13_TEXTURE)
+                self.large_alien_health_bar.image = self._textures.HEALTH_BAR_13
             self.large_alien_health_bar.rect = self.large_alien_health_bar.image.get_rect(center=old_center)
             # Play the hit sound
             if hit_sound == 1:
@@ -511,9 +502,9 @@ class LargeAlien(pygame.sprite.Sprite):
 
 
 class LargeAlienHealthBar(pygame.sprite.Sprite):
-    def __init__(self, x, scale_factor_x, scale_factor_y):
+    def __init__(self, x, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(HEALTH_BAR_33_TEXTURE).convert_alpha()
+        self.image = textures.HEALTH_BAR_33
         self.rect = self.image.get_rect()
         self.rect.center = (x, 322 * scale_factor_y)
         self.health_bar_visible = 1
