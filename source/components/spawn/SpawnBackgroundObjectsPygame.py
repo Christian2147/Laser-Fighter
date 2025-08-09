@@ -40,7 +40,7 @@ class SpawnSun:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Sun background object.
 
@@ -54,6 +54,7 @@ class SpawnSun:
         self.sun_sprite = []
         self.sun_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -74,7 +75,7 @@ class SpawnSun:
             :return: None
         """
 
-        sun = Sun(self.scale_factor_x, self.scale_factor_y)
+        sun = Sun(self._textures, self.scale_factor_x, self.scale_factor_y)
         self.sun_sprite.append(sun)
         self.sun_index = self.sun_index + 1
 
@@ -91,7 +92,7 @@ class SpawnEarth:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Earth in the background.
 
@@ -105,6 +106,7 @@ class SpawnEarth:
         self.earth_sprite = []
         self.earth_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -125,7 +127,7 @@ class SpawnEarth:
             :return: None
         """
 
-        earth = Earth(self.scale_factor_x, self.scale_factor_y)
+        earth = Earth(self._textures, self.scale_factor_x, self.scale_factor_y)
         self.earth_sprite.append(earth)
         self.earth_index = self.earth_index + 1
 
@@ -143,7 +145,7 @@ class SpawnShip:
                 scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
         """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Player Ship in Alien Mode.
 
@@ -157,6 +159,7 @@ class SpawnShip:
         self.ship_sprite = []
         self.ship_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -177,7 +180,7 @@ class SpawnShip:
             :return: None
         """
 
-        ship = Ship(self.scale_factor_x, self.scale_factor_y)
+        ship = Ship(self._textures, self.scale_factor_x, self.scale_factor_y)
         self.ship_sprite.append(ship)
         self.ship_index = self.ship_index + 1
 
@@ -194,7 +197,7 @@ class SpawnGround:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Ground and Player Ship in Alien Mode.
 
@@ -208,6 +211,7 @@ class SpawnGround:
         self.ground_sprite = []
         self.ground_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -228,6 +232,6 @@ class SpawnGround:
             :return: None
         """
 
-        ground = Ground(self.scale_factor_x, self.scale_factor_y)
+        ground = Ground(self._textures, self.scale_factor_x, self.scale_factor_y)
         self.ground_sprite.append(ground)
         self.ground_index = self.ground_index + 1

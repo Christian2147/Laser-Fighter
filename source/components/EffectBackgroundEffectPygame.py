@@ -25,10 +25,6 @@
 import pygame
 import math
 import time
-from setup.TextureSetup import EARTH_TEXTURE
-from setup.TextureSetup import SUN_TEXTURE
-from setup.TextureSetup import SPACE_SHIP_TEXTURE
-from setup.TextureSetup import GROUND_TEXTURE
 
 
 class Earth(pygame.sprite.Sprite):
@@ -40,7 +36,7 @@ class Earth(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates an Earth sprite and spawns it on the screen
 
@@ -52,11 +48,12 @@ class Earth(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(EARTH_TEXTURE)
+        self.image = textures.EARTH
         self.rect = self.image.get_rect()
         self.rect.center = (640 * scale_factor_x, 210 * scale_factor_y)
         self.earth_visible = 1
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -108,7 +105,7 @@ class Sun(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates a Sun sprite and spawns it on the screen
 
@@ -120,7 +117,7 @@ class Sun(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(SUN_TEXTURE)
+        self.image = textures.SUN
         self.rect = self.image.get_rect()
         self.sun_visible = 1
 
@@ -139,6 +136,7 @@ class Sun(pygame.sprite.Sprite):
         # Move the sun to the new location
         self.rect.center = (self.x_coordinate * scale_factor_x, self.y_coordinate * scale_factor_y)
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -214,7 +212,7 @@ class Ground(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the ground level background sprites and spawns them on the screen
 
@@ -226,11 +224,12 @@ class Ground(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(GROUND_TEXTURE)
+        self.image = textures.GROUND
         self.rect = self.image.get_rect()
         self.rect.center = (640 * scale_factor_x, 1091 * scale_factor_y)
         self.ground_visible = 1
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -268,7 +267,7 @@ class Ship(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the ground level background sprites and spawns them on the screen
 
@@ -280,11 +279,12 @@ class Ship(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(SPACE_SHIP_TEXTURE)
+        self.image = textures.SPACE_SHIP
         self.rect = self.image.get_rect()
         self.rect.center = (640 * scale_factor_x, 476 * scale_factor_y)
         self.ship_visible = 1
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 

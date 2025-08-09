@@ -85,10 +85,10 @@ def main():
     textures = TextureSetup(window.scale_factor_X, window.scale_factor_Y)
     textures.load_all_textures()
 
-    sun = SpawnSun(window.scale_factor_X, window.scale_factor_Y)
-    earth = SpawnEarth(window.scale_factor_X, window.scale_factor_Y)
-    ground = SpawnGround(window.scale_factor_X, window.scale_factor_Y)
-    ship = SpawnShip(window.scale_factor_X, window.scale_factor_Y)
+    sun = SpawnSun(textures, window.scale_factor_X, window.scale_factor_Y)
+    earth = SpawnEarth(textures, window.scale_factor_X, window.scale_factor_Y)
+    ground = SpawnGround(textures, window.scale_factor_X, window.scale_factor_Y)
+    ship = SpawnShip(textures, window.scale_factor_X, window.scale_factor_Y)
 
     coin = SpawnCoin(textures)
     power_up = SpawnPowerUp(window.scale_factor_X, window.scale_factor_Y)
