@@ -51,8 +51,6 @@ class PowerUp(pygame.sprite.Sprite):
             and Alien Mode.
 
         Attributes:
-            power_up (pygame.sprite.Sprite): The power up sprite
-
             type (int): Determines the type of power up that this object is
             mode (int): Determines the current mode of the game (Machine mode or Alien mode)
 
