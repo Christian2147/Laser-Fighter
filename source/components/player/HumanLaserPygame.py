@@ -55,7 +55,7 @@ class HumanLaser(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(alien_mode_setup.laser_right_texture)
+        self.image = alien_mode_setup.laser_right_texture
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.laser_visible = 1

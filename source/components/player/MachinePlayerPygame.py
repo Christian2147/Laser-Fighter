@@ -81,7 +81,7 @@ class Player(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(machine_mode_setup.player_texture).convert_alpha()
+        self.image = machine_mode_setup.player_texture
         self.rect = self.image.get_rect()
         self.rect.center = (640 * scale_factor_x, 660 * scale_factor_y)
         self.player_visible = 1
@@ -578,7 +578,7 @@ class Player(pygame.sprite.Sprite):
         # Respawns the player at the origin
         if self.update == 3:
             self.player_visible = 0
-            self.image = pygame.image.load(machine_mode_setup.player_texture).convert_alpha()
+            self.image = machine_mode_setup.player_texture
             self.rect.center = (640 * self.scale_factor_x, 660 * self.scale_factor_y)
             self.update = 3.5
 

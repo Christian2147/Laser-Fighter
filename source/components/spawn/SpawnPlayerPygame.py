@@ -106,7 +106,7 @@ class SpawnHumanPlayer:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Human Player.
             Also creates any miscellaneous variables necessary for Alien Mode.
@@ -125,6 +125,7 @@ class SpawnHumanPlayer:
         self.right_update = 0
         self.left_update = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -152,6 +153,6 @@ class SpawnHumanPlayer:
             :return: None
         """
 
-        human = Human(god_mode, self.scale_factor_x, self.scale_factor_y)
+        human = Human(god_mode, self._textures, self.scale_factor_x, self.scale_factor_y)
         self.current_human.append(human)
         self.current_human_index = self.current_human_index + 1

@@ -103,7 +103,7 @@ def main():
     medium_alien = SpawnMediumAlien(textures, window.scale_factor_X, window.scale_factor_Y)
     large_alien = SpawnLargeAlien(textures, window.scale_factor_X, window.scale_factor_Y)
     ufo = SpawnUFO(textures, window.scale_factor_X, window.scale_factor_Y)
-    human_player = SpawnHumanPlayer(window.scale_factor_X, window.scale_factor)
+    human_player = SpawnHumanPlayer(textures, window.scale_factor_X, window.scale_factor)
 
     panel = SpawnPanel(textures, window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
 

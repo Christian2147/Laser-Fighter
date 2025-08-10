@@ -29,44 +29,6 @@
 """
 
 import pygame
-from setup.TextureSetup import TITLE_SCREEN_BUTTON_TEXTURE
-from setup.TextureSetup import TITLE_SCREEN_BUTTON_HIGHLIGHTED_TEXTURE
-from setup.TextureSetup import TITLE_SCREEN_BUTTON_SMALL_TEXTURE
-from setup.TextureSetup import TITLE_SCREEN_BUTTON_SMALL_HIGHLIGHTED_TEXTURE
-from setup.TextureSetup import SETTINGS_AND_CONTROLS_BUTTON_TEXTURE
-from setup.TextureSetup import SETTINGS_AND_CONTROLS_BUTTON_HIGHLIGHTED_TEXTURE
-from setup.TextureSetup import MAIN_MENU_BUTTON_MAIN_TEXTURE
-from setup.TextureSetup import MAIN_MENU_BUTTON_MAIN_HIGHLIGHTED_TEXTURE
-from setup.TextureSetup import TAB_TEXTURE
-from setup.TextureSetup import TAB_HIGHLIGHTED_TEXTURE
-from setup.TextureSetup import INVENTORY_SLOT_FRAME_TEXTURE
-from setup.TextureSetup import INVENTORY_SLOT_FRAME_HIGHLIGHTED_TEXTURE
-from setup.TextureSetup import BUY_BUTTON_TEXTURE
-from setup.TextureSetup import BUY_BUTTON_HIGHLIGHTED_TEXTURE
-from setup.TextureSetup import MACHINE_MODE_TAB_ICON_TEXTURE
-from setup.TextureSetup import GADGETS_TAB_ICON_TEXTURE
-from setup.TextureSetup import PLAYER_GUN_RIGHT_TEXTURE
-from setup.TextureSetup import YELLOW_LIGHTNING_POWER_UP_TEXTURE
-from setup.TextureSetup import LOCKED_TEXTURE
-from setup.TextureSetup import COIN_INDICATOR_TEXTURE
-from setup.TextureSetup import MACHINE_DEFAULT_SLOT_ICON_TEXTURE
-from setup.TextureSetup import MACHINE_WASHER_SLOT_ICON_TEXTURE
-from setup.TextureSetup import THE_INCINERATOR_SLOT_ICON_TEXTURE
-from setup.TextureSetup import THE_BLACK_HOLE_SLOT_ICON_TEXTURE
-from setup.TextureSetup import THE_STAR_KILLER_SLOT_ICON_TEXTURE
-from setup.TextureSetup import ALIEN_DEFAULT_SLOT_ICON_TEXTURE
-from setup.TextureSetup import THE_COOKER_SLOT_ICON_TEXTURE
-from setup.TextureSetup import POISON_DART_SLOT_ICON_TEXTURE
-from setup.TextureSetup import METEOR_GUN_SLOT_ICON_TEXTURE
-from setup.TextureSetup import SUPERNOVA_SLOT_ICON_TEXTURE
-from setup.TextureSetup import YELLOW_POWER_UP_SLOT_ICON_TEXTURE
-from setup.TextureSetup import BLUE_POWER_UP_SLOT_ICON_TEXTURE
-from setup.TextureSetup import GREEN_POWER_UP_SLOT_ICON_TEXTURE
-from setup.TextureSetup import RED_POWER_UP_SLOT_ICON_TEXTURE
-from setup.TextureSetup import COIN_MAGNET_SLOT_ICON_TEXTURE
-from setup.TextureSetup import ARMOR_SLOT_ICON_TEXTURE
-from setup.TextureSetup import THORNS_SLOT_ICON_TEXTURE
-from setup.TextureSetup import HEART_POWER_UP_SLOT_ICON_TEXTURE
 
 
 class Button(pygame.sprite.Sprite):
@@ -86,7 +48,7 @@ class Button(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, type, id, scale_factor, scale_factor_x, scale_factor_y, page="None"):
+    def __init__(self, type, id, textures, scale_factor, scale_factor_x, scale_factor_y, page="None"):
         """
             Creates a button object of the specified type and id and spawns it on the screen.
 
@@ -108,7 +70,7 @@ class Button(pygame.sprite.Sprite):
 
         super().__init__()
         if type == "Title":
-            self.image = pygame.image.load(TITLE_SCREEN_BUTTON_TEXTURE)
+            self.image = textures.TITLE_SCREEN_BUTTON
             self.rect = self.image.get_rect()
             if id == 1:
                 self.rect.center = (640 * scale_factor_x, 275 * scale_factor_y)
@@ -117,47 +79,47 @@ class Button(pygame.sprite.Sprite):
             elif id == 3:
                 self.rect.center = (640 * scale_factor_x, 635 * scale_factor_y)
         elif type == "Title_Locked":
-            self.image = pygame.image.load(TITLE_SCREEN_BUTTON_TEXTURE)
+            self.image = textures.TITLE_SCREEN_BUTTON
             self.rect = self.image.get_rect()
             if id == 1:
                 self.rect.center = (640 * scale_factor_x, 365 * scale_factor_y)
         elif type == "Title_Small":
-            self.image = pygame.image.load(TITLE_SCREEN_BUTTON_SMALL_TEXTURE)
+            self.image = textures.TITLE_SCREEN_BUTTON_SMALL
             self.rect = self.image.get_rect()
             if id == 1:
                 self.rect.center = (510 * scale_factor_x, 545 * scale_factor_y)
             elif id == 2:
                 self.rect.center = (770 * scale_factor_x, 545 * scale_factor_y)
         elif type == "Game":
-            self.image = pygame.image.load(MAIN_MENU_BUTTON_MAIN_TEXTURE)
+            self.image = textures.MAIN_MENU_BUTTON_MAIN
             self.rect = self.image.get_rect()
             if id == 1:
                 self.rect.center = (103 * scale_factor_x, 21 * scale_factor_y)
         elif type == "Tab":
-            self.image = pygame.image.load(TAB_TEXTURE)
+            self.image = textures.TAB
             self.rect = self.image.get_rect()
             if id < 5:
                 self.rect.center = (int(37.5 * scale_factor_x), int((210 + (120 * (id - 1))) * scale_factor_y))
         elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadget_Slot":
-            self.image = pygame.image.load(INVENTORY_SLOT_FRAME_TEXTURE)
+            self.image = textures.INVENTORY_SLOT_FRAME
             self.rect = self.image.get_rect()
             if id < 5:
                 self.rect.center = ((213 + (170 * (id - 1))) * scale_factor_x, 264 * scale_factor_y)
             elif 4 < id < 9:
                 self.rect.center = ((213 + (170 * (id - 1 - 4))) * scale_factor_x, 454 * scale_factor_y)
         elif type == "Buy" or type == "Enable":
-            self.image = pygame.image.load(BUY_BUTTON_TEXTURE)
+            self.image = textures.BUY_BUTTON
             self.rect = self.image.get_rect()
             self.rect.center = (1090 * scale_factor_x, 630 * scale_factor_y)
         elif type == "Regular_Settings_And_Controls":
-            self.image = pygame.image.load(SETTINGS_AND_CONTROLS_BUTTON_TEXTURE)
+            self.image = textures.SETTINGS_AND_CONTROLS_BUTTON
             self.rect = self.image.get_rect()
             if id == 1:
                 self.rect.center = (int(955.5 * scale_factor_x), 645 * scale_factor_y)
             elif id == 2 or id == 3:
                 self.rect.center = (int(955.5 * scale_factor_x), 565 * scale_factor_y)
         elif type == "Settings_Toggle":
-            self.image = pygame.image.load(SETTINGS_AND_CONTROLS_BUTTON_TEXTURE)
+            self.image = textures.SETTINGS_AND_CONTROLS_BUTTON
             self.rect = self.image.get_rect()
             if id < 8:
                 self.rect.center = (int(315 * scale_factor_x), (165 + (80 * (id - 1))) * scale_factor_y)
@@ -172,13 +134,13 @@ class Button(pygame.sprite.Sprite):
             elif id == 12:
                 self.rect.center = (int(955.5 * scale_factor_x), 485 * scale_factor_y)
         elif type == "Controls_Toggle":
-            self.image = pygame.image.load(SETTINGS_AND_CONTROLS_BUTTON_TEXTURE)
+            self.image = textures.SETTINGS_AND_CONTROLS_BUTTON
             self.rect = self.image.get_rect()
             self.rect.center = (int(315 * scale_factor_x), (165 + (80 * (id - 1))) * scale_factor_y)
         self.button_frame_visible = 1
 
         self.button_text = ButtonText(type, id, self.rect.centerx, self.rect.centery,
-                                      scale_factor, scale_factor_x, scale_factor_y, page)
+                                      textures, scale_factor, scale_factor_x, scale_factor_y, page)
 
         if type == "Buy":
             self.extra_button_text = ButtonText(type, id, self.rect.centerx, self.rect.centery, scale_factor, scale_factor_x, scale_factor_y, page)
@@ -186,7 +148,7 @@ class Button(pygame.sprite.Sprite):
         if type == "Settings_Toggle" or type == "Shop_Slot" or \
                 type == "Power_Up_Slot" or type == "Gadget_Slot" or type == "Buy":
             self.button_indicator = ButtonIndicator(type, id, self.rect.centerx, self.rect.centery,
-                                                    scale_factor, scale_factor_x, scale_factor_y)
+                                                    textures, scale_factor, scale_factor_x, scale_factor_y)
             self.indicator = 1
             self.indicator_toggled = 0
         else:
@@ -195,6 +157,7 @@ class Button(pygame.sprite.Sprite):
         self.type = type
         self.id = id
 
+        self._textures = textures
         self.scale_factor = scale_factor
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -366,7 +329,7 @@ class Button(pygame.sprite.Sprite):
                 self.button_text.rect.center = (640 * self.scale_factor_x, self.rect.centery)
                 self.button_text.write_text("Alien Mode", "semi-large", "normal")
         else:
-            self.button_text.image = pygame.image.load(LOCKED_TEXTURE)
+            self.button_text.image = self._textures.LOCKED
             self.button_text.rect = self.button_text.image.get_rect()
             self.button_text.rect.center = (640 * self.scale_factor_x, self.rect.centery)
 
@@ -538,37 +501,37 @@ class Button(pygame.sprite.Sprite):
 
     def toggle_default(self):
         if self.type == "Title" or self.type == "Title_Locked":
-            self.image = pygame.image.load(TITLE_SCREEN_BUTTON_TEXTURE)
+            self.image = self._textures.TITLE_SCREEN_BUTTON
         elif self.type == "Title_Small":
-            self.image = pygame.image.load(TITLE_SCREEN_BUTTON_SMALL_TEXTURE)
+            self.image = self._textures.TITLE_SCREEN_BUTTON_SMALL
         elif self.type == "Game":
-            self.image = pygame.image.load(MAIN_MENU_BUTTON_MAIN_TEXTURE)
+            self.image = self._textures.MAIN_MENU_BUTTON_MAIN
         elif self.type == "Tab":
-            self.image = pygame.image.load(TAB_TEXTURE)
+            self.image = self._textures.TAB
         elif self.type == "Shop_Slot" or self.type == "Power_Up_Slot" or self.type == "Gadget_Slot":
-            self.image = pygame.image.load(INVENTORY_SLOT_FRAME_TEXTURE)
+            self.image = self._textures.INVENTORY_SLOT_FRAME
         elif self.type == "Buy" or self.type == "Enable":
-            self.image = pygame.image.load(BUY_BUTTON_TEXTURE)
+            self.image = self._textures.BUY_BUTTON
         elif self.type == "Regular_Settings_And_Controls" or self.type == "Settings_Toggle" or \
                 self.type == "Controls_Toggle":
-            self.image = pygame.image.load(SETTINGS_AND_CONTROLS_BUTTON_TEXTURE)
+            self.image = self._textures.SETTINGS_AND_CONTROLS_BUTTON
 
     def toggle_highlighted(self):
         if self.type == "Title" or self.type == "Title_Locked":
-            self.image = pygame.image.load(TITLE_SCREEN_BUTTON_HIGHLIGHTED_TEXTURE)
+            self.image = self._textures.TITLE_SCREEN_BUTTON_HIGHLIGHTED
         elif self.type == "Title_Small":
-            self.image = pygame.image.load(TITLE_SCREEN_BUTTON_SMALL_HIGHLIGHTED_TEXTURE)
+            self.image = self._textures.TITLE_SCREEN_BUTTON_SMALL_HIGHLIGHTED
         elif self.type == "Game":
-            self.image = pygame.image.load(MAIN_MENU_BUTTON_MAIN_HIGHLIGHTED_TEXTURE)
+            self.image = self._textures.MAIN_MENU_BUTTON_MAIN_HIGHLIGHTED
         elif self.type == "Tab":
-            self.image = pygame.image.load(TAB_HIGHLIGHTED_TEXTURE)
+            self.image = self._textures.TAB_HIGHLIGHTED
         elif self.type == "Shop_Slot" or self.type == "Power_Up_Slot" or self.type == "Gadget_Slot":
-            self.image = pygame.image.load(INVENTORY_SLOT_FRAME_HIGHLIGHTED_TEXTURE)
+            self.image = self._textures.INVENTORY_SLOT_FRAME_HIGHLIGHTED
         elif self.type == "Buy" or self.type == "Enable":
-            self.image = pygame.image.load(BUY_BUTTON_HIGHLIGHTED_TEXTURE)
+            self.image = self._textures.BUY_BUTTON_HIGHLIGHTED
         elif self.type == "Regular_Settings_And_Controls" or self.type == "Settings_Toggle" or \
                 self.type == "Controls_Toggle":
-            self.image = pygame.image.load(SETTINGS_AND_CONTROLS_BUTTON_HIGHLIGHTED_TEXTURE)
+            self.image = self._textures.SETTINGS_AND_CONTROLS_BUTTON_HIGHLIGHTED
 
     def update_controls_text_color(self, alert):
         """
@@ -608,7 +571,7 @@ class Button(pygame.sprite.Sprite):
 
 
 class ButtonText(pygame.sprite.Sprite):
-    def __init__(self, type, id, x, y, scale_factor, scale_factor_x, scale_factor_y, page="None"):
+    def __init__(self, type, id, x, y, textures, scale_factor, scale_factor_x, scale_factor_y, page="None"):
         super().__init__()
         self.image = pygame.Surface((0, 0), pygame.SRCALPHA)
         self.image.fill((0, 0, 0, 0))
@@ -617,63 +580,63 @@ class ButtonText(pygame.sprite.Sprite):
         if type == "Title":
             self.rect.center = (640 * scale_factor_x, y)
         elif type == "Title_Locked":
-            self.image = pygame.image.load(LOCKED_TEXTURE)
+            self.image = textures.LOCKED
             self.rect = self.image.get_rect()
             self.rect.center = (640 * scale_factor_x, y)
         elif type == "Title_Small" or type == "Game":
             self.rect.center = (x, y)
         elif type == "Tab":
             if id == 1:
-                self.image = pygame.image.load(MACHINE_MODE_TAB_ICON_TEXTURE)
+                self.image = textures.MACHINE_MODE_TAB_ICON
             elif id == 2:
-                self.image = pygame.image.load(PLAYER_GUN_RIGHT_TEXTURE)
+                self.image = textures.PLAYER_GUN_RIGHT
             elif id == 3:
-                self.image = pygame.image.load(YELLOW_LIGHTNING_POWER_UP_TEXTURE)
+                self.image = textures.YELLOW_LIGHTNING_POWER_UP
             elif id == 4:
-                self.image = pygame.image.load(GADGETS_TAB_ICON_TEXTURE)
+                self.image = textures.GADGETS_TAB_ICON
             self.rect = self.image.get_rect()
             self.rect.center = (x, y)
         elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadget_Slot":
             if page == "Machine_Mode":
                 if id == 1:
-                    self.image = pygame.image.load(MACHINE_DEFAULT_SLOT_ICON_TEXTURE)
+                    self.image = textures.MACHINE_DEFAULT_SLOT_ICON
                 elif id == 2:
-                    self.image = pygame.image.load(MACHINE_WASHER_SLOT_ICON_TEXTURE)
+                    self.image = textures.MACHINE_WASHER_SLOT_ICON
                 elif id == 3:
-                    self.image = pygame.image.load(THE_INCINERATOR_SLOT_ICON_TEXTURE)
+                    self.image = textures.THE_INCINERATOR_SLOT_ICON
                 elif id == 4:
-                    self.image = pygame.image.load(THE_BLACK_HOLE_SLOT_ICON_TEXTURE)
+                    self.image = textures.THE_BLACK_HOLE_SLOT_ICON
                 elif id == 5:
-                    self.image = pygame.image.load(THE_STAR_KILLER_SLOT_ICON_TEXTURE)
+                    self.image = textures.THE_STAR_KILLER_SLOT_ICON
             elif page == "Alien_Mode":
                 if id == 1:
-                    self.image = pygame.image.load(ALIEN_DEFAULT_SLOT_ICON_TEXTURE)
+                    self.image = textures.ALIEN_DEFAULT_SLOT_ICON
                 elif id == 2:
-                    self.image = pygame.image.load(THE_COOKER_SLOT_ICON_TEXTURE)
+                    self.image = textures.THE_COOKER_SLOT_ICON
                 elif id == 3:
-                    self.image = pygame.image.load(POISON_DART_SLOT_ICON_TEXTURE)
+                    self.image = textures.POISON_DART_SLOT_ICON
                 elif id == 4:
-                    self.image = pygame.image.load(METEOR_GUN_SLOT_ICON_TEXTURE)
+                    self.image = textures.METEOR_GUN_SLOT_ICON
                 elif id == 5:
-                    self.image = pygame.image.load(SUPERNOVA_SLOT_ICON_TEXTURE)
+                    self.image = textures.SUPERNOVA_SLOT_ICON
             elif page == "Power_Ups":
                 if id == 1:
-                    self.image = pygame.image.load(YELLOW_POWER_UP_SLOT_ICON_TEXTURE)
+                    self.image = textures.YELLOW_POWER_UP_SLOT_ICON
                 elif id == 2:
-                    self.image = pygame.image.load(BLUE_POWER_UP_SLOT_ICON_TEXTURE)
+                    self.image = textures.BLUE_POWER_UP_SLOT_ICON
                 elif id == 3:
-                    self.image = pygame.image.load(GREEN_POWER_UP_SLOT_ICON_TEXTURE)
+                    self.image = textures.GREEN_POWER_UP_SLOT_ICON
                 elif id == 4:
-                    self.image = pygame.image.load(RED_POWER_UP_SLOT_ICON_TEXTURE)
+                    self.image = textures.RED_POWER_UP_SLOT_ICON
             elif page == "Gadgets":
                 if id == 1:
-                    self.image = pygame.image.load(COIN_MAGNET_SLOT_ICON_TEXTURE)
+                    self.image = textures.COIN_MAGNET_SLOT_ICON
                 elif id == 2:
-                    self.image = pygame.image.load(ARMOR_SLOT_ICON_TEXTURE)
+                    self.image = textures.ARMOR_SLOT_ICON
                 elif id == 3:
-                    self.image = pygame.image.load(THORNS_SLOT_ICON_TEXTURE)
+                    self.image = textures.THORNS_SLOT_ICON
                 elif id == 4:
-                    self.image = pygame.image.load(HEART_POWER_UP_SLOT_ICON_TEXTURE)
+                    self.image = textures.HEART_POWER_UP_SLOT_ICON
             self.rect = self.image.get_rect()
             self.rect.center = (x, y - 20 * scale_factor_y)
         elif type == "Buy":
@@ -709,6 +672,7 @@ class ButtonText(pygame.sprite.Sprite):
         self.type = type
         self.id = id
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
         self.scale_factor = scale_factor
@@ -822,7 +786,7 @@ class ButtonText(pygame.sprite.Sprite):
 
 
 class ButtonIndicator(pygame.sprite.Sprite):
-    def __init__(self, type, id, x, y, scale_factor, scale_factor_x, scale_factor_y):
+    def __init__(self, type, id, x, y, textures, scale_factor, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = pygame.Surface((0, 0), pygame.SRCALPHA)
         self.image.fill((0, 0, 0, 0))
@@ -855,12 +819,12 @@ class ButtonIndicator(pygame.sprite.Sprite):
                 self.rect.center = (int(1024.5 * scale_factor_x), 485 * scale_factor_y)
         elif type == "Shop_Slot" or type == "Power_Up_Slot" or type == "Gadget_Slot":
             self.color = "white"
-            self.image = pygame.image.load(LOCKED_TEXTURE)
+            self.image = textures.LOCKED
             self.rect = self.image.get_rect()
             self.rect.center = (x, y - 20 * scale_factor_y)
             self.indicator_toggled = 0
         elif type == "Buy":
-            self.image = pygame.image.load(COIN_INDICATOR_TEXTURE)
+            self.image = textures.COIN_INDICATOR
             self.rect = self.image.get_rect()
             self.rect.center = (x - 125 * scale_factor_x, y + 28 * scale_factor_y)
         self.indicator_visible = 1

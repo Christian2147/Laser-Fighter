@@ -46,7 +46,7 @@ class MachineLaser(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(machine_mode_setup.laser_texture)
+        self.image = machine_mode_setup.laser_texture
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.laser_visible = 0

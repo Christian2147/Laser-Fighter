@@ -22,24 +22,6 @@
     Here, variables for Alien Mode are pre defined before the game starts to avoid in-game lag.
 """
 
-from setup.TextureSetup import PLAYER_GUN_RIGHT_TEXTURE
-from setup.TextureSetup import PLAYER_GUN_LEFT_TEXTURE
-from setup.TextureSetup import THE_COOKER_RIGHT_TEXTURE
-from setup.TextureSetup import THE_COOKER_LEFT_TEXTURE
-from setup.TextureSetup import POISON_DART_GUN_RIGHT_TEXTURE
-from setup.TextureSetup import POISON_DART_GUN_LEFT_TEXTURE
-from setup.TextureSetup import METEOR_GUN_RIGHT_TEXTURE
-from setup.TextureSetup import METEOR_GUN_LEFT_TEXTURE
-from setup.TextureSetup import SUPERNOVA_RIGHT_TEXTURE
-from setup.TextureSetup import SUPERNOVA_LEFT_TEXTURE
-from setup.TextureSetup import PLAYER_HEAD_LASER_TEXTURE
-from setup.TextureSetup import THE_COOKER_LASER_TEXTURE
-from setup.TextureSetup import POISON_DART_LASER_TEXTURE
-from setup.TextureSetup import METEOR_GUN_LASER_RIGHT_TEXTURE
-from setup.TextureSetup import METEOR_GUN_LASER_LEFT_TEXTURE
-from setup.TextureSetup import SUPERNOVA_LASER_RIGHT_TEXTURE
-from setup.TextureSetup import SUPERNOVA_LASER_LEFT_TEXTURE
-
 
 class AlienModeSetup:
     """
@@ -198,12 +180,12 @@ class AlienModeSetup:
 
         # Sets the variables based on which items in the shop are selected
         if self._shop_config.alien_slot_selected == 1:
-            self.gun_right_texture = PLAYER_GUN_RIGHT_TEXTURE
-            self.gun_left_texture = PLAYER_GUN_LEFT_TEXTURE
+            self.gun_right_texture = self._textures.PLAYER_GUN_RIGHT
+            self.gun_left_texture = self._textures.PLAYER_GUN_LEFT
             self.gun_offset = 20 * self._scale_factor_x
 
-            self.laser_right_texture = PLAYER_HEAD_LASER_TEXTURE
-            self.laser_left_texture = PLAYER_HEAD_LASER_TEXTURE
+            self.laser_right_texture = self._textures.PLAYER_HEAD_LASER
+            self.laser_left_texture = self._textures.PLAYER_HEAD_LASER
             self.laser_offset = 35 * self._scale_factor_x
 
             self.laser_speed = 12 * self._scale_factor_x
@@ -214,12 +196,12 @@ class AlienModeSetup:
 
             self.regular_score_multiplier = 1
         elif self._shop_config.alien_slot_selected == 2:
-            self.gun_right_texture = THE_COOKER_RIGHT_TEXTURE
-            self.gun_left_texture = THE_COOKER_LEFT_TEXTURE
+            self.gun_right_texture = self._textures.THE_COOKER_RIGHT
+            self.gun_left_texture = self._textures.THE_COOKER_LEFT
             self.gun_offset = 20 * self._scale_factor_x
 
-            self.laser_right_texture = THE_COOKER_LASER_TEXTURE
-            self.laser_left_texture = THE_COOKER_LASER_TEXTURE
+            self.laser_right_texture = self._textures.THE_COOKER_LASER
+            self.laser_left_texture = self._textures.THE_COOKER_LASER
             self.laser_offset = 35 * self._scale_factor_x
 
             self.laser_speed = 14 * self._scale_factor_x
@@ -230,12 +212,12 @@ class AlienModeSetup:
 
             self.regular_score_multiplier = 1
         elif self._shop_config.alien_slot_selected == 3:
-            self.gun_right_texture = POISON_DART_GUN_RIGHT_TEXTURE
-            self.gun_left_texture = POISON_DART_GUN_LEFT_TEXTURE
+            self.gun_right_texture = self._textures.POISON_DART_GUN_RIGHT
+            self.gun_left_texture = self._textures.POISON_DART_GUN_LEFT
             self.gun_offset = 20 * self._scale_factor_x
 
-            self.laser_right_texture = POISON_DART_LASER_TEXTURE
-            self.laser_left_texture = POISON_DART_LASER_TEXTURE
+            self.laser_right_texture = self._textures.POISON_DART_LASER
+            self.laser_left_texture = self._textures.POISON_DART_LASER
             self.laser_offset = 35 * self._scale_factor_x
 
             self.laser_speed = 20 * self._scale_factor_x
@@ -246,12 +228,12 @@ class AlienModeSetup:
 
             self.regular_score_multiplier = 1
         elif self._shop_config.alien_slot_selected == 4:
-            self.gun_right_texture = METEOR_GUN_RIGHT_TEXTURE
-            self.gun_left_texture = METEOR_GUN_LEFT_TEXTURE
+            self.gun_right_texture = self._textures.METEOR_GUN_RIGHT
+            self.gun_left_texture = self._textures.METEOR_GUN_LEFT
             self.gun_offset = 28 * self._scale_factor_x
 
-            self.laser_right_texture = METEOR_GUN_LASER_RIGHT_TEXTURE
-            self.laser_left_texture = METEOR_GUN_LASER_LEFT_TEXTURE
+            self.laser_right_texture = self._textures.METEOR_GUN_LASER_RIGHT
+            self.laser_left_texture = self._textures.METEOR_GUN_LASER_LEFT
             self.laser_offset = 65 * self._scale_factor_x
 
             self.laser_speed = 24 * self._scale_factor_x
@@ -262,12 +244,12 @@ class AlienModeSetup:
 
             self.regular_score_multiplier = 2
         elif self._shop_config.alien_slot_selected == 5:
-            self.gun_right_texture = SUPERNOVA_RIGHT_TEXTURE
-            self.gun_left_texture = SUPERNOVA_LEFT_TEXTURE
+            self.gun_right_texture = self._textures.SUPERNOVA_RIGHT
+            self.gun_left_texture = self._textures.SUPERNOVA_LEFT
             self.gun_offset = 28 * self._scale_factor_x
 
-            self.laser_right_texture = SUPERNOVA_LASER_RIGHT_TEXTURE
-            self.laser_left_texture = SUPERNOVA_LASER_LEFT_TEXTURE
+            self.laser_right_texture = self._textures.SUPERNOVA_LASER_RIGHT
+            self.laser_left_texture = self._textures.SUPERNOVA_LASER_LEFT
             self.laser_offset = 65 * self._scale_factor_x
 
             self.laser_speed = 27 * self._scale_factor_x

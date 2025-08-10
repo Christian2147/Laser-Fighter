@@ -30,33 +30,6 @@ import math
 import time
 from components.player.HumanLaserPygame import HumanLaser
 from setup.ModeSetupMasterPygame import alien_mode_setup
-from setup.TextureSetup import HUMAN_STILL_RIGHT_TEXTURE
-from setup.TextureSetup import HUMAN_STILL_LEFT_TEXTURE
-from setup.TextureSetup import HUMAN_WALKING_RIGHT_TEXTURE
-from setup.TextureSetup import HUMAN_WALKING_LEFT_TEXTURE
-from setup.TextureSetup import OXYGEN_TANK_TEXTURE
-from setup.TextureSetup import PLAYER_DEATH_1_TEXTURE
-from setup.TextureSetup import PLAYER_DEATH_2_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_1010_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_910_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_810_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_710_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_610_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_510_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_410_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_310_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_210_TEXTURE
-from setup.TextureSetup import HEALTH_BAR_110_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_10_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_9_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_8_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_7_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_6_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_5_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_4_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_3_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_2_TEXTURE
-from setup.TextureSetup import ARMOR_BAR_10_1_TEXTURE
 
 
 class Human(pygame.sprite.Sprite):
@@ -121,7 +94,7 @@ class Human(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, god_mode, scale_factor_x, scale_factor_y):
+    def __init__(self, god_mode, textures, scale_factor_x, scale_factor_y):
         """
             Creates a human object and spawns it on the screen
 
@@ -136,15 +109,15 @@ class Human(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(HUMAN_STILL_RIGHT_TEXTURE)
+        self.image = textures.HUMAN_STILL_RIGHT
         self.rect = self.image.get_rect()
         self.rect.center = (640 * scale_factor_x, 501 * scale_factor_y)
         self.human_visible = 1
         self.direction = "stop"
 
-        self.oxygen_tank = OxygenTank(self.rect.centerx, self.rect.centery, scale_factor_x, scale_factor_y)
+        self.oxygen_tank = OxygenTank(self.rect.centerx, self.rect.centery, textures, scale_factor_x, scale_factor_y)
 
-        self.gun = Gun(self.rect.centerx, self.rect.centery, scale_factor_x, scale_factor_y)
+        self.gun = Gun(self.rect.centerx, self.rect.centery, textures, scale_factor_x, scale_factor_y)
 
         # Set the laser list (For multiple lasers)
         self.laser_list = []
@@ -155,11 +128,11 @@ class Human(pygame.sprite.Sprite):
             laser.laser_visible = 0
             self.laser_list.append(laser)
 
-        self.health_bar = HealthBar(god_mode, scale_factor_x, scale_factor_y)
+        self.health_bar = HealthBar(god_mode, textures, scale_factor_x, scale_factor_y)
 
         # If the shield is enabled, an armor bar is created in the top right corner of the screen
         if alien_mode_setup.health == 20:
-            self.armor_bar = ArmorBar(god_mode, scale_factor_x, scale_factor_y)
+            self.armor_bar = ArmorBar(god_mode, textures, scale_factor_x, scale_factor_y)
             self.armor_created = 1
         else:
             self.armor_created = 0
@@ -196,6 +169,7 @@ class Human(pygame.sprite.Sprite):
         self.walk_start_time = 0
         self.gun_start_time = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -456,7 +430,7 @@ class Human(pygame.sprite.Sprite):
                 l.rect.centerx = self.gun.rect.centerx + alien_mode_setup.laser_offset
                 l.rect.centery = self.gun.rect.centery - 5 * self.scale_factor_y
                 # Set the texture to the laser facing right
-                l.image = pygame.image.load(alien_mode_setup.laser_right_texture)
+                l.image = alien_mode_setup.laser_right_texture
                 l.laser_update = 0
             # If there is more than 1 laser (Can only be 2, not 3), then halt the second laser.
             if len(self.laser_list) > 1:
@@ -477,7 +451,7 @@ class Human(pygame.sprite.Sprite):
                 l.rect.centerx = self.gun.rect.centerx - alien_mode_setup.laser_offset
                 l.rect.centery = self.gun.rect.centery - 5 * self.scale_factor_y
                 # Set the texture to the laser facing left
-                l.image = pygame.image.load(alien_mode_setup.laser_left_texture)
+                l.image = alien_mode_setup.laser_left_texture
                 l.laser_update = 0
             # If there is more than 1 laser (Can only be 2, not 3), then halt the second laser.
             if len(self.laser_list) > 1:
@@ -792,9 +766,9 @@ class Human(pygame.sprite.Sprite):
             if self.direction == "right" and self.death_animation == 0:
                 # Make the player face and walk right
                 if (self.moving_right == 1 and right_update % 0.5 != 0) or self.jump_update == 1:
-                    self.image = pygame.image.load(HUMAN_WALKING_RIGHT_TEXTURE)
+                    self.image = self._textures.HUMAN_WALKING_RIGHT
                 else:
-                    self.image = pygame.image.load(HUMAN_STILL_RIGHT_TEXTURE)
+                    self.image = self._textures.HUMAN_STILL_RIGHT
                 center = self.rect.center
                 self.rect = self.image.get_rect()
                 self.rect.center = center
@@ -802,9 +776,9 @@ class Human(pygame.sprite.Sprite):
             elif self.direction == "left" and self.death_animation == 0:
                 # Make the player face and walk left
                 if (self.moving_left == 1 and left_update % 0.5 != 0) or self.jump_update == 1:
-                    self.image = pygame.image.load(HUMAN_WALKING_LEFT_TEXTURE)
+                    self.image = self._textures.HUMAN_WALKING_LEFT
                 else:
-                    self.image = pygame.image.load(HUMAN_STILL_LEFT_TEXTURE)
+                    self.image = self._textures.HUMAN_STILL_LEFT
                 center = self.rect.center
                 self.rect = self.image.get_rect()
                 self.rect.center = center
@@ -823,10 +797,10 @@ class Human(pygame.sprite.Sprite):
         if elapsed_time >= 0.005:
             # If the players direction is right, make the gun face right
             if self.gun_direction == 1:
-                self.gun.image = pygame.image.load(alien_mode_setup.gun_right_texture)
+                self.gun.image = alien_mode_setup.gun_right_texture
             # If the players direction is left, make the gun face left
             elif self.gun_direction == 2:
-                self.gun.image = pygame.image.load(alien_mode_setup.gun_left_texture)
+                self.gun.image = alien_mode_setup.gun_left_texture
             self.gun_start_time = time.time()
 
     def grant_player_health(self):
@@ -843,55 +817,55 @@ class Human(pygame.sprite.Sprite):
             self.health = self.health + 3
 
         if self.health >= 10:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_1010_TEXTURE)
+            self.health_bar.image = self._textures.HEALTH_BAR_1010
             if self.health == 20:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_10_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_10
             elif self.health == 19:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_9_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_9
             elif self.health == 18:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_8_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_8
             elif self.health == 17:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_7_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_7
             elif self.health == 16:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_6_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_6
             elif self.health == 15:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_5_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_5
             elif self.health == 14:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_4_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_4
             elif self.health == 13:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_3_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_3
             elif self.health == 12:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_2_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_2
             elif self.health == 11:
                 self.armor_bar.armor_bar_visible = 1
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_1_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_1
         elif self.health == 9:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_910_TEXTURE)
+            self.health_bar.image = self._textures.HEALTH_BAR_910
         elif self.health == 8:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_810_TEXTURE)
+            self.health_bar.image = self._textures.HEALTH_BAR_810
         elif self.health == 7:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_710_TEXTURE)
+            self.health_bar.image = self._textures.HEALTH_BAR_710
         elif self.health == 6:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_610_TEXTURE)
+            self.health_bar.image = self._textures.HEALTH_BAR_610
         elif self.health == 5:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_510_TEXTURE)
+            self.health_bar.image = self._textures.HEALTH_BAR_510
         elif self.health == 4:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_410_TEXTURE)
+            self.health_bar.image = self._textures.HEALTH_BAR_410
         elif self.health == 3:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_310_TEXTURE)
+            self.health_bar.image = self._textures.HEALTH_BAR_310
         elif self.health == 2:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_210_TEXTURE)
+            self.health_bar.image = self._textures.HEALTH_BAR_210
         elif self.health == 1:
-            self.health_bar.image = pygame.image.load(HEALTH_BAR_110_TEXTURE)
+            self.health_bar.image = self._textures.HEALTH_BAR_110
 
     def kill_player(self, death_sound):
         """
@@ -916,7 +890,7 @@ class Human(pygame.sprite.Sprite):
                 self.death_iterator = 3
             elif self.death_iterator == 3:
                 # Change the players texture to the second frame of the explosion
-                self.image = pygame.image.load(PLAYER_DEATH_2_TEXTURE)
+                self.image = self._textures.PLAYER_DEATH_2
                 self.death_iterator = self.death_iterator + 0.125
                 self.kill_start_time = time.time()
             elif 3 < self.death_iterator < 5:
@@ -931,9 +905,9 @@ class Human(pygame.sprite.Sprite):
             elif self.death_iterator == 6:
                 # Reset the players health to 10 or 20 is armor is enabled
                 self.health = alien_mode_setup.health
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_1010_TEXTURE)
+                self.health_bar.image = self._textures.HEALTH_BAR_1010
                 if self.health == 20:
-                    self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_10_TEXTURE)
+                    self.armor_bar.image = self._textures.ARMOR_BAR_10_10
                     self.armor_bar.armor_bar_visible = 1
                 # Move the player back to the center of the screen
                 self.rect.center = (640 * self.scale_factor_x, 501 * self.scale_factor_y)
@@ -941,7 +915,7 @@ class Human(pygame.sprite.Sprite):
                 self.gun.center = (self.rect.centerx, self.rect.centery - 12 * self.scale_factor_y)
                 self.oxygen_tank.oxygen_tank_visible = 1
                 # Reset the players texture and all related variables
-                self.image = pygame.image.load(HUMAN_STILL_RIGHT_TEXTURE)
+                self.image = self._textures.HUMAN_STILL_RIGHT
                 self.direction = "stop"
                 self.direction = 0
                 self.death_iterator = 0
@@ -963,7 +937,7 @@ class Human(pygame.sprite.Sprite):
             for l in self.laser_list:
                 l.laser_update = 20
             # Set the players texture to the first frame of the explosion
-            self.image = pygame.image.load(PLAYER_DEATH_1_TEXTURE)
+            self.image = self._textures.PLAYER_DEATH_1
             if death_sound == 1:
                 sound = pygame.mixer.Sound("sound/Player_Death_Sound.wav")
                 sound.play()
@@ -1005,44 +979,44 @@ class Human(pygame.sprite.Sprite):
             # Update the players health bar
             # If the players health is above 10, an armor bar should be visible
             if self.health == 19:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_9_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_9
             elif self.health == 18:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_8_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_8
             elif self.health == 17:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_7_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_7
             elif self.health == 16:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_6_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_6
             elif self.health == 15:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_5_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_5
             elif self.health == 14:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_4_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_4
             elif self.health == 13:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_3_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_3
             elif self.health == 12:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_2_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_2
             elif self.health == 11:
-                self.armor_bar.image = pygame.image.load(ARMOR_BAR_10_1_TEXTURE)
+                self.armor_bar.image = self._textures.ARMOR_BAR_10_1
             # Armor bar disappears when the players health drops below 11
             elif self.health == 10:
                 self.armor_bar.armor_bar_visible = 0
             elif self.health == 9:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_910_TEXTURE)
+                self.health_bar.image = self._textures.HEALTH_BAR_910
             elif self.health == 8:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_810_TEXTURE)
+                self.health_bar.image = self._textures.HEALTH_BAR_810
             elif self.health == 7:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_710_TEXTURE)
+                self.health_bar.image = self._textures.HEALTH_BAR_710
             elif self.health == 6:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_610_TEXTURE)
+                self.health_bar.image = self._textures.HEALTH_BAR_610
             elif self.health == 5:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_510_TEXTURE)
+                self.health_bar.image = self._textures.HEALTH_BAR_510
             elif self.health == 4:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_410_TEXTURE)
+                self.health_bar.image = self._textures.HEALTH_BAR_410
             elif self.health == 3:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_310_TEXTURE)
+                self.health_bar.image = self._textures.HEALTH_BAR_310
             elif self.health == 2:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_210_TEXTURE)
+                self.health_bar.image = self._textures.HEALTH_BAR_210
             elif self.health == 1:
-                self.health_bar.image = pygame.image.load(HEALTH_BAR_110_TEXTURE)
+                self.health_bar.image = self._textures.HEALTH_BAR_110
             self.hit_delay = self.hit_delay + 1
             self.hit_start_time = time.time()
             return
@@ -1058,14 +1032,15 @@ class Human(pygame.sprite.Sprite):
 
 
 class OxygenTank(pygame.sprite.Sprite):
-    def __init__(self, x, y, scale_factor_x, scale_factor_y):
+    def __init__(self, x, y, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(OXYGEN_TANK_TEXTURE)
+        self.image = textures.OXYGEN_TANK
         self.rect = self.image.get_rect()
         self.rect.center = (x - 30.5 * scale_factor_x, y - 11 * scale_factor_y)
         self.oxygen_tank_visible = 1
         self.direction = "stop"
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -1079,14 +1054,15 @@ class OxygenTank(pygame.sprite.Sprite):
 
 
 class Gun(pygame.sprite.Sprite):
-    def __init__(self, x, y, scale_factor_x, scale_factor_y):
+    def __init__(self, x, y, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(alien_mode_setup.gun_right_texture)
+        self.image = alien_mode_setup.gun_right_texture
         self.rect = self.image.get_rect()
         self.rect.center = (x, y - 12 * scale_factor_y)
         self.gun_visible = 0
         self.direction = "stop"
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -1100,9 +1076,9 @@ class Gun(pygame.sprite.Sprite):
 
 
 class HealthBar(pygame.sprite.Sprite):
-    def __init__(self, god_mode, scale_factor_x, scale_factor_y):
+    def __init__(self, god_mode, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(HEALTH_BAR_1010_TEXTURE)
+        self.image = textures.HEALTH_BAR_1010
         self.rect = self.image.get_rect()
         self.rect.center = (1171 * scale_factor_x, 21 * scale_factor_y)
         if god_mode == 1:
@@ -1110,6 +1086,7 @@ class HealthBar(pygame.sprite.Sprite):
         else:
             self.health_bar_visible = 1
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -1122,9 +1099,9 @@ class HealthBar(pygame.sprite.Sprite):
 
 
 class ArmorBar(pygame.sprite.Sprite):
-    def __init__(self, god_mode, scale_factor_x, scale_factor_y):
+    def __init__(self, god_mode, textures, scale_factor_x, scale_factor_y):
         super().__init__()
-        self.image = pygame.image.load(ARMOR_BAR_10_10_TEXTURE)
+        self.image = textures.ARMOR_BAR_10_10
         self.rect = self.image.get_rect()
         self.rect.center = (1171 * scale_factor_x, 61 * scale_factor_y)
         if god_mode == 1:
@@ -1132,6 +1109,7 @@ class ArmorBar(pygame.sprite.Sprite):
         else:
             self.armor_bar_visible = 1
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 

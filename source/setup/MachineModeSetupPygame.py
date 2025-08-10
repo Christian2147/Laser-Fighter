@@ -22,17 +22,6 @@
     Here, variables for Machine Mode are pre defined before the game starts to avoid in-game lag.
 """
 
-from setup.TextureSetup import MACHINE_PLAYER_TEXTURE
-from setup.TextureSetup import MACHINE_PLAYER_LASER_TEXTURE
-from setup.TextureSetup import MACHINE_WASHER_TEXTURE
-from setup.TextureSetup import MACHINE_WASHER_LASER_TEXTURE
-from setup.TextureSetup import THE_INCINERATOR_TEXTURE
-from setup.TextureSetup import INCINERATOR_LASER_TEXTURE
-from setup.TextureSetup import THE_BLACK_HOLE_TEXTURE
-from setup.TextureSetup import BLACK_HOLE_LASER_TEXTURE
-from setup.TextureSetup import THE_STAR_KILLER_TEXTURE
-from setup.TextureSetup import STAR_KILLER_LASER_TEXTURE
-
 
 class MachineModeSetup:
     """
@@ -189,9 +178,9 @@ class MachineModeSetup:
 
         # Sets the variables based on which items in the shop are selected
         if self._shop_config.machine_slot_selected == 1:
-            self.player_texture = MACHINE_PLAYER_TEXTURE
+            self.player_texture = self._textures.MACHINE_PLAYER
 
-            self.laser_texture = MACHINE_PLAYER_LASER_TEXTURE
+            self.laser_texture = self._textures.MACHINE_PLAYER_LASER
             self.laser_offset = 130 * self._scale_factor_y
             self.laser_speed = 14.5 * self._scale_factor_y
             self.laser_max_distance = 0 * self._scale_factor_y # converted
@@ -201,9 +190,9 @@ class MachineModeSetup:
 
             self.regular_score_multiplier = 1
         elif self._shop_config.machine_slot_selected == 2:
-            self.player_texture = MACHINE_WASHER_TEXTURE
+            self.player_texture = self._textures.MACHINE_WASHER
 
-            self.laser_texture = MACHINE_WASHER_LASER_TEXTURE
+            self.laser_texture = self._textures.MACHINE_WASHER_LASER
             self.laser_offset = 135 * self._scale_factor_y
             self.laser_speed = 25 * self._scale_factor_y
             self.laser_max_distance = -10 * self._scale_factor_y
@@ -213,9 +202,9 @@ class MachineModeSetup:
 
             self.regular_score_multiplier = 1
         elif self._shop_config.machine_slot_selected == 3:
-            self.player_texture = THE_INCINERATOR_TEXTURE
+            self.player_texture = self._textures.THE_INCINERATOR
 
-            self.laser_texture = INCINERATOR_LASER_TEXTURE
+            self.laser_texture = self._textures.INCINERATOR_LASER
             self.laser_offset = 135 * self._scale_factor_y
             self.laser_speed = 20 * self._scale_factor_y
             self.laser_max_distance = -110 * self._scale_factor_y
@@ -225,9 +214,9 @@ class MachineModeSetup:
 
             self.regular_score_multiplier = 1
         elif self._shop_config.machine_slot_selected == 4:
-            self.player_texture = THE_BLACK_HOLE_TEXTURE
+            self.player_texture = self._textures.THE_BLACK_HOLE
 
-            self.laser_texture = BLACK_HOLE_LASER_TEXTURE
+            self.laser_texture = self._textures.BLACK_HOLE_LASER
             self.laser_offset = 145 * self._scale_factor_y
             self.laser_speed = 27 * self._scale_factor_y
             self.laser_max_distance = -220 * self._scale_factor_y
@@ -237,9 +226,9 @@ class MachineModeSetup:
 
             self.regular_score_multiplier = 2
         elif self._shop_config.machine_slot_selected == 5:
-            self.player_texture = THE_STAR_KILLER_TEXTURE
+            self.player_texture = self._textures.THE_STAR_KILLER
 
-            self.laser_texture = STAR_KILLER_LASER_TEXTURE
+            self.laser_texture = self._textures.STAR_KILLER_LASER
             self.laser_offset = 145 * self._scale_factor_y
             self.laser_speed = 30 * self._scale_factor_y
             self.laser_max_distance = -220 * self._scale_factor_y
