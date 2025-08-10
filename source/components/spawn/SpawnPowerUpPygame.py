@@ -33,8 +33,6 @@ class SpawnPowerUp:
         Represents the Power Up container in Laser Fighter.
 
         Attributes:
-            all_power_ups (list): Contains all of the power up sprites created since the game has
-                launched, even the ones removed from the screen
             current_power_ups (list): Contains all of the power up sprites currently visible/active on the screen.
             power_up_index (list): Stores which of each of the different power up types is currently on the screen
                 (There are 4 different types, 3 possible per mode (5 with the Hearts Gadget))
@@ -46,7 +44,7 @@ class SpawnPowerUp:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Power Up.
 
@@ -62,6 +60,7 @@ class SpawnPowerUp:
         self.power_up_update = 0
         self.power_up_time = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -98,51 +97,51 @@ class SpawnPowerUp:
         # Yellow power up
         if type == 1:
             if mode == "Machine_Mode":
-                power_up = PowerUp(1, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                power_up = PowerUp(1, 1, power_up_spawn_sound, self._textures, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[0] = 1
                 self.current_power_ups.append(power_up)
             elif mode == "Alien_Mode":
-                power_up = PowerUp(1, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                power_up = PowerUp(1, 2, power_up_spawn_sound, self._textures, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[0] = 1
                 self.current_power_ups.append(power_up)
         # Blue power up
         elif type == 2:
             if mode == "Machine_Mode":
-                power_up = PowerUp(2, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                power_up = PowerUp(2, 1, power_up_spawn_sound, self._textures, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[1] = 1
                 self.current_power_ups.append(power_up)
             elif mode == "Alien_Mode":
-                power_up = PowerUp(2, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                power_up = PowerUp(2, 2, power_up_spawn_sound, self._textures, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[1] = 1
                 self.current_power_ups.append(power_up)
         # Green power up
         elif type == 3:
             if mode == "Machine_Mode":
-                power_up = PowerUp(3, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                power_up = PowerUp(3, 1, power_up_spawn_sound, self._textures, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[2] = 1
                 self.current_power_ups.append(power_up)
             elif mode == "Alien_Mode":
-                power_up = PowerUp(3, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                power_up = PowerUp(3, 2, power_up_spawn_sound, self._textures, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[2] = 1
                 self.current_power_ups.append(power_up)
         # Red power up
         elif type == 4:
             if mode == "Machine_Mode":
-                power_up = PowerUp(4, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                power_up = PowerUp(4, 1, power_up_spawn_sound, self._textures, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[3] = 1
                 self.current_power_ups.append(power_up)
             elif mode == "Alien_Mode":
-                power_up = PowerUp(4, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                power_up = PowerUp(4, 2, power_up_spawn_sound, self._textures, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[3] = 1
                 self.current_power_ups.append(power_up)
         # Heart power up (If Heart power up gadget is on)
         elif type == 5:
             if mode == "Machine_Mode":
-                power_up = PowerUp(5, 1, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                power_up = PowerUp(5, 1, power_up_spawn_sound, self._textures, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[4] = 1
                 self.current_power_ups.append(power_up)
             elif mode == "Alien_Mode":
-                power_up = PowerUp(5, 2, power_up_spawn_sound, self.scale_factor_x, self.scale_factor_y)
+                power_up = PowerUp(5, 2, power_up_spawn_sound, self._textures, self.scale_factor_x, self.scale_factor_y)
                 self.power_up_index[4] = 1
                 self.current_power_ups.append(power_up)
 
@@ -160,7 +159,7 @@ class SpawnYellowPowerUpIndicator:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Yellow Power Up Indicator.
 
@@ -174,6 +173,7 @@ class SpawnYellowPowerUpIndicator:
         self.yellow_power_up_indicator_sprite = []
         self.yellow_power_up_indicator_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -194,7 +194,7 @@ class SpawnYellowPowerUpIndicator:
             :return: None
         """
 
-        yellow_power_up_indicator = YellowIndicator(self.scale_factor_x, self.scale_factor_y)
+        yellow_power_up_indicator = YellowIndicator(self._textures, self.scale_factor_x, self.scale_factor_y)
         self.yellow_power_up_indicator_sprite.append(yellow_power_up_indicator)
         self.yellow_power_up_indicator_index = self.yellow_power_up_indicator_index + 1
 
@@ -212,7 +212,7 @@ class SpawnBluePowerUpIndicator:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Blue Power Up Indicator.
 
@@ -226,6 +226,7 @@ class SpawnBluePowerUpIndicator:
         self.blue_power_up_indicator_sprite = []
         self.blue_power_up_indicator_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -246,7 +247,7 @@ class SpawnBluePowerUpIndicator:
             :return: None
         """
 
-        blue_power_up_indicator = BlueIndicator(self.scale_factor_x, self.scale_factor_y)
+        blue_power_up_indicator = BlueIndicator(self._textures, self.scale_factor_x, self.scale_factor_y)
         self.blue_power_up_indicator_sprite.append(blue_power_up_indicator)
         self.blue_power_up_indicator_index = self.blue_power_up_indicator_index + 1
 
@@ -264,7 +265,7 @@ class SpawnExtraPowerUpIndicator:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Extra Power Up Indicator.
 
@@ -278,6 +279,7 @@ class SpawnExtraPowerUpIndicator:
         self.extra_power_up_indicator_sprite = []
         self.extra_power_up_indicator_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -303,10 +305,10 @@ class SpawnExtraPowerUpIndicator:
 
         # The id depends on the current mode the user is in (Whether it will be green or blue)
         if mode == "Machine_Mode":
-            extra_power_up_indicator = ExtraIndicator(1, self.scale_factor_x, self.scale_factor_y)
+            extra_power_up_indicator = ExtraIndicator(1, self._textures, self.scale_factor_x, self.scale_factor_y)
             self.extra_power_up_indicator_sprite.append(extra_power_up_indicator)
             self.extra_power_up_indicator_index = self.extra_power_up_indicator_index + 1
         elif mode == "Alien_Mode":
-            extra_power_up_indicator = ExtraIndicator(2, self.scale_factor_x, self.scale_factor_y)
+            extra_power_up_indicator = ExtraIndicator(2, self._textures, self.scale_factor_x, self.scale_factor_y)
             self.extra_power_up_indicator_sprite.append(extra_power_up_indicator)
             self.extra_power_up_indicator_index = self.extra_power_up_indicator_index + 1

@@ -98,7 +98,7 @@ class AlienModeSetup:
             cls._instance = super(AlienModeSetup, cls).__new__(cls)
         return cls._instance
 
-    def __init__(self, shop_config, power_up_setup, scale_factor_x, scale_factor_y):
+    def __init__(self, shop_config, power_up_setup, textures, scale_factor_x, scale_factor_y):
         """
             Creates and configures the parameters for Alien Mode.
 
@@ -145,6 +145,8 @@ class AlienModeSetup:
         self.power_up_spawn_rate = 1
 
         self.health = 0
+
+        self._textures = textures
 
         # Run the setup
         self.setup_alien_mode()

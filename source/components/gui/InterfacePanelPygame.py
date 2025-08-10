@@ -37,26 +37,6 @@ from setup.data.ShopDescriptionsPygame import BLUE_POWER_UP_DESCRIPTIONS
 from setup.data.ShopDescriptionsPygame import GREEN_POWER_UP_DESCRIPTIONS
 from setup.data.ShopDescriptionsPygame import RED_POWER_UP_DESCRIPTIONS
 from setup.data.ShopDescriptionsPygame import GADGET_DESCRIPTIONS
-from setup.TextureSetup import SIDE_PANEL_SHOP_TEXTURE
-from setup.TextureSetup import POP_UP_MESSAGE_FRAME_TEXTURE
-from setup.TextureSetup import MACHINE_DEFAULT_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import MACHINE_WASHER_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import THE_INCINERATOR_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import THE_BLACK_HOLE_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import THE_STAR_KILLER_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import ALIEN_DEFAULT_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import THE_COOKER_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import POISON_DART_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import METEOR_GUN_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import SUPERNOVA_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import YELLOW_POWER_UP_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import BLUE_POWER_UP_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import GREEN_POWER_UP_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import RED_POWER_UP_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import COIN_MAGNET_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import ARMOR_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import THORNS_DISPLAY_ICON_TEXTURE
-from setup.TextureSetup import HEART_POWER_UP_DISPLAY_ICON_TEXTURE
 
 
 class Panel(pygame.sprite.Sprite):
@@ -75,7 +55,7 @@ class Panel(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, type, scale_factor, scale_factor_x, scale_factor_y, id=1):
+    def __init__(self, type, textures, scale_factor, scale_factor_x, scale_factor_y, id=1):
         """
             Creates a panel object to be displayed on the screen.
 
@@ -97,15 +77,15 @@ class Panel(pygame.sprite.Sprite):
 
         super().__init__()
         if type == "Shop":
-            self.image = pygame.image.load(SIDE_PANEL_SHOP_TEXTURE)
+            self.image = textures.SIDE_PANEL_SHOP
             self.rect = self.image.get_rect()
             self.rect.center = (int(1090 * scale_factor_x), int(360 * scale_factor_y))
         elif type == "Machine_Mode":
-            self.image = pygame.image.load(POP_UP_MESSAGE_FRAME_TEXTURE)
+            self.image = textures.POP_UP_MESSAGE_FRAME
             self.rect = self.image.get_rect()
             self.rect.center = (int(640 * scale_factor_x), int(360 * scale_factor_y))
         elif type == "Alien_Mode":
-            self.image = pygame.image.load(POP_UP_MESSAGE_FRAME_TEXTURE)
+            self.image = textures.POP_UP_MESSAGE_FRAME
             self.rect = self.image.get_rect()
             self.rect.center = (int(240 * scale_factor_x), int(260 * scale_factor_y))
         self.panel_visible = 1
@@ -156,6 +136,7 @@ class Panel(pygame.sprite.Sprite):
         self.category = "Welcome"
         self.id = id
 
+        self._textures = textures
         self.scale_factor = scale_factor
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -557,43 +538,43 @@ class Panel(pygame.sprite.Sprite):
         else:
             if self.category == "Machine_Mode":
                 if self.id == 1:
-                    self.panel_indicator.image = pygame.image.load(MACHINE_DEFAULT_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.MACHINE_DEFAULT_DISPLAY_ICON
                 elif self.id == 2:
-                    self.panel_indicator.image = pygame.image.load(MACHINE_WASHER_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.MACHINE_WASHER_DISPLAY_ICON
                 elif self.id == 3:
-                    self.panel_indicator.image = pygame.image.load(THE_INCINERATOR_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.THE_INCINERATOR_DISPLAY_ICON
                 elif self.id == 4:
-                    self.panel_indicator.image = pygame.image.load(THE_BLACK_HOLE_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.THE_BLACK_HOLE_DISPLAY_ICON
                 elif self.id == 5:
-                    self.panel_indicator.image = pygame.image.load(THE_STAR_KILLER_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.THE_STAR_KILLER_DISPLAY_ICON
             elif self.category == "Alien_Mode":
                 if self.id == 1:
-                    self.panel_indicator.image = pygame.image.load(ALIEN_DEFAULT_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.ALIEN_DEFAULT_DISPLAY_ICON
                 elif self.id == 2:
-                    self.panel_indicator.image = pygame.image.load(THE_COOKER_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.THE_COOKER_DISPLAY_ICON
                 elif self.id == 3:
-                    self.panel_indicator.image = pygame.image.load(POISON_DART_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.POISON_DART_DISPLAY_ICON
                 elif self.id == 4:
-                    self.panel_indicator.image = pygame.image.load(METEOR_GUN_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.METEOR_GUN_DISPLAY_ICON
                 elif self.id == 5:
-                    self.panel_indicator.image = pygame.image.load(SUPERNOVA_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.SUPERNOVA_DISPLAY_ICON
             elif self.category == "Yellow_Power_Up":
-                self.panel_indicator.image = pygame.image.load(YELLOW_POWER_UP_DISPLAY_ICON_TEXTURE)
+                self.panel_indicator.image = self._textures.YELLOW_POWER_UP_DISPLAY_ICON
             elif self.category == "Blue_Power_Up":
-                self.panel_indicator.image = pygame.image.load(BLUE_POWER_UP_DISPLAY_ICON_TEXTURE)
+                self.panel_indicator.image = self._textures.BLUE_POWER_UP_DISPLAY_ICON
             elif self.category == "Green_Power_Up":
-                self.panel_indicator.image = pygame.image.load(GREEN_POWER_UP_DISPLAY_ICON_TEXTURE)
+                self.panel_indicator.image = self._textures.GREEN_POWER_UP_DISPLAY_ICON
             elif self.category == "Red_Power_Up":
-                self.panel_indicator.image = pygame.image.load(RED_POWER_UP_DISPLAY_ICON_TEXTURE)
+                self.panel_indicator.image = self._textures.RED_POWER_UP_DISPLAY_ICON
             elif self.category == "Gadget":
                 if self.id == 1:
-                    self.panel_indicator.image = pygame.image.load(COIN_MAGNET_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.COIN_MAGNET_DISPLAY_ICON
                 elif self.id == 2:
-                    self.panel_indicator.image = pygame.image.load(ARMOR_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.ARMOR_DISPLAY_ICON
                 elif self.id == 3:
-                    self.panel_indicator.image = pygame.image.load(THORNS_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.THORNS_DISPLAY_ICON
                 elif self.id == 4:
-                    self.panel_indicator.image = pygame.image.load(HEART_POWER_UP_DISPLAY_ICON_TEXTURE)
+                    self.panel_indicator.image = self._textures.HEART_POWER_UP_DISPLAY_ICON
             old_center = self.panel_indicator.rect.center
             self.panel_indicator.rect = self.panel_indicator.image.get_rect()
             self.panel_indicator.rect.center = old_center

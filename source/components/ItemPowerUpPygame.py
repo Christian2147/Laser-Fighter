@@ -30,19 +30,6 @@ import time
 import pygame
 import math
 from setup.ModeSetupMasterPygame import power_up_setup
-from setup.TextureSetup import YELLOW_LIGHTNING_POWER_UP_TEXTURE
-from setup.TextureSetup import BLUE_LIGHTNING_POWER_UP_TEXTURE
-from setup.TextureSetup import GREEN_LIGHTNING_POWER_UP_TEXTURE
-from setup.TextureSetup import RED_LIGHTNING_POWER_UP_TEXTURE
-from setup.TextureSetup import HEART_POWER_UP_TEXTURE
-from setup.TextureSetup import YELLOW_POWER_UP_INDICATOR_ON_TEXTURE
-from setup.TextureSetup import YELLOW_POWER_UP_INDICATOR_OFF_TEXTURE
-from setup.TextureSetup import BLUE_POWER_UP_INDICATOR_ON_TEXTURE
-from setup.TextureSetup import BLUE_POWER_UP_INDICATOR_OFF_TEXTURE
-from setup.TextureSetup import GREEN_POWER_UP_INDICATOR_ON_TEXTURE
-from setup.TextureSetup import GREEN_POWER_UP_INDICATOR_OFF_TEXTURE
-from setup.TextureSetup import RED_POWER_UP_INDICATOR_ON_TEXTURE
-from setup.TextureSetup import RED_POWER_UP_INDICATOR_OFF_TEXTURE
 
 
 class PowerUp(pygame.sprite.Sprite):
@@ -58,7 +45,7 @@ class PowerUp(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, type, mode, spawn_sound, scale_factor_x, scale_factor_y):
+    def __init__(self, type, mode, spawn_sound, textures, scale_factor_x, scale_factor_y):
         """
             Creates a power up object of the given type and spawn it at a random place on the screen.
 
@@ -80,19 +67,19 @@ class PowerUp(pygame.sprite.Sprite):
 
         super().__init__()
         if type == 1:
-            self.image = pygame.image.load(YELLOW_LIGHTNING_POWER_UP_TEXTURE).convert_alpha()
+            self.image = textures.YELLOW_LIGHTNING_POWER_UP
         # Type 2 = blue power up
         elif type == 2:
-            self.image = pygame.image.load(BLUE_LIGHTNING_POWER_UP_TEXTURE).convert_alpha()
+            self.image = textures.BLUE_LIGHTNING_POWER_UP
         # Type 3 = green power up
         elif type == 3:
-            self.image = pygame.image.load(GREEN_LIGHTNING_POWER_UP_TEXTURE).convert_alpha()
+            self.image = textures.GREEN_LIGHTNING_POWER_UP
         # Type 4 = red power up
         elif type == 4:
-            self.image = pygame.image.load(RED_LIGHTNING_POWER_UP_TEXTURE).convert_alpha()
+            self.image = textures.RED_LIGHTNING_POWER_UP
         # Type 5 = heart power up
         elif type == 5:
-            self.image = pygame.image.load(HEART_POWER_UP_TEXTURE).convert_alpha()
+            self.image = textures.HEART_POWER_UP
         self.rect = self.image.get_rect()
         self.rect.center = (545 * scale_factor_x, 60 * scale_factor_y)
         if mode == 1:
@@ -107,6 +94,7 @@ class PowerUp(pygame.sprite.Sprite):
         self.type = type
         self.mode = mode
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -217,7 +205,7 @@ class YellowIndicator(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Create a yellow power up indicator object and spawns it at the top of the screen.
 
@@ -229,7 +217,7 @@ class YellowIndicator(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(YELLOW_POWER_UP_INDICATOR_OFF_TEXTURE).convert_alpha()
+        self.image = textures.YELLOW_POWER_UP_INDICATOR_OFF
         self.rect = self.image.get_rect()
         self.rect.center = (545 * scale_factor_x, 60 * scale_factor_y)
         self.yellow_power_up_indicator_visible = 1
@@ -239,6 +227,7 @@ class YellowIndicator(pygame.sprite.Sprite):
         self.current_time = 0
         self.time_value = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -315,9 +304,9 @@ class YellowIndicator(pygame.sprite.Sprite):
         """
 
         if self.yellow_power_up_active == 1:
-            self.image = pygame.image.load(YELLOW_POWER_UP_INDICATOR_ON_TEXTURE).convert_alpha()
+            self.image = self._textures.YELLOW_POWER_UP_INDICATOR_ON
         else:
-            self.image = pygame.image.load(YELLOW_POWER_UP_INDICATOR_OFF_TEXTURE).convert_alpha()
+            self.image = self._textures.YELLOW_POWER_UP_INDICATOR_OFF
 
     def set_timer(self):
         """
@@ -363,7 +352,7 @@ class BlueIndicator(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Create a blue power up indicator object and spawns it at the top of the screen.
 
@@ -375,7 +364,7 @@ class BlueIndicator(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(BLUE_POWER_UP_INDICATOR_OFF_TEXTURE).convert_alpha()
+        self.image = textures.BLUE_POWER_UP_INDICATOR_OFF
         self.rect = self.image.get_rect()
         self.rect.center = (620 * scale_factor_x, 60 * scale_factor_y)
         self.blue_power_up_indicator_visible = 1
@@ -385,6 +374,7 @@ class BlueIndicator(pygame.sprite.Sprite):
         self.current_time = 0
         self.time_value = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -461,9 +451,9 @@ class BlueIndicator(pygame.sprite.Sprite):
         """
 
         if self.blue_power_up_active == 1:
-            self.image = pygame.image.load(BLUE_POWER_UP_INDICATOR_ON_TEXTURE).convert_alpha()
+            self.image = self._textures.BLUE_POWER_UP_INDICATOR_ON
         else:
-            self.image = pygame.image.load(BLUE_POWER_UP_INDICATOR_OFF_TEXTURE).convert_alpha()
+            self.image = self._textures.BLUE_POWER_UP_INDICATOR_OFF
 
     def set_timer(self):
         """
@@ -511,7 +501,7 @@ class ExtraIndicator(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, mode, scale_factor_x, scale_factor_y):
+    def __init__(self, mode, textures, scale_factor_x, scale_factor_y):
         """
             Create a third power up indicator object and spawns it at the top of the screen.
 
@@ -527,9 +517,9 @@ class ExtraIndicator(pygame.sprite.Sprite):
 
         super().__init__()
         if mode == 1:
-            self.image = pygame.image.load(GREEN_POWER_UP_INDICATOR_OFF_TEXTURE).convert_alpha()
+            self.image = textures.GREEN_POWER_UP_INDICATOR_OFF
         else:
-            self.image = pygame.image.load(RED_POWER_UP_INDICATOR_OFF_TEXTURE).convert_alpha()
+            self.image = textures.RED_POWER_UP_INDICATOR_OFF
         self.rect = self.image.get_rect()
         self.rect.center = (690 * scale_factor_x, 60 * scale_factor_y)
         self.extra_power_up_indicator_visible = 1
@@ -540,6 +530,7 @@ class ExtraIndicator(pygame.sprite.Sprite):
         self.time_value = 0
         self.mode = mode
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -622,16 +613,16 @@ class ExtraIndicator(pygame.sprite.Sprite):
         if self.mode == 1:
             # Make the extra power up indicator green
             if self.extra_power_up_active == 1:
-                self.image = pygame.image.load(GREEN_POWER_UP_INDICATOR_ON_TEXTURE).convert_alpha()
+                self.image = self._textures.GREEN_POWER_UP_INDICATOR_ON
             else:
-                self.image = pygame.image.load(GREEN_POWER_UP_INDICATOR_OFF_TEXTURE).convert_alpha()
+                self.image = self._textures.GREEN_POWER_UP_INDICATOR_OFF
         # If the mode is Alien mode
         else:
             # Make the extra power up indicator red
             if self.extra_power_up_active == 1:
-                self.image = pygame.image.load(RED_POWER_UP_INDICATOR_ON_TEXTURE).convert_alpha()
+                self.image = self._textures.RED_POWER_UP_INDICATOR_ON
             else:
-                self.image = pygame.image.load(RED_POWER_UP_INDICATOR_OFF_TEXTURE).convert_alpha()
+                self.image = self._textures.RED_POWER_UP_INDICATOR_OFF
 
     def set_timer(self):
         """

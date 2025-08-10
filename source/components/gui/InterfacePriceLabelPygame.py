@@ -23,7 +23,6 @@
 """
 
 import pygame
-from setup.TextureSetup import COIN_INDICATOR_TEXTURE
 
 
 class PriceLabel(pygame.sprite.Sprite):
@@ -35,7 +34,7 @@ class PriceLabel(pygame.sprite.Sprite):
             id (int): The id of the current price label
     """
 
-    def __init__(self, id, x, y):
+    def __init__(self, id, x, y, textures):
         """
             Creates a price label icon and places it on the screen.
 
@@ -50,12 +49,14 @@ class PriceLabel(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        self.image = pygame.image.load(COIN_INDICATOR_TEXTURE)
+        self.image = textures.COIN_INDICATOR
         self.rect = self.image.get_rect()
         self.rect.center = (int(x), int(y))
         self.price_label_visible = 1
 
         self.id = id
+
+        self._textures = textures
 
     def __del__(self):
         """

@@ -93,7 +93,7 @@ class MachineModeSetup:
             cls._instance = super(MachineModeSetup, cls).__new__(cls)
         return cls._instance
 
-    def __init__(self, shop_config, power_up_setup, scale_factor_x, scale_factor_y):
+    def __init__(self, shop_config, power_up_setup, textures, scale_factor_x, scale_factor_y):
         """
             Creates and configures the parameters for Machine Mode.
 
@@ -143,6 +143,8 @@ class MachineModeSetup:
         self.MACHINE_MOVE_10 = 10 * scale_factor_x
 
         self.MACHINE_FLOAT = 0.15 * scale_factor_y
+
+        self._textures = textures
 
         # Run the setup
         self.setup_machine_mode()

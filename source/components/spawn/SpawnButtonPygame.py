@@ -44,7 +44,7 @@ class SpawnButton:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Buttons in Laser Fighter.
             Also creates any other necessary variables for the button object.
@@ -66,6 +66,7 @@ class SpawnButton:
         self.clickable = 0
         self.buy_button_pressed = 0
 
+        self._textures = textures
         self.scale_factor = scale_factor
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y

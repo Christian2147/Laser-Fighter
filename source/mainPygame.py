@@ -91,7 +91,7 @@ def main():
     ship = SpawnShip(textures, window.scale_factor_X, window.scale_factor_Y)
 
     coin = SpawnCoin(textures)
-    power_up = SpawnPowerUp(window.scale_factor_X, window.scale_factor_Y)
+    power_up = SpawnPowerUp(textures, window.scale_factor_X, window.scale_factor_Y)
 
     blue_machine = SpawnBlueMachine(textures, window.scale_factor_X, window.scale_factor_Y)
     yellow_machine = SpawnYellowMachine(textures, window.scale_factor_X, window.scale_factor_Y)
@@ -105,18 +105,18 @@ def main():
     ufo = SpawnUFO(textures, window.scale_factor_X, window.scale_factor_Y)
     human_player = SpawnHumanPlayer(window.scale_factor_X, window.scale_factor)
 
-    panel = SpawnPanel(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
+    panel = SpawnPanel(textures, window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
 
-    yellow_power_up_indicator = SpawnYellowPowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
-    blue_power_up_indicator = SpawnBluePowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
-    extra_power_up_indicator = SpawnExtraPowerUpIndicator(window.scale_factor_X, window.scale_factor_Y)
+    yellow_power_up_indicator = SpawnYellowPowerUpIndicator(textures, window.scale_factor_X, window.scale_factor_Y)
+    blue_power_up_indicator = SpawnBluePowerUpIndicator(textures, window.scale_factor_X, window.scale_factor_Y)
+    extra_power_up_indicator = SpawnExtraPowerUpIndicator(textures, window.scale_factor_X, window.scale_factor_Y)
     coin_indicator = SpawnCoinIndicator(textures, window.scale_factor_X, window.scale_factor_Y)
 
-    button = SpawnButton(window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
+    button = SpawnButton(textures, window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
     textbox = SpawnTextbox(window.scale_factor, window.scale_factor_X)
 
-    selector = SpawnSelector(window.scale_factor_X, window.scale_factor_Y)
-    price_label = SpawnPriceLabel()
+    selector = SpawnSelector(textures, window.scale_factor_X, window.scale_factor_Y)
+    price_label = SpawnPriceLabel(textures)
 
     gadget = Gadget(machine_player, human_player, coin, window.scale_factor)
 

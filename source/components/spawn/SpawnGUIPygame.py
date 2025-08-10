@@ -40,7 +40,7 @@ class SpawnPanel:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Panel object.
 
@@ -57,6 +57,7 @@ class SpawnPanel:
         self.panel_sprite = []
         self.panel_index = 0
 
+        self._textures = textures
         self.scale_factor = scale_factor
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
@@ -81,7 +82,7 @@ class SpawnPanel:
             :return: None
         """
 
-        panel = Panel(mode, self.scale_factor, self.scale_factor_x, self.scale_factor_y, id)
+        panel = Panel(mode, self._textures, self.scale_factor, self.scale_factor_x, self.scale_factor_y, id)
         self.panel_sprite.append(panel)
         self.panel_index = self.panel_index + 1
 
@@ -99,7 +100,7 @@ class SpawnSelector:
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, scale_factor_x, scale_factor_y):
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Selector object.
 
@@ -113,6 +114,7 @@ class SpawnSelector:
         self.selector_on_screen_list = []
         self.current_selector_index = 0
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -136,7 +138,7 @@ class SpawnSelector:
             :return: None
         """
 
-        selector = Selector(type, self.scale_factor_x, self.scale_factor_y)
+        selector = Selector(type, self._textures, self.scale_factor_x, self.scale_factor_y)
         self.current_selector_index = self.current_selector_index + 1
         self.selector_on_screen_list.append(selector)
 
@@ -151,13 +153,15 @@ class SpawnPriceLabel:
             current_price_index (int): Stores the number of price labels currently active and visible on the screen.
     """
 
-    def __init__(self):
+    def __init__(self, textures):
         """
             Creates the lists necessary to store the Price Label object.
         """
 
         self.price_label_on_screen_list = []
         self.current_price_index = 0
+
+        self._textures = textures
 
     def __del__(self):
         """
@@ -184,6 +188,6 @@ class SpawnPriceLabel:
             :return: None
         """
 
-        price_label = PriceLabel(id, x, y)
+        price_label = PriceLabel(id, x, y, self._textures)
         self.current_price_index = self.current_price_index + 1
         self.price_label_on_screen_list.append(price_label)

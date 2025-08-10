@@ -24,8 +24,6 @@
 """
 
 import pygame
-from setup.TextureSetup import SLOT_SELECTOR_TEXTURE
-from setup.TextureSetup import TAB_SELECTOR_TEXTURE
 
 
 class Selector(pygame.sprite.Sprite):
@@ -39,20 +37,21 @@ class Selector(pygame.sprite.Sprite):
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
-    def __init__(self, type, scale_factor_x, scale_factor_y):
+    def __init__(self, type, textures, scale_factor_x, scale_factor_y):
         super().__init__()
         if type == "Tab":
-            self.image = pygame.image.load(TAB_SELECTOR_TEXTURE)
+            self.image = textures.TAB_SELECTOR
             self.rect = self.image.get_rect()
             self.rect.center = (int(36.5 * scale_factor_x), int(210 * scale_factor_y))
         else:
-            self.image = pygame.image.load(SLOT_SELECTOR_TEXTURE)
+            self.image = textures.SLOT_SELECTOR
             self.rect = self.image.get_rect()
             self.rect.center = (int(213 * scale_factor_x), int(264.5 * scale_factor_y))
         self.selector_visible = 1
 
         self.type = type
 
+        self._textures = textures
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
