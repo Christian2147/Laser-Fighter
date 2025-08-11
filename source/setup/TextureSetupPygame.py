@@ -130,6 +130,10 @@ class TextureSetup:
         self.TITLE_SCREEN_BUTTON_SMALL_HIGHLIGHTED = None
         self.BUY_BUTTON = None
         self.BUY_BUTTON_HIGHLIGHTED = None
+        self.POP_UP_BUTTON_SMALL = None
+        self.POP_UP_BUTTON_SMALL_HIGHLIGHTED = None
+        self.POP_UP_BUTTON_LARGE = None
+        self.POP_UP_BUTTON_LARGE_HIGHLIGHTED = None
         self.INVENTORY_SLOT_FRAME = None
         self.INVENTORY_SLOT_FRAME_HIGHLIGHTED = None
         self.TAB = None
@@ -301,6 +305,10 @@ class TextureSetup:
         self.TITLE_SCREEN_BUTTON_SMALL_HIGHLIGHTED = self.load_scaled_texture("textures/buttons/Title_Screen_Button_Small_Highlighted.png")
         self.BUY_BUTTON = self.load_scaled_texture("textures/buttons/Buy_Button.png")
         self.BUY_BUTTON_HIGHLIGHTED = self.load_scaled_texture("textures/buttons/Buy_Button_Highlighted.png")
+        self.POP_UP_BUTTON_SMALL = self.load_scaled_texture("textures/buttons/Pop_Up_Button_Small.png")
+        self.POP_UP_BUTTON_SMALL_HIGHLIGHTED = self.load_scaled_texture("textures/buttons/Pop_Up_Button_Small_Highlighted.png")
+        self.POP_UP_BUTTON_LARGE = self.load_scaled_texture("textures/buttons/Pop_Up_Button_Large.png")
+        self.POP_UP_BUTTON_LARGE_HIGHLIGHTED = self.load_scaled_texture("textures/buttons/Pop_Up_Button_Large_Highlighted.png")
         self.INVENTORY_SLOT_FRAME = self.load_scaled_texture("textures/buttons/Inventory_Slot_Frame.png")
         self.INVENTORY_SLOT_FRAME_HIGHLIGHTED = self.load_scaled_texture("textures/buttons/Inventory_Slot_Frame_Highlighted.png")
         self.TAB = self.load_scaled_texture("textures/buttons/Tab.png")
