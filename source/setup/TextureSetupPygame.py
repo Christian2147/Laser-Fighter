@@ -144,6 +144,8 @@ class TextureSetup:
         self.TAB_SELECTOR = None
         self.SLOT_SELECTOR = None
         self.ERROR_ICON = None
+        self.QUESTION_ICON = None
+        self.WARNING_ICON = None
         self.SETTINGS_AND_CONTROLS_BUTTON = None
         self.SETTINGS_AND_CONTROLS_BUTTON_HIGHLIGHTED = None
         self.MACHINE_DEFAULT_DISPLAY_ICON = None
@@ -320,6 +322,8 @@ class TextureSetup:
         self.TAB_SELECTOR = self.load_scaled_texture("textures/gui/Tab_Selector.png")
         self.SLOT_SELECTOR = self.load_scaled_texture("textures/gui/Slot_Selector.png")
         self.ERROR_ICON = self.load_scaled_texture("textures/gui/Error_Icon.png")
+        self.QUESTION_ICON = self.load_scaled_texture("textures/gui/Question_Icon.png")
+        self.WARNING_ICON = self.load_scaled_texture("textures/gui/Warning_Icon.png")
         self.SETTINGS_AND_CONTROLS_BUTTON = self.load_scaled_texture("textures/buttons/Settings_And_Controls_Button.png")
         self.SETTINGS_AND_CONTROLS_BUTTON_HIGHLIGHTED = self.load_scaled_texture("textures/buttons/Settings_And_Controls_Button_Highlighted.png")
         self.MACHINE_DEFAULT_DISPLAY_ICON = self.load_scaled_texture("textures/interface/display/Machine_Default_Display_Icon.png")

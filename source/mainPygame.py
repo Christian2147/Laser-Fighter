@@ -2427,7 +2427,7 @@ def main():
 
                     for u in ufo.ufos:
                         if u.get_ufo().distance(h.get_player()) < 53 * window.scale_factor:
-                            if h.health == 1 and h.hit_delay == 0 and u.retc.centerx - 18 * window.scale_factor_X < h.rect.centerx < u.rect.centerx + 18 * window.scale_factor_X and human_player.human_update_value == 0 and u.get_ufo().isvisible() and u.get_death_animation() == 0 and settings.god_mode == 0:
+                            if h.health == 1 and h.hit_delay == 0 and u.rect.centerx - 18 * window.scale_factor_X < h.rect.centerx < u.rect.centerx + 18 * window.scale_factor_X and human_player.human_update_value == 0 and u.get_ufo().isvisible() and u.get_death_animation() == 0 and settings.god_mode == 0:
                                 h.kill_player(settings.player_death_sound)
                                 human_player.human_update_value = human_player.human_update_value + 1
                                 if shop_config.thorns_enabled:

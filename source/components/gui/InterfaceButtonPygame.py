@@ -143,7 +143,7 @@ class Button(pygame.sprite.Sprite):
                                       textures, scale_factor, scale_factor_x, scale_factor_y, page)
 
         if type == "Buy":
-            self.extra_button_text = ButtonText(type, id, self.rect.centerx, self.rect.centery, scale_factor, scale_factor_x, scale_factor_y, page)
+            self.extra_button_text = ButtonText(type, id, self.rect.centerx, self.rect.centery, textures, scale_factor, scale_factor_x, scale_factor_y, page)
 
         if type == "Settings_Toggle" or type == "Shop_Slot" or \
                 type == "Power_Up_Slot" or type == "Gadget_Slot" or type == "Buy":
