@@ -137,6 +137,17 @@ class Button(pygame.sprite.Sprite):
             self.image = textures.SETTINGS_AND_CONTROLS_BUTTON
             self.rect = self.image.get_rect()
             self.rect.center = (int(315 * scale_factor_x), (165 + (80 * (id - 1))) * scale_factor_y)
+        elif type == "Pop_Up_Small":
+            self.image = textures.POP_UP_BUTTON_SMALL
+            self.rect = self.image.get_rect()
+            if id == 1:
+                self.rect.center = (int(440 * scale_factor_x), int(480 * scale_factor_y))
+            elif id == 2:
+                self.rect.center = (int(840 * scale_factor_x), int(480 * scale_factor_y))
+        elif type == "Pop_Up_Large":
+            self.image = textures.POP_UP_BUTTON_LARGE
+            self.rect = self.image.get_rect()
+            self.rect.center = (int(640 * scale_factor_x), int(480 * scale_factor_y))
         self.button_frame_visible = 1
 
         self.button_text = ButtonText(type, id, self.rect.centerx, self.rect.centery,
@@ -307,6 +318,13 @@ class Button(pygame.sprite.Sprite):
                     self.button_text.write_text("Fullscreen:", "semi-medium", "normal")
                 elif self.id == 12:
                     self.button_text.write_text("VSync:", "semi-medium", "normal")
+            elif self.type == "Pop_Up_Small":
+                if self.id == 1:
+                    self.button_text.write_text("Yes", "semi-medium", "normal")
+                elif self.id == 2:
+                    self.button_text.write_text("No", "semi-medium", "normal")
+            elif self.type == "Pop_Up_Large":
+                self.button_text.write_text("Okay", "semi-medium", "normal")
 
     def toggle_title_lock(self, setting):
         """
@@ -515,6 +533,10 @@ class Button(pygame.sprite.Sprite):
         elif self.type == "Regular_Settings_And_Controls" or self.type == "Settings_Toggle" or \
                 self.type == "Controls_Toggle":
             self.image = self._textures.SETTINGS_AND_CONTROLS_BUTTON
+        elif self.type == "Pop_Up_Small":
+            self.image = self._textures.POP_UP_BUTTON_SMALL
+        elif self.type == "Pop_Up_Large":
+            self.image = self._textures.POP_UP_BUTTON_LARGE
 
     def toggle_highlighted(self):
         if self.type == "Title" or self.type == "Title_Locked":
@@ -532,6 +554,10 @@ class Button(pygame.sprite.Sprite):
         elif self.type == "Regular_Settings_And_Controls" or self.type == "Settings_Toggle" or \
                 self.type == "Controls_Toggle":
             self.image = self._textures.SETTINGS_AND_CONTROLS_BUTTON_HIGHLIGHTED
+        elif self.type == "Pop_Up_Small":
+            self.image = self._textures.POP_UP_BUTTON_SMALL_HIGHLIGHTED
+        elif self.type == "Pop_Up_Large":
+            self.image = self._textures.POP_UP_BUTTON_LARGE_HIGHLIGHTED
 
     def update_controls_text_color(self, alert):
         """
@@ -650,6 +676,10 @@ class ButtonText(pygame.sprite.Sprite):
         elif type == "Settings_Toggle":
             self.rect.center = (x - 30 * scale_factor_x, y)
         elif type == "Controls_Toggle":
+            self.rect.center = (x, y)
+        elif type == "Pop_Up_Small":
+            self.rect.center = (x, y)
+        elif type == "Pop_Up_Large":
             self.rect.center = (x, y)
         self.button_text_visible = 1
 
