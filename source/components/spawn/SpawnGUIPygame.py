@@ -25,6 +25,7 @@
 from components.gui.InterfaceSelectPygame import Selector
 from components.gui.InterfacePanelPygame import Panel
 from components.gui.InterfacePriceLabelPygame import PriceLabel
+from components.gui.InterfacePopUp import PopUp
 
 
 class SpawnPanel:
@@ -191,3 +192,71 @@ class SpawnPriceLabel:
         price_label = PriceLabel(id, x, y, self._textures)
         self.current_price_index = self.current_price_index + 1
         self.price_label_on_screen_list.append(price_label)
+
+
+class SpawnPopUp:
+    """
+        Represents the Pop Up container in Laser Fighter.
+
+        Attributes:
+            pop_up_on_screen_list (list): Contains all of the pop up sprites created since the game has launched
+            current_pop_up_index (int): Stores the number of pop ups currently active and visible on the screen.
+    """
+
+    def __init__(self, textures, scale_factor, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Pop Up object.
+        """
+
+        self.pop_up_on_screen_list = []
+        self.current_pop_up_index = 0
+
+        self._textures = textures
+        self.scale_factor = scale_factor
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
+        del self.pop_up_on_screen_list
+        del self.current_pop_up_index
+
+    def spawn_pop_up(self, icon, text, type, on_yes=None, on_no=None, on_ok=None):
+        """
+            Spawns a pop up over the specified slot on the screen.
+
+            :param icon: The type of icon to display ('error', 'warning', 'question')
+            :type icon: str
+
+            :param text: List of text lines to display in the pop-up
+            :type text: list[str]
+
+            :param type: Pop-up type (1 = Yes/No, 2 = OK)
+            :type type: int
+
+            :param on_yes: Optional callback function when Yes is clicked
+            :param on_no: Optional callback function when No is clicked
+            :param on_ok: Optional callback function when OK is clicked
+
+            :return: None
+        """
+
+        pop_up = PopUp(
+            icon=icon,
+            text=text,
+            type=type,
+            textures=self._textures,
+            scale_factor=self.scale_factor,
+            scale_factor_x=self.scale_factor_x,
+            scale_factor_y=self.scale_factor_y,
+            on_yes=on_yes,
+            on_no=on_no,
+            on_ok=on_ok
+        )
+        self.current_pop_up_index = self.current_pop_up_index + 1
+        self.pop_up_on_screen_list.append(pop_up)

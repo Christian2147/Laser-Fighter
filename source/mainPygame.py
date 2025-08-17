@@ -67,6 +67,7 @@ from components.spawn.SpawnTextboxPygame import SpawnTextbox
 from components.spawn.SpawnButtonPygame import SpawnButton
 from components.spawn.SpawnGUIPygame import SpawnPriceLabel
 from components.spawn.SpawnGUIPygame import SpawnSelector
+from components.spawn.SpawnGUIPygame import SpawnPopUp
 from components.ItemGadgetPygame import Gadget
 from physics.MachineCollisionPygame import MachineCollision
 from physics.AlienCollisionPygame import AlienCollision
@@ -117,6 +118,7 @@ def main():
 
     selector = SpawnSelector(textures, window.scale_factor_X, window.scale_factor_Y)
     price_label = SpawnPriceLabel(textures)
+    pop_up = SpawnPopUp(textures, window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
 
     gadget = Gadget(machine_player, human_player, coin, window.scale_factor)
 
@@ -176,6 +178,14 @@ def main():
                 bu.toggle_highlighted()
             else:
                 bu.toggle_default()
+
+        for pu in pop_up.pop_up_on_screen_list:
+            for button in [pu.yesButton, pu.noButton, pu.okButton]:
+                if button:
+                    if button.rect.collidepoint(mouse_pos):
+                        button.toggle_highlighted()
+                    else:
+                        button.toggle_default()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT or screen.quit == 1:
@@ -275,6 +285,8 @@ def main():
                                     controls.change_shoot_key()
                                 elif bu.id == 4:
                                     controls.change_jump_key()
+            for pu in pop_up.pop_up_on_screen_list:
+                pu.handle_event(event)
 
         current_time = time.time()
 
@@ -483,6 +495,34 @@ def main():
         for s in selector.selector_on_screen_list:
             if s.selector_visible == 1:
                 window.screen.blit(s.image, s.rect)
+
+        for pu in pop_up.pop_up_on_screen_list:
+            if pu.pop_up_visible == 1:
+                window.screen.blit(pu.image, pu.rect)
+
+                if hasattr(pu, 'icon') and pu.icon.icon_visible:
+                    window.screen.blit(pu.icon.image, pu.icon.rect)
+
+                if pu.yesButton and pu.yesButton.button_frame_visible:
+                    window.screen.blit(pu.yesButton.image, pu.yesButton.rect)
+
+                    if pu.yesButton.button_text.button_text_visible == 1:
+                        window.screen.blit(pu.yesButton.button_text.image, pu.yesButton.button_text.rect)
+
+                if pu.noButton and pu.noButton.button_frame_visible:
+                    window.screen.blit(pu.noButton.image, pu.noButton.rect)
+
+                    if pu.noButton.button_text.button_text_visible == 1:
+                        window.screen.blit(pu.noButton.button_text.image, pu.noButton.button_text.rect)
+
+                if pu.okButton and pu.okButton.button_frame_visible:
+                    window.screen.blit(pu.okButton.image, pu.okButton.rect)
+
+                    if pu.okButton.button_text.button_text_visible == 1:
+                        window.screen.blit(pu.okButton.button_text.image, pu.okButton.button_text.rect)
+
+                for text_surface, text_rect in pu.rendered_text:
+                    window.screen.blit(text_surface, text_rect)
 
 
 
