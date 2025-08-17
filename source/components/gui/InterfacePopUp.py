@@ -19,7 +19,7 @@ from components.gui.InterfaceButtonPygame import Button
 
 
 class PopUp(pygame.sprite.Sprite):
-    def __init__(self, icon, text, type, textures, callbacks, scale_factor, scale_factor_x, scale_factor_y):
+    def __init__(self, icon, text, type, textures, scale_factor, scale_factor_x, scale_factor_y, on_yes=None, on_no=None, on_ok=None):
         super().__init__()
         self.image = textures.POP_UP_MESSAGE_FRAME
         self.rect = self.image.get_rect()
@@ -34,8 +34,11 @@ class PopUp(pygame.sprite.Sprite):
         if type == 1:
             self.yesButton = Button("Pop_Up_Small", 1, textures, scale_factor, scale_factor_x, scale_factor_y)
             self.noButton = Button("Pop_Up_Small", 2, textures, scale_factor, scale_factor_x, scale_factor_y)
+            self.okButton = None
         elif type == 2:
             self.okButton = Button("Pop_Up_Large", 1, textures, scale_factor, scale_factor_x, scale_factor_y)
+            self.yesButton = None
+            self.noButton = None
 
         self.rendered_text = []
         self.font_dict = {
@@ -71,7 +74,9 @@ class PopUp(pygame.sprite.Sprite):
         }
 
         self._text = text
-        self.callbacks = callbacks
+        self.on_yes = on_yes
+        self.on_no = on_no
+        self.on_ok = on_ok
 
         self._textures = textures
         self._scale_factor = scale_factor
@@ -90,6 +95,80 @@ class PopUp(pygame.sprite.Sprite):
             del self.okButton
         self.rendered_text = []
         del self
+
+    def get_pop_up_frame(self):
+        return self
+
+    def get_pop_up_text(self):
+        return self.rendered_text
+
+    def get_pop_up_icon(self):
+        return self.icon
+
+    def get_yes_button(self):
+        if hasattr(self, 'yesButton'):
+            return self.yesButton
+
+    def get_no_button(self):
+        if hasattr(self, 'noButton'):
+            return self.noButton
+
+    def get_ok_button(self):
+        if hasattr(self, 'okButton'):
+            return self.okButton
+
+    def remove(self):
+        self.pop_up_visible = 0
+        self.rendered_text = []
+        if hasattr(self, 'icon'):
+            self.icon.icon_visible = 0
+        if hasattr(self, 'yesButton'):
+            self.yesButton.button_frame_visible = 0
+        if hasattr(self, 'noButton'):
+            self.noButton.button_frame_visible = 0
+        if hasattr(self, 'okButton'):
+            self.okButton.button_frame_visible = 0
+
+    def write_text(self):
+        self.rendered_text = []
+
+        font_key = "normal_regular"
+        font = self.font_dict.get(font_key, self.font_dict["normal_regular"])
+
+        start_x = self.rect.centerx - 155 * self._scale_factor_x
+        start_y = self.rect.centery - 105 * self._scale_factor_y
+
+        line_spacing = int(24 * self._scale_factor_y)
+
+        y = start_y
+        for line in self._text:
+            text_surface = font.render(line, True, (0, 0, 0))  # default black text
+            text_rect = text_surface.get_rect(topleft=(start_x, y))
+            self.rendered_text.append((text_surface, text_rect))
+            y += line_spacing
+
+    def clear_text(self):
+        self.rendered_text = []
+
+    def handle_event(self, event):
+        if not self.pop_up_visible:
+            return
+
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # left click
+            if self.yesButton and self.yesButton.rect.collidepoint(event.pos):
+                if self.on_yes:
+                    self.on_yes()
+                self.pop_up_visible = False
+
+            if self.noButton and self.noButton.rect.collidepoint(event.pos):
+                if self.on_no:
+                    self.on_no()
+                self.pop_up_visible = False
+
+            if self.okButton and self.okButton.rect.collidepoint(event.pos):
+                if self.on_ok:
+                    self.on_ok()
+                self.pop_up_visible = False
 
 
 class Icon(pygame.sprite.Sprite):
