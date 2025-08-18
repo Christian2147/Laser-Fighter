@@ -131,8 +131,8 @@ def main():
     movement = Movement(screen, machine_player, human_player, yellow_power_up_indicator, settings, statistics, alien_collision, window.scale_factor_Y)
 
     shop = Shop(window, screen, button,
-                panel, textbox, price_label,
-                settings, refresh_variables, shop_config,
+                panel, textbox, price_label, pop_up,
+                settings, refresh_variables, shop_config, window.scale_factor,
                 window.scale_factor_X, window.scale_factor_Y)
 
     settings_toggle = SettingsToggle(screen, settings, refresh_variables, window.scale_factor_X,
@@ -142,7 +142,7 @@ def main():
                         controls_toggle, refresh_variables, window.scale_factor_X,
                         window.scale_factor_Y)
 
-    text_refresh = TextRefresh(screen, button, panel, textbox, yellow_power_up_indicator, blue_power_up_indicator,
+    text_refresh = TextRefresh(screen, button, panel, pop_up, textbox, yellow_power_up_indicator, blue_power_up_indicator,
                                extra_power_up_indicator, settings, settings_toggle,
                                statistics, shop, shop_config, controls, controls_toggle, refresh_variables)
 
@@ -173,19 +173,23 @@ def main():
             "alt": pygame.K_LALT,
         }
 
-        for bu in button.buttons_on_screen_list:
-            if bu.rect.collidepoint(mouse_pos):
-                bu.toggle_highlighted()
-            else:
-                bu.toggle_default()
+        popup_blocking = any(getattr(pu, "pop_up_visible", 0) for pu in pop_up.pop_up_on_screen_list)
+        if not popup_blocking:
+            for bu in button.buttons_on_screen_list:
+                if bu.rect.collidepoint(mouse_pos):
+                    bu.toggle_highlighted()
+                else:
+                    bu.toggle_default()
 
         for pu in pop_up.pop_up_on_screen_list:
-            for button in [pu.yesButton, pu.noButton, pu.okButton]:
-                if button:
-                    if button.rect.collidepoint(mouse_pos):
-                        button.toggle_highlighted()
-                    else:
-                        button.toggle_default()
+            for button_name in ["yesButton", "noButton", "okButton"]:
+                if hasattr(pu, button_name):
+                    pu_button = getattr(pu, button_name)
+                    if pu_button:
+                        if pu_button.rect.collidepoint(mouse_pos):
+                            pu_button.toggle_highlighted()
+                        else:
+                            pu_button.toggle_default()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT or screen.quit == 1:
@@ -199,7 +203,8 @@ def main():
                 if event.key == key_shoot:
                     movement.shoot(machine_collision)
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
+                popup_blocking = any(getattr(pu, "pop_up_visible", 0) for pu in pop_up.pop_up_on_screen_list)
+                if event.button == 1 and not popup_blocking:
                     for bu in button.buttons_on_screen_list:
                         if bu.rect.collidepoint(mouse_pos):
                             if bu.type == "Title":
@@ -498,24 +503,26 @@ def main():
 
         for pu in pop_up.pop_up_on_screen_list:
             if pu.pop_up_visible == 1:
+                window.screen.blit(pu.overlay, (0, 0))
+
                 window.screen.blit(pu.image, pu.rect)
 
                 if hasattr(pu, 'icon') and pu.icon.icon_visible:
                     window.screen.blit(pu.icon.image, pu.icon.rect)
 
-                if pu.yesButton and pu.yesButton.button_frame_visible:
+                if hasattr(pu, "yesButton") and pu.yesButton and pu.yesButton.button_frame_visible:
                     window.screen.blit(pu.yesButton.image, pu.yesButton.rect)
 
                     if pu.yesButton.button_text.button_text_visible == 1:
                         window.screen.blit(pu.yesButton.button_text.image, pu.yesButton.button_text.rect)
 
-                if pu.noButton and pu.noButton.button_frame_visible:
+                if hasattr(pu, "noButton") and pu.noButton and pu.noButton.button_frame_visible:
                     window.screen.blit(pu.noButton.image, pu.noButton.rect)
 
                     if pu.noButton.button_text.button_text_visible == 1:
                         window.screen.blit(pu.noButton.button_text.image, pu.noButton.button_text.rect)
 
-                if pu.okButton and pu.okButton.button_frame_visible:
+                if hasattr(pu, "okButton") and pu.okButton and pu.okButton.button_frame_visible:
                     window.screen.blit(pu.okButton.image, pu.okButton.rect)
 
                     if pu.okButton.button_text.button_text_visible == 1:

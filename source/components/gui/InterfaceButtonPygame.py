@@ -141,13 +141,13 @@ class Button(pygame.sprite.Sprite):
             self.image = textures.POP_UP_BUTTON_SMALL
             self.rect = self.image.get_rect()
             if id == 1:
-                self.rect.center = (int(440 * scale_factor_x), int(480 * scale_factor_y))
+                self.rect.center = (int(540 * scale_factor_x), int(460 * scale_factor_y))
             elif id == 2:
-                self.rect.center = (int(840 * scale_factor_x), int(480 * scale_factor_y))
+                self.rect.center = (int(740 * scale_factor_x), int(460 * scale_factor_y))
         elif type == "Pop_Up_Large":
             self.image = textures.POP_UP_BUTTON_LARGE
             self.rect = self.image.get_rect()
-            self.rect.center = (int(640 * scale_factor_x), int(480 * scale_factor_y))
+            self.rect.center = (int(640 * scale_factor_x), int(460 * scale_factor_y))
         self.button_frame_visible = 1
 
         self.button_text = ButtonText(type, id, self.rect.centerx, self.rect.centery,

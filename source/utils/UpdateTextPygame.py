@@ -46,7 +46,7 @@ class TextRefresh:
     """
 
     def __init__(self, screen,
-                 button, panel,
+                 button, panel, pop_up,
                  textbox, yellow_power_up_indicator,
                  blue_power_up_indicator, extra_power_up_indicator,
                  settings, settings_toggle,
@@ -105,6 +105,7 @@ class TextRefresh:
         self._screen = screen
         self._button = button
         self._panel = panel
+        self._pop_up = pop_up
         self._textbox = textbox
         self._yellow_power_up_indicator = yellow_power_up_indicator
         self._blue_power_up_indicator = blue_power_up_indicator
@@ -128,6 +129,7 @@ class TextRefresh:
         del self._screen
         del self._button
         del self._panel
+        del self._pop_up
         del self._textbox
         del self._yellow_power_up_indicator
         del self._blue_power_up_indicator
@@ -295,6 +297,11 @@ class TextRefresh:
             # Refreshes panel text
             for pa in self._panel.panel_sprite:
                 pa.write_text()
+            for pu in self._pop_up.pop_up_on_screen_list:
+                pu.write_text()
+                for bu in [getattr(pu, "yesButton", None), getattr(pu, "noButton", None), getattr(pu, "okButton", None)]:
+                    if bu:
+                        bu.write_lines()
             for t in self._textbox.text_on_screen_list:
                 if t.id == 1:
                     t.write("Shop", "title", "bold")

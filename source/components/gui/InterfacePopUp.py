@@ -21,24 +21,26 @@ from components.gui.InterfaceButtonPygame import Button
 class PopUp(pygame.sprite.Sprite):
     def __init__(self, icon, text, type, textures, scale_factor, scale_factor_x, scale_factor_y, on_yes=None, on_no=None, on_ok=None):
         super().__init__()
+
+        self.overlay = pygame.Surface((1280 * scale_factor_x, 720 * scale_factor_y), pygame.SRCALPHA)
+        self.overlay.fill((0, 0, 0, 100))
+
         self.image = textures.POP_UP_MESSAGE_FRAME
         self.rect = self.image.get_rect()
+        self.rect.center = (640 * scale_factor_x, 360 * scale_factor_y)
         if icon == "error":
-            self.icon = Icon("error", textures, 400 * scale_factor_x, 300 * scale_factor_y)
+            self.icon = Icon("error", textures, 500 * scale_factor_x, 320 * scale_factor_y)
         elif icon == "warning":
-            self.icon = Icon("warning", textures, 400 * scale_factor_x, 300 * scale_factor_y)
+            self.icon = Icon("warning", textures, 500 * scale_factor_x, 320 * scale_factor_y)
         elif icon == "question":
-            self.icon = Icon("question", textures, 400 * scale_factor_x, 300 * scale_factor_y)
+            self.icon = Icon("question", textures, 500 * scale_factor_x, 320 * scale_factor_y)
         self.pop_up_visible = 1
 
         if type == 1:
             self.yesButton = Button("Pop_Up_Small", 1, textures, scale_factor, scale_factor_x, scale_factor_y)
             self.noButton = Button("Pop_Up_Small", 2, textures, scale_factor, scale_factor_x, scale_factor_y)
-            self.okButton = None
         elif type == 2:
             self.okButton = Button("Pop_Up_Large", 1, textures, scale_factor, scale_factor_x, scale_factor_y)
-            self.yesButton = None
-            self.noButton = None
 
         self.rendered_text = []
         self.font_dict = {
@@ -85,6 +87,8 @@ class PopUp(pygame.sprite.Sprite):
 
     def __del__(self):
         self.kill()
+        if hasattr(self, 'overlay'):
+            del self.overlay
         if hasattr(self, 'icon'):
             del self.icon
         if hasattr(self, 'yesButton'):
@@ -132,17 +136,17 @@ class PopUp(pygame.sprite.Sprite):
     def write_text(self):
         self.rendered_text = []
 
-        font_key = "normal_regular"
+        font_key = "tiny_regular"
         font = self.font_dict.get(font_key, self.font_dict["normal_regular"])
 
-        start_x = self.rect.centerx - 155 * self._scale_factor_x
-        start_y = self.rect.centery - 105 * self._scale_factor_y
+        start_x = self.rect.centerx - 70 * self._scale_factor_x
+        start_y = self.rect.centery - 90 * self._scale_factor_y
 
-        line_spacing = int(24 * self._scale_factor_y)
+        line_spacing = int(22 * self._scale_factor_y)
 
         y = start_y
         for line in self._text:
-            text_surface = font.render(line, True, (0, 0, 0))  # default black text
+            text_surface = font.render(line, True, (255, 255, 255))
             text_rect = text_surface.get_rect(topleft=(start_x, y))
             self.rendered_text.append((text_surface, text_rect))
             y += line_spacing
@@ -154,18 +158,18 @@ class PopUp(pygame.sprite.Sprite):
         if not self.pop_up_visible:
             return
 
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # left click
-            if self.yesButton and self.yesButton.rect.collidepoint(event.pos):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if hasattr(self, "yesButton") and self.yesButton and self.yesButton.rect.collidepoint(event.pos):
                 if self.on_yes:
                     self.on_yes()
                 self.pop_up_visible = False
 
-            if self.noButton and self.noButton.rect.collidepoint(event.pos):
+            if hasattr(self, "noButton") and self.noButton and self.noButton.rect.collidepoint(event.pos):
                 if self.on_no:
                     self.on_no()
                 self.pop_up_visible = False
 
-            if self.okButton and self.okButton.rect.collidepoint(event.pos):
+            if hasattr(self, "okButton") and self.okButton and self.okButton.rect.collidepoint(event.pos):
                 if self.on_ok:
                     self.on_ok()
                 self.pop_up_visible = False

@@ -23,8 +23,6 @@
 """
 
 import pygame
-import tkinter as tk
-from tkinter import messagebox
 from setup.data.ShopDescriptions import MACHINE_PRICES
 from setup.data.ShopDescriptions import ALIEN_PRICES
 from setup.data.ShopDescriptions import POWER_UP_PRICES
@@ -54,7 +52,21 @@ class Shop:
             _price_displayed (int): The current price displayed on the buy button in the shop
     """
 
-    def __init__(self, window, screen, button, panel, textbox, price_label, settings, refresh, shop_config, scale_factor_x, scale_factor_y):
+    def __init__(self,
+                 window,
+                 screen,
+                 button,
+                 panel,
+                 textbox,
+                 price_label,
+                 pop_up,
+                 settings,
+                 refresh,
+                 shop_config,
+                 scale_factor,
+                 scale_factor_x,
+                 scale_factor_y
+    ):
         """
             Initializes all the necessary pointers for the Shop Manager.
 
@@ -99,10 +111,12 @@ class Shop:
         self._panel = panel
         self._textbox = textbox
         self._price_label = price_label
+        self._pop_up = pop_up
         self._settings = settings
         self._refresh = refresh
         self._shop_config = shop_config
 
+        self._scale_factor = scale_factor
         self._scale_factor_x = scale_factor_x
         self._scale_factor_y = scale_factor_y
 
@@ -391,117 +405,148 @@ class Shop:
         if self._settings.button_sound == 1:
             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
             sound.play()
-        # If the player does not have enough coins, display an error message
+        # If the player does not have enough coins, display an error message in a pop up
         if self._price_displayed > self._shop_config.total_coins:
-            root = tk.Tk()
-            root.withdraw()
-            root.attributes("-topmost", True)
-            messagebox.showerror("Not Enough Coins!", "You do not have enough coins to purchase this item!")
-            root.destroy()
+            error_text = [
+                "You do not have",
+                "enough coins to",
+                "purchase this",
+                "item!"
+            ]
+
+            self._pop_up.spawn_pop_up(
+                icon="error",
+                text=error_text,
+                type=2,
+                on_ok=self.close_pop_up
+            )
         # If the player does have enough coins
         else:
             # Clarify if the user wants to purchase the item
-            root = tk.Tk()
-            root.withdraw()
-            root.attributes("-topmost", True)
-            message_output = messagebox.askquestion("Are you sure?", "Are you sure you want to purchase this item for {} coins?".format(self._price_displayed), icon='question')
-            root.destroy()
-            # If the user says yes
-            if message_output == 'yes':
-                max_level = 0
-                # Coin sound is played
-                if self._settings.button_sound == 1:
-                    sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
-                    sound.play()
-                # Subtract from the total coins
-                self._shop_config.total_coins = self._shop_config.total_coins - self._price_displayed
-                self._shop_config.save()
-                current_slot = 0
-                for pl in self._panel.panel_sprite:
-                    current_slot = pl.get_panel_id()
-                # Unlock the slot and select it
-                if self._screen.page == "Machine_Mode":
-                    self._shop_config.machine_slots_unlocked[current_slot - 1] = 1
-                    self._shop_config.machine_slot_selected = current_slot
-                    self._shop_config.save()
-                elif self._screen.page == "Alien_Mode":
-                    self._shop_config.alien_slots_unlocked[current_slot - 1] = 1
-                    self._shop_config.alien_slot_selected = current_slot
-                    self._shop_config.save()
-                # If the page is power ups
-                elif self._screen.page == "Power_Ups":
-                    # Increase the power up level by 1
-                    if current_slot == 1:
-                        self._shop_config.yellow_power_up_level = self._shop_config.yellow_power_up_level + 1
-                        if self._shop_config.yellow_power_up_level == 5:
-                            max_level = 1
-                        else:
-                            self._price_displayed = POWER_UP_PRICES[self._shop_config.yellow_power_up_level]
-                            max_level = 0
-                    elif current_slot == 2:
-                        self._shop_config.blue_power_up_level = self._shop_config.blue_power_up_level + 1
-                        if self._shop_config.blue_power_up_level == 5:
-                            max_level = 1
-                        else:
-                            self._price_displayed = POWER_UP_PRICES[self._shop_config.blue_power_up_level]
-                            max_level = 0
-                    elif current_slot == 3:
-                        self._shop_config.green_power_up_level = self._shop_config.green_power_up_level + 1
-                        if self._shop_config.green_power_up_level == 5:
-                            max_level = 1
-                        else:
-                            self._price_displayed = POWER_UP_PRICES[self._shop_config.green_power_up_level]
-                            max_level = 0
-                    elif current_slot == 4:
-                        self._shop_config.red_power_up_level = self._shop_config.red_power_up_level + 1
-                        if self._shop_config.red_power_up_level == 5:
-                            max_level = 1
-                        else:
-                            self._price_displayed = POWER_UP_PRICES[self._shop_config.red_power_up_level]
-                            max_level = 0
-                    self._shop_config.save()
-                # If the page is gadgets
-                elif self._screen.page == "Gadgets":
-                    # Unlock and enable the gadget if it is successfully bought
-                    if current_slot == 1:
-                        self._shop_config.coin_magnet_unlocked = True
-                        self._shop_config.coin_magnet_enabled = True
-                    elif current_slot == 2:
-                        self._shop_config.shield_unlocked = True
-                        self._shop_config.shield_enabled = True
-                    elif current_slot == 3:
-                        self._shop_config.thorns_unlocked = True
-                        self._shop_config.thorns_enabled = True
-                    elif current_slot == 4:
-                        self._shop_config.hearts_unlocked = True
-                        self._shop_config.hearts_enabled = True
-                    self._shop_config.save()
-                # Remove the buy button is the page is not the power ups page or the max level as been reached
-                if self._screen.page != "Power_Ups" or max_level == 1:
-                    for bu in self._button.buttons_on_screen_list:
-                        if bu.get_type() == "Buy" or bu.get_type() == "Enable":
-                            bu.remove()
-                            self._button.buttons_on_screen_list.pop()
-                            self._button.current_button_index = self._button.current_button_index - 1
-                    for t in self._textbox.text_on_screen_list:
-                        if t.get_id() == current_slot + 3:
-                            t.remove()
-                            self._textbox.text_on_screen_list.remove(t)
-                            self._textbox.current_text_index = self._textbox.current_text_index - 1
-                    for pr in self._price_label.price_label_on_screen_list:
-                        if pr.get_id() == current_slot + 3:
-                            pr.remove()
-                    # If the current page is the gadgets page, display an enable/disable button after
-                    #   removing the buy button
-                    if self._screen.page == "Gadgets":
-                        self._button.spawn_button("Enable", 1)
-                # Refresh the panel, text, buttons, indicators, selectors, and set buy_button_pressed to 1
-                self._refresh.refresh_panel = 1
-                self._refresh.refresh_text = 1
-                self._refresh.refresh_button = 1
-                self._refresh.refresh_indicator = 1
-                self._refresh.move_slot_selector = 1
-                self._button.buy_button_pressed = 1
+            confirm_text = [
+                "Are you sure",
+                "you want to",
+                "purchase this item",
+                f"for {self._price_displayed} coins?"
+            ]
+
+            # If they do, confirm their purchase, otherwise, just close the pop up
+            self._pop_up.spawn_pop_up(
+                icon="question",
+                text=confirm_text,
+                type=1,
+                on_yes=self.confirm_purchase,
+                on_no=self.close_pop_up
+            )
+
+    def confirm_purchase(self):
+        for pu in self._pop_up.pop_up_on_screen_list:
+            pu.remove()
+        self._pop_up.pop_up_on_screen_list.clear()
+        max_level = 0
+        # Coin sound is played
+        if self._settings.button_sound == 1:
+            sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
+            sound.play()
+        # Subtract from the total coins
+        self._shop_config.total_coins = self._shop_config.total_coins - self._price_displayed
+        self._shop_config.save()
+        current_slot = 0
+        for pl in self._panel.panel_sprite:
+            current_slot = pl.get_panel_id()
+        # Unlock the slot and select it
+        if self._screen.page == "Machine_Mode":
+            self._shop_config.machine_slots_unlocked[current_slot - 1] = 1
+            self._shop_config.machine_slot_selected = current_slot
+            self._shop_config.save()
+        elif self._screen.page == "Alien_Mode":
+            self._shop_config.alien_slots_unlocked[current_slot - 1] = 1
+            self._shop_config.alien_slot_selected = current_slot
+            self._shop_config.save()
+        # If the page is power ups
+        elif self._screen.page == "Power_Ups":
+            # Increase the power up level by 1
+            if current_slot == 1:
+                self._shop_config.yellow_power_up_level = self._shop_config.yellow_power_up_level + 1
+                if self._shop_config.yellow_power_up_level == 5:
+                    max_level = 1
+                else:
+                    self._price_displayed = POWER_UP_PRICES[self._shop_config.yellow_power_up_level]
+                    max_level = 0
+            elif current_slot == 2:
+                self._shop_config.blue_power_up_level = self._shop_config.blue_power_up_level + 1
+                if self._shop_config.blue_power_up_level == 5:
+                    max_level = 1
+                else:
+                    self._price_displayed = POWER_UP_PRICES[self._shop_config.blue_power_up_level]
+                    max_level = 0
+            elif current_slot == 3:
+                self._shop_config.green_power_up_level = self._shop_config.green_power_up_level + 1
+                if self._shop_config.green_power_up_level == 5:
+                    max_level = 1
+                else:
+                    self._price_displayed = POWER_UP_PRICES[self._shop_config.green_power_up_level]
+                    max_level = 0
+            elif current_slot == 4:
+                self._shop_config.red_power_up_level = self._shop_config.red_power_up_level + 1
+                if self._shop_config.red_power_up_level == 5:
+                    max_level = 1
+                else:
+                    self._price_displayed = POWER_UP_PRICES[self._shop_config.red_power_up_level]
+                    max_level = 0
+            self._shop_config.save()
+        # If the page is gadgets
+        elif self._screen.page == "Gadgets":
+            # Unlock and enable the gadget if it is successfully bought
+            if current_slot == 1:
+                self._shop_config.coin_magnet_unlocked = True
+                self._shop_config.coin_magnet_enabled = True
+            elif current_slot == 2:
+                self._shop_config.shield_unlocked = True
+                self._shop_config.shield_enabled = True
+            elif current_slot == 3:
+                self._shop_config.thorns_unlocked = True
+                self._shop_config.thorns_enabled = True
+            elif current_slot == 4:
+                self._shop_config.hearts_unlocked = True
+                self._shop_config.hearts_enabled = True
+            self._shop_config.save()
+        # Remove the buy button is the page is not the power ups page or the max level as been reached
+        if self._screen.page != "Power_Ups" or max_level == 1:
+            for bu in self._button.buttons_on_screen_list:
+                if bu.get_type() == "Buy" or bu.get_type() == "Enable":
+                    bu.remove()
+                    self._button.buttons_on_screen_list.pop()
+                    self._button.current_button_index = self._button.current_button_index - 1
+            for t in self._textbox.text_on_screen_list:
+                if t.get_id() == current_slot + 3:
+                    t.remove()
+                    self._textbox.text_on_screen_list.remove(t)
+                    self._textbox.current_text_index = self._textbox.current_text_index - 1
+            for pr in self._price_label.price_label_on_screen_list:
+                if pr.get_id() == current_slot + 3:
+                    pr.remove()
+            # If the current page is the gadgets page, display an enable/disable button after
+            #   removing the buy button
+            if self._screen.page == "Gadgets":
+                self._button.spawn_button("Enable", 1)
+        # Refresh the panel, text, buttons, indicators, selectors, and set buy_button_pressed to 1
+        self._refresh.refresh_panel = 1
+        self._refresh.refresh_text = 1
+        self._refresh.refresh_button = 1
+        self._refresh.refresh_indicator = 1
+        self._refresh.move_slot_selector = 1
+        self._button.buy_button_pressed = 1
+
+    def close_pop_up(self):
+        # Play the button sound
+        if self._settings.button_sound == 1:
+            sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+            sound.play()
+        # Remove the pop up from the screen
+        for pu in self._pop_up.pop_up_on_screen_list:
+            pu.remove()
+        self._pop_up.pop_up_on_screen_list.clear()
 
     def execute_enable_button(self):
         """
