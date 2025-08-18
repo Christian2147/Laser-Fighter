@@ -165,6 +165,9 @@ class Button(pygame.sprite.Sprite):
         else:
             self.indicator = 0
 
+        if type == "Controls_Toggle":
+            self.state = 1
+
         self.type = type
         self.id = id
 
@@ -407,13 +410,25 @@ class Button(pygame.sprite.Sprite):
 
         # Writes new text based on the button id
         if self.id == 1:
-            self.button_text.write_text(f"Go Right: {go_right_key}", "semi-medium", "normal")
+            if self.state == 0:
+                self.button_text.write_text(f"Go Right: <Press Any Key>", "semi-medium", "normal")
+            else:
+                self.button_text.write_text(f"Go Right: {go_right_key.replace('_', ' ')}", "semi-medium", "normal")
         elif self.id == 2:
-            self.button_text.write_text(f"Go Left: {go_left_key}", "semi-medium", "normal")
+            if self.state == 0:
+                self.button_text.write_text(f"Go Left: <Press Any Key>", "semi-medium", "normal")
+            else:
+                self.button_text.write_text(f"Go Left: {go_left_key.replace('_', ' ')}", "semi-medium", "normal")
         elif self.id == 3:
-            self.button_text.write_text(f"Shoot: {shoot_key}", "semi-medium", "normal")
+            if self.state == 0:
+                self.button_text.write_text(f"Shoot: <Press Any Key>", "semi-medium", "normal")
+            else:
+                self.button_text.write_text(f"Shoot: {shoot_key.replace('_', ' ')}", "semi-medium", "normal")
         elif self.id == 4:
-            self.button_text.write_text(f"Jump: {jump_key}", "semi-medium", "normal")
+            if self.state == 0:
+                self.button_text.write_text(f"Jump: <Press Any Key>", "semi-medium", "normal")
+            else:
+                self.button_text.write_text(f"Jump: {jump_key.replace('_', ' ')}", "semi-medium", "normal")
 
     def write_indicator(self, setting):
         """

@@ -138,8 +138,8 @@ def main():
     settings_toggle = SettingsToggle(screen, settings, refresh_variables, window.scale_factor_X,
                                      window.scale_factor_Y)
 
-    controls = Controls(settings,
-                        controls_toggle, refresh_variables, window.scale_factor_X,
+    controls = Controls(pop_up, settings,
+                        controls_toggle, refresh_variables, window.scale_factor, window.scale_factor_X,
                         window.scale_factor_Y)
 
     text_refresh = TextRefresh(screen, button, panel, pop_up, textbox, yellow_power_up_indicator, blue_power_up_indicator,
@@ -147,6 +147,7 @@ def main():
                                statistics, shop, shop_config, controls, controls_toggle, refresh_variables)
 
     last_move_time = 0
+    shoot_pressed_last = False
     start_ticks = pygame.time.get_ticks()
 
     # The main game loop:
@@ -168,9 +169,56 @@ def main():
             "escape": pygame.K_ESCAPE,
             "backspace": pygame.K_BACKSPACE,
             "tab": pygame.K_TAB,
-            "shift": pygame.K_LSHIFT,
-            "ctrl": pygame.K_LCTRL,
-            "alt": pygame.K_LALT,
+            "caps_lock": pygame.K_CAPSLOCK,
+            "left_shift": pygame.K_LSHIFT,
+            "right_shift": pygame.K_RSHIFT,
+            "left_ctrl": pygame.K_LCTRL,
+            "right_ctrl": pygame.K_RCTRL,
+            "left_alt": pygame.K_LALT,
+            "right_alt": pygame.K_RALT,
+            "insert": pygame.K_INSERT,
+            "delete": pygame.K_DELETE,
+            "home": pygame.K_HOME,
+            "end": pygame.K_END,
+            "page_up": pygame.K_PAGEUP,
+            "page_down": pygame.K_PAGEDOWN,
+            "num_lock": pygame.K_NUMLOCK,
+            "scroll_lock": pygame.K_SCROLLOCK,
+            "print_screen": pygame.K_PRINT,
+            "pause": pygame.K_PAUSE,
+            "menu": pygame.K_MENU,
+            "f1": pygame.K_F1,
+            "f2": pygame.K_F2,
+            "f3": pygame.K_F3,
+            "f4": pygame.K_F4,
+            "f5": pygame.K_F5,
+            "f6": pygame.K_F6,
+            "f7": pygame.K_F7,
+            "f8": pygame.K_F8,
+            "f9": pygame.K_F9,
+            "f10": pygame.K_F10,
+            "f11": pygame.K_F11,
+            "f12": pygame.K_F12,
+            "[0]": pygame.K_KP0,
+            "[1]": pygame.K_KP1,
+            "[2]": pygame.K_KP2,
+            "[3]": pygame.K_KP3,
+            "[4]": pygame.K_KP4,
+            "[5]": pygame.K_KP5,
+            "[6]": pygame.K_KP6,
+            "[7]": pygame.K_KP7,
+            "[8]": pygame.K_KP8,
+            "[9]": pygame.K_KP9,
+            "[.]": pygame.K_KP_PERIOD,
+            "[/]": pygame.K_KP_DIVIDE,
+            "[*]": pygame.K_KP_MULTIPLY,
+            "[-]": pygame.K_KP_MINUS,
+            "[+]": pygame.K_KP_PLUS,
+            "enter": pygame.K_KP_ENTER,
+            "[=]": pygame.K_KP_EQUALS,
+            "help": pygame.K_HELP,
+            "mode": pygame.K_MODE,
+            "clear": pygame.K_CLEAR
         }
 
         popup_blocking = any(getattr(pu, "pop_up_visible", 0) for pu in pop_up.pop_up_on_screen_list)
@@ -195,132 +243,205 @@ def main():
             if event.type == pygame.QUIT or screen.quit == 1:
                 running = False
             elif event.type == pygame.KEYDOWN:
-                key_shoot_str = controls_toggle.shoot_key.lower()
-                if key_shoot_str in special_keys:
-                    key_shoot = special_keys[key_shoot_str]
-                else:
-                    key_shoot = ord(key_shoot_str)
-                if event.key == key_shoot:
-                    movement.shoot(machine_collision)
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if controls.listening and controls.active_control_button != -1:
+                    key_str = pygame.key.name(event.key).strip().lower().replace(" ", "_")
+
+                    if key_str in special_keys:
+                        controls.new_key = event.key
+                        controls.update_controls(controls.update_type)
+                        controls.listening = False
+                    else:
+                        try:
+                            if len(key_str) == 1:
+                                ord(key_str)
+                                controls.new_key = event.key
+                                controls.update_controls(controls.update_type)
+                                controls.listening = False
+                        except Exception:
+                            pass
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button in (1, 2, 3):
                 popup_blocking = any(getattr(pu, "pop_up_visible", 0) for pu in pop_up.pop_up_on_screen_list)
-                if event.button == 1 and not popup_blocking:
+                if not popup_blocking:
+                    clicked_on_controls_button = False
+                    button_id_clicked = -1
+
                     for bu in button.buttons_on_screen_list:
                         if bu.rect.collidepoint(mouse_pos):
-                            if bu.type == "Title":
-                                if bu.id == 1:
-                                    screen.launch_machine_mode()
-                                elif bu.id == 2:
-                                    screen.launch_shop_mode()
-                                elif bu.id == 3:
-                                    running = False
-                            elif bu.type == "Title_Locked":
-                                if bu.id == 1:
-                                    screen.launch_alien_mode()
-                            elif bu.type == "Title_Small":
-                                if bu.id == 1:
-                                    screen.launch_settings_mode()
-                                elif bu.id == 2:
-                                    screen.launch_stats_mode()
-                            elif bu.type == "Game":
-                                if bu.id == 1:
-                                    screen.launch_title_mode()
-                            elif bu.type == "Tab":
-                                if bu.id == 1:
-                                    screen.display_machine_mode_page()
-                                elif bu.id == 2:
-                                    screen.display_alien_mode_page()
-                                elif bu.id == 3:
-                                    screen.display_power_up_page()
-                                elif bu.id == 4:
-                                    screen.display_gadgets_page()
-                            elif bu.type == "Shop_Slot" or bu.type == "Power_Up_Slot" or bu.type == "Gadget_Slot":
-                                if bu.id == 1:
-                                    shop.slot_1_select()
-                                elif bu.id == 2:
-                                    shop.slot_2_select()
-                                elif bu.id == 3:
-                                    shop.slot_3_select()
-                                elif bu.id == 4:
-                                    shop.slot_4_select()
-                                elif bu.id == 5:
-                                    shop.slot_5_select()
-                            elif bu.type == "Buy":
-                                shop.execute_buy_button()
-                            elif bu.type == "Enable":
-                                shop.execute_enable_button()
-                            elif bu.type == "Regular_Settings_And_Controls":
-                                if bu.id == 1:
-                                    screen.launch_title_mode()
-                                elif bu.id == 2:
-                                    screen.launch_controls_mode()
-                                elif bu.id == 3:
-                                    screen.launch_settings_mode()
-                            elif bu.type == "Settings_Toggle":
-                                if bu.id == 1:
-                                    settings_toggle.toggle_button_sound()
-                                elif bu.id == 2:
-                                    settings_toggle.toggle_player_shooting_sound()
-                                elif bu.id == 3:
-                                    settings_toggle.toggle_enemy_shooting_sound()
-                                elif bu.id == 4:
-                                    settings_toggle.toggle_player_death_sound()
-                                elif bu.id == 5:
-                                    settings_toggle.toggle_enemy_death_sound()
-                                elif bu.id == 6:
-                                    settings_toggle.toggle_player_hit_sound()
-                                elif bu.id == 7:
-                                    settings_toggle.toggle_enemy_hit_sound()
-                                elif bu.id == 8:
-                                    settings_toggle.toggle_power_up_pickup_sound()
-                                elif bu.id == 9:
-                                    settings_toggle.toggle_power_up_spawn_sound()
-                                elif bu.id == 10:
-                                    settings_toggle.toggle_coin_pick_up_sound()
-                                elif bu.id == 11:
-                                    settings_toggle.toggle_fullscreen()
-                                elif bu.id == 12:
-                                    settings_toggle.toggle_vsync()
-                            elif bu.type == "Controls_Toggle":
-                                if bu.id == 1:
-                                    controls.change_go_right_key()
-                                elif bu.id == 2:
-                                    controls.change_go_left_key()
-                                elif bu.id == 3:
-                                    controls.change_shoot_key()
-                                elif bu.id == 4:
-                                    controls.change_jump_key()
+                            if bu.type == "Controls_Toggle":
+                                clicked_on_controls_button = True
+                                button_id_clicked = bu.id
+
+                    if controls.active_control_button != -1 and not clicked_on_controls_button:
+                        controls.listening = False
+                        controls.new_key = None
+                        controls.update_type = -1
+                        controls.active_control_button = -1
+                        refresh_variables.refresh_button = 1
+
+                    if controls.listening and clicked_on_controls_button and button_id_clicked == controls.active_control_button + 1:
+                        controls.new_key = f"mouse_{event.button}"
+                        controls.update_controls(controls.update_type)
+                        controls.listening = False
+                    else:
+                        if event.button == 1:
+                            for bu in button.buttons_on_screen_list:
+                                if bu.rect.collidepoint(mouse_pos):
+                                    if bu.type == "Controls_Toggle":
+                                        # clicked_on_controls_button = True
+                                        if bu.id == 1:
+                                            controls.change_go_right_key()
+                                        elif bu.id == 2:
+                                            controls.change_go_left_key()
+                                        elif bu.id == 3:
+                                            controls.change_shoot_key()
+                                        elif bu.id == 4:
+                                            controls.change_jump_key()
+
+                    if event.button == 1:
+                        for bu in button.buttons_on_screen_list:
+                            if bu.rect.collidepoint(mouse_pos):
+                                if bu.type == "Title":
+                                    if bu.id == 1:
+                                        screen.launch_machine_mode()
+                                    elif bu.id == 2:
+                                        screen.launch_shop_mode()
+                                    elif bu.id == 3:
+                                        running = False
+                                elif bu.type == "Title_Locked":
+                                    if bu.id == 1:
+                                        screen.launch_alien_mode()
+                                elif bu.type == "Title_Small":
+                                    if bu.id == 1:
+                                        screen.launch_settings_mode()
+                                    elif bu.id == 2:
+                                        screen.launch_stats_mode()
+                                elif bu.type == "Game":
+                                    if bu.id == 1:
+                                        screen.launch_title_mode()
+                                elif bu.type == "Tab":
+                                    if bu.id == 1:
+                                        screen.display_machine_mode_page()
+                                    elif bu.id == 2:
+                                        screen.display_alien_mode_page()
+                                    elif bu.id == 3:
+                                        screen.display_power_up_page()
+                                    elif bu.id == 4:
+                                        screen.display_gadgets_page()
+                                elif bu.type == "Shop_Slot" or bu.type == "Power_Up_Slot" or bu.type == "Gadget_Slot":
+                                    if bu.id == 1:
+                                        shop.slot_1_select()
+                                    elif bu.id == 2:
+                                        shop.slot_2_select()
+                                    elif bu.id == 3:
+                                        shop.slot_3_select()
+                                    elif bu.id == 4:
+                                        shop.slot_4_select()
+                                    elif bu.id == 5:
+                                        shop.slot_5_select()
+                                elif bu.type == "Buy":
+                                    shop.execute_buy_button()
+                                elif bu.type == "Enable":
+                                    shop.execute_enable_button()
+                                elif bu.type == "Regular_Settings_And_Controls":
+                                    if bu.id == 1:
+                                        screen.launch_title_mode()
+                                    elif bu.id == 2:
+                                        screen.launch_controls_mode()
+                                    elif bu.id == 3:
+                                        screen.launch_settings_mode()
+                                elif bu.type == "Settings_Toggle":
+                                    if bu.id == 1:
+                                        settings_toggle.toggle_button_sound()
+                                    elif bu.id == 2:
+                                        settings_toggle.toggle_player_shooting_sound()
+                                    elif bu.id == 3:
+                                        settings_toggle.toggle_enemy_shooting_sound()
+                                    elif bu.id == 4:
+                                        settings_toggle.toggle_player_death_sound()
+                                    elif bu.id == 5:
+                                        settings_toggle.toggle_enemy_death_sound()
+                                    elif bu.id == 6:
+                                        settings_toggle.toggle_player_hit_sound()
+                                    elif bu.id == 7:
+                                        settings_toggle.toggle_enemy_hit_sound()
+                                    elif bu.id == 8:
+                                        settings_toggle.toggle_power_up_pickup_sound()
+                                    elif bu.id == 9:
+                                        settings_toggle.toggle_power_up_spawn_sound()
+                                    elif bu.id == 10:
+                                        settings_toggle.toggle_coin_pick_up_sound()
+                                    elif bu.id == 11:
+                                        settings_toggle.toggle_fullscreen()
+                                    elif bu.id == 12:
+                                        settings_toggle.toggle_vsync()
             for pu in pop_up.pop_up_on_screen_list:
                 pu.handle_event(event)
 
         current_time = time.time()
 
         keys = pygame.key.get_pressed()
+        mouse_buttons = pygame.mouse.get_pressed()
+
         if current_time - last_move_time >= MOVE_REPEAT_DELAY:
             key_right_str = controls_toggle.go_right_key.lower()
             key_left_str = controls_toggle.go_left_key.lower()
             key_jump_str = controls_toggle.jump_key.lower()
-            if key_right_str in special_keys:
-                key_right = special_keys[key_right_str]
+            if key_right_str.startswith("mouse_"):
+                btn_index = int(key_right_str.split("_")[1]) - 1
+                if btn_index < len(mouse_buttons) and mouse_buttons[btn_index]:
+                    movement.go_right()
+                    last_move_time = current_time
             else:
-                key_right = ord(key_right_str)
-            if key_left_str in special_keys:
-                key_left = special_keys[key_left_str]
+                if key_right_str in special_keys:
+                    key_right = special_keys[key_right_str]
+                else:
+                    key_right = ord(key_right_str)
+                if keys[key_right]:
+                    movement.go_right()
+                    last_move_time = current_time
+            if key_left_str.startswith("mouse_"):
+                btn_index = int(key_left_str.split("_")[1]) - 1
+                if btn_index < len(mouse_buttons) and mouse_buttons[btn_index]:
+                    movement.go_left()
+                    last_move_time = current_time
             else:
-                key_left = ord(key_left_str)
-            if key_jump_str in special_keys:
-                key_jump = special_keys[key_jump_str]
+                if key_left_str in special_keys:
+                    key_left = special_keys[key_left_str]
+                else:
+                    key_left = ord(key_left_str)
+                if keys[key_left]:
+                    movement.go_left()
+                    last_move_time = current_time
+            if key_jump_str.startswith("mouse_"):
+                btn_index = int(key_jump_str.split("_")[1]) - 1
+                if btn_index < len(mouse_buttons) and mouse_buttons[btn_index]:
+                    if screen.mode == "Alien_Mode":
+                        movement.jump()
+                        last_move_time = current_time
             else:
-                key_jump = ord(key_jump_str)
-            if keys[key_left]:
-                movement.go_left()
-                last_move_time = current_time
-            elif keys[key_right]:
-                movement.go_right()
-                last_move_time = current_time
-            if screen.mode == "Alien_Mode" and keys[key_jump]:
-                movement.jump()
-                last_move_time = current_time
+                if key_jump_str in special_keys:
+                    key_jump = special_keys[key_jump_str]
+                else:
+                    key_jump = ord(key_jump_str)
+                if screen.mode == "Alien_Mode" and keys[key_jump]:
+                    movement.jump()
+                    last_move_time = current_time
+
+        key_shoot_str = controls_toggle.shoot_key.lower()
+        if key_shoot_str.startswith("mouse_"):
+            btn_index = int(key_shoot_str.split("_")[1]) - 1
+            current_shoot_pressed = btn_index < len(mouse_buttons) and mouse_buttons[btn_index]
+        else:
+            if key_shoot_str in special_keys:
+                key_shoot = special_keys[key_shoot_str]
+            else:
+                key_shoot = ord(key_shoot_str)
+            current_shoot_pressed = keys[key_shoot]
+
+        if current_shoot_pressed and not shoot_pressed_last:
+            movement.shoot(machine_collision)
+
+        shoot_pressed_last = current_shoot_pressed
 
 
         # Drawer!!!! (View)
@@ -2947,6 +3068,29 @@ def main():
                 controls.jump_key_alert = 0
             else:
                 controls.jump_key_alert = 1
+
+            for bu in button.buttons_on_screen_list:
+                if bu.type == "Controls_Toggle":
+                    if bu.id == 1:
+                        if controls.active_control_button == 0:
+                            bu.state = 0
+                        else:
+                            bu.state = 1
+                    elif bu.id == 2:
+                        if controls.active_control_button == 1:
+                            bu.state = 0
+                        else:
+                            bu.state = 1
+                    elif bu.id == 3:
+                        if controls.active_control_button == 2:
+                            bu.state = 0
+                        else:
+                            bu.state = 1
+                    elif bu.id == 4:
+                        if controls.active_control_button == 3:
+                            bu.state = 0
+                        else:
+                            bu.state = 1
 
         pygame.display.flip()
 

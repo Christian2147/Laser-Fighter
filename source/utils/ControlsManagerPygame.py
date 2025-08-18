@@ -22,9 +22,6 @@
 """
 
 import pygame
-import tkinter as tk
-from tkinter import simpledialog
-from tkinter import messagebox
 
 
 class Controls:
@@ -47,7 +44,15 @@ class Controls:
             _jump_key_alert (int): Determines if the jump keybind conflicts with any other keybind.
     """
 
-    def __init__(self, settings, controls_toggle, refresh, scale_factor_x, scale_factor_y):
+    def __init__(self,
+                 pop_up,
+                 settings,
+                 controls_toggle,
+                 refresh,
+                 scale_factor,
+                 scale_factor_x,
+                 scale_factor_y
+    ):
         """
             Initializes all of the pointers necessary for the Controls Manager.
 
@@ -67,12 +72,19 @@ class Controls:
             :type scale_factor_y: float
         """
 
+        self._pop_up = pop_up
         self._settings = settings
         self._controls_toggle = controls_toggle
         self._refresh = refresh
 
+        self._scale_factor = scale_factor
         self._scale_factor_x = scale_factor_x
         self._scale_factor_y = scale_factor_y
+
+        self.new_key = None
+        self.update_type = -1
+        self.listening = False
+        self.active_control_button = -1
 
         self._go_right_key_alert = 0
         self._go_left_key_alert = 0
@@ -91,6 +103,7 @@ class Controls:
         del self._refresh
         del self._scale_factor_x
         del self._scale_factor_y
+        del self.active_control_button
         del self._go_right_key_alert
         del self._go_left_key_alert
         del self._shoot_key_alert
@@ -198,122 +211,120 @@ class Controls:
             :return: None
         """
 
-        key_1 = 0
-        # "type" parameter as a string
-        type_string = ""
-        # Go right key
-        if type == 0:
-            key_1 = self._controls_toggle.go_right_key
-            type_string = "Go Right"
-        # Go left key
-        elif type == 1:
-            key_1 = self._controls_toggle.go_left_key
-            type_string = "Go Left"
-        # Shoot key
-        elif type == 2:
-            key_1 = self._controls_toggle.shoot_key
-            type_string = "Shoot"
-        # Jump key
-        elif type == 3:
-            key_1 = self._controls_toggle.jump_key
-            type_string = "Jump"
-        # Play the button click sound
         if self._settings.button_sound == 1:
             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
             sound.play()
-        # Backup the original keybind
-        key_backup = key_1
-        # Set "key_2" to whatever the user inputted into the textbox
-        root = tk.Tk()
-        root.withdraw()
-        root.attributes("-topmost", True)
-        key_2 = simpledialog.askstring(f"{type_string}", "Insert new key here:")
-        root.destroy()
-        # If the user inputted a space, display "space"
-        if key_2 == " ":
-            key_2 = "space"
-        # If the new keybind exists and is different from the one before, the keybind setting need to be updated
-        if key_2 != None and key_2 != key_backup:
-            # If the new keybind input is invalid (enter key or multiple charecters)
-            if (len(key_2) > 1 and key_2 != "space") or key_2 == "":
-                # Let the user know through an error
-                root = tk.Tk()
-                root.withdraw()
-                root.attributes("-topmost", True)
-                messagebox.showerror("Invalid Input!", "That is an invalid input!")
-                root.destroy()
-            # if it is valid
-            else:
-                # Update the keybind in the backup ini file.
-                self._controls_toggle.key_check[type] = key_2
-                self._controls_toggle.save_check()
-                key_1 = key_2
-                # Check for keybind conflicts for each keybind individually
-                if type == 0:
-                    self._controls_toggle.go_right_key = key_1
-                    if self._controls_toggle.go_right_key != self._controls_toggle.go_left_key and \
-                            self._controls_toggle.go_right_key != self._controls_toggle.shoot_key and \
-                            self._controls_toggle.go_right_key != self._controls_toggle.jump_key:
-                        self._go_right_key_alert = 0
-                    else:
-                        self._go_right_key_alert = 1
-                    key_alert = self._go_right_key_alert
-                elif type == 1:
-                    self._controls_toggle.go_left_key = key_1
-                    if self._controls_toggle.go_left_key != self._controls_toggle.go_right_key and \
-                            self._controls_toggle.go_left_key != self._controls_toggle.shoot_key and \
-                            self._controls_toggle.go_left_key != self._controls_toggle.jump_key:
-                        self._go_left_key_alert = 0
-                    else:
-                        self._go_left_key_alert = 1
-                    key_alert = self._go_left_key_alert
-                elif type == 2:
-                    self._controls_toggle.shoot_key = key_1
-                    if self._controls_toggle.shoot_key != self._controls_toggle.go_right_key and \
-                            self._controls_toggle.shoot_key != self._controls_toggle.go_left_key and \
-                            self._controls_toggle.shoot_key != self._controls_toggle.jump_key:
-                        self._shoot_key_alert = 0
-                    else:
-                        self._shoot_key_alert = 1
-                    key_alert = self._shoot_key_alert
-                else:
-                    self._controls_toggle.jump_key = key_1
-                    if self._controls_toggle.jump_key != self._controls_toggle.go_right_key and \
-                            self._controls_toggle.jump_key != self._controls_toggle.go_left_key and \
-                            self._controls_toggle.jump_key != self._controls_toggle.shoot_key:
-                        self._jump_key_alert = 0
-                    else:
-                        self._jump_key_alert = 1
-                    key_alert = self._jump_key_alert
-                # If there is a conflict
-                if key_alert == 1:
-                    # Alert the user about the conflict
-                    root = tk.Tk()
-                    root.withdraw()
-                    root.attributes("-topmost", True)
-                    message_output = messagebox.askyesno("Conflict!", "Your current configuration may cause conflicts with other controls!\nAre you sure you want to keep it?", icon='warning')
-                    root.destroy()
-                    # If the user wants to go back
-                    if not message_output:
-                        # Reinstate the old keybinds and update the backup keybind file
-                        key_1 = key_backup
-                        key_2 = key_backup
-                        self._controls_toggle.key_check[type] = key_2
-                        self._controls_toggle.save_check()
-                        if type == 0:
-                            self._controls_toggle.go_right_key = key_1
-                        elif type == 1:
-                            self._controls_toggle.go_left_key = key_1
-                        elif type == 2:
-                            self._controls_toggle.shoot_key = key_1
-                        else:
-                            self._controls_toggle.jump_key = key_1
-                    # If the user wants to keep the controls
-                    else:
-                        # Update the main config file to confirm the changes
-                        self._controls_toggle.save()
-                else:
-                    # If there are no conflicts, update the main config file like normal.
-                    self._controls_toggle.save()
-        # Refresh all the buttons on the screen
+        self.active_control_button = type
+        self._refresh.refresh_button = 1
+
+        self.listening = True
+        self.update_type = type
+
+        return
+
+    def update_controls(self, type):
+        if isinstance(self.new_key, int):
+            key_str = pygame.key.name(self.new_key)
+        else:
+            key_str = str(self.new_key)
+
+        key_str = key_str.strip().lower().replace(" ", "_")
+
+        if type == 0:
+            current_key = self._controls_toggle.go_right_key
+        elif type == 1:
+            current_key = self._controls_toggle.go_left_key
+        elif type == 2:
+            current_key = self._controls_toggle.shoot_key
+        elif type == 3:
+            current_key = self._controls_toggle.jump_key
+        else:
+            return
+
+        key_backup = current_key
+
+        if type == 0:
+            self._controls_toggle.go_right_key = key_str
+        elif type == 1:
+            self._controls_toggle.go_left_key = key_str
+        elif type == 2:
+            self._controls_toggle.shoot_key = key_str
+        else:
+            self._controls_toggle.jump_key = key_str
+
+        conflict = False
+        keys = [
+            self._controls_toggle.go_right_key,
+            self._controls_toggle.go_left_key,
+            self._controls_toggle.shoot_key,
+            self._controls_toggle.jump_key
+        ]
+        if len(set(keys)) != 4:
+            conflict = True
+
+        if conflict:
+            if self._settings.button_sound == 1:
+                sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+                sound.play()
+
+            confirm_text = [
+                "Your current",
+                "configuration may",
+                "conflict with other",
+                "controls! Do you",
+                "want to keep it?",
+            ]
+
+            self._pop_up.spawn_pop_up(
+                icon="warning",
+                text=confirm_text,
+                type=1,
+                on_yes=self.keep_conflicting_controls,
+                on_no=lambda: self.revert_conflicting_controls(type, key_backup)
+            )
+
+        self._controls_toggle.save()
+
+        self.new_key = None
+        self.update_type = -1
+        self.active_control_button = -1
+        self._refresh.refresh_button = 1
+
+    def keep_conflicting_controls(self):
+        if self._settings.button_sound == 1:
+            sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+            sound.play()
+        for pu in self._pop_up.pop_up_on_screen_list:
+            pu.remove()
+        self._pop_up.pop_up_on_screen_list.clear()
+
+        self._controls_toggle.save()
+
+        self.new_key = None
+        self.update_type = -1
+        self.active_control_button = -1
+        self._refresh.refresh_button = 1
+
+    def revert_conflicting_controls(self, type, key_backup):
+        if self._settings.button_sound == 1:
+            sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+            sound.play()
+        for pu in self._pop_up.pop_up_on_screen_list:
+            pu.remove()
+        self._pop_up.pop_up_on_screen_list.clear()
+
+        if type == 0:
+            self._controls_toggle.go_right_key = key_backup
+        elif type == 1:
+            self._controls_toggle.go_left_key = key_backup
+        elif type == 2:
+            self._controls_toggle.shoot_key = key_backup
+        else:
+            self._controls_toggle.jump_key = key_backup
+
+        self._controls_toggle.save()
+
+        self.new_key = None
+        self.update_type = -1
+        self.active_control_button = -1
         self._refresh.refresh_button = 1
