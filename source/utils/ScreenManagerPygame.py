@@ -23,8 +23,6 @@
 """
 
 import pygame
-import tkinter as tk
-from tkinter import messagebox
 
 
 class ScreenUpdate:
@@ -60,12 +58,14 @@ class ScreenUpdate:
     def __init__(self,
                  screen,
                  button,
+                 pop_up,
                  settings,
                  shop_config,
                  refresh,
                  power_up_setup,
                  machine_mode_setup,
                  alien_mode_setup,
+                 scale_factor,
                  scale_factor_x,
                  scale_factor_y
     ):
@@ -105,6 +105,7 @@ class ScreenUpdate:
 
         self._screen = screen
         self._button = button
+        self._pop_up = pop_up
         self._settings = settings
         self._shop_config = shop_config
         self._refresh = refresh
@@ -112,6 +113,7 @@ class ScreenUpdate:
         self._machine_mode_setup = machine_mode_setup
         self._alien_mode_setup = alien_mode_setup
 
+        self._scale_factor = scale_factor
         self._scale_factor_x = scale_factor_x
         self._scale_factor_y = scale_factor_y
 
@@ -132,6 +134,7 @@ class ScreenUpdate:
 
         del self._screen
         del self._button
+        del self._pop_up
         del self._settings
         del self._shop_config
         del self._refresh
@@ -255,25 +258,22 @@ class ScreenUpdate:
             # If certain settings were updated, a restart may be required.
             #  "updated_controls" checks if this is the case.
             if self._updated_controls == 1:
-                # Warn the user that a restart is required
-                root = tk.Tk()
-                root.withdraw()
-                root.attributes("-topmost", True)
-                message_output = messagebox.askyesno("Restart Required!","A restart is required for these changes to take effect!\nDo you want to restart now?", icon='warning')
-                root.destroy()
-                # If the user selects "yes"
-                if message_output:
-                    self._quit_loop = 1
-                # If the user selects "no"
-                else:
-                    # Set the mode to "Title_Mode" to change the screen
-                    self._mode = "Title_Mode"
-                    self._screen_update = 1
-                    # Setup the power ups and both Machine Mode and Alien Mode
-                    self._power_up_setup.setup_power_ups()
-                    self._machine_mode_setup.setup_machine_mode()
-                    self._alien_mode_setup.setup_alien_mode()
-                    self._updated_controls = 0
+                confirm_text = [
+                    "A restart is",
+                    "required for these",
+                    "changes to take",
+                    "effect! Do you",
+                    "want to restart",
+                    "now?"
+                ]
+
+                self._pop_up.spawn_pop_up(
+                    icon="warning",
+                    text=confirm_text,
+                    type=1,
+                    on_yes=self.restart_yes_select,
+                    on_no=self.restart_no_select
+                )
             else:
                 self._mode = "Title_Mode"
                 self._screen_update = 1
@@ -281,6 +281,34 @@ class ScreenUpdate:
                 self._power_up_setup.setup_power_ups()
                 self._machine_mode_setup.setup_machine_mode()
                 self._alien_mode_setup.setup_alien_mode()
+
+    def restart_yes_select(self):
+        # If the user selects "yes" to restart
+        if self._settings.button_sound == 1:
+            sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+            sound.play()
+        for pu in self._pop_up.pop_up_on_screen_list:
+            pu.remove()
+        self._pop_up.pop_up_on_screen_list.clear()
+        self._quit_loop = 1
+
+    def restart_no_select(self):
+        # If the user selects "no" to restart
+        if self._settings.button_sound == 1:
+            sound = pygame.mixer.Sound("sound/Button_Sound.wav")
+            sound.play()
+        for pu in self._pop_up.pop_up_on_screen_list:
+            pu.remove()
+        self._pop_up.pop_up_on_screen_list.clear()
+
+        # Set the mode to "Title_Mode" to change the screen
+        self._mode = "Title_Mode"
+        self._screen_update = 1
+        # Setup the power ups and both Machine Mode and Alien Mode
+        self._power_up_setup.setup_power_ups()
+        self._machine_mode_setup.setup_machine_mode()
+        self._alien_mode_setup.setup_alien_mode()
+        self._updated_controls = 0
 
     def launch_machine_mode(self):
         """

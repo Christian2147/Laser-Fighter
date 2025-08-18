@@ -471,6 +471,11 @@ class TextRefresh:
                 self._refresh.refresh_indicator = 0
             elif self._refresh.refresh_indicator == 1:
                 self._refresh.refresh_indicator = 2
+            for pu in self._pop_up.pop_up_on_screen_list:
+                pu.write_text()
+                for bu in [getattr(pu, "yesButton", None), getattr(pu, "noButton", None), getattr(pu, "okButton", None)]:
+                    if bu:
+                        bu.write_lines()
             for t in self._textbox.text_on_screen_list:
                 if t.id == 1:
                     t.write("Settings", "title", "bold")

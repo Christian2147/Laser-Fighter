@@ -23,8 +23,6 @@
 """
 
 import pygame
-import tkinter as tk
-from tkinter import messagebox
 
 
 class SettingsToggle:
@@ -245,23 +243,15 @@ class SettingsToggle:
             sound.play()
         # If fullscreen was originally off
         if self._settings.fullscreen == 0 and self._fullscreen_toggled == 0:
-            root = tk.Tk()
-            root.withdraw()
-            root.attributes("-topmost", True)
-            # Warn the player about the effects of performance
-            message_output = messagebox.askyesno("Warning!", "Enabling fullscreen may cause a performance drop and expose your game to bugs. Are you sure you want to enable fullscreen?", icon='warning')
-            root.destroy()
-            # If the player says yes
-            if message_output:
-                # Toggle fullscreen
-                self._settings.toggle_fullscreen()
-                # Alert the game of a needed restart
-                if self._fullscreen_toggled == 0:
-                    self._fullscreen_toggled = 1
-                    self._screen.updated_controls = 1
-                else:
-                    self._fullscreen_toggled = 0
-                    self._screen.updated_controls = 0
+            # Toggle fullscreen
+            self._settings.toggle_fullscreen()
+            # Alert the game of a needed restart
+            if self._fullscreen_toggled == 0:
+                self._fullscreen_toggled = 1
+                self._screen.updated_controls = 1
+            else:
+                self._fullscreen_toggled = 0
+                self._screen.updated_controls = 0
         # If fullscreen was originally on
         else:
             # Turn it off like normal, but a restart is still required
