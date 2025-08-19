@@ -15,7 +15,7 @@
 
 import pygame
 import math
-from components.gui.InterfaceButtonPygame import Button
+from components.gui.InterfaceButton import Button
 
 
 class PopUp(pygame.sprite.Sprite):

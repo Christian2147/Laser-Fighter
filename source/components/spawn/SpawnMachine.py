@@ -1,0 +1,270 @@
+# Copyright (C) [2024] [Christian Marinkovich]
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+"""
+    File: SpawnMachine.py
+    Author: Christian Marinkovich
+    Date: 2024-08-03
+    Description:
+    This file contains the spawning logic and the containers for Machines in Laser Fighter.
+    These classes are used to access all 4 types of Machines.
+"""
+
+from components.enemy.MachineBlueMachine import BlueMachine
+from components.enemy.MachineYellowMachine import YellowMachine
+from components.enemy.MachineRedMachine import RedMachine
+from components.enemy.MachineBoss import Boss
+
+
+class SpawnBlueMachine:
+    """
+        Represents the Blue Machine container in Laser Fighter.
+
+        Attributes:
+            blue_machines (list): Contains all of the blue machine sprites currently visible/active on the screen.
+            blue_machines_update_values (list): Contains all of the death animation values for each blue machine
+                on the screen.
+            blue_machine_index (int): Stores the number of blue machines currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Blue Machine.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        self.blue_machines = []
+        self.blue_machines_update_values = []
+        self.blue_machine_index = 0
+
+        self._textures = textures
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
+        del self.blue_machines
+        del self.blue_machines_update_values
+        del self.blue_machine_index
+
+    def spawn_blue_machine(self, id):
+        """
+            Spawn a blue machine with the given id on the screen.
+
+            :param id: The id that the enemy should have (Determines initial location of the enemy)
+            :type id: int
+
+            :return: None
+        """
+
+        blue_machine = BlueMachine(id, self._textures, self.scale_factor_x, self.scale_factor_y)
+        self.blue_machines.append(blue_machine)
+        self.blue_machine_index = self.blue_machine_index + 1
+        self.blue_machines_update_values.append(0)
+
+
+class SpawnYellowMachine:
+    """
+        Represents the Yellow Machine container in Laser Fighter.
+
+        Attributes:
+            yellow_machines (list): Contains all of the yellow machine sprites currently visible/active on the screen.
+            yellow_machines_update_values (list): Contains all of the death animation values for each yellow machine
+                on the screen.
+            yellow_machine_index (int): Stores the number of yellow machines currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Yellow Machine.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        self.yellow_machines = []
+        self.yellow_machines_update_values = []
+        self.yellow_machine_index = 0
+
+        self._textures = textures
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
+        del self.yellow_machines
+        del self.yellow_machines_update_values
+        del self.yellow_machine_index
+
+    def spawn_yellow_machine(self, id):
+        """
+            Spawn a yellow machine with the given id on the screen.
+
+            :param id: The id that the enemy should have (Determines initial location of the enemy)
+            :type id: int
+
+            :return: None
+        """
+
+        yellow_machine = YellowMachine(id, self._textures, self.scale_factor_x, self.scale_factor_y)
+        self.yellow_machines.append(yellow_machine)
+        self.yellow_machine_index = self.yellow_machine_index + 1
+        self.yellow_machines_update_values.append(0)
+
+
+class SpawnRedMachine:
+    """
+        Represents the Red Machine container in Laser Fighter.
+
+        Attributes:
+            red_machines (list): Contains all of the red machine sprites currently visible/active on the screen.
+            red_machines_update_values (list): Contains all of the death animation values for each red machine
+                on the screen.
+            red_machines_hit_values (list): Contains all of the hit delay values for each red machine on the screen.
+            red_machine_index (int): Stores the number of red machines currently active and visible on the screen.
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Red Machine.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        self.red_machines = []
+        self.red_machines_update_values = []
+        self.red_machines_hit_values = []
+        self.red_machine_index = 0
+
+        self._textures = textures
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
+        del self.red_machines
+        del self.red_machines_update_values
+        del self.red_machines_hit_values
+        del self.red_machine_index
+
+    def spawn_red_machine(self, id):
+        """
+            Spawn a red machine with the given id on the screen.
+
+            :param id: The id that the enemy should have (Determines initial location of the enemy)
+            :type id: int
+
+            :return: None
+        """
+
+        red_machine = RedMachine(id, self._textures, self.scale_factor_x, self.scale_factor_y)
+        self.red_machines.append(red_machine)
+        self.red_machine_index = self.red_machine_index + 1
+        self.red_machines_update_values.append(0)
+        self.red_machines_hit_values.append(0)
+
+
+class SpawnMachineBoss:
+    """
+        Represents the Machine Boss container in Laser Fighter.
+
+        Attributes:
+            boss (list): Contains the boss sprite if it is visible on the screen
+            boss_update_value (list): Contains the death animation value for the boss
+            boss_hit_value (list): Contains the hit delay value for the boss
+            boss_index (int): Stores whether the boss sprite has been created or not
+
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
+    def __init__(self, textures, scale_factor_x, scale_factor_y):
+        """
+            Creates the lists necessary to store the Machine Boss.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
+        self.boss = []
+        self.boss_update_value = 0
+        self.boss_hit_value = 0
+        self.boss_index = 0
+
+        self._textures = textures
+        self.scale_factor_x = scale_factor_x
+        self.scale_factor_y = scale_factor_y
+
+    def __del__(self):
+        """
+            Clear the variables from memory once the program has terminated
+
+            :return: None
+        """
+
+        del self.boss
+        del self.boss_update_value
+        del self.boss_hit_value
+        del self.boss_index
+
+    def spawn_boss(self):
+        """
+            Spawn a Machine Mode boss on the screen.
+
+            :return: None
+        """
+
+        spawn_boss = Boss(self._textures, self.scale_factor_x, self.scale_factor_y)
+        self.boss.append(spawn_boss)
+        self.boss_index = self.boss_index + 1
