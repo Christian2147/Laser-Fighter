@@ -29,7 +29,6 @@
 import win32api
 import win32con
 import pygame
-from PIL import Image
 from setup.ConfigurationSetup import settings
 
 
