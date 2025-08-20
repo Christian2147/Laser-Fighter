@@ -23,7 +23,6 @@
 """
 
 from setup.ModeSetupMaster import machine_mode_setup
-# from physics.CollisionMaster import machine_collision
 
 
 class Movement:
@@ -151,13 +150,13 @@ class Movement:
 
         if self._screen.mode == "Alien_Mode":
             for h in self._human_player.current_human:
-                # Prepare the player for a jump
-                h.jump()
                 # If the jump can successfully be preformed given the circumstances required to preform it
-                if self._settings.god_mode == 0 and h.do_jump == 1:
+                if self._settings.god_mode == 0 and h.do_jump == 0:
                     # Update the game statistics to show that the player has jumped
                     self._statistics.jumps = self._statistics.jumps + 1
                     self._statistics.save()
+                # Prepare the player for a jump
+                h.jump()
 
     def shoot(self, machine_collision):
         """
