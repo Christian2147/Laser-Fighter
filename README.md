@@ -59,7 +59,7 @@ For bug reports, please read and follow the [bug issue template](./docs/BUG_ISSU
 
 I would like to thank the following contributors:
 
-- **@yosoyducc**: Contributed to creating the `./source/textures/cleanup.sh` and the `./source/config/bckp.sh` shell scripts for Linux compatibility, which is copyrighted (c) 2024, yosoyducc. 
+- **@yosoyducc**: Contributed to creating the `./source/textures/cleanup.sh` and the `./source/config/bckp.sh` shell scripts for Linux compatibility for Laser Fighter v1.2.1b, which is copyrighted (c) 2024, yosoyducc. 
 
 ## License
 
