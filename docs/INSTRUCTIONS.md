@@ -228,10 +228,6 @@ thorns_enabled = False
 hearts_enabled = False
 ```
 5. Remove the `bak` folder in that same `config` directory
-6. Finally, go to the `textures` directory also located in the `source` directory
-7. Run the `cleanup.bat` file to clean up all the extra texture files created from scaling in fullscreen mode
-    - **WARNING**: Please **NEVER** move this file, as it could cause unintended consequences!
-    - **ADDITIONAL NOTE**: Linux does not support batch, meaning that Linux users will have to run the `cleanup.sh` file instead.
 
 ## Packaging the game
 

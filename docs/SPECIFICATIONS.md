@@ -50,10 +50,8 @@ The following is a list of external libraries used in the development of Laser F
 
 ### GUI And Graphics:
 
-1. **turtle** - A standard Python library used for basic graphics and drawing, forming the core of the game's visual elements.
-2. **TKinter** - Python's standard GUI toolkit, utilized for creating button functions and configuring the screen
-3. **Pillow (PIL)** - An external library for image processing, used here for handling and manipulating textures.
-4. **pygame** - A set of Python modules designed for writing video games, used for handling frame rate, sound, and improving performance
+1. **pygame** - A set of Python modules designed for writing video games, used for handling frame rate, sound, and improving performance
+2. **TKinter** - Python's standard GUI toolkit, utilized for adding error pop ups when the application errors out.
 
 ### Windows Specific Libraries:
 
