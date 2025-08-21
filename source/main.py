@@ -14,7 +14,7 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 # Created By: Christian Marinkovich (@Christian2147 On GitHub) This is the main source file for Laser Fighter.
-# This is game version beta 1.2.1 released on 08/12/24
+# This is game version beta 1.2.2 released on 08/20/2025
 
 """
     File: main.py

@@ -1,4 +1,4 @@
-# Copyright (C) [2024] [Christian Marinkovich]
+# Copyright (C) [2025] [Christian Marinkovich]
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

@@ -2,7 +2,7 @@
 
 # Laser-Fighter
 
-[![Stable Release: v1.2.1b](https://img.shields.io/badge/Stable-v1.2.1b-brightgreen.svg)](https://github.com/Christian2147/Laser-Fighter/releases/download/v1.2.1/Laser.Fighter.v1.2.1b.zip) [![Latest Release: v1.2.1b](https://img.shields.io/badge/Latest-v1.2.1b-red.svg)](https://github.com/Christian2147/Laser-Fighter/releases/download/v1.2.1/Laser.Fighter.v1.2.1b.zip)
+[![Stable Release: v1.2.2b](https://img.shields.io/badge/Stable-v1.2.2b-brightgreen.svg)](https://github.com/Christian2147/Laser-Fighter/releases/download/v1.2.2/Laser.Fighter.v1.2.2b.zip) [![Latest Release: v1.2.2b](https://img.shields.io/badge/Latest-v1.2.2b-red.svg)](https://github.com/Christian2147/Laser-Fighter/releases/download/v1.2.2/Laser.Fighter.v1.2.2b.zip)
 
 Laser Fighter is a 2D laser shooting game and is the first game that I have created. The first version was finished in December 2021, and it has been growing ever since. About 600 hours of work have so far been put into this game, with more to come. I created this game not only because it was fun but also because I wanted to learn more about the software development process by actually creating a real piece of software. Given my familiarity with gaming and indie games, I felt that a 2D pixel shooting game would be a good place to start. If you want to know more about the timeline of Laser Fighter, check out its [history](./docs/HISTORY.md).
 
@@ -21,6 +21,7 @@ Check out the [Releases](https://github.com/Christian2147/Laser-Fighter/releases
 | [Version 1.1.0b](https://github.com/Christian2147/Laser-Fighter/releases/tag/v1.1.0) |
 | [Version 1.2.0b](https://github.com/Christian2147/Laser-Fighter/releases/tag/v1.2.0) |
 | [Version 1.2.1b](https://github.com/Christian2147/Laser-Fighter/releases/tag/v1.2.1) |
+| [Version 1.2.2b](https://github.com/Christian2147/Laser-Fighter/releases/tag/v1.2.2) |
 
 **Note**: Each release contains the binary for the version it is labeled for and that versions source code. the versions source code is the games source code at the time that the version was released.
 
@@ -63,7 +64,7 @@ I would like to thank the following contributors:
 
 ## License
 
-Copyright (c) [2024] [Christian Marinkovich]
+Copyright (c) [2025] [Christian Marinkovich]
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](./LICENSE) file for details.
 
