@@ -33,11 +33,28 @@ class Selector(pygame.sprite.Sprite):
         Attributes:
             type (string): The type of selector
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
 
     def __init__(self, type, textures, scale_factor_x, scale_factor_y):
+        """
+            Creates a selector object and places it on the screen.
+
+            :param type: Determines the type of selector to create (Tab or Slot)
+            :type type: String
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         super().__init__()
         if type == "Tab":
             self.image = textures.TAB_SELECTOR
@@ -69,8 +86,8 @@ class Selector(pygame.sprite.Sprite):
         """
             Returns the selector sprite so its class attributes can be accessed.
 
-            :return: selector: the selector sprite
-            :type: turtle.Turtle()
+            :return: self: the selector sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self

@@ -38,6 +38,8 @@ class SmallAlien(pygame.sprite.Sprite):
             player.
 
         Attributes:
+            self (pygame.sprite.Sprite): The small alien sprite
+            small_alien_visible (boolean): Determines whether the small alien is currently visible or not
             death_animation (float): Iterated during the small aliens death animation
             death_count (int): Stores the amount of times the small alien has died since the player has last died
 
@@ -53,6 +55,8 @@ class SmallAlien(pygame.sprite.Sprite):
             movement_activated (int): Check if the aliens movement is currently happening or not. (So that
                 it can create a start time for it)
 
+            precise_x (float): Use to properly round the pygame coordinates during alien movement
+
             got_hit (int): Determines if the alien has already gotten hit or not
             collision_point (int): Determines the x-axis collision line for the alien
             already_ahead (int): Determines if the player is already ahead of the alien (larger x-cor) (This is used
@@ -63,6 +67,7 @@ class SmallAlien(pygame.sprite.Sprite):
 
             id (int): The id of the alien
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -73,6 +78,9 @@ class SmallAlien(pygame.sprite.Sprite):
 
             :param id: A unique identifier for the small alien
             :type id: int
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -132,8 +140,8 @@ class SmallAlien(pygame.sprite.Sprite):
         """
             Returns the small alien sprite so that its class attributes can be accessed.
 
-            :return: small_alien: The small alien sprite
-            :type: Turtle.turtle()
+            :return: self: The small alien sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -149,6 +157,13 @@ class SmallAlien(pygame.sprite.Sprite):
         return self.death_animation
 
     def isvisible(self):
+        """
+            Returns whether the small alien is currently visible or not
+
+            :return: small_alien_visible: Says whether the small alien is currently visible or not
+            :type: boolean
+        """
+
         return self.small_alien_visible
 
     def distance(self, other_sprite):
@@ -156,8 +171,10 @@ class SmallAlien(pygame.sprite.Sprite):
             Calculates the Euclidean distance to another sprite.
 
             :param other_sprite: Another sprite with a rect attribute
+            :type: pygame.sprite.Sprite
 
-            :return: float
+            :return: The distance between the two sprites
+            :type: float
         """
 
         dx = self.rect.centerx - other_sprite.rect.centerx

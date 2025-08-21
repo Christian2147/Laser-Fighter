@@ -43,8 +43,9 @@ class Boss(pygame.sprite.Sprite):
             and fires pink lasers.
 
         Attributes:
-            boss_laser (turtle.Turtle()): The laser sprite for the boss.
-            boss_health_bar (turtle.Turtle()): The health bar sprite for the boss.
+            self (pygame.sprite.Sprite): Respresents the machine boss sprite.
+            boss_laser (pygame.sprite.Sprite): The laser sprite for the boss.
+            boss_health_bar (pygame.sprite.Sprite): The health bar sprite for the boss.
 
             death_count (int): Stores the death count for the enemy since the player has last died.
             health_bar (int): Stores the current health of the enemy
@@ -54,6 +55,8 @@ class Boss(pygame.sprite.Sprite):
             movement (int): Stores the direction that the enemy is supposed to move on
                 the x-axis (1 = right and -1 = left)
             float (int): Stores the direction that the enemy is supposed to move on the y-axis (1 = up and -1 == down)
+            float_y (float): Used for rounding float coordinates so that pygame's coordinate system (Integer system)
+                can properly recognize it.
             start_y_float (float): Stores the y-coordinate of the enemy when the float effect is starting or when
                 it is changing direction
             float_activated (int): Determines if the float effect is currently active or not (For timing purposes)
@@ -84,6 +87,7 @@ class Boss(pygame.sprite.Sprite):
                 hit the machine.
             thorns_initiated_damage (int): Checks if the enemy has damaged the player while the player has thorns on
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -91,6 +95,9 @@ class Boss(pygame.sprite.Sprite):
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates a boss object and spawns it on the screen
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -157,8 +164,8 @@ class Boss(pygame.sprite.Sprite):
         """
             Returns the boss sprite so its class attributes can be accessed
 
-            :return: boss: the boss sprite
-            :type: turtle.Turtle()
+            :return: self: the boss sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -168,7 +175,7 @@ class Boss(pygame.sprite.Sprite):
             Returns the boss_laser sprite so its class attributes can be accessed
 
             :return: boss_laser: the boss laser sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.boss_laser
@@ -178,7 +185,7 @@ class Boss(pygame.sprite.Sprite):
             Returns the boss_health_bar sprite so its class attributes can be accessed
 
             :return: boss_health_bar: the boss health bar sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.boss_health_bar
@@ -204,6 +211,13 @@ class Boss(pygame.sprite.Sprite):
         return self.hit_delay
 
     def isvisible(self):
+        """
+            Returns whether the machine boss is currently visible or not
+
+            :return: boss_visible: Says whether the boss is currently visible or not
+            :type: boolean
+        """
+
         return self.boss_visible
 
     def set_laser_has_attacked(self, new_value):
@@ -614,6 +628,10 @@ class Boss(pygame.sprite.Sprite):
 
 
 class BossLaser(pygame.sprite.Sprite):
+    """
+        Represents the machine boss laser sprite in Machine Mode.
+    """
+
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = textures.MACHINE_BOSS_LASER
@@ -635,6 +653,10 @@ class BossLaser(pygame.sprite.Sprite):
 
 
 class BossHealthBar(pygame.sprite.Sprite):
+    """
+        Represents the machine boss health bar sprite in Machine Mode.
+    """
+
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = textures.HEALTH_BAR_1010

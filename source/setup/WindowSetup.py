@@ -33,7 +33,32 @@ from setup.ConfigurationSetup import settings
 
 
 class GameWindow:
-    _instance = None  # static private variable
+    """
+        Represents the application window.
+
+        Attributes:
+            base_width (int): The base width of the window before scaling.
+            base_height (int): The base height of the window before scaling.
+            fullscreen (bool): Whether the window is initialized in fullscreen mode.
+
+            scale_factor (float): The general scale factor applied in fullscreen mode.
+            scale_factor_X (float): The scale factor for the x-axis in fullscreen mode.
+            scale_factor_Y (float): The scale factor for the y-axis in fullscreen mode.
+
+            display_info (pygame.display.Info): Object containing details about the
+                current display (resolution, hardware flags, etc.).
+            current_screen_width (int): The detected width of the current screen.
+            current_screen_height (int): The detected height of the current screen.
+
+            screen (pygame.Surface): The active Pygame surface used for rendering.
+            REFRESH_RATE (int): The monitor’s refresh rate, detected from the system.
+            TARGET_FPS (int): The target frames per second, equal to REFRESH_RATE.
+            CLOCK (pygame.time.Clock): Pygame clock object used to control frame rate.
+            MONITOR_DELAY (float): The time (in seconds) for a single frame, calculated
+                as 1 / TARGET_FPS.
+    """
+
+    _instance = None
     _initialized = False
 
     def __new__(cls, *args, **kwargs):
@@ -42,6 +67,16 @@ class GameWindow:
         return cls._instance
 
     def __init__(self, base_width=1280, base_height=720):
+        """
+            Initialized the game window
+
+            :param base_width: The base width of the screen
+            :type base_width: int
+
+            :param base_height: The base height of the screen
+            :type base_height: int
+        """
+
         if GameWindow._initialized:
             return
 
@@ -72,6 +107,13 @@ class GameWindow:
         self.MONITOR_DELAY = 1.0 / self.TARGET_FPS
 
     def _initialize_window(self):
+        """
+            Initializes the pygame window
+
+            :return: pygame.screen
+        """
+
+        # If fullscreen mode is on
         if self.fullscreen:
             screen = pygame.display.set_mode((self.current_screen_width, self.current_screen_height), pygame.FULLSCREEN)
 
@@ -98,10 +140,22 @@ class GameWindow:
         return screen
 
     def _set_icon(self):
+        """
+            Sets the proper icon for the pygame window.
+
+            :return: None
+        """
+
         icon_surface = pygame.image.load("icon/Icon.png")
         pygame.display.set_icon(icon_surface)
 
     def _load_and_blit_background(self):
+        """
+            Sets the proper background for the pygame window.
+
+            :return: None
+        """
+
         background_path = "textures/background/Shooting_Game_Background.png"
 
         # Load image into memory
@@ -118,6 +172,13 @@ class GameWindow:
         pygame.display.flip()
 
     def _get_refresh_rate(self):
+        """
+            Retrieves the refresh rate of the current monitor
+
+            :return: settings.DisplayFrequency
+            :type: int
+        """
+
         display_device = win32api.EnumDisplayDevices(None, 0)
         settings = win32api.EnumDisplaySettings(display_device.DeviceName, win32con.ENUM_CURRENT_SETTINGS)
         return settings.DisplayFrequency

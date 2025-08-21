@@ -35,11 +35,16 @@ class SpawnCoin:
             current_coin_index (int): Stores the number of coins currently active and visible on the screen.
             coin_pickup_delay (int): Creates a delay to pick up coins (So that they are not picked up immediately when
                 the enemy is killed)
+
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
     """
 
     def __init__(self, textures):
         """
             Creates the lists necessary to store the Coin sprite.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
         """
 
         self.coins_on_screen_list = []
@@ -69,6 +74,7 @@ class SpawnCoinIndicator:
             coin_indicator_sprite (list): Contains the coin indicator sprite once it is spawned
             coin_indicator_index (list): Determines if the coin indicator sprite has been spawned yet or not
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -76,6 +82,9 @@ class SpawnCoinIndicator:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Coin Indicator sprite.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float

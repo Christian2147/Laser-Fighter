@@ -36,6 +36,7 @@ class SpawnSun:
             sun_sprite (list): Contains the sun sprite once it is spawned
             sun_index (list): Determines if the sun sprite has been spawned yet or not
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -88,6 +89,7 @@ class SpawnEarth:
             earth_sprite (list): Contains the earth sprite once it is spawned
             earth_index (list): Determines if the earth sprite has been spawned yet or not
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -95,6 +97,9 @@ class SpawnEarth:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Earth in the background.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -141,6 +146,7 @@ class SpawnShip:
                 ship_sprite (list): Contains the background objects sprites once they are spawned
                 ship_index (list): Determines if the background objects sprites have been spawned yet or not
 
+                textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
                 scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
                 scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
         """
@@ -148,6 +154,9 @@ class SpawnShip:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Player Ship in Alien Mode.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -193,6 +202,7 @@ class SpawnGround:
             ground_sprite (list): Contains the background objects sprites once they are spawned
             ground_index (list): Determines if the background objects sprites have been spawned yet or not
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -200,6 +210,9 @@ class SpawnGround:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Ground and Player Ship in Alien Mode.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float

@@ -20,7 +20,7 @@
     Description:
     This file contains the logic for regular splash text and labeling in the game. This does not include text on
     buttons and only includes standalone text.
-    It creates text using turtles text box feature and hiding the text turtle.
+    It creates a text box and has functionality for hiding the text from being displayed on the screen.
 """
 
 import pygame
@@ -32,6 +32,8 @@ class Text(pygame.sprite.Sprite):
         Represents a standalone textbox in the game.
 
         Attributes:
+            self (pygame.sprite.Sprite): The text object itself
+
             moving (int): Determines the direction the text box will move
             start_time (float): Stores the timestamp for when the text box should move
             movement_activated (int): determines if the movement of the textbox has been activated or not.
@@ -108,8 +110,8 @@ class Text(pygame.sprite.Sprite):
         """
             Returns the text_box sprite so its class attributes can be accessed
 
-            :return: text_box: the text box sprite
-            :type: turtle.Turtle()
+            :return: self: the text box sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -136,6 +138,12 @@ class Text(pygame.sprite.Sprite):
         self.movement_activated = 0
 
     def clear(self):
+        """
+            Removes the text box from the screen
+
+            :return: None
+        """
+
         self.text_box_visible = 0
 
     def write(self, text, size, type):

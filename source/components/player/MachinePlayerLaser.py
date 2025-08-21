@@ -31,7 +31,8 @@ class MachineLaser(pygame.sprite.Sprite):
         Represents the players laser in Machine Mode.
 
         Attributes:
-            _laser (turtle.Turtle()): The machine players laser sprite
+            self (pygame.sprite.Sprite): The machine players laser sprite
+            laser_visible (int): Determines whether the laser is currently visible or not
     """
 
     def __init__(self, x, y):
@@ -62,10 +63,23 @@ class MachineLaser(pygame.sprite.Sprite):
 
     @property
     def laser(self):
-        """Machine Player Laser Getter"""
+        """
+            Returns the machine player laser so that its class attributes can be accessed.
+
+            :return: self: The machine player laser sprite
+            :type: pygame.sprite.Sprite
+        """
+
         return self
 
     def isvisible(self):
+        """
+            Returns whether the machine player laser is currently visible or not
+
+            :return: laser_visible: Says whether the laser is currently visible or not
+            :type: int
+        """
+
         return self.laser_visible
 
     def remove(self):

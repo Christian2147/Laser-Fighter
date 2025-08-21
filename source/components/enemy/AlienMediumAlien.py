@@ -39,6 +39,8 @@ class MediumAlien(pygame.sprite.Sprite):
             the player at all times.
 
         Attributes:
+            self (pygame.sprite.Sprite): The medium alien sprite
+            medium_alien_visible (boolean): Determines whether the medium alien is currently visible or not
             medium_alien_health_bar (pygame.sprite.Sprite): The medium alien health bar sprite
 
             death_animation (float): Iterated during the medium aliens death animation
@@ -59,6 +61,8 @@ class MediumAlien(pygame.sprite.Sprite):
             movement_activated (int): Check if the aliens movement is currently happening or not. (So that
                 it can create a start time for it)
 
+            precise_x (float): Use to properly round the pygame coordinates during alien movement
+
             got_hit (int): Determines if the alien has already gotten hit or not
             collision_point (int): Determines the x-axis collision line for the alien
             already_ahead (int): Determines if the player is already ahead of the alien (larger x-cor) (This is used
@@ -69,6 +73,7 @@ class MediumAlien(pygame.sprite.Sprite):
 
             id (int): The id of the alien
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -79,6 +84,9 @@ class MediumAlien(pygame.sprite.Sprite):
 
             :param id: A unique identifier for the medium alien
             :type id: int
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -144,8 +152,8 @@ class MediumAlien(pygame.sprite.Sprite):
         """
             Returns the medium alien sprite so that its class attributes can be accessed.
 
-            :return: medium_alien: The medium alien sprite
-            :type: Turtle.turtle()
+            :return: self: The medium alien sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -155,7 +163,7 @@ class MediumAlien(pygame.sprite.Sprite):
             Returns the medium aliens health bar sprite so that its class attributes can be accessed.
 
             :return: medium_alien_health_bar: The medium aliens health bar sprite
-            :type: Turtle.turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.medium_alien_health_bar
@@ -191,6 +199,13 @@ class MediumAlien(pygame.sprite.Sprite):
         return self.hit_delay
 
     def isvisible(self):
+        """
+            Returns whether the medium alien is currently visible or not
+
+            :return: medium_alien_visible: Says whether the medium alien is currently visible or not
+            :type: boolean
+        """
+
         return self.medium_alien_visible
 
     def distance(self, other_sprite):
@@ -198,8 +213,10 @@ class MediumAlien(pygame.sprite.Sprite):
             Calculates the Euclidean distance to another sprite.
 
             :param other_sprite: Another sprite with a rect attribute
+            :type: pygame.sprite.Sprite
 
-            :return: float
+            :return: The distance between the two sprites
+            :type: float
         """
 
         dx = self.rect.centerx - other_sprite.rect.centerx
@@ -499,7 +516,36 @@ class MediumAlien(pygame.sprite.Sprite):
 
 
 class MediumAlienHealthBar(pygame.sprite.Sprite):
+    """
+        Represents a medium alien health bar in Alien Mode.
+
+        Attributes:
+            self (pygame.sprite.Sprite): The medium alien health bar sprite
+
+            health_bar_visible (Boolean): Determines whether the health bar is currently visible or not
+
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, x, textures, scale_factor_x, scale_factor_y):
+        """
+            Creates a medium alien health bar object with the given id and spawns it in the game.
+
+            :param x: The x-coordinate for the health bar
+            :type x: float
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         super().__init__()
         self.image = textures.HEALTH_BAR_22
         self.rect = self.image.get_rect()
@@ -510,13 +556,35 @@ class MediumAlienHealthBar(pygame.sprite.Sprite):
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Cleans up the sprite from memory once the program has terminated
+
+            :return: None
+        """
+
         self.kill()
 
     def isvisible(self):
+        """
+            Returns whether the medium alien health bar is currently visible or not
+
+            :return: health_bar_visible: Says whether the health bar is currently visible or not
+            :type: boolean
+        """
+
         return self.health_bar_visible
 
     def distance(self, other_sprite):
-        """Return the Euclidean distance to another sprite based on center positions."""
+        """
+            Calculates the Euclidean distance to another sprite.
+
+            :param other_sprite: Another sprite with a rect attribute
+            :type: pygame.sprite.Sprite
+
+            :return: The distance between the two sprites
+            :type: float
+        """
+
         dx = self.rect.centerx - other_sprite.rect.centerx
         dy = self.rect.centery - other_sprite.rect.centery
         return math.hypot(dx, dy)

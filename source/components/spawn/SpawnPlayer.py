@@ -36,6 +36,7 @@ class SpawnMachinePlayer:
             player_hit_value (list): Contains the hit delay value for the machine player
             player_update_value (list): Contains the death animation value for the machine player
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -43,6 +44,9 @@ class SpawnMachinePlayer:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Machine Player.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -102,6 +106,7 @@ class SpawnHumanPlayer:
             left_update (float): Used for updating the facing left walking animation for both the human player and
                 the aliens in Alien Mode
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -110,6 +115,9 @@ class SpawnHumanPlayer:
         """
             Creates the lists necessary to store the Human Player.
             Also creates any miscellaneous variables necessary for Alien Mode.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float

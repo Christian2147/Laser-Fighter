@@ -36,6 +36,7 @@ class SpawnPanel:
             panel_sprite (list): Contains the panel sprite once it is spawned
             panel_index (list): Determines if the panel sprite has been spawned yet or not
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor (float): The general scale factor used in fullscreen mode based off of the shortest axis
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
@@ -44,6 +45,9 @@ class SpawnPanel:
     def __init__(self, textures, scale_factor, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Panel object.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor: The general scale factor used in fullscreen mode based off of the shortest axis
             :type scale_factor: float
@@ -97,6 +101,7 @@ class SpawnSelector:
                 ones removed from the screen
             current_selector_index (int): Stores the number of selectors currently active and visible on the screen.
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -104,6 +109,9 @@ class SpawnSelector:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Selector object.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -152,11 +160,16 @@ class SpawnPriceLabel:
             price_label_on_screen_list (list): Contains all of the price label sprites created since the game has launched, even
                 ones removed from the screen
             current_price_index (int): Stores the number of price labels currently active and visible on the screen.
+
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
     """
 
     def __init__(self, textures):
         """
             Creates the lists necessary to store the Price Label object.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
         """
 
         self.price_label_on_screen_list = []
@@ -201,11 +214,25 @@ class SpawnPopUp:
         Attributes:
             pop_up_on_screen_list (list): Contains all of the pop up sprites created since the game has launched
             current_pop_up_index (int): Stores the number of pop ups currently active and visible on the screen.
+
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
     """
 
     def __init__(self, textures, scale_factor, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Pop Up object.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
+
+            :param scale_factor: The general scale factor used in fullscreen mode based off of the shortest axis
+            :type scale_factor: float
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
         """
 
         self.pop_up_on_screen_list = []

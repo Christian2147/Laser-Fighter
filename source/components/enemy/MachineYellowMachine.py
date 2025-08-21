@@ -41,7 +41,8 @@ class YellowMachine(pygame.sprite.Sprite):
             and fires yellow lasers.
 
         Attributes:
-            yellow_machine_laser (turtle.Turtle()): The laser sprite for each yellow machine enemy.
+            self (pygame.sprite.Sprite): Represents the yellow machine sprite.
+            yellow_machine_laser (pygame.sprite.Sprite): The laser sprite for each yellow machine enemy.
 
             death_count (int): Stores the death count for the enemy since the player has last died.
             update (float): Value that is incremented during the death animation of the enemy.
@@ -49,6 +50,8 @@ class YellowMachine(pygame.sprite.Sprite):
             movement (int): Stores the direction that the enemy is supposed to move on
                 the x-axis (1 = right and -1 = left)
             float (int): Stores the direction that the enemy is supposed to move on the y-axis (1 = up and -1 == down)
+            float_y (float): Used for rounding float coordinates so that pygame's coordinate system (Integer system)
+                can properly recognize it.
             start_y_float (float): Stores the y-coordinate of the enemy when the float effect is starting or when
                 it is changing direction
             float_activated (int): Determines if the float effect is currently active or not (For timing purposes)
@@ -79,6 +82,7 @@ class YellowMachine(pygame.sprite.Sprite):
                 hit the machine.
             thorns_initiated_damage (int): Checks if the enemy has damaged the player while the player has thorns on
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -90,6 +94,9 @@ class YellowMachine(pygame.sprite.Sprite):
             :param id: Ths id of the yellow machine (Determines where it spawns and it keeps track of how many are on
                 the screen)
             :type id: int
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -161,8 +168,8 @@ class YellowMachine(pygame.sprite.Sprite):
         """
             Returns the yellow_machine sprite so its class attributes can be accessed
 
-            :return: yellow_machine: the yellow machine sprite
-            :type: turtle.Turtle()
+            :return: self: the yellow machine sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -172,7 +179,7 @@ class YellowMachine(pygame.sprite.Sprite):
             Returns the yellow_machine_laser sprite so its class attributes can be accessed
 
             :return: yellow_machine_laser: the yellow machine laser sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.yellow_machine_laser
@@ -188,6 +195,13 @@ class YellowMachine(pygame.sprite.Sprite):
         return self.update
 
     def isvisible(self):
+        """
+            Returns whether the yellow machine is currently visible or not
+
+            :return: machine_visible: Says whether the machine is currently visible or not
+            :type: boolean
+        """
+
         return self.machine_visible
 
     def set_laser_has_attacked(self, new_value):
@@ -499,6 +513,10 @@ class YellowMachine(pygame.sprite.Sprite):
 
 
 class YellowMachineLaser(pygame.sprite.Sprite):
+    """
+        Represents the yellow machine laser sprite in Machine Mode.
+    """
+
     def __init__(self, id, textures, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = textures.YELLOW_MACHINE_LASER

@@ -38,6 +38,7 @@ class SpawnBlueMachine:
                 on the screen.
             blue_machine_index (int): Stores the number of blue machines currently active and visible on the screen.
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -45,6 +46,9 @@ class SpawnBlueMachine:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Blue Machine.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -98,6 +102,7 @@ class SpawnYellowMachine:
                 on the screen.
             yellow_machine_index (int): Stores the number of yellow machines currently active and visible on the screen.
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -105,6 +110,9 @@ class SpawnYellowMachine:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Yellow Machine.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -159,6 +167,7 @@ class SpawnRedMachine:
             red_machines_hit_values (list): Contains all of the hit delay values for each red machine on the screen.
             red_machine_index (int): Stores the number of red machines currently active and visible on the screen.
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -166,6 +175,9 @@ class SpawnRedMachine:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Red Machine.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -222,6 +234,7 @@ class SpawnMachineBoss:
             boss_hit_value (list): Contains the hit delay value for the boss
             boss_index (int): Stores whether the boss sprite has been created or not
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -229,6 +242,9 @@ class SpawnMachineBoss:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Machine Boss.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float

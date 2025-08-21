@@ -262,6 +262,7 @@ class SettingsToggle:
             else:
                 self._fullscreen_toggled = 0
                 self._screen.updated_controls = 0
+        # refresh all buttons and all indicators
         self._refresh.refresh_button = 1
         self._refresh.refresh_indicator = 1
 

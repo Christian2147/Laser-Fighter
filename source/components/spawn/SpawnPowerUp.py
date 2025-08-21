@@ -40,6 +40,7 @@ class SpawnPowerUp:
             power_up_time (float): Used as a timestamp for the spawning of power ups on the screen (Every 0.4 seconds,
                 the random variable power_up_update is determined to see if a power up will spawn)
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -47,6 +48,9 @@ class SpawnPowerUp:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Power Up.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -155,6 +159,7 @@ class SpawnYellowPowerUpIndicator:
             yellow_power_up_indicator_index (list): Determines if the yellow power up indicator sprite has been
                 spawned yet or not
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -162,6 +167,9 @@ class SpawnYellowPowerUpIndicator:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Yellow Power Up Indicator.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -208,6 +216,7 @@ class SpawnBluePowerUpIndicator:
             blue_power_up_indicator_index (list): Determines if the blue power up indicator sprite has been
                 spawned yet or not
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -215,6 +224,9 @@ class SpawnBluePowerUpIndicator:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Blue Power Up Indicator.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -261,6 +273,7 @@ class SpawnExtraPowerUpIndicator:
             extra_power_up_indicator_index (list): Determines if the extra power up indicator sprite has been
                 spawned yet or not
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -268,6 +281,9 @@ class SpawnExtraPowerUpIndicator:
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the lists necessary to store the Extra Power Up Indicator.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float

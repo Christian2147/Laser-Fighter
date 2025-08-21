@@ -29,16 +29,18 @@ class Coin(pygame.sprite.Sprite):
     """
         Represents a coin in Laser Fighter.
 
-        Class Variables:
-            COIN_DISTANCE (float): The size of the coins hitbox (48 * 2 = 96 * 96 hitbox without fullscreen mode)
-
         Attributes:
+            self (pygame.sprite.Sprite): Represents the coin sprite
             type (string): The type of coin (copper, silver, gold, platinum)
+
+            COIN_DISTANCE (float): The size of the coins hitbox (48 * 2 = 96 * 96 hitbox without fullscreen mode)
 
             range (tuple): The range of the coins hitbox (Distance between one side to another on a specified axis)
             collision_coordinate (float): The point the laser has to pass in order to pick up the coin (Edge of the
                 hitbox on the opposite axis of the "range" variable)
             relative_laser_position (int): Determines if the laser is in front of or behind the coin when it is fired
+
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
     """
 
     def __init__(self, type, pos_x, pos_y, textures, scale_factor_x):
@@ -94,8 +96,8 @@ class Coin(pygame.sprite.Sprite):
         """
             Returns the coin sprite so its class attributes can be accessed
 
-            :return: coin: the coin sprite
-            :type: turtle.Turtle()
+            :return: self: the coin sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -132,7 +134,9 @@ class Coin(pygame.sprite.Sprite):
 
 class CoinIndicator(pygame.sprite.Sprite):
     """
-        Represents the coin counter in Laser Fighter.
+        Represents the coin indicator in Laser Fighter.
+
+        self (pygame.sprite.Sprite): Represents the coin indicator sprite
     """
 
     def __init__(self, textures, scale_factor_x, scale_factor_y):

@@ -158,7 +158,7 @@ class Movement:
                 # Prepare the player for a jump
                 h.jump()
 
-    def shoot(self, machine_collision):
+    def shoot(self):
         """
             Function used to fire the players laser.
 
@@ -169,8 +169,6 @@ class Movement:
             for p in self._machine_player.current_player:
                 # If the laser is not currently moving across the screen and if the player is not dying
                 if p.get_laser()[0].rect.centery < machine_mode_setup.laser_max_distance + 1 and p.get_death_animation() == 0:
-                    # Reset the collision variables
-                    machine_collision.remove_collisions()
                     p.remove_laser_start_y()
                     # The laser is fired
                     p.fire(self._settings.player_shooting_sound)

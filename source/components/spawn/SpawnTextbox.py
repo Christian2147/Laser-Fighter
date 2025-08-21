@@ -30,8 +30,6 @@ class SpawnTextbox:
         Represents the Text Box container in Laser Fighter.
 
         Attributes:
-            all_text_list (list): Contains all of the text boxes created since the game has launched, even ones
-                removed from the screen
             text_on_screen_list (list): Contains all of the text boxes currently visible/active on the screen.
             current_text_index (int): Stores the number of text boxes currently active and visible on the screen.
 
@@ -85,14 +83,8 @@ class SpawnTextbox:
             :return: None
         """
 
-        # All spawn functions have this same procedure to check for existing sprites to use
-        # This is done because the turtle module makes it hard to actually fully get rid of a turtle while the
-        #   program is running.
-        # In order to maintain performance, all turtle sprites are reused as often as possible.
-        # This is why a global list exists for every type of sprite in the game.
-
         # Make a new one
         text_box = Text(id, x, y, color, self.scale_factor, self.scale_factor_x)
-        # Add it to all the lists
+        # Add it to the list
         self.text_on_screen_list.append(text_box)
         self.current_text_index = self.current_text_index + 1

@@ -20,7 +20,7 @@
     Description:
     This file contains the class for the description object, which is used to store all of the side panel
         descriptions for all of the items and upgrades in the shop.
-    These variables are used to create turtle text on the screen.
+    These variables are used to create text on the screen.
 """
 
 

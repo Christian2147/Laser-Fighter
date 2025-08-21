@@ -32,6 +32,9 @@ class Earth(pygame.sprite.Sprite):
         Represents the Earth sprite in Alien Mode's background. This is a stationary sprite and never moves.
 
         Attributes:
+            self (pygame.sprite.Sprite): Represents the earth sprite
+
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -39,6 +42,9 @@ class Earth(pygame.sprite.Sprite):
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates an Earth sprite and spawns it on the screen
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -72,7 +78,7 @@ class Earth(pygame.sprite.Sprite):
             Returns the Earth sprite so that its class attributes can be accessed.
 
             :return: earth: The Earth sprite
-            :type: Turtle.turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -93,6 +99,8 @@ class Sun(pygame.sprite.Sprite):
             the day/night cycle.
 
         Attributes:
+            self (pygame.sprite.Sprite): Represents the sun sprite
+
             angle (int): The angle that the sun is currently moving at in the ellipse
             x-coordinate (float): Represents the current x-coordinate of the sun
             y-coordinate (float): Represents the current y-coordinate of the sun
@@ -101,6 +109,7 @@ class Sun(pygame.sprite.Sprite):
             start_time (float): Used as a timestamp for the suns movement (So that the movement is consistent
                 regardless of frame rate)
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -108,6 +117,9 @@ class Sun(pygame.sprite.Sprite):
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates a Sun sprite and spawns it on the screen
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -154,8 +166,8 @@ class Sun(pygame.sprite.Sprite):
         """
             Returns the Sun sprite so that its class attributes can be accessed.
 
-            :return: sun: The Sun sprite
-            :type: Turtle.turtle()
+            :return: self: The Sun sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -208,6 +220,9 @@ class Ground(pygame.sprite.Sprite):
             never move.
 
         Attributes:
+            self (pygame.sprite.Sprite): Represents the ground sprite
+
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -215,6 +230,9 @@ class Ground(pygame.sprite.Sprite):
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the ground level background sprites and spawns them on the screen
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -241,8 +259,8 @@ class Ground(pygame.sprite.Sprite):
         """
             Returns the ground sprite so that its class attributes can be accessed.
 
-            :return: ground: The ground sprite
-            :type: Turtle.turtle()
+            :return: self: The ground sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -263,6 +281,9 @@ class Ship(pygame.sprite.Sprite):
             never move.
 
         Attributes:
+            self (pygame.sprite.Sprite): Represents the ship sprite
+
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -270,6 +291,9 @@ class Ship(pygame.sprite.Sprite):
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates the ground level background sprites and spawns them on the screen
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -294,10 +318,10 @@ class Ship(pygame.sprite.Sprite):
 
     def get_ship(self):
         """
-            Returns the ground sprite so that its class attributes can be accessed.
+            Returns the ship sprite so that its class attributes can be accessed.
 
-            :return: ground: The ground sprite
-            :type: Turtle.turtle()
+            :return: self: The ship sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self

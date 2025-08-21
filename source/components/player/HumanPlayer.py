@@ -37,10 +37,11 @@ class Human(pygame.sprite.Sprite):
         Represents a player in Alien Mode. The player is controlled based on the key controls and fires a red laser.
 
         Attributes:
-            oxygen_tank (turtle.Turtle()): The players oxygen tank sprite
-            gun (turtle.Turtle()): The player gun sprite
-            health_bar (turtle.Turtle()): The players health bar sprite
-            armor_bar (turtle.Turtle()): The players armor bar sprite
+            self (pygame.sprite.Sprite): The human sprite
+            oxygen_tank (pygame.sprite.Sprite): The players oxygen tank sprite
+            gun (pygame.sprite.Sprite): The player gun sprite
+            health_bar (pygame.sprite.Sprite): The players health bar sprite
+            armor_bar (pygame.sprite.Sprite): The players armor bar sprite
             armor_created (int): Determines if the armor bar has already been created or not for the player
 
             laser_list (list): The list of the current lasers on the screen
@@ -90,6 +91,7 @@ class Human(pygame.sprite.Sprite):
             gun_start_time (float): Used as a timestamp for updating the guns texture when the player changes
                 direction (To make sure it stays consistent with frame rate)
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -100,6 +102,9 @@ class Human(pygame.sprite.Sprite):
 
             :param god_mode: The variable that determines if god mode is toggled on or off
             :type god_mode: int
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -200,8 +205,8 @@ class Human(pygame.sprite.Sprite):
         """
             Returns the human player sprite so that its class attributes can be accessed.
 
-            :return: player: The human player sprite
-            :type: Turtle.turtle()
+            :return: self: The human player sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -221,7 +226,7 @@ class Human(pygame.sprite.Sprite):
             Returns the players health bar sprite so that its class attributes can be accessed
 
             :return: health_bar: The players health bar sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.health_bar
@@ -231,7 +236,7 @@ class Human(pygame.sprite.Sprite):
             Returns the players armor bar sprite so that its class attributes can be accessed
 
             :return: armor_bar: The players armor bar sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.armor_bar
@@ -287,6 +292,13 @@ class Human(pygame.sprite.Sprite):
         return self.rect.center
 
     def isvisible(self):
+        """
+            Returns whether the human player is currently visible or not
+
+            :return: human_visible: Says whether the human player is currently visible or not
+            :type: int
+        """
+
         return self.human_visible
 
     def distance(self, other_sprite):
@@ -294,8 +306,10 @@ class Human(pygame.sprite.Sprite):
             Calculates the Euclidean distance to another sprite.
 
             :param other_sprite: Another sprite with a rect attribute
+            :type: pygame.sprite.Sprite
 
-            :return: float
+            :return: The distance between the two sprites
+            :type: float
         """
 
         dx = self.rect.centerx - other_sprite.rect.centerx
@@ -1032,6 +1046,10 @@ class Human(pygame.sprite.Sprite):
 
 
 class OxygenTank(pygame.sprite.Sprite):
+    """
+        Represents the human player's oxygen tank sprite.
+    """
+
     def __init__(self, x, y, textures, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = textures.OXYGEN_TANK
@@ -1054,6 +1072,10 @@ class OxygenTank(pygame.sprite.Sprite):
 
 
 class Gun(pygame.sprite.Sprite):
+    """
+        Represents the human players gun sprite
+    """
+
     def __init__(self, x, y, textures, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = alien_mode_setup.gun_right_texture
@@ -1076,6 +1098,10 @@ class Gun(pygame.sprite.Sprite):
 
 
 class HealthBar(pygame.sprite.Sprite):
+    """
+        Represents the human players health bar sprite
+    """
+
     def __init__(self, god_mode, textures, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = textures.HEALTH_BAR_1010
@@ -1099,6 +1125,10 @@ class HealthBar(pygame.sprite.Sprite):
 
 
 class ArmorBar(pygame.sprite.Sprite):
+    """
+        Represents the human players armor bar sprite.
+    """
+
     def __init__(self, god_mode, textures, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = textures.ARMOR_BAR_10_10

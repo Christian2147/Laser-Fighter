@@ -40,6 +40,8 @@ class UFO(pygame.sprite.Sprite):
         Represents a UFO in Alien Mode. The UFO hovers in the air and moves towards the player at all times.
 
         Attributes:
+            self (pygame.sprite.Sprite): The ufo sprite
+            ufo_visible (boolean): Determines whether the ufo is currently visible or not
             ufo_laser (pygame.sprite.Sprite): The UFO laser sprite
             ufo_health_bar (pygame.sprite.Sprite): The UFO health bar sprite
 
@@ -61,6 +63,8 @@ class UFO(pygame.sprite.Sprite):
             movement_activated (int): Check if the aliens movement is currently happening or not. (So that
                 it can create a start time for it)
 
+            precise_x (float): Use to properly round the pygame coordinates during alien movement
+
             got_hit (int): Determines if the UFO has already been hit by the players laser since it was last fired
             collision_point (int): Determines the x-axis collision line for the UFO
             already_ahead (int): Determines if the player is already ahead of the UFO (larger x-cor) (This is used
@@ -69,6 +73,7 @@ class UFO(pygame.sprite.Sprite):
                 for detecting what point the laser need to pass in order to kill the UFO)
             thorns_initiated_damage (int): Checks if the enemy has damaged the player while the player has thorns on
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -76,6 +81,9 @@ class UFO(pygame.sprite.Sprite):
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Creates a UFO object and spawns it in the game.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -137,8 +145,8 @@ class UFO(pygame.sprite.Sprite):
         """
             Returns the UFO sprite so that its class attributes can be accessed.
 
-            :return: ufo: The UFO sprite
-            :type: Turtle.turtle()
+            :return: self: The UFO sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -148,7 +156,7 @@ class UFO(pygame.sprite.Sprite):
             Returns UFOs laser sprite so that its class attributes can be accessed.
 
             :return: ufo_laser: The UFOs laser sprite
-            :type: Turtle.turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.ufo_laser
@@ -158,7 +166,7 @@ class UFO(pygame.sprite.Sprite):
             Returns the UFOs health bar sprite so that its class attributes can be accessed.
 
             :return: ufo_health_bar: The UFOs health bar sprite
-            :type: Turtle.turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.ufo_health_bar
@@ -194,6 +202,13 @@ class UFO(pygame.sprite.Sprite):
         return self.hit_delay
 
     def isvisible(self):
+        """
+            Returns whether the ufo is currently visible or not
+
+            :return: ufo_visible: Says whether the ufo is currently visible or not
+            :type: boolean
+        """
+
         return self.ufo_visible
 
     def distance(self, other_sprite):
@@ -201,8 +216,10 @@ class UFO(pygame.sprite.Sprite):
             Calculates the Euclidean distance to another sprite.
 
             :param other_sprite: Another sprite with a rect attribute
+            :type: pygame.sprite.Sprite
 
-            :return: float
+            :return: The distance between the two sprites
+            :type: float
         """
 
         dx = self.rect.centerx - other_sprite.rect.centerx
@@ -539,7 +556,33 @@ class UFO(pygame.sprite.Sprite):
 
 
 class UFOLaser(pygame.sprite.Sprite):
+    """
+        Represents a ufo laser in Alien Mode.
+
+        Attributes:
+            self (pygame.sprite.Sprite): The ufo laser sprite
+
+            laser_visible (Boolean): Determines whether the laser is currently visible or not
+
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, textures, scale_factor_x, scale_factor_y):
+        """
+            Creates a ufo laser object with the given id and spawns it in the game.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         super().__init__()
         self.image = textures.YELLOW_MACHINE_LASER
         self.rect = self.image.get_rect()
@@ -550,20 +593,68 @@ class UFOLaser(pygame.sprite.Sprite):
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Cleans up the sprite from memory once the program has terminated
+
+            :return: None
+        """
+
         self.kill()
 
     def isvisible(self):
+        """
+            Returns whether the udo laser is currently visible or not
+
+            :return: laser_visible: Says whether the laser is currently visible or not
+            :type: boolean
+        """
+
         return self.laser_visible
 
     def distance(self, other_sprite):
-        """Return the Euclidean distance to another sprite based on center positions."""
+        """
+            Calculates the Euclidean distance to another sprite.
+
+            :param other_sprite: Another sprite with a rect attribute
+            :type: pygame.sprite.Sprite
+
+            :return: The distance between the two sprites
+            :type: float
+        """
+
         dx = self.rect.centerx - other_sprite.rect.centerx
         dy = self.rect.centery - other_sprite.rect.centery
         return math.hypot(dx, dy)
 
 
 class UFOHealthBar(pygame.sprite.Sprite):
+    """
+        Represents a ufo health bar in Alien Mode.
+
+        Attributes:
+            self (pygame.sprite.Sprite): The ufo health bar sprite
+
+            health_bar_visible (Boolean): Determines whether the health bar is currently visible or not
+
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, textures, scale_factor_x, scale_factor_y):
+        """
+            Creates a ufo health bar object with the given id and spawns it in the game.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         super().__init__()
         self.image = textures.HEALTH_BAR_1010
         self.rect = self.image.get_rect()
@@ -574,13 +665,35 @@ class UFOHealthBar(pygame.sprite.Sprite):
         self.scale_factor_y = scale_factor_y
 
     def __del__(self):
+        """
+            Cleans up the sprite from memory once the program has terminated
+
+            :return: None
+        """
+
         self.kill()
 
     def isvisible(self):
+        """
+            Returns whether the udo health bar is currently visible or not
+
+            :return: health_bar_visible: Says whether the health bar is currently visible or not
+            :type: boolean
+        """
+
         return self.health_bar_visible
 
     def distance(self, other_sprite):
-        """Return the Euclidean distance to another sprite based on center positions."""
+        """
+            Calculates the Euclidean distance to another sprite.
+
+            :param other_sprite: Another sprite with a rect attribute
+            :type: pygame.sprite.Sprite
+
+            :return: The distance between the two sprites
+            :type: float
+        """
+
         dx = self.rect.centerx - other_sprite.rect.centerx
         dy = self.rect.centery - other_sprite.rect.centery
         return math.hypot(dx, dy)

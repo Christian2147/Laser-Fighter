@@ -36,8 +36,9 @@ class Player(pygame.sprite.Sprite):
         Represents a player in Machine Mode. The player is controlled based on controls and fires a green laser.
 
         Attributes:
-            health_bar (turtle.Turtle()): The players health bar sprite
-            armor_bar (turtle.Turtle()): The players armor bar sprite
+            self (pygame.sprite.Sprite): The machine player sprite.
+            health_bar (pygame.sprite.Sprite): The players health bar sprite
+            armor_bar (pygame.sprite.Sprite): The players armor bar sprite
             armor_created (int): Determines if the armor bar has already been created or not for the player
 
             laser_list (list): The list of the current lasers on the screen
@@ -62,6 +63,7 @@ class Player(pygame.sprite.Sprite):
             hit_start_time (float): Used as a timestamp for the hit duration of the player (To make sure that the hit
                 delay is constant)
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -72,6 +74,9 @@ class Player(pygame.sprite.Sprite):
 
             :param god_mode: The variable that determines if god mode is toggled on or off
             :type god_mode: int
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -164,8 +169,8 @@ class Player(pygame.sprite.Sprite):
         """
             Returns the player sprite so that its class attributes can be accessed.
 
-            :return: player: The player sprite
-            :type: Turtle.turtle()
+            :return: self: The player sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -185,7 +190,7 @@ class Player(pygame.sprite.Sprite):
             Returns the players health bar sprite so that its class attributes can be accessed
 
             :return: health_bar: The players health bar sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.health_bar
@@ -195,7 +200,7 @@ class Player(pygame.sprite.Sprite):
             Returns the players armor bar sprite so that its class attributes can be accessed
 
             :return: armor_bar: The players armor bar sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.armor_bar
@@ -251,6 +256,13 @@ class Player(pygame.sprite.Sprite):
         return self.laser_has_attacked_list
 
     def is_visible(self):
+        """
+            Returns whether the machine player is currently visible or not
+
+            :return: player_visible: Says whether the machine player is currently visible or not
+            :type: int
+        """
+
         return self.player_visible
 
     def position(self):
@@ -268,8 +280,10 @@ class Player(pygame.sprite.Sprite):
             Calculates the Euclidean distance to another sprite.
 
             :param other_sprite: Another sprite with a rect attribute
+            :type: pygame.sprite.Sprite
 
-            :return: float
+            :return: The distance between the two sprites
+            :type: float
         """
 
         dx = self.rect.centerx - other_sprite.rect.centerx
@@ -342,7 +356,6 @@ class Player(pygame.sprite.Sprite):
             :return: None
         """
 
-        # self.player.direction = "left"
         self.direction = 1
 
     def set_direction_right(self):
@@ -352,7 +365,6 @@ class Player(pygame.sprite.Sprite):
             :return: None
         """
 
-        # self.player.direction = "right"
         self.direction = 2
 
     def move_player(self, yellow_power_up):
@@ -703,6 +715,10 @@ class Player(pygame.sprite.Sprite):
 
 
 class PlayerHealthBar(pygame.sprite.Sprite):
+    """
+        Represents the machine player's health bar.
+    """
+
     def __init__(self, god_mode, textures, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = textures.HEALTH_BAR_1010
@@ -717,6 +733,10 @@ class PlayerHealthBar(pygame.sprite.Sprite):
 
 
 class PlayerArmorBar(pygame.sprite.Sprite):
+    """
+        Represents the machine player's armor bar.
+    """
+
     def __init__(self, god_mode, textures, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = textures.ARMOR_BAR_10_10

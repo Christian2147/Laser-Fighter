@@ -44,12 +44,14 @@ class Panel(pygame.sprite.Sprite):
         Represents the panel in Laser Fighter for displaying important information.
 
         Attributes:
-            panel_indicator (turtle.Turtle()): The sprite that displays the visual element on the panel
+            self (pygame.sprite.Sprite): Represents the panel frame sprite.
+            panel_indicator (pygame.sprite.Sprite): The sprite that displays the visual element on the panel
 
             type (string): The type of panel generated (depending on the current screen)
             category (string): The current type of description being displayed
             id (int): The id for the specific description being displayed
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor (float): The general scale factor used in fullscreen mode based off of the shortest axis
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
@@ -61,6 +63,9 @@ class Panel(pygame.sprite.Sprite):
 
             :param type: The type of panel to create
             :type type: string
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor: The general scale factor used in fullscreen mode based off of the shortest axis
             :type scale_factor: float
@@ -156,8 +161,8 @@ class Panel(pygame.sprite.Sprite):
         """
             Returns the panel frame so that its class attributes can be accessed.
 
-            :return: panel_frame: the panel frame
-            :type: turtle.Turtle()
+            :return: self: the panel frame
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -167,7 +172,7 @@ class Panel(pygame.sprite.Sprite):
             Returns the panel text so that its class attributes can be accessed.
 
             :return: panel_text: the panel text
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.rendered_text
@@ -177,7 +182,7 @@ class Panel(pygame.sprite.Sprite):
             Returns the panel indicator so that its class attributes can be accessed.
 
             :return: panel_indicator: the panel indicator
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.panel_indicator
@@ -506,6 +511,34 @@ class Panel(pygame.sprite.Sprite):
                 )
 
     def render_multiline_text(self, lines, font_size, font_type, start_x, start_y, line_spacing, scale_factor):
+        """
+            Render multiple lines of text with scaling and spacing.
+
+            :param lines: List of strings representing each line of text.
+            :type lines: list[string]
+
+            :param font_size: font size of render text.
+            :type font_size: string
+
+            :param font_type: String key representing font type from font_dict.
+            :type font_type: string
+
+            :param start_x: Integer X coordinate where text rendering starts.
+            :type start_x: int
+
+            :param start_y: Integer Y coordinate where text rendering starts.
+            :type start_y: int
+
+            :param line_spacing: Integer pixel spacing between lines (before scaling).
+            :type line_spacing: int
+
+            :param scale_factor: The general scale factor used in fullscreen mode based off of the shortest axis
+            :type scale_factor: float
+
+            :return: List of tuples containing (text_surface, text_rect).
+            :type: list[tuple]
+        """
+
         rendered_lines = []
         y = start_y
 
@@ -523,6 +556,12 @@ class Panel(pygame.sprite.Sprite):
         return rendered_lines
 
     def clear_text(self):
+        """
+            Clears the rendered text from the screen.
+
+            :return: None
+        """
+
         self.rendered_text = []
 
     def set_indicator(self):
@@ -582,6 +621,10 @@ class Panel(pygame.sprite.Sprite):
 
 
 class PanelIndicator(pygame.sprite.Sprite):
+    """
+        Represents the icon displayed on the shop panel in Laser Fighter.
+    """
+
     def __init__(self, x, y, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = pygame.Surface((1, 1), pygame.SRCALPHA)

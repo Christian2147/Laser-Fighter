@@ -36,13 +36,15 @@ class Button(pygame.sprite.Sprite):
         Represents a button object in Laser Fighter. When a button is clicked, its function will be executed.
 
         Attributes:
-            button_text (turtle.Turtle()): Displays the buttons text
-            button_indicator (turtle.Turtle()): (Only for the toggle buttons on the settings screen) Displays the
+            self: Represents the button frame sprite.
+            button_text (pygame.sprite.Sprite): Displays the buttons text
+            button_indicator (pygame.sprite.Sprite): (Only for the toggle buttons on the settings screen) Displays the
                 button indicator text
 
             type (string): Determines the type of button
             id (int): A unique identifier for the button to further determine and locate the button.
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor (float): The general scale factor used in fullscreen mode based off of the shortest axis
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
@@ -57,6 +59,12 @@ class Button(pygame.sprite.Sprite):
 
             :param id: A unique identifier for the button
             :type id: int
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
+
+            :param scale_factor: The general scale factor used in fullscreen mode based off of the shortest axis
+            :type scale_factor: float
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -190,8 +198,8 @@ class Button(pygame.sprite.Sprite):
         """
             Returns the button frame sprite so its class attributes can be accessed
 
-            :return: button_frame: the button frame sprite
-            :type: turtle.Turtle()
+            :return: self: the button frame sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -201,7 +209,7 @@ class Button(pygame.sprite.Sprite):
             Returns the button text sprite so its class attributes can be accessed
 
             :return: button_text: the button text sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.button_text
@@ -211,7 +219,7 @@ class Button(pygame.sprite.Sprite):
             Returns the button indicator sprite so its class attributes can be accessed
 
             :return: button_indicator: the button indicator sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         # If the button indicator exists
@@ -533,6 +541,12 @@ class Button(pygame.sprite.Sprite):
                 self.button_indicator.rect.center = (self.rect.centerx, self.rect.centery + 62 * self.scale_factor_y)
 
     def toggle_default(self):
+        """
+            Changes the button texture to be the default non-highlighted version of the button.
+
+            :return: None
+        """
+
         if self.type == "Title" or self.type == "Title_Locked":
             self.image = self._textures.TITLE_SCREEN_BUTTON
         elif self.type == "Title_Small":
@@ -554,6 +568,12 @@ class Button(pygame.sprite.Sprite):
             self.image = self._textures.POP_UP_BUTTON_LARGE
 
     def toggle_highlighted(self):
+        """
+            Changes the button texture to be the highlighted version of the button.
+
+            :return: None
+        """
+
         if self.type == "Title" or self.type == "Title_Locked":
             self.image = self._textures.TITLE_SCREEN_BUTTON_HIGHLIGHTED
         elif self.type == "Title_Small":
@@ -612,6 +632,10 @@ class Button(pygame.sprite.Sprite):
 
 
 class ButtonText(pygame.sprite.Sprite):
+    """
+        Represents the rendered text for the button.
+    """
+
     def __init__(self, type, id, x, y, textures, scale_factor, scale_factor_x, scale_factor_y, page="None"):
         super().__init__()
         self.image = pygame.Surface((0, 0), pygame.SRCALPHA)
@@ -831,6 +855,10 @@ class ButtonText(pygame.sprite.Sprite):
 
 
 class ButtonIndicator(pygame.sprite.Sprite):
+    """
+        Represents the button indicator for the specific button.
+    """
+
     def __init__(self, type, id, x, y, textures, scale_factor, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = pygame.Surface((0, 0), pygame.SRCALPHA)

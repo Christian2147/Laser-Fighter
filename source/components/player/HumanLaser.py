@@ -31,6 +31,8 @@ class HumanLaser(pygame.sprite.Sprite):
         Represents the player's laser in Alien Mode.
 
         Attributes:
+            self (pygame.sprite.Sprite): The human laser sprite
+
             laser_update (int): Determines the lasers current pierce value
 
             scale_factor_x: The scale factor for the x-axis used in fullscreen mode

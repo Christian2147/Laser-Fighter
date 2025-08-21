@@ -283,6 +283,12 @@ class ScreenUpdate:
                 self._alien_mode_setup.setup_alien_mode()
 
     def restart_yes_select(self):
+        """
+            Runs when user selects yes to restart
+
+            :return: None
+        """
+
         # If the user selects "yes" to restart
         if self._settings.button_sound == 1:
             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
@@ -293,6 +299,12 @@ class ScreenUpdate:
         self._quit_loop = 1
 
     def restart_no_select(self):
+        """
+            Runs when user selects no to restart
+
+            :return: None
+        """
+
         # If the user selects "no" to restart
         if self._settings.button_sound == 1:
             sound = pygame.mixer.Sound("sound/Button_Sound.wav")

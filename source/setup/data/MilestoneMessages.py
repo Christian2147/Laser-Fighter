@@ -13,6 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    File: MilestoneMessages.py
+    Author: Christian Marinkovich
+    Date: 2025-08-20
+    Description:
+    This file contains messages for each of the 4 milestones in Laser Fighter.
+    These milestones are supposed to tell a rough story for what is going on in the game.
+"""
+
 from components.gui.GUIDataDescription import Description
 
 # When the player enters Machine Mode for the first time

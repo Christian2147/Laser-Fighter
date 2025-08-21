@@ -35,7 +35,7 @@ class Shop:
         This includes navigating the shop and buying items in the shop.
 
         Pointers:
-            _window (turtle.Screen()): Pointer to the application window.
+            _window (GameWindow()): Pointer to the application window.
             _screen (ScreenUpdate()): Pointer to the current displayed screen and the screen changing functions
             _button (SpawnButton()): Pointer to all the button objects currently on the screen
             _panel (SpawnPanel()): Pointer to all the panel objects currently on the screen
@@ -71,7 +71,7 @@ class Shop:
             Initializes all the necessary pointers for the Shop Manager.
 
             :param window: Pointer to the application window.
-            :type window: turtle.Screen()
+            :type window: GameWindow()
 
             :param screen: Pointer to the current displayed screen and the screen changing functions.
             :type screen: ScreenUpdate()
@@ -407,6 +407,7 @@ class Shop:
             sound.play()
         # If the player does not have enough coins, display an error message in a pop up
         if self._price_displayed > self._shop_config.total_coins:
+            # Each entry is a new line
             error_text = [
                 "You do not have",
                 "enough coins to",
@@ -440,6 +441,13 @@ class Shop:
             )
 
     def confirm_purchase(self):
+        """
+            Used to confirm the players purchase.
+
+            :return: None
+        """
+
+        # Pop up is removed from the screen
         for pu in self._pop_up.pop_up_on_screen_list:
             pu.remove()
         self._pop_up.pop_up_on_screen_list.clear()
@@ -539,6 +547,12 @@ class Shop:
         self._button.buy_button_pressed = 1
 
     def close_pop_up(self):
+        """
+            Removes the existing pop up from the screen.
+
+            :return: None
+        """
+
         # Play the button sound
         if self._settings.button_sound == 1:
             sound = pygame.mixer.Sound("sound/Button_Sound.wav")

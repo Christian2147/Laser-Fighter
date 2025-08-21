@@ -22,14 +22,31 @@
         or off.
 """
 
-# Import the current fullscreen configuration
 import pygame
-# from setup.ConfigurationSetupPygame import settings
-# fullscreen = settings.fullscreen
 
 
 class TextureSetup:
+    """
+        Represents all textures for Laser Fighter.,
+
+        Attributes:
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+
+            The rest of the attributes are all pygame image objects for the diffef=rent textures in the game
+    """
+
     def __init__(self, scale_factor_x=1.0, scale_factor_y=1.0):
+        """
+            Initializes all the textures for Laser Fighter.
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         self.scale_factor_x = scale_factor_x
         self.scale_factor_y = scale_factor_y
 
@@ -206,12 +223,28 @@ class TextureSetup:
         self.COIN_INDICATOR = None
 
     def load_scaled_texture(self, path):
+        """
+            Loads the specific texture into the game based on the scale factores.
+
+            :param path: The path to the texture
+            :type path: string
+
+            :return: The scaled texture.
+            :type: pygame.Surface
+        """
+
         image = pygame.image.load(path).convert_alpha()
         width = int(image.get_width() * self.scale_factor_x)
         height = int(image.get_height() * self.scale_factor_y)
         return pygame.transform.scale(image, (width, height))
 
     def load_all_textures(self):
+        """
+            Loads all of the textures into the game.
+
+            :return: None
+        """
+
         self.MACHINE_PLAYER = self.load_scaled_texture("textures/player/Player.png")
         self.MACHINE_WASHER = self.load_scaled_texture("textures/player/Machine_Washer.png")
         self.THE_INCINERATOR = self.load_scaled_texture("textures/player/The_Incinerator.png")

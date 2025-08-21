@@ -35,6 +35,7 @@ class MachineModeSetup:
         Pointers:
             _shop_config (ShopConfig()): A pointer to the Shop Configuration.
             _power_up_setup (PowerUpSetup()): A pointer to the current power up configuration.
+            _textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             _scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             _scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
 
@@ -97,6 +98,8 @@ class MachineModeSetup:
 
             :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
             :type scale_factor_y: float
+
+
         """
 
         # Everything starts out initialized to 0

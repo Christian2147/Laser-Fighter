@@ -127,6 +127,12 @@ class PowerUpSetup:
         del self.platinum_coin_blue_value
 
     def setup_power_ups(self):
+        """
+            Sets up the power up configuration.
+
+            :return: None
+        """
+
         # Setup the yellow power up based on its level
         if self._shop_config.yellow_power_up_level == 1:
             self.yellow_power_up_speed_increase = 2

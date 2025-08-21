@@ -37,7 +37,75 @@ from components.ItemCoin import Coin
 
 
 class BlueMachine(pygame.sprite.Sprite):
+    """
+        Represents a red machine in Laser Fighter. The first enemy in Machine Mode that is blue
+            and fires blue lasers.
+
+        Attributes:
+            self (pygame.sprite.Sprite): Represents the blue machine sprite.
+            blue_machine_laser (pygame.sprite.Sprite): The laser sprite for each blue machine enemy.
+
+            death_count (int): Stores the death count for the enemy since the player has last died.
+            update (float): Value that is incremented during the death animation of the enemy.
+
+            movement (int): Stores the direction that the enemy is supposed to move on
+                the x-axis (1 = right and -1 = left)
+            float (int): Stores the direction that the enemy is supposed to move on the y-axis (1 = up and -1 == down)
+            float_y (float): Used for rounding float coordinates so that pygame's coordinate system (Integer system)
+                can properly recognize it.
+            start_y_float (float): Stores the y-coordinate of the enemy when the float effect is starting or when
+                it is changing direction
+            float_activated (int): Determines if the float effect is currently active or not (For timing purposes)
+
+            start_time (float): Used as a timestamp for the death animation of the enemy (To make the animation run in
+                a consistent amount of time)
+            laser_start_time (float): Used as a timestamp for the laser movement of the enemy (To make the movement
+                happen in a consistent amount of time)
+            move_start_time (float): Used as a timestamp for the enemies movement (To make the enemies movement
+                happen in a consistent amount of time and not based on code execution speed)
+            float_start_time (float): Used as a timestamp for the enemies floating effect movement (To make the
+                movement happen in a consistent amount of time)
+
+            laser_has_attacked (int): Determines if the enemy has been hit by the players laser since it was last fired
+                (So that it does not get hit two times in a row)
+            movement_activated (int): Check if the enemies side to side movement is currently happening or not. (So
+                that it can create a start time for it)
+
+            id (int): The id of the current blue machine (Used for counting how many are on the screen)
+
+            enemy_center (float): The y-axis center of the sine wave created by the machines float effect
+                (when t=0, where is it?)
+            float_time_offset (float): The timestamp when the float effect for the machine begins
+
+            x_range_list (tuple): The x-axis of the hitboxes for the machine. (The range of x-coordinates the laser
+                has to be in in order to hit the enemy)
+            collision_y_coordinate_list: The y-axis point that the players lasers have to pass in order to
+                hit the machine.
+            thorns_initiated_damage (int): Checks if the enemy has damaged the player while the player has thorns on
+
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
+            scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
+            scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+    """
+
     def __init__(self, id, textures, scale_factor_x, scale_factor_y):
+        """
+            Creates a blue machine object and spawns it on the screen.
+
+            :param id: Ths id of the blue machine (Determines where it spawns and it keeps track of how many are on
+                the screen)
+            :type id: int
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
+
+            :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
+            :type scale_factor_x: float
+
+            :param scale_factor_y: The scale factor for the y-axis used in fullscreen mode
+            :type scale_factor_y: float
+        """
+
         super().__init__()
         self.image = textures.BLUE_MACHINE
         self.rect = self.image.get_rect()
@@ -86,9 +154,9 @@ class BlueMachine(pygame.sprite.Sprite):
 
     def __del__(self):
         """
-        Cleans up the sprite from memory once the program has terminated.
+            Cleans up the sprite from memory once the program has terminated.
 
-        :return: None
+            :return: None
         """
 
         self.kill()
@@ -101,8 +169,8 @@ class BlueMachine(pygame.sprite.Sprite):
         """
             Returns the blue_machine sprite so its class attributes can be accessed
 
-            :return: blue_machine: the blue machine sprite
-            :type: turtle.Turtle()
+            :return: self: the blue machine sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -112,7 +180,7 @@ class BlueMachine(pygame.sprite.Sprite):
             Returns the blue_machine_laser sprite so its class attributes can be accessed
 
             :return: blue_machine_laser: the blue machine laser sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self.blue_machine_laser
@@ -138,6 +206,13 @@ class BlueMachine(pygame.sprite.Sprite):
         return self.update
 
     def isvisible(self):
+        """
+            Returns whether the blue machine is currently visible or not
+
+            :return: machine_visible: Says whether the machine is currently visible or not
+            :type: boolean
+        """
+
         return self.machine_visible
 
     def set_death_count(self, new_death_count):
@@ -174,6 +249,7 @@ class BlueMachine(pygame.sprite.Sprite):
 
             :return: None
         """
+
         # Remove sprites from all groups and delete
         if hasattr(self, 'blue_machine'):
             self.blue_machine.kill()
@@ -471,6 +547,10 @@ class BlueMachine(pygame.sprite.Sprite):
 
 
 class BlueMachineLaser(pygame.sprite.Sprite):
+    """
+        Represents the blue machine laser in Machine Mode.
+    """
+
     def __init__(self, id, textures, scale_factor_x, scale_factor_y):
         super().__init__()
         self.image = textures.BLUE_MACHINE_LASER

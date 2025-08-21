@@ -38,6 +38,7 @@ class PowerUp(pygame.sprite.Sprite):
             and Alien Mode.
 
         Attributes:
+            self (pygame.sprite.Sprite): Represents the power up sprite
             type (int): Determines the type of power up that this object is
             mode (int): Determines the current mode of the game (Machine mode or Alien mode)
 
@@ -57,6 +58,9 @@ class PowerUp(pygame.sprite.Sprite):
 
             :param spawn_sound: Determines if the power up spawn sound is toggled on or off.
             :type spawn_sound: int
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -112,7 +116,7 @@ class PowerUp(pygame.sprite.Sprite):
             Returns the power up sprite so its class attributes can be accessed
 
             :return: power_up: the power up sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -128,11 +132,24 @@ class PowerUp(pygame.sprite.Sprite):
         return self.type
 
     def isvisible(self):
+        """
+            Returns whether the power up is currently visible or not
+
+            :return: power_up_visible: Says whether the power up is currently visible or not
+            :type: int
+        """
+
         return self.power_up_visible
 
     def distance(self, other_sprite):
         """
-            Return the Euclidean distance to another sprite based on center positions.
+            Calculates the Euclidean distance to another sprite.
+
+            :param other_sprite: Another sprite with a rect attribute
+            :type: pygame.sprite.Sprite
+
+            :return: The distance between the two sprites
+            :type: float
         """
 
         dx = self.rect.centerx - other_sprite.rect.centerx
@@ -194,6 +211,7 @@ class YellowIndicator(pygame.sprite.Sprite):
             unlit depending on if the yellow power up is active or not.
 
         Attributes:
+            self (pygame.sprite.Sprite): Represents the yellow power up indicator sprite
             yellow_power_up_active (int): Determines if the yellow power up is currently active or not
             activate_time (float): Used to calculate the duration of exactly how long the yellow power up can be active
                 for.
@@ -201,6 +219,7 @@ class YellowIndicator(pygame.sprite.Sprite):
                 determining the current time at each iteration of the loop
             time_value (int): The amount of seconds left before the power up deactivates (0 when it is not active)
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -208,6 +227,9 @@ class YellowIndicator(pygame.sprite.Sprite):
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Create a yellow power up indicator object and spawns it at the top of the screen.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -244,8 +266,8 @@ class YellowIndicator(pygame.sprite.Sprite):
         """
             Returns the yellow power up indicator sprite so its class attributes can be accessed
 
-            :return: yellow_power_up_indicator: the yellow power up indicator sprite
-            :type: turtle.Turtle()
+            :return: self: the yellow power up indicator sprite
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -341,6 +363,7 @@ class BlueIndicator(pygame.sprite.Sprite):
             unlit depending on if the blue power up is active or not.
 
         Attributes:
+            self (pygame.sprite.Sprite): Represents the blue power up indicator sprite
             blue_power_up_active (int): Determines if the blue power up is currently active or not
             activate_time (float): Used to calculate the duration of exactly how long the blue power up can be active
                 for.
@@ -348,6 +371,7 @@ class BlueIndicator(pygame.sprite.Sprite):
                 determining the current time at each iteration of the loop
             time_value (int): The amount of seconds left before the power up deactivates (0 when it is not active)
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -355,6 +379,9 @@ class BlueIndicator(pygame.sprite.Sprite):
     def __init__(self, textures, scale_factor_x, scale_factor_y):
         """
             Create a blue power up indicator object and spawns it at the top of the screen.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -392,7 +419,7 @@ class BlueIndicator(pygame.sprite.Sprite):
             Returns the blue power up indicator sprite so its class attributes can be accessed
 
             :return: blue_power_up_indicator: the blue power up indicator sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self
@@ -489,6 +516,7 @@ class ExtraIndicator(pygame.sprite.Sprite):
             current mode of the game.
 
         Attributes:
+            self (pygame.sprite.Sprite): Represents the extra power up indicator sprite
             extra_power_up_active (int): Determines if the third power up is currently active or not (red or green)
             activate_time (float): Used to calculate the duration of exactly how long the third power up can be active
                 for.
@@ -497,6 +525,7 @@ class ExtraIndicator(pygame.sprite.Sprite):
             time_value (int): The amount of seconds left before the power up deactivates (0 when it is not active)
             mode (int): The current mode of the game
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
     """
@@ -507,6 +536,9 @@ class ExtraIndicator(pygame.sprite.Sprite):
 
             :param mode: Determines the current mode of the game
             :type mode: int
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float
@@ -548,7 +580,7 @@ class ExtraIndicator(pygame.sprite.Sprite):
             Returns the third power up indicator sprite so its class attributes can be accessed
 
             :return: extra_power_up_indicator: the third power up indicator sprite
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self

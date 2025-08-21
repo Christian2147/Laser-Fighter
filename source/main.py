@@ -69,7 +69,6 @@ from components.spawn.SpawnGUI import SpawnPriceLabel
 from components.spawn.SpawnGUI import SpawnSelector
 from components.spawn.SpawnGUI import SpawnPopUp
 from components.ItemGadget import Gadget
-from physics.MachineCollision import MachineCollision
 from physics.AlienCollision import AlienCollision
 from utils.MovementManager import Movement
 from utils.ScreenManager import ScreenUpdate
@@ -82,6 +81,7 @@ MOVE_REPEAT_DELAY = 0.05
 
 
 def main():
+    # Initialize all game objects (Window, textures, sprite types, controls)
     window = GameWindow()
     textures = TextureSetup(window.scale_factor_X, window.scale_factor_Y)
     textures.load_all_textures()
@@ -126,7 +126,7 @@ def main():
                           power_up_setup, machine_mode_setup, alien_mode_setup,
                           window.scale_factor, window.scale_factor_X, window.scale_factor_Y)
 
-    machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
+    # machine_collision = MachineCollision(machine_player, blue_machine, window.scale_factor_X, window.scale_factor_Y)
     alien_collision = AlienCollision(human_player, small_alien, medium_alien, large_alien, ufo, coin, window.scale_factor_X, window.scale_factor_Y)
     movement = Movement(screen, machine_player, human_player, yellow_power_up_indicator, settings, statistics, alien_collision, window.scale_factor_Y)
 
@@ -146,6 +146,7 @@ def main():
                                extra_power_up_indicator, settings, settings_toggle,
                                statistics, shop, shop_config, controls, controls_toggle, refresh_variables)
 
+    # Start the tick counter and event handler counters
     last_move_time = 0
     shoot_pressed_last = False
     start_ticks = pygame.time.get_ticks()
@@ -153,12 +154,17 @@ def main():
     # The main game loop:
     running = True
     while running:
+        # Only set a frame cap if vsync is on
         if settings.vsync:
             window.CLOCK.tick(window.TARGET_FPS)
 
-        # EVENT HANDLER
+        """
+            EVENT HANDLER
+        """
+
         mouse_pos = pygame.mouse.get_pos()
 
+        # Special non single character keys
         special_keys = {
             "space": pygame.K_SPACE,
             "left": pygame.K_LEFT,
@@ -221,6 +227,7 @@ def main():
             "clear": pygame.K_CLEAR
         }
 
+        # Check if user is hovering over a button (Only if a pop up is not active)
         popup_blocking = any(getattr(pu, "pop_up_visible", 0) for pu in pop_up.pop_up_on_screen_list)
         if not popup_blocking:
             for bu in button.buttons_on_screen_list:
@@ -229,6 +236,7 @@ def main():
                 else:
                     bu.toggle_default()
 
+        # If a pop up is active, then enable the highlight effect for those buttons only
         for pu in pop_up.pop_up_on_screen_list:
             for button_name in ["yesButton", "noButton", "okButton"]:
                 if hasattr(pu, button_name):
@@ -239,13 +247,19 @@ def main():
                         else:
                             pu_button.toggle_default()
 
+        # Check for input events
         for event in pygame.event.get():
+            # If the user closes the window
             if event.type == pygame.QUIT or screen.quit == 1:
                 running = False
+            # If the user presses a key
             elif event.type == pygame.KEYDOWN:
+                # If the user is actively changing controls, check for key input for new controls
                 if controls.listening and controls.active_control_button != -1:
                     key_str = pygame.key.name(event.key).strip().lower().replace(" ", "_")
 
+                    # If the key does not exist in special keys, and not a single character,
+                    # simply do not set the controls to avoid a crash
                     if key_str in special_keys:
                         controls.new_key = event.key
                         controls.update_controls(controls.update_type)
@@ -259,7 +273,9 @@ def main():
                                 controls.listening = False
                         except Exception:
                             pass
+            # Check for user mouse input
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button in (1, 2, 3):
+                # Only check for input if a pop up is not active:
                 popup_blocking = any(getattr(pu, "pop_up_visible", 0) for pu in pop_up.pop_up_on_screen_list)
                 if not popup_blocking:
                     clicked_on_controls_button = False
@@ -374,14 +390,17 @@ def main():
                                         settings_toggle.toggle_fullscreen()
                                     elif bu.id == 12:
                                         settings_toggle.toggle_vsync()
+            # Check for mouse input regarding pop ups (Only if a pop up is active)
             for pu in pop_up.pop_up_on_screen_list:
                 pu.handle_event(event)
 
         current_time = time.time()
 
+        # Check for mouse and keyboard clicks
         keys = pygame.key.get_pressed()
         mouse_buttons = pygame.mouse.get_pressed()
 
+        # Check for single mouse and keyboard clicks for controls (jump, move left, move right, shoot)
         if current_time - last_move_time >= MOVE_REPEAT_DELAY:
             key_right_str = controls_toggle.go_right_key.lower()
             key_left_str = controls_toggle.go_left_key.lower()
@@ -427,6 +446,7 @@ def main():
                     movement.jump()
                     last_move_time = current_time
 
+        # Check for a single click per press for the shoot operation (So that it is not automatic)
         key_shoot_str = controls_toggle.shoot_key.lower()
         if key_shoot_str.startswith("mouse_"):
             btn_index = int(key_shoot_str.split("_")[1]) - 1
@@ -439,16 +459,23 @@ def main():
             current_shoot_pressed = keys[key_shoot]
 
         if current_shoot_pressed and not shoot_pressed_last:
-            movement.shoot(machine_collision)
+            movement.shoot()
 
         shoot_pressed_last = current_shoot_pressed
 
+        """
+            DRAWER (VIEW) (Runs every frame)
+        """
 
-        # Drawer!!!! (View)
+        # First empty the screen
         window.screen.fill((0, 0, 0))
 
+        # Draw a new surface
         window.screen.blit(window.bg_surface, (0, 0))
 
+        # Draw every single sprite in the correct order
+        # Sprites in the background (Sun, ground, earth in alien mode) are drawn first
+        # Sprites in the front (UI, Pop ups) are drawn last
         for s in sun.sun_sprite:
             if s.sun_visible == 1:
                 window.screen.blit(s.image, s.rect)
@@ -653,11 +680,14 @@ def main():
                     window.screen.blit(text_surface, text_rect)
 
 
+        """
+            Rest of regular logic
+        """
 
-        # Rest of regular logic
-
+        # Refresh the screen text
         text_refresh.update_text()
 
+        # Tick counter for spawning power ups
         current_ticks = pygame.time.get_ticks()
         elapsed_time = (current_ticks - start_ticks) / 1000.0
         current_power_up_time = time.time()
@@ -774,6 +804,7 @@ def main():
         """
 
         if screen.mode == "Machine_Mode":
+            # Spawn the game interface for machime mode
             if button.current_button_index == 0:
                 button.spawn_button("Game", 1)
 
@@ -1032,18 +1063,6 @@ def main():
                                 sound = pygame.mixer.Sound("sound/Coin_Pickup_Sound.wav")
                                 sound.play()
                         hit_coin = hit_coin + 1
-
-            # Collision still not working
-            for p in machine_player.current_player:
-                if p.do_collision == 1:
-                    machine_collision.calculate_collisions(0, 0)
-                    p.do_collision = 0
-                elif p.do_collision == 2:
-                    machine_collision.calculate_collisions(0, 1)
-                    p.do_collision = 0
-                elif p.do_collision == 3:
-                    machine_collision.calculate_collisions(0, 2)
-                    p.do_collision = 0
 
             # Enemy Killer
             for p in machine_player.current_player:
@@ -1704,7 +1723,6 @@ def main():
             # Spawn the rest of the game interface
             # This includes the power up timers
             # The power up timers are created as just ordinary text boxes with the correct colors
-            # This is done to ensure turtle are being reused
             if textbox.current_text_index == 0:
                 textbox.spawn_text_box(1, 640 * window.scale_factor_X, 20 * window.scale_factor_Y, "white")
                 textbox.spawn_text_box(2, 575 * window.scale_factor_X, 62 * window.scale_factor_Y, "#737000")
@@ -2666,6 +2684,7 @@ def main():
 
         # If Alien Mode is toggled off
         else:
+            # Remove all alien mode sprite
             for s in sun.sun_sprite:
                 s.remove()
             sun.sun_index = 0
@@ -3069,6 +3088,8 @@ def main():
             else:
                 controls.jump_key_alert = 1
 
+            # Check if user is actively changing the controls
+            # If they are, then the state for that button should be updated so that it displays "<Press Any Key>"
             for bu in button.buttons_on_screen_list:
                 if bu.type == "Controls_Toggle":
                     if bu.id == 1:
@@ -3092,8 +3113,10 @@ def main():
                         else:
                             bu.state = 1
 
+        # Refresh the display
         pygame.display.flip()
 
+    # If the main loop has terminated, quit the application
     pygame.quit()
 
 

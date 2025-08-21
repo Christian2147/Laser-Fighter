@@ -29,6 +29,7 @@ from setup.PowerUpSetup import PowerUpSetup
 from setup.AlienModeSetup import AlienModeSetup
 from setup.MachineModeSetup import MachineModeSetup
 
+# Initialize game window and textures
 window = GameWindow()
 textures = TextureSetup(window.scale_factor_X, window.scale_factor_Y)
 textures.load_all_textures()

@@ -30,8 +30,10 @@ class PriceLabel(pygame.sprite.Sprite):
         Represents the price label in Laser Fighter.
 
         Attributes:
-            price_label (turtle.Turtle()): The price label icon sprite
+            self (pygame.sprite.Sprite): The price label icon sprite
             id (int): The id of the current price label
+
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
     """
 
     def __init__(self, id, x, y, textures):
@@ -46,6 +48,9 @@ class PriceLabel(pygame.sprite.Sprite):
 
             :param y: The y-coordinate of the new price label
             :type y: float
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
         """
 
         super().__init__()
@@ -73,7 +78,7 @@ class PriceLabel(pygame.sprite.Sprite):
             Returns the price label icon so its class attributes can be accessed.
 
             :return: price_label: the price label icon
-            :type: turtle.Turtle()
+            :type: pygame.sprite.Sprite
         """
 
         return self

@@ -23,7 +23,6 @@
 """
 
 import time
-import math
 import pygame
 
 
@@ -106,30 +105,6 @@ class Gadget:
             :return: None
         """
 
-        # if mode == "Machine_Mode":
-        #     for p in self._machine_player.current_player:
-        #         player_position = p.position()
-        #
-        #         current_time = time.time()
-        #         elapsed_time = current_time - self.start_time
-        #         # Every 0.002 seconds, move the coin 1.75 units
-        #         if elapsed_time >= 0.002:
-        #             for c in self._coins.coins_on_screen_list:
-        #                 if c.coin.isvisible():
-        #                     # Get the coins current position
-        #                     coin_position = c.position()
-        #
-        #                     # Find the angle that it needs to move at in order to move towards the player and set
-        #                     #   its heading towards that angle
-        #                     angle = math.degrees(math.atan2(player_position[1] - coin_position[1], player_position[0] - coin_position[0]))
-        #                     c.coin.setheading(angle)
-        #
-        #                     # Move the coin 1.75 units with the delta movement
-        #                     delta_movement = 1.75 * self._scale_factor * ((elapsed_time - 0.002) / 0.002)
-        #                     c.coin.forward(1.75 * self._scale_factor + delta_movement)
-        #         # Reset the timer
-        #         self.start_time = time.time()
-
         if mode == "Machine_Mode":
             for p in self._machine_player.current_player:
                 player_position = pygame.math.Vector2(p.position())
@@ -177,21 +152,3 @@ class Gadget:
                             c.rect.centery += movement.y
 
                 self.start_time = time.time()
-        # elif mode == "Alien_Mode":
-        #     # Same procedure here as in Machine Mode, but with the human player being the object to move towards
-        #     for h in self._human_player.current_human:
-        #         player_position = h.player.position()
-        #
-        #         current_time = time.time()
-        #         elapsed_time = current_time - self.start_time
-        #         if elapsed_time >= 0.002:
-        #             for c in self._coins.coins_on_screen_list:
-        #                 if c.coin.isvisible():
-        #                     coin_position = c.coin.position()
-        #
-        #                     angle = math.degrees(math.atan2(player_position[1] - coin_position[1], player_position[0] - coin_position[0]))
-        #                     c.coin.setheading(angle)
-        #
-        #                     delta_movement = 1.75 * self._scale_factor * ((elapsed_time - 0.002) / 0.002)
-        #                     c.coin.forward(1.75 * self._scale_factor + delta_movement)
-        #         self.start_time = time.time()

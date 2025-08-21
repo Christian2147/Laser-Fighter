@@ -32,6 +32,7 @@ class AlienModeSetup:
             _power_up_setup (PowerUpSetup()): A pointer to the current power up configuration.
             _scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             _scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
+            _textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
 
         Attributes:
             regular_score_multiplier (int): Stores the default score multiplier for Alien Mode (How much does a point
@@ -89,6 +90,9 @@ class AlienModeSetup:
 
             :param power_up_setup: A pointer to the current power up setup
             :type power_up_setup: PowerUpSetup()
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode
             :type scale_factor_x: float

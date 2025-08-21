@@ -39,6 +39,7 @@ class SpawnButton:
                 (Without the mouse needing to move at all)
             buy_button_pressed (int): Determines if the buy button in the shop side panel has been pressed or not
 
+            textures (TextureSetup): Stores all of the textures that are used in Laser Fighter
             scale_factor (float): The general scale factor used in fullscreen mode based off of the shortest axis
             scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
@@ -48,6 +49,9 @@ class SpawnButton:
         """
             Creates the lists necessary to store the Buttons in Laser Fighter.
             Also creates any other necessary variables for the button object.
+
+            :param textures: Stores all of the textures that are used in Laser Fighter
+            :type textures: TextureSetup
 
             :param scale_factor: The general scale factor used in fullscreen mode based off of the shortest axis
             :type scale_factor: float

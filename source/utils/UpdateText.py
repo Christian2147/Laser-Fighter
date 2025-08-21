@@ -297,6 +297,7 @@ class TextRefresh:
             # Refreshes panel text
             for pa in self._panel.panel_sprite:
                 pa.write_text()
+            # Refreshes pop up text
             for pu in self._pop_up.pop_up_on_screen_list:
                 pu.write_text()
                 for bu in [getattr(pu, "yesButton", None), getattr(pu, "noButton", None), getattr(pu, "okButton", None)]:
@@ -471,6 +472,7 @@ class TextRefresh:
                 self._refresh.refresh_indicator = 0
             elif self._refresh.refresh_indicator == 1:
                 self._refresh.refresh_indicator = 2
+            # Refreshes pop up text
             for pu in self._pop_up.pop_up_on_screen_list:
                 pu.write_text()
                 for bu in [getattr(pu, "yesButton", None), getattr(pu, "noButton", None), getattr(pu, "okButton", None)]:
@@ -514,6 +516,7 @@ class TextRefresh:
                 self._refresh.refresh_button = 3
             elif self._refresh.refresh_button == 3:
                 self._refresh.refresh_button = 0
+            # Refreshes pop up text
             for pu in self._pop_up.pop_up_on_screen_list:
                 pu.write_text()
                 for bu in [getattr(pu, "yesButton", None), getattr(pu, "noButton", None), getattr(pu, "okButton", None)]:

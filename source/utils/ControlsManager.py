@@ -35,6 +35,7 @@ class Controls:
             _refresh (Refresh()): Pointer to the game refresh variables.
 
         Attributes:
+            _scale_factor (float): The general scale factor used in fullscreen mode
             _scale_factor_x (float): The scale factor for the x-axis used in fullscreen mode
             _scale_factor_y (float): The scale factor for the y-axis used in fullscreen mode
 
@@ -64,6 +65,9 @@ class Controls:
 
             :param refresh: Pointer to the game refresh variables.
             :type refresh: Refresh()
+
+            :param scale_factor: The general scale factor used in fullscreen mode.
+            :type scale_factor: float
 
             :param scale_factor_x: The scale factor for the x-axis used in fullscreen mode.
             :type scale_factor_x: float
@@ -203,9 +207,9 @@ class Controls:
 
     def execute_control_setting(self, type):
         """
-            Actaully executes the keybind change given by the "type" parameter.
+            Activates the control change feature for the specific button clicked specified by type
 
-            :param type: The type of keybind change to be executed.
+            :param type: The type of control to be changed.
             :type type: int
 
             :return: None
@@ -223,13 +227,25 @@ class Controls:
         return
 
     def update_controls(self, type):
+        """
+            Actaully executes the keybind change given by the "type" parameter.
+
+            :param type: The type of keybind change to be executed.
+            :type type: int
+
+            :return: None
+        """
+
+        # Extract the string for the specific key / button pressed
         if isinstance(self.new_key, int):
             key_str = pygame.key.name(self.new_key)
         else:
             key_str = str(self.new_key)
 
+        # Change spaces to underscore
         key_str = key_str.strip().lower().replace(" ", "_")
 
+        # Store the current control setting
         if type == 0:
             current_key = self._controls_toggle.go_right_key
         elif type == 1:
@@ -241,8 +257,10 @@ class Controls:
         else:
             return
 
+        # Back up the current control setting
         key_backup = current_key
 
+        # Set the new control setting
         if type == 0:
             self._controls_toggle.go_right_key = key_str
         elif type == 1:
@@ -252,6 +270,7 @@ class Controls:
         else:
             self._controls_toggle.jump_key = key_str
 
+        # Check for conflicts
         conflict = False
         keys = [
             self._controls_toggle.go_right_key,
@@ -262,6 +281,7 @@ class Controls:
         if len(set(keys)) != 4:
             conflict = True
 
+        # If there is a conflict, ask the user if they want to keep the new settings
         if conflict:
             if self._settings.button_sound == 1:
                 sound = pygame.mixer.Sound("sound/Button_Sound.wav")
@@ -283,36 +303,63 @@ class Controls:
                 on_no=lambda: self.revert_conflicting_controls(type, key_backup)
             )
 
+        # If no conflic, save the controls int he configuration
         self._controls_toggle.save()
 
+        # Complete the operation
         self.new_key = None
         self.update_type = -1
         self.active_control_button = -1
         self._refresh.refresh_button = 1
 
     def keep_conflicting_controls(self):
+        """
+            If the user chooses to keep the conflicting controls
+
+            :return: None
+        """
+
+        # Play button sound
         if self._settings.button_sound == 1:
             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
             sound.play()
+        # Removed pop up
         for pu in self._pop_up.pop_up_on_screen_list:
             pu.remove()
         self._pop_up.pop_up_on_screen_list.clear()
 
+        # Save controls
         self._controls_toggle.save()
 
+        # Finish operation
         self.new_key = None
         self.update_type = -1
         self.active_control_button = -1
         self._refresh.refresh_button = 1
 
     def revert_conflicting_controls(self, type, key_backup):
+        """
+            If the user chooses to revert the controls back to what they were.
+
+            :param type: The type of keybind change to be executed.
+            :type type: int
+
+            :param key_backup: The string variation of the previous control
+            :type key_backup: string
+
+            :return: None
+        """
+
+        # Play button sound
         if self._settings.button_sound == 1:
             sound = pygame.mixer.Sound("sound/Button_Sound.wav")
             sound.play()
+        # Remove pop up
         for pu in self._pop_up.pop_up_on_screen_list:
             pu.remove()
         self._pop_up.pop_up_on_screen_list.clear()
 
+        # Revert controls
         if type == 0:
             self._controls_toggle.go_right_key = key_backup
         elif type == 1:
@@ -322,8 +369,10 @@ class Controls:
         else:
             self._controls_toggle.jump_key = key_backup
 
+        # Sva eold configuration
         self._controls_toggle.save()
 
+        # Complete operation
         self.new_key = None
         self.update_type = -1
         self.active_control_button = -1
