@@ -445,7 +445,7 @@ class Player(pygame.sprite.Sprite):
             self.fire(shooting_sound, 1)
 
         # While the last laser is still in the frame of the screen
-        if self.laser_list[0].rect.centery > machine_mode_setup.laser_max_distance:
+        if self.laser_list[0].rect.centery > int(machine_mode_setup.laser_max_distance):
             # Keep moving it a number of units every 0.015 seconds
             # The number of units depends on the laser speed and the yellow power up
             current_time = time.time()
