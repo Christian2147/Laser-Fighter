@@ -113,42 +113,29 @@ class GameWindow:
 
         # If fullscreen mode is on
         if self.fullscreen:
-            # screen = pygame.display.set_mode((self.current_screen_width, self.current_screen_height), pygame.FULLSCREEN)
-            screen = pygame.display.set_mode((1280, 800))
-
-            # # Calculate scale factors
-            # if self.current_screen_height < self.current_screen_width:
-            #     self.scale_factor = self.current_screen_height / self.base_height
-            # else:
-            #     self.scale_factor = self.current_screen_width / self.base_width
-            #
-            # self.scale_factor_X = self.current_screen_width / self.base_width
-            # self.scale_factor_Y = self.current_screen_height / self.base_height
-            #
-            # # Aspect ratio adjustment
-            # decimal_aspect_ratio = 1 / (self.current_screen_width / self.current_screen_height)
-            # if decimal_aspect_ratio > 0.5625:  # 9/16
-            #     new_screen_height = self.current_screen_width * 9 / 16
-            #     self.scale_factor = new_screen_height / self.base_height
+            screen = pygame.display.set_mode((self.current_screen_width, self.current_screen_height), pygame.FULLSCREEN)
 
             # Calculate scale factors
-            if 800 < 1280:
-                self.scale_factor = 800 / self.base_height
-            # else:
-            #     self.scale_factor = self.current_screen_width / self.base_width
+            if self.current_screen_height < self.current_screen_width:
+                self.scale_factor = self.current_screen_height / self.base_height
+            else:
+                self.scale_factor = self.current_screen_width / self.base_width
 
-            self.scale_factor_X = 1280 / self.base_width
-            self.scale_factor_Y = 800 / self.base_height
+            self.scale_factor_X = self.current_screen_width / self.base_width
+            self.scale_factor_Y = self.current_screen_height / self.base_height
 
             # Aspect ratio adjustment
-            decimal_aspect_ratio = 1 / (1280 / 800)
-            if decimal_aspect_ratio > 0.5625:  # 9/16
-                new_screen_height = 1280 * 9 / 16
+            # What if the aspect ratio is not 16/9?
+            # With the code above, that would cause the text to go off the screen, we need to take the width of the
+            #   screen and manually find its height if it had a 16/9 aspect ratio. Then, we use that in our
+            #   calculations for the universal scale factor (used for text).
+            # Finding aspect ratio:
+            decimal_aspect_ratio = 1 / (self.current_screen_width / self.current_screen_height)
+            # If it is above the target (9/16) then we need to adjust
+            if decimal_aspect_ratio > 0.5625:
+                # Find the new scale factor based off the 16-9 height of the width
+                new_screen_height = self.current_screen_width * 9 / 16
                 self.scale_factor = new_screen_height / self.base_height
-
-            print(self.scale_factor_X)
-            print(self.scale_factor_Y)
-            print(self.scale_factor)
         else:
             screen = pygame.display.set_mode((self.base_width, self.base_height))
             self.current_screen_width = self.base_width
