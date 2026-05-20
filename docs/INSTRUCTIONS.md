@@ -292,7 +292,7 @@ In order to package the image scaler on Linux, you first must convert the .ico f
 
 ## License
 
-Copyright (c) [2024] [Christian Marinkovich]
+Copyright (c) [2025] [Christian Marinkovich]
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](./LICENSE) file for details.
 
