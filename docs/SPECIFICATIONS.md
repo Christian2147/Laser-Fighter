@@ -84,7 +84,7 @@ If you are still having problems running the game, try disabling any antivirus s
 
 ## License
 
-Copyright (c) [2024] [Christian Marinkovich]
+Copyright (c) [2025] [Christian Marinkovich]
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](./LICENSE) file for details.
 
