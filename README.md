@@ -4,7 +4,7 @@
 
 [![Stable Release: v1.2.3b](https://img.shields.io/badge/Stable-v1.2.3b-brightgreen.svg)](https://github.com/Christian2147/Laser-Fighter/releases/download/v1.2.3/Laser.Fighter.v1.2.3b.zip) [![Latest Release: v1.2.3b](https://img.shields.io/badge/Latest-v1.2.3b-red.svg)](https://github.com/Christian2147/Laser-Fighter/releases/download/v1.2.3/Laser.Fighter.v1.2.3b.zip)
 
-Laser Fighter is a 2D laser shooting game and is the first game that I have created. The first version was finished in December 2021, and it has been growing ever since. About 600 hours of work have so far been put into this game, with more to come. I created this game not only because it was fun but also because I wanted to learn more about the software development process by actually creating a real piece of software. Given my familiarity with gaming and indie games, I felt that a 2D pixel shooting game would be a good place to start. If you want to know more about the timeline of Laser Fighter, check out its [history](./docs/HISTORY.md).
+Laser Fighter is a 2D laser shooting game and is the first game that I have created. The first version was finished in December 2021, and it has been growing ever since. About 750 hours of work have so far been put into this game, with more to come. I created this game not only because it was fun but also because I wanted to learn more about the software development process by actually creating a real piece of software. Given my familiarity with gaming and indie games, I felt that a 2D pixel shooting game would be a good place to start. If you want to know more about the timeline of Laser Fighter, check out its [history](./docs/HISTORY.md).
 
 ## Releases
 
