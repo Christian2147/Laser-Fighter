@@ -1,22 +1,31 @@
 # Instructions for working with this program
 
-## Creating your own virtual environment
+## Development Environment Setup - Visual Studio Code
 
-These are the instructions if you want to use this source code and create your own virtual environment:
+### Installing Python
+
+For this project, you will need to install Python 3.7.3.
+
+The link to download this version can be found here:
+https://www.python.org/downloads/release/python-373/?utm_source=chatgpt.com
+
+### Creating your own virtual environment
+
+These are the instructions if you want to use this source code and create your own virtual environment for this project:
 
 1. Open command prompt (Windows) or the terminal (Linux)
 2. type 
     ```cmd
-    cd path/to/your/project
+    cd path/to/your/project/root
     ```
 3. type:
     -   (Windows)
         ```cmd
-        python -m venv venv
+        py -3.7 -m venv venv
         ```
     -   (Linux)
         ```bash
-        python3 -m venv venv
+        python3.7 -m venv venv
         ```
 4. Now you must activate your virtual environment by typing: 
     -   (Windows)
@@ -29,7 +38,7 @@ These are the instructions if you want to use this source code and create your o
         ```
 5. Install the required packages by typing 
     ```cmd
-    pip install -r requirements.txt
+    python -m pip install -r requirements.txt
     ``` 
     and press Enter
 6. To verify the installation and see the installed packages, type 
@@ -38,7 +47,7 @@ These are the instructions if you want to use this source code and create your o
     ```
 7. Begin working with the source code!
 
-### If you are facing issues installing the virtual environment:
+#### If you are facing issues installing the virtual environment:
 
 Try removing the following libraries from requirements.txt:
 - pip
@@ -52,9 +61,69 @@ All Python files must be in the following naming format: WordWordWord.py
 
 If any of these files are named incorrectly, simply manually rename them.
 
-### If you are on Linux (Not Directly supported):
+### Creating the run configuration
 
-1. Additionally to removing the libraries listed above, remove the following from the requirements.txt:
+First Create the following file in the following folder at the project root:
+
+```text
+.vscode/launch.json
+```
+
+Copy this configuration in launch.json:
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Laser Fighter",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/source/main.py",
+            "cwd": "${workspaceFolder}/source",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/source"
+            }
+        },
+        {
+            "name": "Image Scaler",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/tools/imagescaler/Main.py",
+            "cwd": "${workspaceFolder}/tools/imagescaler",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "console": "integratedTerminal"
+        }
+    ]
+}
+```
+
+*Note: Make sure that your current directory for Visual Studio Code is the project root and your venv is in the project root as well*
+
+### Launching the game and tools:
+
+In VS Code:
+
+1. Open **Run and Debug**.
+2. Make sure that the dropdown lists both "Laser Fighter" and "Image Scaler"
+3. Select the application that you want to run.
+4. Click the **Run** button in the nav bar at the top of the window.
+5. Select **Run Without Debugging**
+
+*Note: "Start Debugging" may not work as Python 3.7.3 may not support VS Code's debugger*
+
+The normal command from the repository root also works:
+
+```powershell
+python source/main.py
+```
+
+### Additional Steps If you are on Linux (Not Directly supported):
+
+1. Additionally to the steps listed above, make sure the libraries listed earlier to remove are removed and also remove the following libraries from the requirements.txt:
     - pywin32
     - pywin32-ctypes
 2. If you installed Python on Linux, the modules above should have came with Linux alternatives by default. The only exceptions to this rule are win32api and win32con.
@@ -292,7 +361,7 @@ In order to package the image scaler on Linux, you first must convert the .ico f
 
 ## License
 
-Copyright (c) [2025] [Christian Marinkovich]
+Copyright (c) [2026] [Christian Marinkovich]
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](./LICENSE) file for details.
 

@@ -27,6 +27,7 @@
 import win32api
 import win32con
 import pygame
+import ctypes
 from setup.ConfigurationSetup import settings
 
 
@@ -79,6 +80,11 @@ class GameWindow:
             return
 
         GameWindow._initialized = True
+
+        try:
+            ctypes.windll.shcore.SetProcessDpiAwareness(2)
+        except Exception:
+            pass
 
         pygame.init()
         pygame.mixer.init()

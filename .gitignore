@@ -11,6 +11,7 @@ tools/imagescaler/Main.spec
 # Ignore the virtual environment files specific to the users environment and can be recreated
 venv/
 .idea/
+.vscode/
 
 # Ignore Python byte-compiled files
 __pycache__/
